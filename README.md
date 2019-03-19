@@ -1,6 +1,6 @@
 # ds_format
 
-Development status: in development
+**Development status:** in development
 
 ds_format is a Python implementation of a dataset
 format DS for storing data along with metadata, similar to NetCDF and HDF.
@@ -16,7 +16,7 @@ on-disk format. Operators are provided for manipulating datasets.
 
 The general structure of a dataset is:
 
-```json
+```
 d = {
 	"variable-1": [...],
 	"variable-2": [...],
@@ -44,15 +44,17 @@ d = {
 }
 ```
 
-where `d['variable-...']` are variables containing multi-dimensional (NumPY)
+where `d['variable-...']` are variables containing multi-dimensional (NumPy)
 arrays, and `d['.']` stores the metadata. `d['.']['variable-...']` contain
-metadata of each variable: dimension list `d['variaable-...']['.dims']` and an
+metadata of each variable: dimension list `d['variable-...']['.dims']` and an
 arbitrary number of variable-level attributes. `d['.']['.']` contains an
 arbitrary number dataset-level attributes.
 
-## API
+## Python interface
 
-### read(filename, [vars])
+### I/O
+
+#### read(filename, [vars])
 
 Read dataset from a file, optionally reading only specified variables.
 
@@ -61,14 +63,14 @@ Read dataset from a file, optionally reading only specified variables.
 
 Returns dataset (dict).
 
-#### write(filename, d)
+#### to_netcdf(filename, d)
 
-Write dataset to a file.
+Write dataset to a NetCDF file.
 
 - `filename` - file name (str)
 - `d` - dataset (dict)
 
-### Operators (ds.op)
+### Operators
 
 #### filter(d, sel)
 
@@ -108,7 +110,7 @@ will contain the first value encountered.
 
 Returns a dataset (dict).
 
-## Command line
+## Command line interface
 
 ### Synopsis
 
@@ -118,24 +120,32 @@ Returns a dataset (dict).
 
 #### ls
 
-   ls [-l] <input>...
+   ds ls [-l] <input>...
 
 - **-l** - print a detailed list
 
 List variables.
 
-#### cat <var>[,<var>]... <input>
+#### cat
+
+    ds cat <var>[,<var>]... <input>
 
 Print variable content.
 
-#### stats <var> <input>
+#### stats
+
+    ds stats <var> <input>
 
 Print variable statistics.
 
-#### merge <dim> <input>... <output>
+#### merge
+
+    ds merge <dim> <input>... <output>
 
 Merge input files along a dimension.
 
-#### get <path> <input>
+#### get
+
+    ds get <path> <input>
 
 Get attribute at path.
