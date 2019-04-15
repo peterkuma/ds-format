@@ -146,35 +146,25 @@ Returns a dataset (dict).
 
 ### Commands
 
-#### ls
-
-   ds ls [-l] <input>...
+#### ds ls [-l] <input>...
 
 - **-l** – print a detailed list
 
 List variables.
 
-#### cat
-
-    ds cat <var>[,<var>]... <input>
+#### ds cat <var>[,<var>]... <input>
 
 Print variable content.
 
-#### stats
-
-    ds stats <var> <input>
+#### ds stats <var> <input>
 
 Print variable statistics.
 
-#### merge
-
-    ds merge <dim> <input>... <output>
+#### ds merge <dim> <input>... <output>
 
 Merge input files along a dimension.
 
-#### get
-
-    ds get <path> <input>
+#### ds get <path> <input>
 
 Get attribute at path.
 
