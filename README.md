@@ -142,9 +142,19 @@ Returns a dataset (dict).
 
 ### Synopsis
 
-    ds [<cmd>] [<options>...]
+```sh
+ds [<cmd>] [<options>...]
+```
 
 ### Commands
+
+#### *default*
+
+```sh
+ds <input>
+```
+
+Print metadata.
 
 #### ls
 
