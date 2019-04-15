@@ -65,12 +65,12 @@ Requirements:
 as [Anaconda](https://www.anaconda.com/distribution/)
 - [netCDF4](http://unidata.github.io/netcdf4-python/netCDF4/index.html)
 - [Aquarius Time](https://github.com/peterkuma/aquarius-time)
-- [nclf](https://github.com/peterkuma/nclf)
+- [nclf-python](https://github.com/peterkuma/nclf-python)
 
 To install:
 
 ```sh
-pip install [--user] https://github.com/peterkuma/aquarius-time/archive/master.zip https://github.com/peterkuma/nclf/archive/master.zip
+pip install [--user] https://github.com/peterkuma/aquarius-time/archive/master.zip https://github.com/peterkuma/nclf-python/archive/master.zip
 pip install [--user] https://github.com/peterkuma/ds-python/archive/master.zip
 ```
 
