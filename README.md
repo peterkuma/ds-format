@@ -83,7 +83,11 @@ import ds_format as ds
 
 ### I/O
 
-#### ds.read(filename, [vars], full=False, jd=False)
+#### ds.read
+
+```python
+ds.read(filename, [vars], full=False, jd=False)
+```
 
 Read dataset from a file, optionally reading only specified variables.
 
@@ -99,7 +103,11 @@ Supported formats:
 
 Returns dataset (dict).
 
-#### ds.to_netcdf(filename, d)
+#### ds.to_netcdf
+
+```python
+ds.to_netcdf(filename, d)
+```
 
 Write dataset to a NetCDF file.
 
@@ -110,7 +118,11 @@ Returns None.
 
 ### Operators
 
-#### ds.filter(d, sel)
+#### ds.filter
+
+```python
+ds.filter(d, sel)
+```
 
 Filter dataset by a selector.
 
@@ -122,7 +134,11 @@ is a mask to apply along the dimension.
 
 Returns None.
 
-#### ds.get_dims(d)
+#### ds.get_dims
+
+```python
+ds.get_dims(d)
+```
 
 Get dataset dimension names.
 
@@ -130,7 +146,11 @@ Get dataset dimension names.
 
 Returns dimension names (list of str).
 
-#### ds.get_vars(d)
+#### ds.get_vars
+
+```python
+ds.get_vars(d)
+```
 
 Get dataset variable names.
 
@@ -138,7 +158,11 @@ Get dataset variable names.
 
 Returns variable names (list of str).
 
-#### ds.merge(dd, dim, new=False)
+#### ds.merge
+
+```python
+ds.merge(dd, dim, new=False)
+```
 
 Merge datasets along a dimension. Variables with incompatible dimensions
 will contain the first value encountered.
@@ -149,7 +173,11 @@ will contain the first value encountered.
 
 Returns a dataset (dict).
 
-#### ds.rename(d, old, new)
+#### ds.rename
+
+```python
+ds.rename(d, old, new)
+```
 
 Rename variable `old` to `new`.
 
