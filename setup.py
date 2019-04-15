@@ -10,6 +10,7 @@ setup(
     author_email='peter.kuma@fastmail.com',
     keywords=['netcdf', 'hdf'],
     url='https://github.com/peterkuma/ds-python',
+    license='MIT',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Science/Research',

@@ -7,50 +7,54 @@ format DS for storing data along with metadata, similar to
 [NetCDF](https://www.unidata.ucar.edu/software/netcdf/)
 and [HDF](https://www.hdfgroup.org).
 DS is based on JSON-like data types commonly available in high-level
-programming
-languages. The API is designed so that functions are completely separated
-from data (unlike in object oriented programming) and data has the same
-representation in memory as on disk. DS is a subset of NetCDF, and can be
-stored in this format, which is also the recommended
-on-disk format. Operators are provided for manipulating datasets.
+programming languages. The API is designed so that functions are completely
+separated
+from data (unlike in object oriented programming), and data has the same
+representation in the memory as on the disk. DS supports a subset
+of functionality of NetCDF,
+and can be stored in this format, which is also the recommended
+on disk format. The Python library `ds_format` implements I/O and operators for
+manipulation of datasets, and the command line program `ds` implements
+access to DS files.
 
-## Dataset format description
+## DS format description
 
-The general structure of a dataset is:
+The general structure of the DS format is:
 
-```
+```python
 d = {
-	"variable-1": [...],
-	"variable-2": [...],
+	"<var-1>": [...],
+	"<var-2>": [...],
 	...,
 	".": {
-		"variable-1": {
-			".dims": ["dimension-1", "dimension-2", ...],
-			"attribute-1": ...,
-			"attribute-2": ...,
+		"<var-1>": {
+			".dims": ["<dim-1>", "<dim-2>", ...],
+			"<attr-1>": ...,
+			"<attr-2>": ...,
 			...
 		},
-		"variable-2": {
-			".dims": ["dimension-1", "dimension-2", ...],
-			"attribute-1": ...,
-			"attribute-2": ...,
+		"<var-2>": {
+			".dims": ["<dim-1>", "<dim-2>", ...],
+			"<attr-1>": ...,
+			"<attr-2>": ...,
 			...
 		},
 		...
 		".": {
-			"attribute-1": ...,
-			"attribute-2": ...,
+			"<attr-1>": ...,
+			"<attr-2>": ...,
 			...
 		}
 	}
 }
 ```
 
-where `d['variable-...']` are variables containing multi-dimensional (NumPy)
-arrays, and `d['.']` stores the metadata. `d['.']['variable-...']` contain
-metadata of each variable: dimension list `d['variable-...']['.dims']` and an
+where `d['<var-...>']` are variables containing multi-dimensional
+([NumPy](https://www.numpy.org/))
+arrays, and `d['.']` stores the metadata. `d['.']['<var-...>']` contain
+metadata of each variable: dimension list `.dims` and an
 arbitrary number of variable-level attributes. `d['.']['.']` contains an
-arbitrary number dataset-level attributes.
+arbitrary number of dataset-level attributes.
 
 ## Python interface
 
@@ -151,3 +155,7 @@ Merge input files along a dimension.
     ds get <path> <input>
 
 Get attribute at path.
+
+## License
+
+This software is available under the terms of the MIT license (see LICENSE.md).
