@@ -83,6 +83,10 @@ Read dataset from a file, optionally reading only specified variables.
 - `filename` - file name (str)
 - `vars` - variable names to read (list of str)
 
+Supported formats:
+
+- NetCDF4 (`.nc`)
+
 Returns dataset (dict).
 
 #### to_netcdf(filename, d)
@@ -91,6 +95,8 @@ Write dataset to a NetCDF file.
 
 - `filename` - file name (str)
 - `d` - dataset (dict)
+
+Returns None.
 
 ### Operators
 
@@ -104,7 +110,7 @@ Filter dataset by a selector.
 Selector is a dictionary where each key is a dimension name and value
 is a mask to apply along the dimension.
 
-Returns nothing.
+Returns None.
 
 #### get_dims(d)
 
