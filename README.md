@@ -80,8 +80,8 @@ python setup.py install [--user]
 
 Read dataset from a file, optionally reading only specified variables.
 
-- `filename` - file name (str)
-- `vars` - variable names to read (list of str)
+- `filename` – file name (str)
+- `vars` – variable names to read (list of str)
 
 Supported formats:
 
@@ -93,8 +93,8 @@ Returns dataset (dict).
 
 Write dataset to a NetCDF file.
 
-- `filename` - file name (str)
-- `d` - dataset (dict)
+- `filename` – file name (str)
+- `d` – dataset (dict)
 
 Returns None.
 
@@ -104,8 +104,8 @@ Returns None.
 
 Filter dataset by a selector.
 
-- `d` - dataset (dict)
-- `sel` - selector (dict)
+- `d` – dataset (dict)
+- `sel` – selector (dict)
 
 Selector is a dictionary where each key is a dimension name and value
 is a mask to apply along the dimension.
@@ -116,7 +116,7 @@ Returns None.
 
 Get dataset dimension names.
 
-- `d` - dataset (dict)
+- `d` – dataset (dict)
 
 Returns dimension names (list of str).
 
@@ -124,7 +124,7 @@ Returns dimension names (list of str).
 
 Get dataset variable names.
 
-- `d` - dataset (dict)
+- `d` – dataset (dict)
 
 Returns variable names (list of str).
 
@@ -133,8 +133,8 @@ Returns variable names (list of str).
 Merge datasets along a dimension. Variables with incompatible dimensions
 will contain the first value encountered.
 
-- `dd` - datasets (list of dict)
-- `dim` - name of dimension (str)
+- `dd` – datasets (list of dict)
+- `dim` – name of dimension (str)
 
 Returns a dataset (dict).
 
@@ -150,7 +150,7 @@ Returns a dataset (dict).
 
    ds ls [-l] <input>...
 
-- **-l** - print a detailed list
+- **-l** – print a detailed list
 
 List variables.
 
