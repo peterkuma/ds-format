@@ -63,12 +63,13 @@ Requirements:
 
 - [Python 2.7](https://www.python.org/), or a Python 2.7 distribution such
 as [Anaconda](https://www.anaconda.com/distribution/)
-- [netCDF4](http://unidata.github.io/netcdf4-python/netCDF4/index.html) python
-package
+- [netCDF4](http://unidata.github.io/netcdf4-python/netCDF4/index.html)
+- [Aquarius Time](https://github.com/peterkuma/aquarius-time)
 
 To install:
 
 ```sh
+pip install [--user] https://github.com/peterkuma/aquarius-time/archive/master.zip
 python setup.py install [--user]
 ```
 
