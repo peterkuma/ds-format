@@ -3,18 +3,18 @@
 **Development status:** in development
 
 ds_format is a Python implementation of a dataset
-format DS for storing data along with metadata, similar to
+format *DS* for storing data along with metadata, similar to
 [NetCDF](https://www.unidata.ucar.edu/software/netcdf/)
 and [HDF](https://www.hdfgroup.org).
-DS is based on JSON-like data types commonly available in high-level
+DS is based on JSON-like data structures commonly available in high-level
 programming languages. The API is designed so that functions are completely
 separated
 from data (unlike in object oriented programming), and data has the same
 representation in the memory as on the disk. DS supports a subset
 of functionality of NetCDF,
 and can be stored in this format, which is also the recommended
-on disk format. The Python library `ds_format` implements I/O and operators for
-manipulation of datasets, and the command line program `ds` implements
+on disk format. The Python library **ds_format** implements I/O and operators for
+manipulation of datasets, and the command line program **ds** implements
 access to DS files.
 
 ## DS format description
@@ -55,6 +55,21 @@ arrays, and `d['.']` stores the metadata. `d['.']['<var-...>']` contain
 metadata of each variable: dimension list `.dims` and an
 arbitrary number of variable-level attributes. `d['.']['.']` contains an
 arbitrary number of dataset-level attributes.
+
+## Installation
+
+Requirements:
+
+- [Python 2.7](https://www.python.org/), or a Python 2.7 distribution such
+as [Anaconda](https://www.anaconda.com/distribution/)
+- [netCDF4](http://unidata.github.io/netcdf4-python/netCDF4/index.html) python
+package
+
+To install:
+
+```sh
+python setup.py install [--user]
+```
 
 ## Python interface
 
