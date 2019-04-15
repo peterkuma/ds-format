@@ -1,4 +1,5 @@
 from netCDF4 import Dataset, num2date
+import cftime
 import numpy as np
 import ds_format as ds
 import datetime as dt
@@ -32,7 +33,11 @@ def read_var(f, name, sel=None, data=True):
 			s = ds.misc.sel_slice(sel, dims)
 			x = var[s]
 		else:
-			x = var[::] if data else None
+			try:
+				x = var[::] if data else None
+			except ValueError:
+				var.set_auto_mask(False)
+				x = var[::] if data else None
 	return [x, attrs]
 
 def read(filename, variables=None, sel=None, full=False, jd=False):
@@ -49,15 +54,16 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 	if jd:
 		for name, data in d.iteritems():
 			if name.startswith('.'): continue
-			units = d['.'][name].get('units')
-			calendar = d['.'][name].get('calendar')
+			units = d['.'][name].get(u'units')
+			calendar = d['.'][name].get(u'calendar')
 			try:
 				if calendar is not None:
 					x = num2date(data, units=units, calendar=calendar)
 				else:
 					x = num2date(data, units=units)
 			except: continue
-			if len(x) == 0 or type(x[0]) != dt.datetime: continue
+			if len(x) == 0 or not isinstance(x[0], dt.datetime):
+				continue
 			d[name] = aq.from_datetime(list(x))
 			d['.'][name]['units'] = 'days since -4712 12:00 UTC'
 			d['.'][name]['units_comment'] = 'julian_date(utc)'

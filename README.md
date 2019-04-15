@@ -3,13 +3,15 @@
 **Development status:** in development
 
 ds_format is a Python implementation of a dataset
-format DS for storing data along with metadata, similar to NetCDF and HDF.
+format DS for storing data along with metadata, similar to
+[NetCDF](https://www.unidata.ucar.edu/software/netcdf/)
+and [HDF](https://www.hdfgroup.org).
 DS is based on JSON-like data types commonly available in high-level
 programming
 languages. The API is designed so that functions are completely separated
 from data (unlike in object oriented programming) and data has the same
-representation in memory and on disk as JSON. DS is a subset of NetCDF
-and HDF, and can be stored in these formats, which is also the recommended
+representation in memory as on disk. DS is a subset of NetCDF, and can be
+stored in this format, which is also the recommended
 on-disk format. Operators are provided for manipulating datasets.
 
 ## Dataset format description

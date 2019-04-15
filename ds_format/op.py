@@ -72,24 +72,44 @@ def time_dt(time):
 #		pass
 
 def merge_var(dd, var, dim, new=False):
-	x = None
-	meta = None
-	for d in dd:
-		if new:
-			x0 = d[var][np.newaxis,...]
-			meta0 = copy.deepcopy(d['.'][var])
-			meta0['.dims'] = [dim] + list(d['.'][var]['.dims'])
-		else:
-			x0 = d[var]
-			meta0 = copy.deepcopy(d['.'][var])
-		if x is None:
-			x = x0
-			meta = meta0
-			continue
-		if meta['.dims'] == meta0['.dims'] and dim in meta['.dims']:
-			i = meta['.dims'].index(dim)
-			x = np.concatenate([x, x0], axis=i)
+	if len(dd) == 0:
+		return None, None
+	x0 = dd[0][var]
+	meta0 = dd[0]['.'][var]
+	dims0 = meta0['.dims']
+	meta = copy.deepcopy(meta0)
+	if new:
+		meta['.dims'] = [dim] + list(meta['.dims'])
+		x = np.stack([d[var] for d in dd if d['.'][var]['.dims'] == dims0])
+	elif dim in dims0:
+		i = dims0.index(dim)
+		x = np.concatenate(
+			[d[var] for d in dd if d['.'][var]['.dims'] == dims0],
+			axis=i
+		)
+	else:
+		x = x0
+		meta = meta0
 	return x, meta
+
+	# x = None
+	# meta = None
+	# for d in dd:
+	# 	if new:
+	# 		x0 = d[var][np.newaxis,...]
+	# 		meta0 = copy.deepcopy(d['.'][var])
+	# 		meta0['.dims'] = [dim] + list(d['.'][var]['.dims'])
+	# 	else:
+	# 		x0 = d[var]
+	# 		meta0 = copy.deepcopy(d['.'][var])
+	# 	if x is None:
+	# 		x = x0
+	# 		meta = meta0
+	# 		continue
+	# 	if meta['.dims'] == meta0['.dims'] and dim in meta['.dims']:
+	# 		i = meta['.dims'].index(dim)
+	# 		x = np.concatenate([x, x0], axis=i)
+	# return x, meta
 
 def merge(dd, dim, new=False):
 	dx = {'.': {}}
