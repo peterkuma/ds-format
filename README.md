@@ -83,12 +83,15 @@ import ds_format as ds
 
 ### I/O
 
-#### ds.read(filename, [vars])
+#### ds.read(filename, [vars], full=False, jd=False)
 
 Read dataset from a file, optionally reading only specified variables.
 
 - `filename` – file name (str)
 - `vars` – variable names to read (list of str)
+- `full` – read all metadata
+- `jd` – convert time variables to Julian dates (JD)
+(see [Aquarius Time](https://github.com/peterkuma/aquarius-time))
 
 Supported formats:
 
@@ -135,15 +138,26 @@ Get dataset variable names.
 
 Returns variable names (list of str).
 
-#### ds.merge(dd, dim)
+#### ds.merge(dd, dim, new=False)
 
 Merge datasets along a dimension. Variables with incompatible dimensions
 will contain the first value encountered.
 
 - `dd` – datasets (list of dict)
 - `dim` – name of dimension (str)
+- `new` – merge datasets along a new dimension (str)
 
 Returns a dataset (dict).
+
+#### ds.rename(d, old, new)
+
+Rename variable `old` to `new`.
+
+- `d` – dataset (dict)
+- `old` – old variable name
+- `new` – new variable name
+
+Returns None.
 
 ## Command line interface
 
