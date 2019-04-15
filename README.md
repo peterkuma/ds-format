@@ -74,9 +74,15 @@ python setup.py install [--user]
 
 ## Python interface
 
+To import the library:
+
+```python
+import ds_format as ds
+```
+
 ### I/O
 
-#### read(filename, [vars])
+#### ds.read(filename, [vars])
 
 Read dataset from a file, optionally reading only specified variables.
 
@@ -89,7 +95,7 @@ Supported formats:
 
 Returns dataset (dict).
 
-#### to_netcdf(filename, d)
+#### ds.to_netcdf(filename, d)
 
 Write dataset to a NetCDF file.
 
@@ -100,7 +106,7 @@ Returns None.
 
 ### Operators
 
-#### filter(d, sel)
+#### ds.filter(d, sel)
 
 Filter dataset by a selector.
 
@@ -112,7 +118,7 @@ is a mask to apply along the dimension.
 
 Returns None.
 
-#### get_dims(d)
+#### ds.get_dims(d)
 
 Get dataset dimension names.
 
@@ -120,7 +126,7 @@ Get dataset dimension names.
 
 Returns dimension names (list of str).
 
-#### get_vars(d)
+#### ds.get_vars(d)
 
 Get dataset variable names.
 
@@ -128,7 +134,7 @@ Get dataset variable names.
 
 Returns variable names (list of str).
 
-#### merge(dd, dim)
+#### ds.merge(dd, dim)
 
 Merge datasets along a dimension. Variables with incompatible dimensions
 will contain the first value encountered.
