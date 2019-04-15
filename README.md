@@ -93,9 +93,10 @@ Read dataset from a file, optionally reading only specified variables.
 
 - `filename` – file name (str)
 - `vars` – variable names to read (list of str)
-- `full` – read all metadata
-- `jd` – convert time variables to Julian dates (JD)
+- `full` – read all metadata (bool)
+- `jd` – convert time variables to Julian dates 
 (see [Aquarius Time](https://github.com/peterkuma/aquarius-time))
+(bool)
 
 Supported formats:
 
