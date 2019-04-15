@@ -70,7 +70,7 @@ To install:
 
 ```sh
 pip install [--user] https://github.com/peterkuma/aquarius-time/archive/master.zip
-python setup.py install [--user]
+pip install [--user] https://github.com/peterkuma/ds-python/archive/master.zip
 ```
 
 ## Python interface
