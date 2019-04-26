@@ -74,25 +74,6 @@ pip install [--user] https://github.com/peterkuma/aquarius-time/archive/master.z
 pip install [--user] https://github.com/peterkuma/ds-python/archive/master.zip
 ```
 
-## Installation
-
-Requirements:
-
-- Python 2.7 or Python 3
-
-To install in system directories:
-
-```sh
-python setup.py install
-```
-
-To install in user directories (make sure `~/.local/bin/` is in the `PATH`
-environment variable):
-
-```sh
-python setup.py install --user
-```
-
 ## Python interface
 
 To import the library:
