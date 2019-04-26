@@ -251,5 +251,5 @@ Get attribute at path.
 
 ## License
 
-This software is published under the terms of the MIT license
-(see [LICENSE.md](LICENSE.md)).
+This software can be used, shared and  modified freely under the terms of
+the MIT license. See [LICENSE.md](LICENSE.md).
