@@ -14,6 +14,7 @@ setup(
     url='https://github.com/peterkuma/ds-python',
     platforms=['any'],
     install_requires=['netCDF4'],
+    license='MIT',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Science/Research',
