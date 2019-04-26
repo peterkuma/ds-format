@@ -1,4 +1,4 @@
-import netcdf
+from . import netcdf
 
 DRIVERS = {
 	'netcdf': netcdf,

@@ -22,7 +22,7 @@ def index(dirname, variables=None, warnings=[], **kwargs):
 def read(filename, *args, **kwargs):
 	if not os.path.exists(filename):
 		raise IOError('%s: File does not exist' % filename)
-	for name, driver in DRIVERS.iteritems():
+	for name, driver in DRIVERS.items():
 		if driver.detect(filename):
 			d = driver.read(filename, *args, **kwargs)
 			return d
