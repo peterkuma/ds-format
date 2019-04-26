@@ -52,6 +52,25 @@ metadata of each variable: dimension list `d['variable-...']['.dims']` and an
 arbitrary number of variable-level attributes. `d['.']['.']` contains an
 arbitrary number dataset-level attributes.
 
+## Installation
+
+Requirements:
+
+- Python 2.7 or Python 3
+
+To install in system directories:
+
+```sh
+python setup.py install
+```
+
+To install in user directories (make sure `~/.local/bin/` is in the `PATH`
+environment variable):
+
+```sh
+python setup.py install --user
+```
+
 ## Python interface
 
 ### I/O
