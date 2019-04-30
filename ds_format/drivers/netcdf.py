@@ -52,7 +52,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 			else:
 				d[name], d['.'][name] = read_var(f, name, sel)
 	if jd:
-		for name, data in d.iteritems():
+		for name, data in d.items():
 			if name.startswith('.'): continue
 			units = d['.'][name].get(u'units')
 			calendar = d['.'][name].get(u'calendar')
@@ -74,9 +74,9 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 def write(filename, d):
 	with Dataset(filename, 'w') as f:
 		dims = ds.get_dims(d)
-		for k, v in dims.iteritems():
+		for k, v in dims.items():
 			f.createDimension(k, v)
-		for name, data in d.iteritems():
+		for name, data in d.items():
 			if name.startswith('.'):
 				continue
 			var = d['.'][name]
@@ -85,7 +85,7 @@ def write(filename, d):
 			v = f.createVariable(name, data.dtype, var['.dims'])
 			v.setncatts({
 				k: v
-				for k, v in var.iteritems()
+				for k, v in var.items()
 				if not k.startswith('.')
 			})
 			v[::] = data

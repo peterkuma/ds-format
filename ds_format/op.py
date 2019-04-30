@@ -5,7 +5,7 @@ import datetime as dt
 def select_var(d, name, sel):
 	var_dims = list(d['.'][name]['.dims'])
 	d['.'][name]['.dims'] = var_dims
-	for key, value in sel.iteritems():
+	for key, value in sel.items():
 		if type(value) == dict:
 			if len(sel) > 1: raise ValueError('invalid selector')
 			newdim = key
