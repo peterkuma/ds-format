@@ -62,8 +62,11 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 				else:
 					x = num2date(data, units=units)
 			except: continue
-			if len(x) == 0 or not isinstance(x[0], dt.datetime):
+			if len(x) == 0 or not isinstance(x[0], cftime.datetime):
 				continue
+			if isinstance(x[0], cftime.datetime):
+				for i in range(len(x)):
+					x[i] = dt.datetime(x[i].year, 1, 1) + (x[i] - type(x[i])(x[i].year, 1, 1))
 			d[name] = aq.from_datetime(list(x))
 			d['.'][name]['units'] = 'days since -4712 12:00 UTC'
 			d['.'][name]['units_comment'] = 'julian_date(utc)'

@@ -1,4 +1,4 @@
-import copy
+import copy as copy_
 import numpy as np
 import datetime as dt
 
@@ -22,12 +22,13 @@ def select_var(d, name, sel):
 			d['.'][name]['.dims'].append(newdim)
 		else:
 			dim, idxs = key, value
-			if type(idxs) == np.ndarray and idxs.dtype == np.bool:
+			idxs = np.array(idxs) if type(idxs) == list else idxs
+			if isinstance(idxs, np.ndarray) and idxs.dtype == np.bool:
 				idxs = np.nonzero(idxs)[0]
 			if dim in var_dims:
 				i = var_dims.index(dim)
 				d[name] = np.take(d[name], idxs, axis=i)
-				if type(idxs) != np.ndarray:
+				if not isinstance(idxs, np.ndarray):
 					var_dims.remove(dim)
 
 def select(d, sel):
@@ -77,7 +78,7 @@ def merge_var(dd, var, dim, new=False):
 	x0 = dd[0][var]
 	meta0 = dd[0]['.'][var]
 	dims0 = meta0['.dims']
-	meta = copy.deepcopy(meta0)
+	meta = copy_.deepcopy(meta0)
 	if new:
 		meta['.dims'] = [dim] + list(meta['.dims'])
 		x = np.stack([d[var] for d in dd if d['.'][var]['.dims'] == dims0])
@@ -125,3 +126,10 @@ def rename(d, old, new):
 	d['.'][new] = d['.'][old]
 	del d[old]
 	del d['.'][old]
+
+def copy(d):
+	d2 = {}
+	for var in get_vars(d):
+		d2[var] = d[var]
+	d2['.'] = copy_.deepcopy(d['.'])
+	return d2

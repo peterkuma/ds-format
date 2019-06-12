@@ -12,7 +12,7 @@ def index(dirname, variables=None, warnings=[], **kwargs):
 		except Exception as e:
 			warnings.append(e)
 			continue
-		d['filename'] = np.array(filename)
+		d['filename'] = filename
 		d['.']['filename'] = {
 			'.dims': [],
 		}
@@ -35,9 +35,9 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 		filename = os.path.join(dirname, name)
 		try: d = ds.read(filename, variables=variables, **kwargs)
 		except Exception as e:
-			warnings.append(e)
+			warnings.append('%s: %s' % (filename, e))
 			continue
-		d['filename'] = np.array(filename)
+		d['filename'] = filename
 		d['.']['filename'] = {
 			'.dims': [],
 		}
