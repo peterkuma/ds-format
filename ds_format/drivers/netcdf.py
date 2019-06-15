@@ -62,9 +62,9 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 				else:
 					x = num2date(data, units=units)
 			except: continue
-			if len(x) == 0 or not isinstance(x[0], cftime.datetime):
+			if len(x) == 0 or not isinstance(x[0], cftime._cftime.real_datetime):
 				continue
-			if isinstance(x[0], cftime.datetime):
+			if isinstance(x[0], cftime._cftime.real_datetime):
 				for i in range(len(x)):
 					x[i] = dt.datetime(x[i].year, 1, 1) + (x[i] - type(x[i])(x[i].year, 1, 1))
 			d[name] = aq.from_datetime(list(x))
