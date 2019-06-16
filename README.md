@@ -61,7 +61,7 @@ arbitrary number of dataset-level attributes.
 
 Requirements:
 
-- [Python 2.7](https://www.python.org/), or a Python 2.7 distribution such
+- Python 2.7, Python 3, or a Python distribution such
 as [Anaconda](https://www.anaconda.com/distribution/)
 
 Required Python packages:
@@ -73,7 +73,7 @@ Required Python packages:
 To install the required Python packages:
 
 ```sh
-pip install [--user] https://github.com/peterkuma/aquarius-time/archive/master.zip https://github.com/peterkuma/pst/archive/master.zip
+pip install [--user] netCDF4 https://github.com/peterkuma/aquarius-time/archive/master.zip https://github.com/peterkuma/pst/archive/master.zip
 ```
 
 To install ds-python:
