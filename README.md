@@ -63,14 +63,22 @@ Requirements:
 
 - [Python 2.7](https://www.python.org/), or a Python 2.7 distribution such
 as [Anaconda](https://www.anaconda.com/distribution/)
+
+Required Python packages:
+
 - [netCDF4](http://unidata.github.io/netcdf4-python/netCDF4/index.html)
 - [Aquarius Time](https://github.com/peterkuma/aquarius-time)
-- [nclf-python](https://github.com/peterkuma/nclf-python)
+- [pst](https://github.com/peterkuma/pst)
 
-To install:
+To install the required Python packages:
 
 ```sh
-pip install [--user] https://github.com/peterkuma/aquarius-time/archive/master.zip https://github.com/peterkuma/nclf-python/archive/master.zip
+pip install [--user] https://github.com/peterkuma/aquarius-time/archive/master.zip https://github.com/peterkuma/pst/archive/master.zip
+```
+
+To install ds-python:
+
+```
 pip install [--user] https://github.com/peterkuma/ds-python/archive/master.zip
 ```
 

@@ -4,11 +4,11 @@ import signal
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 import sys
-from nclf import nclf
+import pst
 import ds_format as ds
 
 if __name__ == '__main__':
-	args, opts = nclf(sys.argv)
+	args, opts = pst.decode_argv(sys.argv)
 	if len(args) == 1:
 		sys.stderr.write('Usage: %s [<cmd>] [<options>...]\n' % sys.argv[0])
 		sys.exit(1)
