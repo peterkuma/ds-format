@@ -8,7 +8,7 @@ import pst
 import ds_format as ds
 
 if __name__ == '__main__':
-	args, opts = pst.decode_argv(sys.argv)
+	args, opts = pst.decode_argv(sys.argv, as_unicode=True)
 	if len(args) == 1:
 		sys.stderr.write('Usage: %s [<cmd>] [<options>...]\n' % sys.argv[0])
 		sys.exit(1)
