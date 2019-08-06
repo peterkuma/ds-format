@@ -274,6 +274,11 @@ ds cat <var>[,<var>]... <input>
 
 Print variable content.
 
+Arguments:
+
+- `var` - Variable name.
+- `input` - Input file.
+
 #### stats
 
 ```sh
