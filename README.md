@@ -95,13 +95,14 @@ import ds_format as ds
 #### ds.read
 
 ```python
-ds.read(filename, [vars], full=False, jd=False)
+ds.read(filename, variables=None, sel=None, full=False, jd=False)
 ```
 
 Read dataset from a file, optionally reading only specified variables.
 
 - `filename` – file name (str)
-- `vars` – variable names to read (list of str)
+- `variables` – variable names to read (list of str)
+- `sel` – selector (see **filter**)
 - `full` – read all metadata (bool)
 - `jd` – convert time variables to Julian dates 
 (see [Aquarius Time](https://github.com/peterkuma/aquarius-time))
@@ -140,7 +141,7 @@ Filter dataset by a selector.
 - `sel` – selector (dict)
 
 Selector is a dictionary where each key is a dimension name and value
-is a mask to apply along the dimension.
+is a mask to apply along the dimension or a list of indexes.
 
 Returns None.
 
