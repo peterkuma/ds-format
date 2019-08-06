@@ -1,53 +1,50 @@
-# ds_format
+# ds-python (beta)
 
-**Development status:** beta
+ds-python is a Python implementation of a dataset format *DS* for storing data
+along with metadata, similar to [NetCDF](https://www.unidata.ucar.edu/software/netcdf/)
+and [HDF](https://www.hdfgroup.org). DS is based on
+[JSON](https://json.org/)-like data structures common in
+in high-level programming languages. It supports a subset
+of functionality of NetCDF and is compatible with most existing NetCDF
+datasets and the [CF Conventions](http://cfconventions.org/) (if the necessary
+attributes are defined in the dataset).
 
-ds_format is a Python implementation of a dataset
-format *DS* for storing data along with metadata, similar to
-[NetCDF](https://www.unidata.ucar.edu/software/netcdf/)
-and [HDF](https://www.hdfgroup.org).
-DS is based on [JSON](https://json.org/)-like data structures commonly
-available in high-level
-programming languages. The API is designed so that functions are completely
-separated
-from data (unlike in object oriented programming), and data has the same
-representation in the memory as on the disk. DS supports a subset
-of functionality of NetCDF,
-and can be stored in this format, which is also the recommended
-on disk format. The Python library **ds_format** implements I/O and operators
-for manipulation of datasets, and the command line program **ds** implements
-access to DS files.
+This package contains the command line program **ds** and the Python library
+**ds_format**, which implement reading, writing and editing of datasets.
+The library is designed so that functions are completely separated
+from data (unlike in object oriented programming), which is more transparent
+and faster, especially when working with large datasets.
 
-Similar packages: [nco](http://nco.sourceforge.net/) (netCDF Operator),
+Similar packages are [nco](http://nco.sourceforge.net/) (netCDF Operator),
 [CDO](https://code.mpimet.mpg.de/projects/cdo/) (Climate Data Operator),
 [xarray](https://xarray.pydata.org),
-[iris](http://scitools.org.uk/iris/docs/latest/)
+[iris](http://scitools.org.uk/iris/docs/latest/).
 
-## DS format description
+## Format description
 
-The general structure of the DS format is:
+The general structure of the format is:
 
 ```python
-d = {
-    "<var1>": [...],
-    "<var2>": [...],
+d = { # Dataset definition
+    "<var1>": [...], # Variable 1 (multi-dimensional array)
+    "<var2>": [...], # Variable 2 (multi-dimensional array)
     ...,
-    ".": {
-        "<var1>": {
-            ".dims": ["<dim1>", "<dim2>", ...],
-            "<attr1>": ...,
+    ".": { # Metadata
+        "<var1>": { # Variable 1 metadata
+            ".dims": ["<dim1>", "<dim2>", ...], # Dimension names
+            "<attr1>": ..., # Arbitrary attributes
             "<attr2>": ...,
             ...
         },
-        "<var2>": {
-            ".dims": ["<dim1>", "<dim2>", ...],
-            "<attr1>": ...,
+        "<var2>": { # Variable 2 metadata
+            ".dims": ["<dim1>", "<dim2>", ...], # Dimension names
+            "<attr1>": ..., # Arbitrary attributes
             "<attr2>": ...,
             ...
         },
         ...
-        ".": {
-            "<attr1>": ...,
+        ".": { # Dataset metadata
+            "<attr1>": ..., # Arbitrary attributes
             "<attr2>": ...,
             ...
         }
@@ -56,25 +53,49 @@ d = {
 ```
 
 where `d['<var<n>>']` are variables containing multi-dimensional
-[NumPy](https://www.numpy.org/)
-arrays, and `d['.']` stores the metadata. `d['.']['<var<n>>']` contain
-metadata of each variable: dimension list `.dims` and an
-arbitrary number of variable-level attributes. `d['.']['.']` contains an
-arbitrary number of dataset-level attributes.
+[NumPy](https://www.numpy.org/) arrays, and `d['.']` stores the metadata.
+`d['.']['<var<n>>']` contain
+metadata of each variable: dimension names `.dims` and an
+arbitrary variable-level attributes. `d['.']['.']` contains arbitrary
+dataset-level attributes.
+
+### Elements
+
+#### Variables
+
+Variables are multi-dimentional arrays with an arbitrary name (except for
+names beginning with `.`).
+The dimensions of variables are named in the `.dims` array in the metadata.
+
+#### Dimensions
+
+Dimensions are names corresponding to dimensions of variables.
+Dimensions can have the same name as another variable, which may then be
+interpreted as the axis in certain programs such as
+[Panoply](https://www.giss.nasa.gov/tools/panoply/), as is common in NetCDF
+datasets.
+
+#### Attributes
+
+Attributes are objects defining variable or dataset metadata,
+and can be arbitrary key-value pairs.
 
 ### Example
 
+This is an example of two variables `time` and `temperature` stored
+in a dataset along with their metadata: 
+
 ```python
 d = {
-	'time': np.array([1, 2, 3]),
-	'temperature': np.array([16., 18., 21.]),
+	'time': np.array([1, 2, 3]), # Variable "time" (numpy array)
+	'temperature': np.array([16., 18., 21.]), # Variable "temperature" (numpy array)
 	'.': {
-		'time': {
-			'.dims': ['time'],
+		'time': { # Metadata of variable "time"
+			'.dims': ['time'], # Single dimension named "time"
 		},
-		'temperature':
-			'.dims': ['time'],
-			'units': 'degree_celsius',
+		'temperature': { # Metadata of variable "temperature"
+			'.dims': ['time'], # Single dimension named "time"
+			'units': 'degree_celsius', # Arbitray attributes
 		},
 	}
 }
