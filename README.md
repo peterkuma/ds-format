@@ -62,7 +62,7 @@ metadata of each variable: dimension list `.dims` and an
 arbitrary number of variable-level attributes. `d['.']['.']` contains an
 arbitrary number of dataset-level attributes.
 
-Example:
+### Example
 
 ```python
 d = {
