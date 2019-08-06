@@ -18,7 +18,11 @@ and faster, especially when working with large datasets.
 Similar packages are [nco](http://nco.sourceforge.net/) (netCDF Operator),
 [CDO](https://code.mpimet.mpg.de/projects/cdo/) (Climate Data Operator),
 [xarray](https://xarray.pydata.org),
-[iris](http://scitools.org.uk/iris/docs/latest/).
+[iris](http://scitools.org.uk/iris/docs/latest/). Compatible programs
+for viewing datasets include
+[ncdump](https://www.unidata.ucar.edu/software/netcdf/),
+[HDFView](https://www.hdfgroup.org/downloads/hdfview/) and
+[Panoply](https://www.giss.nasa.gov/tools/panoply/).
 
 ## Format description
 
@@ -122,7 +126,7 @@ temperature[:] = np.array([16., 18., 21.])
 d.close()
 ```
 
-`ncdump dataset.nc`:
+The result can be viewed by `ncdump dataset.nc`:
 
 ```
 netcdf dataset {
