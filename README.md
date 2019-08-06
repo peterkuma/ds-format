@@ -9,7 +9,7 @@ of functionality of NetCDF and is compatible with most existing NetCDF
 datasets and the [CF Conventions](http://cfconventions.org/) (if the necessary
 attributes are defined in the dataset).
 
-This package contains the command line program **ds** and the Python library
+This package contains the command line program **ds** and Python library
 **ds_format**, which implement reading, writing and editing of datasets.
 The library is designed so that functions are completely separated
 from data (unlike in object oriented programming), which is more transparent
@@ -55,7 +55,7 @@ d = { # Dataset definition
 where `d['<var<n>>']` are variables containing multi-dimensional
 [NumPy](https://www.numpy.org/) arrays, and `d['.']` stores the metadata.
 `d['.']['<var<n>>']` contain
-metadata of each variable: dimension names `.dims` and an
+metadata of each variable: dimension names `.dims` and
 arbitrary variable-level attributes. `d['.']['.']` contains arbitrary
 dataset-level attributes.
 
@@ -86,10 +86,13 @@ This is an example of two variables `time` and `temperature` stored
 in a dataset along with their metadata: 
 
 ```python
+import numpy as np
+import ds_format as ds
 d = {
 	'time': np.array([1, 2, 3]), # Variable "time" (numpy array)
 	'temperature': np.array([16., 18., 21.]), # Variable "temperature" (numpy array)
 	'.': {
+		'.': { 'title': 'Temperature data' },
 		'time': { # Metadata of variable "time"
 			'.dims': ['time'], # Single dimension named "time"
 		},
@@ -98,6 +101,45 @@ d = {
 			'units': 'degree_celsius', # Arbitray attributes
 		},
 	}
+}
+ds.write('dataset.nc', d) # Save the dataset as NetCDF
+```
+
+The corresponding [netCDF4](http://unidata.github.io/netcdf4-python/)
+code is:
+
+```python
+import numpy as np
+from netCDF4 import Dataset
+d = Dataset('dataset.nc', 'w')
+d.title = 'Temperature dataset'
+d.createDimension('time', 3)
+time = d.createVariable('time', 'i8', ('time',))
+temperature = d.createVariable('temperature', 'f8', ('time',))
+temperature.units = 'degree_celsius'
+time[:] = np.array([1, 2, 3])
+temperature[:] = np.array([16., 18., 21.])
+d.close()
+```
+
+`ncdump dataset.nc`:
+
+```
+netcdf dataset {
+dimensions:
+	time = 3 ;
+variables:
+	int64 time(time) ;
+	double temperature(time) ;
+		temperature:units = "degree_celsius" ;
+
+// global attributes:
+		:title = "Temperature dataset" ;
+data:
+
+ time = 1, 2, 3 ;
+
+ temperature = 16, 18, 21 ;
 }
 ```
 
