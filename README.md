@@ -83,6 +83,107 @@ To install ds-python:
 pip install https://github.com/peterkuma/ds-python/archive/master.zip
 ```
 
+## Command line interface
+
+### Synopsis
+
+```sh
+ds [<cmd>] [<options>...]
+```
+
+### Commands
+
+#### *default*
+
+```sh
+ds <input>
+```
+
+Print metadata.
+
+Arguments:
+
+- `input` - Input file.
+
+#### ls
+
+```sh
+ds ls [-l] <input>...
+```
+
+List variables.
+
+Arguments:
+
+- `input` - Input file.
+- `-l` - Print a detailed list.
+
+#### cat
+
+```sh
+ds cat <var>[,<var>]... <input>
+```
+
+Print variable content.
+
+Arguments:
+
+- `var` - Variable name.
+- `input` - Input file.
+
+#### stats
+
+```sh
+ds stats <var> <input>
+```
+
+Print variable statistics.
+
+Arguments:
+
+- `var` - Variable name.
+- `input` - Input file.
+
+#### merge
+
+```sh
+ds merge <dim> <input>... <output>
+```
+
+Merge input files along a dimension.
+
+Arugments:
+
+- `dim` - Dimension name.
+- `input` - Input file.
+- `output` - Output file.
+
+#### get
+
+```sh
+ds get <path> <input>
+```
+
+Get attribute at path.
+
+#### select
+
+```sh
+ds select <input> <output> [<variables>] [sel: <sel>]
+```
+
+Select and subset variables from a dataset.
+
+Arguments:
+
+- `input` - Input file.
+- `output` - Output file.
+- `variables` - List of variables (`{ var1 var2 ... }`) or `none` for all.
+    Default: `none`.
+- `sel` - Selector. Format: `{ <dim1>: <idx1> <dim2>: <idx2> ... }`,
+    where `<dim<n>>` is dimension name and `<idx<n>>` is a list of indexes
+    `{ <i1> <i2> ... }`.
+
 ## Python interface
 
 To import the library:
@@ -230,107 +331,6 @@ Arguments:
 - `new` - New variable name (str).
 
 Returns None.
-
-## Command line interface
-
-### Synopsis
-
-```sh
-ds [<cmd>] [<options>...]
-```
-
-### Commands
-
-#### *default*
-
-```sh
-ds <input>
-```
-
-Print metadata.
-
-Arguments:
-
-- `input` - Input file.
-
-#### ls
-
-```sh
-ds ls [-l] <input>...
-```
-
-List variables.
-
-Arguments:
-
-- `input` - Input file.
-- `-l` - Print a detailed list.
-
-#### cat
-
-```sh
-ds cat <var>[,<var>]... <input>
-```
-
-Print variable content.
-
-Arguments:
-
-- `var` - Variable name.
-- `input` - Input file.
-
-#### stats
-
-```sh
-ds stats <var> <input>
-```
-
-Print variable statistics.
-
-Arguments:
-
-- `var` - Variable name.
-- `input` - Input file.
-
-#### merge
-
-```sh
-ds merge <dim> <input>... <output>
-```
-
-Merge input files along a dimension.
-
-Arugments:
-
-- `dim` - Dimension name.
-- `input` - Input file.
-- `output` - Output file.
-
-#### get
-
-```sh
-ds get <path> <input>
-```
-
-Get attribute at path.
-
-#### select
-
-```sh
-ds select <input> <output> [<variables>] [sel: <sel>]
-```
-
-Select and subset variables from a dataset.
-
-Arguments:
-
-- `input` - Input file.
-- `output` - Output file.
-- `variables` - List of variables (`{ var1 var2 ... }`) or `none` for all.
-    Default: `none`.
-- `sel` - Selector. Format: `{ <dim1>: <idx1> <dim2>: <idx2> ... }`,
-    where `<dim<n>>` is dimension name and `<idx<n>>` is a list of indexes
-    `{ <i1> <i2> ... }`.
 
 ## License
 
