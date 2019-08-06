@@ -5,7 +5,7 @@ from ds_format.cmd import UsageError, NumpyEncoder
 
 def stats(*args, **opts):
 	if len(args) < 2:
-		raise UsageError('Usage: stats <var> <input>...')
+		raise TypeError('Usage: stats <var> <input>...')
 	var = args[0]
 	input_ = args[1:]
 	for filename in input_:

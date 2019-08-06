@@ -24,35 +24,35 @@ The general structure of the DS format is:
 
 ```python
 d = {
-    "<var-1>": [...],
-    "<var-2>": [...],
+    "<var1>": [...],
+    "<var2>": [...],
     ...,
     ".": {
-        "<var-1>": {
-            ".dims": ["<dim-1>", "<dim-2>", ...],
-            "<attr-1>": ...,
-            "<attr-2>": ...,
+        "<var1>": {
+            ".dims": ["<dim1>", "<dim2>", ...],
+            "<attr1>": ...,
+            "<attr2>": ...,
             ...
         },
-        "<var-2>": {
-            ".dims": ["<dim-1>", "<dim-2>", ...],
-            "<attr-1>": ...,
-            "<attr-2>": ...,
+        "<var2>": {
+            ".dims": ["<dim1>", "<dim2>", ...],
+            "<attr1>": ...,
+            "<attr2>": ...,
             ...
         },
         ...
         ".": {
-            "<attr-1>": ...,
-            "<attr-2>": ...,
+            "<attr1>": ...,
+            "<attr2>": ...,
             ...
         }
     }
 }
 ```
 
-where `d['<var-...>']` are variables containing multi-dimensional
+where `d['<var<n>>']` are variables containing multi-dimensional
 [NumPy](https://www.numpy.org/)
-arrays, and `d['.']` stores the metadata. `d['.']['<var-...>']` contain
+arrays, and `d['.']` stores the metadata. `d['.']['<var<n>>']` contain
 metadata of each variable: dimension list `.dims` and an
 arbitrary number of variable-level attributes. `d['.']['.']` contains an
 arbitrary number of dataset-level attributes.
@@ -70,16 +70,17 @@ Required Python packages:
 - [Aquarius Time](https://github.com/peterkuma/aquarius-time)
 - [pst](https://github.com/peterkuma/pst)
 
-To install the required Python packages:
+To install the required Python packages (use `pip3` instead of `pip` to
+install with Python 3, append `--user` to install in home directory):
 
 ```sh
-pip install [--user] netCDF4 https://github.com/peterkuma/aquarius-time/archive/master.zip https://github.com/peterkuma/pst/archive/master.zip
+pip install netCDF4 https://github.com/peterkuma/aquarius-time/archive/master.zip https://github.com/peterkuma/pst/archive/master.zip
 ```
 
 To install ds-python:
 
 ```
-pip install [--user] https://github.com/peterkuma/ds-python/archive/master.zip
+pip install https://github.com/peterkuma/ds-python/archive/master.zip
 ```
 
 ## Python interface
@@ -100,19 +101,39 @@ ds.read(filename, variables=None, sel=None, full=False, jd=False)
 
 Read dataset from a file, optionally reading only specified variables.
 
-- `filename` – file name (str)
-- `variables` – variable names to read (list of str)
-- `sel` – selector (see **filter**)
-- `full` – read all metadata (bool)
-- `jd` – convert time variables to Julian dates 
-(see [Aquarius Time](https://github.com/peterkuma/aquarius-time))
-(bool)
+Arguments:
+
+- `filename` - Filename (str).
+- `variables` - Variable names to read (list of str).
+- `sel` - Selector (see **select**).
+- `full` - Read all metadata (bool).
+- `jd` - Convert time variables to Julian dates
+    (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)) (bool).
 
 Supported formats:
 
 - NetCDF4 (`.nc`)
 
 Returns dataset (dict).
+
+#### ds.write
+
+```python
+ds.write(filename, d)
+```
+
+Write dataset to a file. The file type is determined from the file extension.
+
+Arguments:
+
+- `filename` - Filename (str).
+- `d` - Dataset (dict).
+
+Supported formats:
+
+- NetCDF4 (`.nc`)
+
+Returns None.
 
 #### ds.to_netcdf
 
@@ -122,23 +143,27 @@ ds.to_netcdf(filename, d)
 
 Write dataset to a NetCDF file.
 
-- `filename` – file name (str)
-- `d` – dataset (dict)
+Arguments:
+
+- `filename` - Filename (str).
+- `d` - Dataset (dict).
 
 Returns None.
 
 ### Operators
 
-#### ds.filter
+#### ds.select
 
 ```python
-ds.filter(d, sel)
+ds.select(d, sel)
 ```
 
 Filter dataset by a selector.
 
-- `d` – dataset (dict)
-- `sel` – selector (dict)
+Arguments:
+
+- `d` - Dataset (dict).
+- `sel` - Selector (dict).
 
 Selector is a dictionary where each key is a dimension name and value
 is a mask to apply along the dimension or a list of indexes.
@@ -153,7 +178,9 @@ ds.get_dims(d)
 
 Get dataset dimension names.
 
-- `d` – dataset (dict)
+Arguments:
+
+- `d` - Dataset (dict).
 
 Returns dimension names (list of str).
 
@@ -165,7 +192,9 @@ ds.get_vars(d)
 
 Get dataset variable names.
 
-- `d` – dataset (dict)
+Arguments:
+
+- `d` - Dataset (dict).
 
 Returns variable names (list of str).
 
@@ -178,9 +207,11 @@ ds.merge(dd, dim, new=False)
 Merge datasets along a dimension. Variables with incompatible dimensions
 will contain the first value encountered.
 
-- `dd` – datasets (list of dict)
-- `dim` – name of dimension (str)
-- `new` – merge datasets along a new dimension (str)
+Arguments:
+
+- `dd` - Datasets (list of dict).
+- `dim` - Name of dimension (str).
+- `new` - Merge datasets along a new dimension (str).
 
 Returns a dataset (dict).
 
@@ -192,9 +223,11 @@ ds.rename(d, old, new)
 
 Rename variable `old` to `new`.
 
-- `d` – dataset (dict)
-- `old` – old variable name
-- `new` – new variable name
+Arguments:
+
+- `d` - Dataset (dict).
+- `old` - Old variable name (str).
+- `new` - New variable name (str).
 
 Returns None.
 
@@ -216,15 +249,22 @@ ds <input>
 
 Print metadata.
 
+Arguments:
+
+- `input` - Input file.
+
 #### ls
 
 ```sh
 ds ls [-l] <input>...
 ```
 
-- **-l** – print a detailed list
-
 List variables.
+
+Arguments:
+
+- `input` - Input file.
+- `-l` - Print a detailed list.
 
 #### cat
 
@@ -242,6 +282,11 @@ ds stats <var> <input>
 
 Print variable statistics.
 
+Arguments:
+
+- `var` - Variable name.
+- `input` - Input file.
+
 #### merge
 
 ```sh
@@ -250,6 +295,12 @@ ds merge <dim> <input>... <output>
 
 Merge input files along a dimension.
 
+Arugments:
+
+- `dim` - Dimension name.
+- `input` - Input file.
+- `output` - Output file.
+
 #### get
 
 ```sh
@@ -257,6 +308,24 @@ ds get <path> <input>
 ```
 
 Get attribute at path.
+
+#### select
+
+```sh
+ds select <input> <output> [<variables>] [sel: <sel>]
+```
+
+Select and subset variables from a dataset.
+
+Arguments:
+
+- `input` - Input file.
+- `output` - Output file.
+- `variables` - List of variables (`{ var1 var2 ... }`) or `none` for all.
+    Default: `none`.
+- `sel` - Selector. Format: `{ <dim1>: <idx1> <dim2>: <idx2> ... }`,
+    where `<dim<n>>` is dimension name and `<idx<n>>` is a list of indexes
+    `{ <i1> <i2> ... }`.
 
 ## License
 

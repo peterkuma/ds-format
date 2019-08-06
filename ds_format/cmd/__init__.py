@@ -7,6 +7,7 @@ from .cat import cat
 from .stats import stats
 #from .dims import dims
 from .get import get
+from .select import select
 
 CMDS = {
 	'merge': merge,
@@ -15,5 +16,6 @@ CMDS = {
 	'cat': cat,
 	'stats': stats,
 	'get': get,
+	'select': select,
 #	'dims': dims,
 }

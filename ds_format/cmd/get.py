@@ -4,7 +4,7 @@ from ds_format.cmd import UsageError, NumpyEncoder
 
 def get(*args, **opts):
 	if len(args) != 2:
-		raise UsageError('Usage: get <path> <input>')
+		raise TypeError('Usage: get <path> <input>')
 	path = args[0].split('/')
 	input_ = args[1]
 

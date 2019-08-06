@@ -9,7 +9,7 @@ def pretty(x, var):
 
 def cat(*args, **opts):
 	if len(args) < 1:
-		raise UsageError('Usage: cat <var> <input>...')
+		raise TypeError('Usage: cat <var> <input>...')
 	vars_ = args[0].split(',')
 	input_ = args[1:]
 	for filename in input_:

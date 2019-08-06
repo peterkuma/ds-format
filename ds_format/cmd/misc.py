@@ -9,5 +9,5 @@ class NumpyEncoder(json.JSONEncoder):
 			return np.asscalar(obj)
 		return json.JSONEncoder.default(self, obj)
 
-class UsageError(ValueError):
+class UsageError(TypeError):
 	pass

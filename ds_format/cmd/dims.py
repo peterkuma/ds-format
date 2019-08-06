@@ -2,7 +2,7 @@ import ds_format as ds
 
 def dims(*args, **opts):
 	if len(args) == 0:
-		raise UsageError('Usage: dims <input>...')
+		raise TypeError('Usage: dims <input>...')
 	input_ = args
 	for filename in input_:
 		d = ds.read(filename, [])
