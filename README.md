@@ -62,6 +62,24 @@ metadata of each variable: dimension list `.dims` and an
 arbitrary number of variable-level attributes. `d['.']['.']` contains an
 arbitrary number of dataset-level attributes.
 
+Example:
+
+```python
+d = {
+	'time': np.array([1, 2, 3]),
+	'temperature': np.array([16., 18., 21.]),
+	'.': {
+		'time': {
+			'.dims': ['time'],
+		},
+		'temperature':
+			'.dims': ['time'],
+			'units': 'degree_celsius',
+		},
+	}
+}
+```
+
 ## Installation
 
 Requirements:
