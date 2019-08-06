@@ -18,6 +18,11 @@ on disk format. The Python library **ds_format** implements I/O and operators
 for manipulation of datasets, and the command line program **ds** implements
 access to DS files.
 
+Similar packages: [nco](http://nco.sourceforge.net/) (netCDF Operator),
+[CDO](https://code.mpimet.mpg.de/projects/cdo/) (Climate Data Operator),
+[xarray](https://xarray.pydata.org),
+[iris](http://scitools.org.uk/iris/docs/latest/)
+
 ## DS format description
 
 The general structure of the DS format is:
