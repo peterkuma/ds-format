@@ -1,6 +1,6 @@
 # ds_format
 
-**Development status:** in development
+**Development status:** beta
 
 ds_format is a Python implementation of a dataset
 format *DS* for storing data along with metadata, similar to
