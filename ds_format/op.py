@@ -113,12 +113,15 @@ def merge_var(dd, var, dim, new=False):
 	# return x, meta
 
 def merge(dd, dim, new=False):
-	dx = {'.': {}}
+	dx = {'.': {'.': {}}}
 	vars_ = [x for d in dd for x in get_vars(d)]
 	for var in vars_:
 		x, meta = merge_var(dd, var, dim=dim, new=new)
 		dx[var] = x
 		dx['.'][var] = meta
+	for d in dd:
+		if '.' in d['.']:
+			dx['.']['.'].update(d['.']['.'])
 	return dx
 
 def rename(d, old, new):
