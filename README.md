@@ -126,13 +126,16 @@ Arguments:
 #### cat
 
 ```sh
-ds cat <var>[,<var>]... <input>
+ds cat [-h] [--jd] <var>[,<var>]... <input>
 ```
 
 Print variable content.
 
 Arguments:
 
+- `-h` - Print human-readable values.
+- `--jd` - Convert time variables to Julian dates
+    (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)).
 - `var` - Variable name.
 - `input` - Input file.
 
