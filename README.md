@@ -373,7 +373,7 @@ $ ds stats temperature dataset.nc
 
 #### write
 
-``sh
+```sh
 ds write <output> <variable>... <attrs>
 ```
 
