@@ -232,7 +232,8 @@ time(time=3)
 #### cat
 
 ```sh
-ds cat [-h] [--jd] <var>[,<var>]... <input>
+ds cat [-h] [--jd] <var> <input>
+ds cat [-h] [--jd] { <var> <var> ... } <input>
 ```
 
 Print variable.
@@ -252,6 +253,16 @@ $ ds cat temperature dataset.nc
 16.0
 18.0
 21.0
+```
+
+```sh
+$ ds cat { time temperature } dataset.nc
+1,16.0
+2,18.0
+3,21.0
+4,23.0
+5,25.0
+6,28.0
 ```
 
 #### get

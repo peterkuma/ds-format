@@ -7,11 +7,9 @@ def pretty(x, var):
 		return aq.to_datetime(x).strftime('%Y-%m-%dT%H:%M:%S')
 	return str(x)
 
-def cat(*args, **opts):
-	if len(args) < 1:
-		raise TypeError('Usage: cat <var> <input>...')
-	vars_ = args[0].split(',')
-	input_ = args[1:]
+def cat(vars_, *input_, **opts):
+	if not isinstance(vars_, list):
+		vars_ = [vars_]
 	for filename in input_:
 		d = ds.read(filename, vars_,
 			full=False,
