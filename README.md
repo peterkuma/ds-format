@@ -87,7 +87,15 @@ and can be arbitrary key-value pairs.
 ### Example
 
 This is an example of two variables `time` and `temperature` stored
-in a dataset along with their metadata: 
+in a dataset along with their metadata.
+
+Command line:
+
+```sh
+ds write dataset.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } units: degree_celsius } title: "Temperature data"
+```
+
+Python:
 
 ```python
 import numpy as np
@@ -109,8 +117,7 @@ d = {
 ds.write('dataset.nc', d) # Save the dataset as NetCDF
 ```
 
-The corresponding [netCDF4](http://unidata.github.io/netcdf4-python/)
-code is:
+[netCDF4](http://unidata.github.io/netcdf4-python/) code:
 
 ```python
 import numpy as np
@@ -181,6 +188,8 @@ pip install https://github.com/peterkuma/ds-python/archive/master.zip
 ds [<cmd>] [<options>...]
 ```
 
+The command line interface is based on the [PST format](https://github.com/peterkuma/pst).
+
 ### Commands
 
 | Command | Description |
@@ -192,6 +201,7 @@ ds [<cmd>] [<options>...]
 | [meta](#meta) | Print metadata. |
 | [select](#select) | Select and subset variables. |
 | [stats](#stats) | Print variable statistics. |
+| [write](#write) | Write dataset to a file. |
 
 #### *default*
 
@@ -359,6 +369,28 @@ $ ds stats temperature dataset.nc
     "median": 18.0,
     "min": 16.0
 }
+```
+
+#### write
+
+``sh
+ds write <output> <variable>... <attrs>
+```
+
+Write dataset to a file.
+
+Arguments:
+
+- `output` - Output file.
+- `variable` - Definition of a variable. Format:
+    `{ <var1> { <dim1> <dim2> } { <x1> <x2> ... } }`.
+- `attrs` - Dataset-level attributes.
+    Format: `<key1>: <val1> <key2>: <val2> ... `.
+
+Examples:
+
+```python
+ds write dataset.nc { time time { 1 2 3 } } temperature time { 16. 18. 21. } } { title: "Temperature dataset" } { temperature: { units: degree_celsius } }
 ```
 
 ## Python interface
