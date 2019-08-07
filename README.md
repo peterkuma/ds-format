@@ -204,8 +204,8 @@ List variables.
 
 Arguments:
 
-- `input` - Input file.
 - `-l` - Print a detailed list.
+- `input` - Input file.
 
 Examples:
 
@@ -252,6 +252,10 @@ ds get <path> <input>
 
 Get attribute at path.
 
+Arguments:
+
+- `path` - Attribute path.
+- `input` - Input file.
 
 #### merge
 
