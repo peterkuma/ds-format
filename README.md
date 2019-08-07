@@ -390,7 +390,7 @@ Arguments:
 Examples:
 
 ```python
-ds write dataset.nc { time time { 1 2 3 } } temperature time { 16. 18. 21. } } { title: "Temperature dataset" } { temperature: { units: degree_celsius } }
+ds write dataset.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } units: degree_celsius } title: "Temperature data"
 ```
 
 ## Python interface
