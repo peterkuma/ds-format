@@ -11,11 +11,13 @@ def stats(*args, **opts):
 	for filename in input_:
 		d = ds.read(filename, [var])
 		x = d[var].flatten()
+		count = len(x)
 		min_ = np.min(x)
 		max_ = np.max(x)
 		mean = np.mean(x)
 		median = np.median(x)
 		j = json.dumps({
+			'count': count,
 			'min': min_,
 			'max': max_,
 			'mean': mean,

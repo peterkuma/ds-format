@@ -336,11 +336,20 @@ Arguments:
 - `var` - Variable name.
 - `input` - Input file.
 
+Output:
+
+- `count` - Number of array elements.
+- `max` - Maximum value.
+- `mean` - Sample mean.
+- `median` - Sample median.
+- `min` - Minimum value.
+
 Examples:
 
 ```sh
 $ ds stats temperature dataset.nc
 {
+    "count": 3,
     "max": 21.0,
     "mean": 18.333333333333332,
     "median": 18.0,
