@@ -291,14 +291,14 @@ Arguments:
 
 | Function | Description |
 | --- | --- |
-| get_dims | Get all dimension names in a dataset. |
-| get_vars | Get all variable names in a dataset. |
-| merge | Merge datasets along a dimension. |
-| read | Read dataset from a file. |
-| rename | Rename a variable. |
-| select | Filter dataset by a selector. |
-| to_netcdf | Write dataset to a NetCDF file. |
-| write | Write dataset to a file. |
+| [get_dims](#get_dims) | Get all dimension names in a dataset. |
+| [get_vars](#get_vars) | Get all variable names in a dataset. |
+| [merge](#merge) | Merge datasets along a dimension. |
+| [read](#read) | Read dataset from a file. |
+| [rename](#rename) | Rename a variable. |
+| [select](#select) | Filter dataset by a selector. |
+| [to_netcdf](#to_netcdf) | Write dataset to a NetCDF file. |
+| [write](#write) | Write dataset to a file. |
 
 To import the library:
 
