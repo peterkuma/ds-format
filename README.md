@@ -183,6 +183,16 @@ ds [<cmd>] [<options>...]
 
 ### Commands
 
+| Command | Description |
+| --- | --- |
+| [*default*](#default) | Print metadata |
+| [cat](#cat) | Print variable. |
+| [get](#get) | Get attribute at a path. |
+| [ls](#ls) | List variables. |
+| [merge](#merge) | Merge files along a dimension. |
+| [select](#select) | Select and subset variables. |
+| [stats](#stats) | Print variable statistics. |
+
 #### *default*
 
 ```sh
@@ -194,6 +204,30 @@ Print metadata.
 Arguments:
 
 - `input` - Input file.
+
+#### cat
+
+```sh
+ds cat [-h] [--jd] <var>[,<var>]... <input>
+```
+
+Print variable.
+
+Arguments:
+
+- `-h` - Print human-readable values.
+- `--jd` - Convert time variables to Julian dates
+    (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)).
+- `var` - Variable name.
+- `input` - Input file.
+
+#### get
+
+```sh
+ds get <path> <input>
+```
+
+Get attribute at path.
 
 #### ls
 
@@ -208,21 +242,37 @@ Arguments:
 - `input` - Input file.
 - `-l` - Print a detailed list.
 
-#### cat
+#### merge
 
 ```sh
-ds cat [-h] [--jd] <var>[,<var>]... <input>
+ds merge <dim> <input>... <output>
 ```
 
-Print variable content.
+Merge files along a dimension.
+
+Arugments:
+
+- `dim` - Dimension name.
+- `input` - Input file.
+- `output` - Output file.
+
+#### select
+
+```sh
+ds select <input> <output> [<variables>] [sel: <sel>]
+```
+
+Select and subset variables.
 
 Arguments:
 
-- `-h` - Print human-readable values.
-- `--jd` - Convert time variables to Julian dates
-    (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)).
-- `var` - Variable name.
 - `input` - Input file.
+- `output` - Output file.
+- `variables` - List of variables (`{ var1 var2 ... }`) or `none` for all.
+    Default: `none`.
+- `sel` - Selector. Format: `{ <dim1>: <idx1> <dim2>: <idx2> ... }`,
+    where `<dim<n>>` is dimension name and `<idx<n>>` is a list of indexes
+    `{ <i1> <i2> ... }`.
 
 #### stats
 
@@ -236,46 +286,6 @@ Arguments:
 
 - `var` - Variable name.
 - `input` - Input file.
-
-#### merge
-
-```sh
-ds merge <dim> <input>... <output>
-```
-
-Merge input files along a dimension.
-
-Arugments:
-
-- `dim` - Dimension name.
-- `input` - Input file.
-- `output` - Output file.
-
-#### get
-
-```sh
-ds get <path> <input>
-```
-
-Get attribute at path.
-
-#### select
-
-```sh
-ds select <input> <output> [<variables>] [sel: <sel>]
-```
-
-Select and subset variables from a dataset.
-
-Arguments:
-
-- `input` - Input file.
-- `output` - Output file.
-- `variables` - List of variables (`{ var1 var2 ... }`) or `none` for all.
-    Default: `none`.
-- `sel` - Selector. Format: `{ <dim1>: <idx1> <dim2>: <idx2> ... }`,
-    where `<dim<n>>` is dimension name and `<idx<n>>` is a list of indexes
-    `{ <i1> <i2> ... }`.
 
 ## Python interface
 
