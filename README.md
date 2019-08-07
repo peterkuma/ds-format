@@ -400,7 +400,7 @@ $ ds stats temperature dataset.nc
 #### write
 
 ```sh
-ds write <output> <variable>... <attrs>
+ds write <output> <var>... <attrs>
 ```
 
 Write dataset to a file.
@@ -408,10 +408,11 @@ Write dataset to a file.
 Arguments:
 
 - `output` - Output file.
-- `variable` - Definition of a variable. Format:
-    `{ <var1> { <dim1> <dim2> } { <x1> <x2> ... } }`.
-- `attrs` - Dataset-level attributes.
-    Format: `<key1>: <val1> <key2>: <val2> ... `.
+- `var` - Definition of a variable. Format:
+    `{ <name> { <dim1> <dim2> } { <x1> <x2> ... } <attrs> }`,
+    where `name` is a variable name, `dim<n>` is a dimension name, `x<n>`
+    is a value and `<attrs>` are variable-level attributes (key-value pairs).
+- `attrs` - Dataset-level attributes (key-value pairs).
 
 Examples:
 
