@@ -289,21 +289,77 @@ Arguments:
 
 ## Python interface
 
+| Function | Description |
+| --- | --- |
+| get_dims | Get all dimension names in a dataset. |
+| get_vars | Get all variable names in a dataset. |
+| merge | Merge datasets along a dimension. |
+| read | Read dataset from a file. |
+| rename | Rename a variable. |
+| select | Filter dataset by a selector. |
+| to_netcdf | Write dataset to a NetCDF file. |
+| write | Write dataset to a file. |
+
 To import the library:
 
 ```python
 import ds_format as ds
 ```
 
-### I/O
+### Functions
 
-#### ds.read
+#### get_dims
+
+```python
+ds.get_dims(d)
+```
+
+Get all dimension names in a dataset.
+
+Arguments:
+
+- `d` - Dataset (dict).
+
+Returns dimension names (list of str).
+
+#### get_vars
+
+```python
+ds.get_vars(d)
+```
+
+Get all variable names in a dataset.
+
+Arguments:
+
+- `d` - Dataset (dict).
+
+Returns variable names (list of str).
+
+#### merge
+
+```python
+ds.merge(dd, dim, new=False)
+```
+
+Merge datasets along a dimension. Variables with incompatible dimensions
+will contain the first value encountered.
+
+Arguments:
+
+- `dd` - Datasets (list of dict).
+- `dim` - Name of dimension (str).
+- `new` - Merge datasets along a new dimension (str).
+
+Returns a dataset (dict).
+
+#### read
 
 ```python
 ds.read(filename, variables=None, sel=None, full=False, jd=False)
 ```
 
-Read dataset from a file, optionally reading only specified variables.
+Read dataset from a file.
 
 Arguments:
 
@@ -320,43 +376,23 @@ Supported formats:
 
 Returns dataset (dict).
 
-#### ds.write
+#### rename
 
 ```python
-ds.write(filename, d)
+ds.rename(d, old, new)
 ```
 
-Write dataset to a file. The file type is determined from the file extension.
+Rename a variable.
 
 Arguments:
 
-- `filename` - Filename (str).
 - `d` - Dataset (dict).
-
-Supported formats:
-
-- NetCDF4 (`.nc`)
+- `old` - Old variable name (str).
+- `new` - New variable name (str).
 
 Returns None.
 
-#### ds.to_netcdf
-
-```python
-ds.to_netcdf(filename, d)
-```
-
-Write dataset to a NetCDF file.
-
-Arguments:
-
-- `filename` - Filename (str).
-- `d` - Dataset (dict).
-
-Returns None.
-
-### Operators
-
-#### ds.select
+#### select
 
 ```python
 ds.select(d, sel)
@@ -374,64 +410,37 @@ is a mask to apply along the dimension or a list of indexes.
 
 Returns None.
 
-#### ds.get_dims
+#### to_netcdf
 
 ```python
-ds.get_dims(d)
+ds.to_netcdf(filename, d)
 ```
 
-Get dataset dimension names.
+Write dataset to a NetCDF file.
 
 Arguments:
 
+- `filename` - Filename (str).
 - `d` - Dataset (dict).
 
-Returns dimension names (list of str).
+Returns None.
 
-#### ds.get_vars
+#### write
 
 ```python
-ds.get_vars(d)
+ds.write(filename, d)
 ```
 
-Get dataset variable names.
+Write dataset to a file. The file type is determined from the file extension.
 
 Arguments:
 
+- `filename` - Filename (str).
 - `d` - Dataset (dict).
 
-Returns variable names (list of str).
+Supported formats:
 
-#### ds.merge
-
-```python
-ds.merge(dd, dim, new=False)
-```
-
-Merge datasets along a dimension. Variables with incompatible dimensions
-will contain the first value encountered.
-
-Arguments:
-
-- `dd` - Datasets (list of dict).
-- `dim` - Name of dimension (str).
-- `new` - Merge datasets along a new dimension (str).
-
-Returns a dataset (dict).
-
-#### ds.rename
-
-```python
-ds.rename(d, old, new)
-```
-
-Rename variable `old` to `new`.
-
-Arguments:
-
-- `d` - Dataset (dict).
-- `old` - Old variable name (str).
-- `new` - New variable name (str).
+- NetCDF4 (`.nc`)
 
 Returns None.
 
