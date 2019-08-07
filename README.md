@@ -205,6 +205,34 @@ Arguments:
 
 - `input` - Input file.
 
+Examples:
+
+```sh
+$ ds dataset.nc
+{
+    ".": {
+        "title": "Temperature dataset"
+    },
+    "temperature": {
+        ".dims": [
+            "time"
+        ],
+        ".size": [
+            3
+        ],
+        "units": "degree_celsius"
+    },
+    "time": {
+        ".dims": [
+            "time"
+        ],
+        ".size": [
+            3
+        ]
+    }
+}
+```
+
 #### cat
 
 ```sh
@@ -220,6 +248,15 @@ Arguments:
     (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)).
 - `var` - Variable name.
 - `input` - Input file.
+
+Examples:
+
+```sh
+$ ds cat temperature dataset.nc
+16.0
+18.0
+21.0
+```
 
 #### get
 
@@ -241,6 +278,18 @@ Arguments:
 
 - `input` - Input file.
 - `-l` - Print a detailed list.
+
+Examples:
+
+```sh
+$ ds ls dataset.nc
+temperature
+time
+
+$ ds ls -l dataset.nc
+temperature(time=3)
+time(time=3)
+```
 
 #### merge
 
@@ -280,12 +329,24 @@ Arguments:
 ds stats <var> <input>
 ```
 
-Print variable statistics.
+Print variable statistics. The output is JSON-formatted.
 
 Arguments:
 
 - `var` - Variable name.
 - `input` - Input file.
+
+Examples:
+
+```sh
+$ ds stats temperature dataset.nc
+{
+    "max": 21.0,
+    "mean": 18.333333333333332,
+    "median": 18.0,
+    "min": 16.0
+}
+```
 
 ## Python interface
 
