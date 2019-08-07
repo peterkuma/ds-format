@@ -16,7 +16,7 @@ if __name__ == '__main__':
 	cmd_args = args[2:]
 	f = ds.cmd.CMDS.get(cmd)
 	if f is None:
-		cmd = 'info'
+		cmd = 'ls'
 		cmd_args = args[1:]
 		f = ds.cmd.CMDS.get(cmd)
 	if f is None:

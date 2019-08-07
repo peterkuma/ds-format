@@ -185,52 +185,38 @@ ds [<cmd>] [<options>...]
 
 | Command | Description |
 | --- | --- |
-| [*default*](#default) | Print metadata. |
+| [*default*](#default) | List variables. |
 | [cat](#cat) | Print variable. |
 | [get](#get) | Get attribute at a path. |
-| [ls](#ls) | List variables. |
 | [merge](#merge) | Merge files along a dimension. |
+| [meta](#meta) | Print metadata. |
 | [select](#select) | Select and subset variables. |
 | [stats](#stats) | Print variable statistics. |
 
 #### *default*
 
 ```sh
-ds <input>
+ds [-l] <input>...
+ds ls [-l] <input>... # Alias
 ```
 
-Print metadata. The output is JSON-formatted.
+List variables.
 
 Arguments:
 
 - `input` - Input file.
+- `-l` - Print a detailed list.
 
 Examples:
 
 ```sh
-$ ds dataset.nc
-{
-    ".": {
-        "title": "Temperature dataset"
-    },
-    "temperature": {
-        ".dims": [
-            "time"
-        ],
-        ".size": [
-            3
-        ],
-        "units": "degree_celsius"
-    },
-    "time": {
-        ".dims": [
-            "time"
-        ],
-        ".size": [
-            3
-        ]
-    }
-}
+$ ds ls dataset.nc
+temperature
+time
+
+$ ds ls -l dataset.nc
+temperature(time=3)
+time(time=3)
 ```
 
 #### cat
@@ -266,30 +252,6 @@ ds get <path> <input>
 
 Get attribute at path.
 
-#### ls
-
-```sh
-ds ls [-l] <input>...
-```
-
-List variables.
-
-Arguments:
-
-- `input` - Input file.
-- `-l` - Print a detailed list.
-
-Examples:
-
-```sh
-$ ds ls dataset.nc
-temperature
-time
-
-$ ds ls -l dataset.nc
-temperature(time=3)
-time(time=3)
-```
 
 #### merge
 
@@ -304,6 +266,44 @@ Arugments:
 - `dim` - Dimension name.
 - `input` - Input file.
 - `output` - Output file.
+
+#### meta
+
+```sh
+ds meta <input>
+```
+
+Print metadata. The output is JSON-formatted.
+
+- `input` - Input file.
+
+Examples:
+
+```sh
+$ ds dataset.nc
+{
+    ".": {
+        "title": "Temperature dataset"
+    },
+    "temperature": {
+        ".dims": [
+            "time"
+        ],
+        ".size": [
+            3
+        ],
+        "units": "degree_celsius"
+    },
+    "time": {
+        ".dims": [
+            "time"
+        ],
+        ".size": [
+            3
+        ]
+    }
+}
+```
 
 #### select
 

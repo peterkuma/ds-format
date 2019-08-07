@@ -1,7 +1,7 @@
 from .misc import UsageError, NumpyEncoder
 
 from .merge import merge
-from .info import info
+from .meta import meta
 from .ls import ls
 from .cat import cat
 from .stats import stats
@@ -11,7 +11,7 @@ from .select import select
 
 CMDS = {
 	'merge': merge,
-	'info': info,
+	'meta': meta,
 	'ls': ls,
 	'cat': cat,
 	'stats': stats,
