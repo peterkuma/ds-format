@@ -360,8 +360,23 @@ Arguments:
 - `variables` - List of variables (`{ var1 var2 ... }`) or `none` for all.
     Default: `none`.
 - `sel` - Selector. Format: `{ <dim1>: <idx1> <dim2>: <idx2> ... }`,
-    where `<dim<n>>` is dimension name and `<idx<n>>` is a list of indexes
+    where `dim<n>` is dimension name and `idx<n>` is a list of indexes
     `{ <i1> <i2> ... }`.
+
+Examples:
+
+```sh
+$ ds write dataset.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } units: degree_celsius } title: "Temperature data" 
+$ ds dataset.nc
+temperature
+time
+$ ds select dataset.nc temperature.nc temperature
+$ ds temperature.nc
+temperature
+$ ds select dataset.nc 0.nc sel: { time: { 0 } } # Subset by time index 0
+$ ds cat { time temperature } 0.nc
+1,16.0
+```
 
 #### stats
 
