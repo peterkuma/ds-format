@@ -281,6 +281,21 @@ Arugments:
 - `input` - Input file.
 - `output` - Output file.
 
+Examples:
+
+```sh
+$ ds write dataset1.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } units: degree_celsius } title: "Temperature data"
+$ ds write dataset2.nc { time time { 4 5 6 } } { temperature time { 23. 25. 28. } units: degree_celsius } title: "Temperature data"
+$ ds merge time dataset1.nc dataset2.nc dataset.nc
+$ ds cat time,temperature dataset.nc
+1,16.0
+2,18.0
+3,21.0
+4,23.0
+5,25.0
+6,28.0
+```
+
 #### meta
 
 ```sh
