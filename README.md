@@ -185,7 +185,7 @@ ds [<cmd>] [<options>...]
 
 | Command | Description |
 | --- | --- |
-| [*default*](#default) | Print metadata |
+| [*default*](#default) | Print metadata. |
 | [cat](#cat) | Print variable. |
 | [get](#get) | Get attribute at a path. |
 | [ls](#ls) | List variables. |
@@ -199,7 +199,7 @@ ds [<cmd>] [<options>...]
 ds <input>
 ```
 
-Print metadata.
+Print metadata. The output is JSON-formatted.
 
 Arguments:
 
