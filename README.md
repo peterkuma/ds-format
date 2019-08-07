@@ -284,7 +284,7 @@ Print metadata. The output is JSON-formatted.
 Examples:
 
 ```sh
-$ ds dataset.nc
+$ ds meta dataset.nc
 {
     ".": {
         "title": "Temperature dataset"
