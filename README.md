@@ -210,11 +210,11 @@ Arguments:
 Examples:
 
 ```sh
-$ ds ls dataset.nc
+$ ds dataset.nc
 temperature
 time
 
-$ ds ls -l dataset.nc
+$ ds -l dataset.nc
 temperature(time=3)
 time(time=3)
 ```
