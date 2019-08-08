@@ -220,10 +220,12 @@ Arguments:
 Examples:
 
 ```sh
+# Print list variables in dataset.nc
 $ ds dataset.nc
 temperature
 time
 
+# Print detailed list of variables in dataset.nc
 $ ds -l dataset.nc
 temperature(time=3)
 time(time=3)
@@ -249,6 +251,7 @@ Arguments:
 Examples:
 
 ```sh
+# Print temperature values in dataset.nc
 $ ds cat temperature dataset.nc
 16.0
 18.0
@@ -256,6 +259,7 @@ $ ds cat temperature dataset.nc
 ```
 
 ```sh
+# Print time and temperature values in dataset.nc
 $ ds cat { time temperature } dataset.nc
 1,16.0
 2,18.0
@@ -295,9 +299,13 @@ Arugments:
 Examples:
 
 ```sh
+# Write example data to dataset1.nc
 $ ds write dataset1.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } units: degree_celsius } title: "Temperature data"
+# Write example data to dataset2.nc
 $ ds write dataset2.nc { time time { 4 5 6 } } { temperature time { 23. 25. 28. } units: degree_celsius } title: "Temperature data"
+# Merge dataset1.nc and dataset2.nc and write the result to dataset.nc
 $ ds merge time dataset1.nc dataset2.nc dataset.nc
+# Print time and temperature variables in dataset.nc
 $ ds cat { time temperature } dataset.nc
 1,16.0
 2,18.0
@@ -320,6 +328,7 @@ Print metadata. The output is JSON-formatted.
 Examples:
 
 ```sh
+# Print metadata of dataset.nc
 $ ds meta dataset.nc
 {
     ".": {
@@ -426,6 +435,7 @@ Output:
 Examples:
 
 ```sh
+# Print statistics of variable temperature in dataset.nc
 $ ds stats temperature dataset.nc
 {
     "count": 3,
@@ -456,6 +466,7 @@ Arguments:
 Examples:
 
 ```python
+# Write variables time and temperature to dataset.nc.
 ds write dataset.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } units: degree_celsius } title: "Temperature data"
 ```
 
