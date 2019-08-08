@@ -6,6 +6,9 @@ import ds_format as ds
 import datetime as dt
 import aquarius_time as aq
 
+READ_EXT = ['nc', 'nc4', 'nc3', 'netcdf', 'hdf', 'h5']
+WRITE_EXT = ['nc', 'nc4', 'netcdf']
+
 def detect(filename):
 	try:
 		f = Dataset(filename)

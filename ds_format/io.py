@@ -3,10 +3,6 @@ from .drivers import DRIVERS
 import ds_format as ds
 import numpy as np
 
-WRITE_EXT = {
-	'nc': ds.to_netcdf,
-}
-
 def index(dirname, variables=None, warnings=[], **kwargs):
 	l = sorted(os.listdir(dirname))
 	dd = []
@@ -27,9 +23,10 @@ def read(filename, *args, **kwargs):
 	if not os.path.exists(filename):
 		raise IOError('%s: File does not exist' % filename)
 	for name, driver in DRIVERS.items():
-		if driver.detect(filename):
-			d = driver.read(filename, *args, **kwargs)
-			return d
+		for ext in driver.READ_EXT:
+			if filename.endswith('.' + ext):
+				d = driver.read(filename, *args, **kwargs)
+				return d
 	raise IOError('%s: Unknown file format' % filename)
 
 def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
@@ -53,8 +50,9 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 		return d
 
 def write(filename, d):
-	for ext, f in WRITE_EXT.items():
-		if filename.endswith('.' + ext):
-			f(filename, d)
-			return
+	for name, driver in DRIVERS.items():
+		for ext in driver.WRITE_EXT:
+			if filename.endswith('.' + ext):
+				driver.write(filename, d)	
+				return
 	raise ValueError('%s: Unknown file extension' % filename)

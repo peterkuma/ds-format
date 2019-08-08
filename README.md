@@ -351,7 +351,8 @@ $ ds meta dataset.nc
 ds select <input> <output> [<variables>] [sel: <sel>]
 ```
 
-Select and subset variables.
+Select and subset variables. select can also be used to convert between
+different file formats (`select <input> <output>`).
 
 Arguments:
 
@@ -362,6 +363,16 @@ Arguments:
 - `sel` - Selector. Format: `{ <dim1>: <idx1> <dim2>: <idx2> ... }`,
     where `dim<n>` is dimension name and `idx<n>` is a list of indexes
     `{ <i1> <i2> ... }`.
+
+Supported input formats:
+
+- NetCDF4 (`.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`)
+- JSON (`.json`)
+
+Supported output formats:
+
+- NetCDF4 (`.nc`, `.nc4`, `.netcdf`)
+- JSON (`.json`)
 
 Examples:
 
@@ -520,7 +531,8 @@ Arguments:
 
 Supported formats:
 
-- NetCDF4 (`.nc`)
+- NetCDF4 (`.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`)
+- JSON (`.json`)
 
 Returns dataset (dict).
 
@@ -588,7 +600,8 @@ Arguments:
 
 Supported formats:
 
-- NetCDF4 (`.nc`)
+- NetCDF4 (`.nc`, `.nc4`, `.netcdf`)
+- JSON (`.json`)
 
 Returns None.
 
