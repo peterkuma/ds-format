@@ -469,7 +469,6 @@ ds write dataset.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } u
 | [read](#read) | Read dataset from a file. |
 | [rename](#rename) | Rename a variable. |
 | [select](#select) | Filter dataset by a selector. |
-| [to_netcdf](#to_netcdf) | Write dataset to a NetCDF file. |
 | [write](#write) | Write dataset to a file. |
 
 To import the library:
@@ -580,21 +579,6 @@ Arguments:
 
 Selector is a dictionary where each key is a dimension name and value
 is a mask to apply along the dimension or a list of indexes.
-
-Returns None.
-
-#### to_netcdf
-
-```python
-ds.to_netcdf(filename, d)
-```
-
-Write dataset to a NetCDF file.
-
-Arguments:
-
-- `filename` - Filename (str).
-- `d` - Dataset (dict).
 
 Returns None.
 
