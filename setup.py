@@ -10,7 +10,7 @@ setup(
     description='Python implementation of a dataset format DS for storing data along with metadata (in development)',
     author='Peter Kuma',
     author_email='peter.kuma@fastmail.com',
-    keywords=['dataset', 'netcdf', 'hdf', 'json', 'numpy']
+    keywords=['dataset', 'netcdf', 'hdf', 'json', 'numpy'],
     url='https://github.com/peterkuma/ds-python',
     platforms=['any'],
     install_requires=['netCDF4'],
