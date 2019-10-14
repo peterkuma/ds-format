@@ -124,11 +124,23 @@ def merge(dd, dim, new=False):
 			dx['.']['.'].update(d['.']['.'])
 	return dx
 
+def rename_dim(d, old, new):
+	if '.' in d:
+		for var in d['.'].keys():
+			meta = d['.'][var]
+			if '.dims' in d['.'][var]:
+				dims = d['.'][var]['.dims']
+				for i, dim in enumerate(dims):
+					if dim == old:
+						dims[i] = new
+
 def rename(d, old, new):
-	d[new] = d[old]
-	d['.'][new] = d['.'][old]
-	del d[old]
-	del d['.'][old]
+	if old in d:
+		d[new] = d[old]
+		d['.'][new] = d['.'][old]
+		del d[old]
+		del d['.'][old]
+	rename_dim(d, old, new)
 
 def copy(d):
 	d2 = {}
@@ -136,3 +148,24 @@ def copy(d):
 		d2[var] = d[var]
 	d2['.'] = copy_.deepcopy(d['.'])
 	return d2
+
+def group_by(d, dim, group, func):
+	groups = sorted(list(set(group)))
+	vars = get_vars(d)
+	n = len(groups)
+	for var in vars:
+		dims = d['.'][var]['.dims']
+		try:
+			i = dims.index(dim)
+		except ValueError:
+			continue
+		size = list(d[var].shape)
+		size[i] = n
+		x = np.empty(size, d[var].dtype)
+		for j, g in enumerate(groups):
+			mask = group == g
+			slice_x = misc.sel_slice({dim: j}, dims)
+			slice_y = misc.sel_slice({dim: mask}, dims)
+			y = d[var][slice_y]
+			x[slice_x] = func(y, axis=i)
+		d[var] = x

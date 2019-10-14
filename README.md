@@ -387,7 +387,7 @@ Examples:
 
 ```sh
 # Write data to dataset.nc
-$ ds write dataset.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } units: degree_celsius } title: "Temperature data" 
+$ ds write dataset.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } units: degree_celsius } title: "Temperature data"
 # List variables in dataset.nc
 $ ds dataset.nc
 temperature
@@ -476,9 +476,11 @@ ds write dataset.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } u
 | --- | --- |
 | [get_dims](#get_dims) | Get all dimension names in a dataset. |
 | [get_vars](#get_vars) | Get all variable names in a dataset. |
+| [group_by](#group_by) | Group values along a dimension. |
 | [merge](#merge) | Merge datasets along a dimension. |
 | [read](#read) | Read dataset from a file. |
 | [rename](#rename) | Rename a variable. |
+| [rename_dim](#rename_dim) | Rename a dimension. |
 | [select](#select) | Filter dataset by a selector. |
 | [write](#write) | Write dataset to a file. |
 
@@ -517,6 +519,26 @@ Arguments:
 - `d` - Dataset (dict).
 
 Returns variable names (list of str).
+
+#### group_by
+
+```python
+ds.group_by(d, dim, group, func)
+```
+
+Group values along a dimension. Each variable with a given dimension `dim`
+is split by `group` into subsets. Each subset is replaced with a value computed
+by `func`.
+
+Arguments:
+
+- `d` - Dataset (dict).
+- `dim` - Dimension to group along (str).
+- `group` - Groups (ndarray or list). Array of the same length as the dimension.
+- `func` - Group function (function). func(y, axis=i) is called for each subset
+`y`, where `i` is the index of the dimension.
+
+Returns None.
 
 #### merge
 
@@ -565,7 +587,23 @@ Returns dataset (dict).
 ds.rename(d, old, new)
 ```
 
-Rename a variable.
+Rename a variable. Any dimension with the same name is also renamed.
+
+Arguments:
+
+- `d` - Dataset (dict).
+- `old` - Old variable name (str).
+- `new` - New variable name (str).
+
+Returns None.
+
+#### rename_dim
+
+```python
+ds.rename_dim(d, old, new)
+```
+
+Rename a dimension.
 
 Arguments:
 
