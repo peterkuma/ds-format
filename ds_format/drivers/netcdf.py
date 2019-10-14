@@ -1,3 +1,4 @@
+import os
 from netCDF4 import Dataset, num2date
 import cftime
 from cftime._cftime import real_datetime
@@ -28,23 +29,26 @@ def read_var(f, name, sel=None, data=True):
 	attrs = read_attrs(var)
 	dims = var.dimensions
 	size = var.shape
-	attrs.update({
-		'.dims': dims,
-		'.size': size,
-	})
 	if data:
 		if sel:
 			s = ds.misc.sel_slice(sel, dims)
 			x = var[s]
+			dims = ds.misc.sel_dims(sel, dims)
 		else:
 			try:
 				x = var[::] if data else None
 			except ValueError:
 				var.set_auto_mask(False)
 				x = var[::] if data else None
+	attrs.update({
+		'.dims': dims,
+		'.size': size,
+	})
 	return [x, attrs]
 
 def read(filename, variables=None, sel=None, full=False, jd=False):
+	if type(filename) is bytes:
+		filename = os.fsdecode(filename)
 	with Dataset(filename, 'r') as f:
 		d = {}
 		d['.'] = {}
@@ -66,6 +70,8 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 				else:
 					x = num2date(data, units=units)
 			except: continue
+			if not isinstance(x, np.ndarray):
+				x = np.array([x])
 			if len(x) == 0 or (
 				not isinstance(x[0], real_datetime) and
 				not isinstance(x[0], dt.datetime)
@@ -77,12 +83,13 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 					(x[i] - type(x[i])(x[i].year, 1, 1))
 			d[name] = aq.from_datetime(list(x))
 			d['.'][name]['units'] = 'days since -4712 12:00 UTC'
-			d['.'][name]['units_comment'] = 'julian_date(utc)'
 			if 'calendar' in d['.']:
 				del d['.']['calendar']
 	return d
 
 def write(filename, d):
+	if type(filename) is bytes:
+		filename = os.fsdecode(filename)
 	with Dataset(filename, 'w') as f:
 		dims = ds.get_dims(d)
 		for k, v in dims.items():

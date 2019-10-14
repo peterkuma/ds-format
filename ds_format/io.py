@@ -24,7 +24,10 @@ def read(filename, *args, **kwargs):
 		raise IOError('%s: File does not exist' % filename)
 	for name, driver in DRIVERS.items():
 		for ext in driver.READ_EXT:
-			if filename.endswith('.' + ext):
+			end = '.' + ext
+			if type(filename) is bytes:
+				end = end.encode('utf-8')
+			if filename.endswith(end):
 				d = driver.read(filename, *args, **kwargs)
 				return d
 	raise IOError('%s: Unknown file format' % filename)
@@ -46,13 +49,27 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 	if merge is None:
 		return dd
 	else:
-		d = ds.op.merge(dd, merge)
+		n = 0
+		for n, d in enumerate(dd):
+			m = ds.get_dims(d)[merge]
+			d['n'] = np.full(m, n)
+			d['i'] = np.arange(m)
+			d['.']['n'] = {
+				'.dims': [merge],
+			}
+			d['.']['i'] = {
+				'.dims': [merge],
+			}
+		d = ds.op.merge(dd, merge, new='n')
 		return d
 
 def write(filename, d):
 	for name, driver in DRIVERS.items():
 		for ext in driver.WRITE_EXT:
-			if filename.endswith('.' + ext):
-				driver.write(filename, d)	
+			end = '.' + ext
+			if type(filename) is bytes:
+				end = end.encode('utf-8')
+			if filename.endswith(end):
+				driver.write(filename, d)
 				return
 	raise ValueError('%s: Unknown file extension' % filename)

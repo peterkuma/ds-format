@@ -1,6 +1,7 @@
 import copy as copy_
 import numpy as np
 import datetime as dt
+from . import misc
 
 def select_var(d, name, sel):
 	var_dims = list(d['.'][name]['.dims'])
@@ -79,15 +80,15 @@ def merge_var(dd, var, dim, new=False):
 	meta0 = dd[0]['.'][var]
 	dims0 = meta0['.dims']
 	meta = copy_.deepcopy(meta0)
-	if new:
-		meta['.dims'] = [dim] + list(meta['.dims'])
-		x = np.stack([d[var] for d in dd if d['.'][var]['.dims'] == dims0])
-	elif dim in dims0:
+	if dim in dims0:
 		i = dims0.index(dim)
 		x = np.concatenate(
 			[d[var] for d in dd if d['.'][var]['.dims'] == dims0],
 			axis=i
 		)
+	elif new:
+		meta['.dims'] = [dim] + list(meta['.dims'])
+		x = np.stack([d[var] for d in dd if d['.'][var]['.dims'] == dims0])
 	else:
 		x = x0
 		meta = meta0
