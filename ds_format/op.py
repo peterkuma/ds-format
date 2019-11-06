@@ -126,6 +126,8 @@ def merge(dd, dim, new=False):
 	return dx
 
 def rename_dim(d, old, new):
+	if old == new:
+		return
 	if '.' in d:
 		for var in d['.'].keys():
 			meta = d['.'][var]
@@ -136,6 +138,8 @@ def rename_dim(d, old, new):
 						dims[i] = new
 
 def rename(d, old, new):
+	if old == new:
+		return
 	if old in d:
 		d[new] = d[old]
 		d['.'][new] = d['.'][old]
