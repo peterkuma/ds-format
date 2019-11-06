@@ -82,7 +82,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 					x[i] = dt.datetime(x[i].year, 1, 1) + \
 					(x[i] - type(x[i])(x[i].year, 1, 1))
 			d[name] = aq.from_datetime(list(x))
-			d['.'][name]['units'] = 'days since -4712 12:00 UTC'
+			d['.'][name]['units'] = 'days since -4712-01-01 12:00 UTC'
 			if 'calendar' in d['.']:
 				del d['.']['calendar']
 	return d
