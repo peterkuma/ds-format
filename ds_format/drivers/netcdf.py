@@ -47,7 +47,7 @@ def read_var(f, name, sel=None, data=True):
 	return [x, attrs]
 
 def read(filename, variables=None, sel=None, full=False, jd=False):
-	if type(filename) is bytes:
+	if type(filename) is bytes and str != bytes:
 		filename = os.fsdecode(filename)
 	with Dataset(filename, 'r') as f:
 		d = {}
