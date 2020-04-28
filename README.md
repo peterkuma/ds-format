@@ -1,4 +1,4 @@
-# ds-python (beta)
+# ds-python
 
 ds-python is a Python implementation of a dataset format *DS* for storing data
 along with metadata, similar to [NetCDF](https://www.unidata.ucar.edu/software/netcdf/)
@@ -655,3 +655,9 @@ Returns None.
 
 This software can be used, shared and  modified freely under the terms of
 the MIT license. See [LICENSE.md](LICENSE.md).
+
+## Releases
+
+#### 1.0.0 (2020-04-28)
+
+- Initial release.
