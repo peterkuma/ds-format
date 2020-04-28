@@ -66,9 +66,16 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 			calendar = d['.'][name].get(u'calendar')
 			try:
 				if calendar is not None:
-					x = num2date(data, units=units, calendar=calendar)
+					x = num2date(data,
+						units=units,
+						calendar=calendar,
+						only_use_cftime_datetimes=False,
+					)
 				else:
-					x = num2date(data, units=units)
+					x = num2date(data,
+						units=units,
+						only_use_cftime_datetimes=False,
+					)
 			except: continue
 			if not isinstance(x, np.ndarray):
 				x = np.array([x])
