@@ -3,8 +3,8 @@ import ds_format as ds
 import aquarius_time as aq
 
 def pretty(x, var):
-	if var.get('units_comment') == 'julian_date(utc)':
-		return aq.to_datetime(x).strftime('%Y-%m-%dT%H:%M:%S')
+	if var.get('units') == 'days since -4712-01-01 12:00 UTC':
+		return aq.to_iso(x)
 	return str(x)
 
 def cat(vars_, *input_, **opts):
