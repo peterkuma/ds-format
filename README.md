@@ -176,6 +176,7 @@ pip3 install ds-format
 ```
 
 **Note:** Use `pip` instead of `pip3` to install with Python 2.
+
 **Note:** Append `--user` to install in your home directory on unix-like
 operating systems (make sure `~/.local/bin` is included in the PATH
 environmental variable).
