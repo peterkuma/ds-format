@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 from setuptools import setup, find_packages
 
 setup(
-    name='ds_format',
+    name='ds-format',
     version='1.0.0',
     scripts=['bin/ds'],
     packages=find_packages(),
@@ -11,7 +11,7 @@ setup(
     author='Peter Kuma',
     author_email='peter@peterkuma.net',
     keywords=['dataset', 'netcdf', 'hdf', 'json', 'numpy'],
-    url='https://github.com/peterkuma/ds-python',
+    url='https://github.com/peterkuma/ds-format',
     platforms=['any'],
     install_requires=['netCDF4'],
     license='MIT',
