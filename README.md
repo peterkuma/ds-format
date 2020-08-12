@@ -171,13 +171,13 @@ To install the required Python packages (use `pip` instead of `pip3` to
 install with Python 2, append `--user` to install in home directory):
 
 ```sh
-pip3 install netCDF4 https://github.com/peterkuma/aquarius-time/archive/master.zip https://github.com/peterkuma/pst/archive/master.zip
+pip3 install netCDF4 pst-format https://github.com/peterkuma/aquarius-time/archive/master.zip
 ```
 
 To install ds-format:
 
 ```
-pip3 install https://github.com/peterkuma/ds-format/archive/master.zip
+pip3 install ds-format
 ```
 
 ## Command line interface
