@@ -1,6 +1,6 @@
-# ds-python
+# ds-format
 
-ds-python is a Python implementation of a dataset format *DS* for storing data
+ds-format is a Python implementation of a dataset format *DS* for storing data
 along with metadata, similar to [NetCDF](https://www.unidata.ucar.edu/software/netcdf/)
 and [HDF](https://www.hdfgroup.org). DS is based on
 [JSON](https://json.org/)-like data structures common in
@@ -174,10 +174,10 @@ install with Python 2, append `--user` to install in home directory):
 pip3 install netCDF4 https://github.com/peterkuma/aquarius-time/archive/master.zip https://github.com/peterkuma/pst/archive/master.zip
 ```
 
-To install ds-python:
+To install ds-format:
 
 ```
-pip3 install https://github.com/peterkuma/ds-python/archive/master.zip
+pip3 install https://github.com/peterkuma/ds-format/archive/master.zip
 ```
 
 ## Command line interface
