@@ -156,6 +156,8 @@ data:
 
 ## Installation
 
+Installation on Linux is recommended.
+
 Requirements:
 
 - Python 2.7, Python 3, or a Python distribution such
@@ -167,18 +169,16 @@ Required Python packages:
 - [Aquarius Time](https://github.com/peterkuma/aquarius-time)
 - [pst](https://github.com/peterkuma/pst)
 
-To install the required Python packages (use `pip` instead of `pip3` to
-install with Python 2, append `--user` to install in home directory):
-
-```sh
-pip3 install netCDF4 pst-format https://github.com/peterkuma/aquarius-time/archive/master.zip
-```
-
-To install ds-format:
+Install ds-format and dependencies with:
 
 ```
 pip3 install ds-format
 ```
+
+**Note:** Use `pip` instead of `pip3` to install with Python 2.
+**Note:** Append `--user` to install in your home directory on unix-like
+operating systems (make sure `~/.local/bin` is included in the PATH
+environmental variable).
 
 ## Command line interface
 
@@ -657,6 +657,10 @@ This software can be used, shared and  modified freely under the terms of
 the MIT license. See [LICENSE.md](LICENSE.md).
 
 ## Releases
+
+#### 1.0.1 (2020-08-12)
+
+- Dependencies installed from PyPI.
 
 #### 1.0.0 (2020-04-28)
 
