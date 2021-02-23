@@ -46,17 +46,18 @@ def read_var(f, name, sel=None, data=True):
 	return [x, attrs]
 
 def process_datetime_var(d, name):
-	if not isinstance(x, np.ndarray) or len(x) == 0:
+	if not isinstance(d[name], np.ndarray) or len(d[name]) == 0:
 		return
 	x = d[name].flatten()
 	shape = d[name].shape
+	units = d['.'][name].get(u'units')
+	calendar = d['.'][name].get(u'calendar', u'standard')
 	try:
-		x = cftime.num2date(data, units,
+		x = cftime.num2date(x, units,
 			calendar=calendar,
 			only_use_cftime_datetimes=False,
 		)
-	except:
-		return
+	except: return
 	if not (
 		isinstance(x[0], cftime.real_datetime) or
 		isinstance(x[0], cftime.datetime) or
@@ -68,7 +69,7 @@ def process_datetime_var(d, name):
 		for i in range(len(x)):
 			x[i] = dt.datetime(x[i].year, 1, 1) + \
 			(x[i] - type(x[i])(x[i].year, 1, 1))
-	d[name] = aq.from_datetime(x).reshape(shape)
+	d[name] = aq.from_datetime(list(x)).reshape(shape)
 	d['.'][name]['units'] = 'days since -4712-01-01 12:00 UTC'
 	if 'calendar' in d['.'][name]:
 		del d['.'][name]['calendar']
@@ -88,9 +89,6 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 				d[name], d['.'][name] = read_var(f, name, sel)
 	if jd:
 		for name in ds.get_vars(d):
-			data = d[name]
-			units = d['.'][name].get(u'units')
-			calendar = d['.'][name].get(u'calendar', u'standard')
 			process_datetime_var(d, name)
 	return d
 
@@ -107,7 +105,13 @@ def write(filename, d):
 			var = d['.'][name]
 			if type(data) is not np.ndarray:
 				data = np.array([data])
-			v = f.createVariable(name, data.dtype, var['.dims'])
+			if data.dtype == 'O' and \
+				len(data.flatten()) > 0 and \
+				type(data.flatten()[0]) is str:
+				dtype = str
+			else:
+				dtype = data.dtype
+			v = f.createVariable(name, dtype, var['.dims'])
 			v.setncatts({
 				k: v
 				for k, v in var.items()
