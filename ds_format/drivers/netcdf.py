@@ -1,7 +1,6 @@
 import os
-from netCDF4 import Dataset, num2date
+from netCDF4 import Dataset
 import cftime
-from cftime._cftime import real_datetime
 import numpy as np
 import ds_format as ds
 import datetime as dt
@@ -46,6 +45,34 @@ def read_var(f, name, sel=None, data=True):
 	})
 	return [x, attrs]
 
+def process_datetime_var(d, name):
+	if not isinstance(x, np.ndarray) or len(x) == 0:
+		return
+	x = d[name].flatten()
+	shape = d[name].shape
+	try:
+		x = cftime.num2date(data, units,
+			calendar=calendar,
+			only_use_cftime_datetimes=False,
+		)
+	except:
+		return
+	if not (
+		isinstance(x[0], cftime.real_datetime) or
+		isinstance(x[0], cftime.datetime) or
+		isinstance(x[0], dt.datetime)
+	):
+		return
+	if isinstance(x[0], cftime.real_datetime) or \
+	   isinstance(x[0], cftime.datetime):
+		for i in range(len(x)):
+			x[i] = dt.datetime(x[i].year, 1, 1) + \
+			(x[i] - type(x[i])(x[i].year, 1, 1))
+	d[name] = aq.from_datetime(x).reshape(shape)
+	d['.'][name]['units'] = 'days since -4712-01-01 12:00 UTC'
+	if 'calendar' in d['.'][name]:
+		del d['.'][name]['calendar']
+
 def read(filename, variables=None, sel=None, full=False, jd=False):
 	if type(filename) is bytes and str != bytes:
 		filename = os.fsdecode(filename)
@@ -60,38 +87,11 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 			else:
 				d[name], d['.'][name] = read_var(f, name, sel)
 	if jd:
-		for name, data in d.items():
-			if name.startswith('.'): continue
+		for name in ds.get_vars(d):
+			data = d[name]
 			units = d['.'][name].get(u'units')
-			calendar = d['.'][name].get(u'calendar')
-			try:
-				if calendar is not None:
-					x = num2date(data,
-						units=units,
-						calendar=calendar,
-						only_use_cftime_datetimes=False,
-					)
-				else:
-					x = num2date(data,
-						units=units,
-						only_use_cftime_datetimes=False,
-					)
-			except: continue
-			if not isinstance(x, np.ndarray):
-				x = np.array([x])
-			if len(x) == 0 or (
-				not isinstance(x[0], real_datetime) and
-				not isinstance(x[0], dt.datetime)
-			):
-				continue
-			if isinstance(x[0], real_datetime):
-				for i in range(len(x)):
-					x[i] = dt.datetime(x[i].year, 1, 1) + \
-					(x[i] - type(x[i])(x[i].year, 1, 1))
-			d[name] = aq.from_datetime(list(x))
-			d['.'][name]['units'] = 'days since -4712-01-01 12:00 UTC'
-			if 'calendar' in d['.']:
-				del d['.']['calendar']
+			calendar = d['.'][name].get(u'calendar', u'standard')
+			process_datetime_var(d, name)
 	return d
 
 def write(filename, d):
@@ -119,4 +119,3 @@ def write(filename, d):
 
 from_netcdf = read
 to_netcdf = write
-
