@@ -1,4 +1,5 @@
 import os
+import traceback as tb
 from .drivers import DRIVERS
 import ds_format as ds
 import numpy as np
@@ -10,7 +11,10 @@ def index(dirname, variables=None, warnings=[], **kwargs):
 		filename = os.path.join(dirname, name)
 		try: d = ds.read(filename, variables=variables, **kwargs)
 		except Exception as e:
-			warnings.append(e)
+			warnings.append((
+				'%s: %s' % (filename, e),
+				tb.format_exc()
+			))
 			continue
 		d['filename'] = filename
 		d['.']['filename'] = {
@@ -39,7 +43,10 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 		filename = os.path.join(dirname, name)
 		try: d = ds.read(filename, variables=variables, **kwargs)
 		except Exception as e:
-			warnings.append('%s: %s' % (filename, e))
+			warnings.append((
+				'%s: %s' % (filename, e),
+				tb.format_exc()
+			))
 			continue
 		d['filename'] = filename
 		d['.']['filename'] = {
