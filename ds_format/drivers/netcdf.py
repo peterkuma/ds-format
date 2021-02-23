@@ -46,9 +46,11 @@ def read_var(f, name, sel=None, data=True):
 	return [x, attrs]
 
 def process_datetime_var(d, name):
-	if not isinstance(d[name], np.ndarray) or len(d[name]) == 0:
+	if not isinstance(d[name], np.ndarray):
 		return
 	x = d[name].flatten()
+	if len(x) == 0:
+		return
 	shape = d[name].shape
 	units = d['.'][name].get(u'units')
 	calendar = d['.'][name].get(u'calendar', u'standard')
