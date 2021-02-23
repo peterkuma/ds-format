@@ -480,6 +480,7 @@ ds write dataset.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } u
 | [group_by](#group_by) | Group values along a dimension. |
 | [merge](#merge) | Merge datasets along a dimension. |
 | [read](#read) | Read dataset from a file. |
+| [readdir)(#readdir) | Read multiple files in a directory. |
 | [rename](#rename) | Rename a variable. |
 | [rename_dim](#rename_dim) | Rename a dimension. |
 | [select](#select) | Filter dataset by a selector. |
@@ -582,6 +583,24 @@ Supported formats:
 
 Returns dataset (dict).
 
+#### readdir
+
+```python
+ds.readdir(dirname, variables=None, merge=None, warnings=[], ...)
+
+Read multiple files in a directory.
+
+Arguments:
+
+- `dirname` - Directory name.
+- `variables` - Variable names to read (list of str).
+- `merge` - Dimension name to merge datasets by.
+- `warnings` - Array to be populated with warnings.
+- ... - Optional keyword arguments passed to [read](#read).
+
+Returns a list of datasets (list of dict) if `merge` is None or a merged
+dataset (dict) if `merge` is a dimension name.
+
 #### rename
 
 ```python
@@ -658,6 +677,11 @@ This software can be used, shared and  modified freely under the terms of
 the MIT license. See [LICENSE.md](LICENSE.md).
 
 ## Releases
+
+#### 1.1.0 (2021-02-23)
+
+- Improved reading of NetCDF time variables.
+- Documented readdir function.
 
 #### 1.0.1 (2020-08-12)
 
