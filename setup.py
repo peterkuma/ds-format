@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ds-format',
-    version='1.0.1',
+    version='1.1.0',
     scripts=['bin/ds'],
     packages=find_packages(),
     description='Python implementation of a dataset format DS for storing data along with metadata',
