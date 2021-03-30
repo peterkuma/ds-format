@@ -679,7 +679,7 @@ the MIT license. See [LICENSE.md](LICENSE.md).
 
 ## Releases
 
-#### 1.1.0 (2021-02-23)
+#### 1.1.0 (2021-03-31)
 
 - Improved reading of NetCDF time variables.
 - Documented readdir function.
