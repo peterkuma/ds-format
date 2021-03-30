@@ -480,7 +480,7 @@ ds write dataset.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } u
 | [group_by](#group_by) | Group values along a dimension. |
 | [merge](#merge) | Merge datasets along a dimension. |
 | [read](#read) | Read dataset from a file. |
-| [readdir)(#readdir) | Read multiple files in a directory. |
+| [readdir](#readdir) | Read multiple files in a directory. |
 | [rename](#rename) | Rename a variable. |
 | [rename_dim](#rename_dim) | Rename a dimension. |
 | [select](#select) | Filter dataset by a selector. |
@@ -587,6 +587,7 @@ Returns dataset (dict).
 
 ```python
 ds.readdir(dirname, variables=None, merge=None, warnings=[], ...)
+```
 
 Read multiple files in a directory.
 
