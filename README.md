@@ -284,7 +284,7 @@ Arguments:
 #### merge
 
 ```sh
-ds merge <dim> <input>... <output> [variables: <variables>}
+ds merge <dim> <input>... <output> {variables: <variables>}
 ```
 
 Merge datasets along a dimension. If the dimension is not defined in the
