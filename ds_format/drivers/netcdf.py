@@ -7,6 +7,9 @@ import ds_format as ds
 import datetime as dt
 import aquarius_time as aq
 
+JD_UNITS = 'days since -4713-11-24 12:00 UTC'
+JD_CALENDAR = 'proleptic_greogorian'
+
 READ_EXT = ['nc', 'nc4', 'nc3', 'netcdf', 'hdf', 'h5']
 WRITE_EXT = ['nc', 'nc4', 'netcdf']
 
