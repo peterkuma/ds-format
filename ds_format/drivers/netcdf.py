@@ -95,6 +95,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 	return d
 
 def write(filename, d):
+	ds.validate(d)
 	if type(filename) is bytes and hasattr(os, 'fsdecode'):
 		filename = os.fsdecode(filename)
 	with Dataset(filename, 'w') as f:
