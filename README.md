@@ -501,6 +501,20 @@ To import the library:
 import ds_format as ds
 ```
 
+### Constants
+
+#### ds.drivers.netcdf.JD_UNITS
+
+`days since -4713-11-24 12:00 UTC`
+
+NetCDF units for storing Julian date time variables.
+
+#### ds.drivers.netcdf.JD_CALENDAR
+
+`proleptic_greogorian`
+
+NetCDF calendar for storing Julian date time variables.
+
 ### Functions
 
 #### get_dims
