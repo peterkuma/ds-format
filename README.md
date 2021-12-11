@@ -709,6 +709,12 @@ the MIT license. See [LICENSE.md](LICENSE.md).
 
 ## Releases
 
+#### 1.1.1 (2021-12-11)
+
+- Dataset validation on write.
+- Dropped support for Python 2.
+- merge: new variables option.
+
 #### 1.1.0 (2021-03-31)
 
 - Improved reading of NetCDF time variables.
