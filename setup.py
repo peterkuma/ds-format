@@ -13,7 +13,12 @@ setup(
     keywords=['dataset', 'netcdf', 'hdf', 'json', 'numpy'],
     url='https://github.com/peterkuma/ds-format',
     platforms=['any'],
-    install_requires=['netCDF4', 'pst-format>=1.1.1', 'aquarius-time>=0.1.0'],
+    install_requires=[
+		'netCDF4',
+		'cftime>=1.5.1',
+		'pst-format>=1.1.1',
+		'aquarius-time>=0.1.0'
+	],
     license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',

@@ -54,6 +54,10 @@ def process_datetime_var(d, name):
 	shape = d[name].shape
 	units = d['.'][name].get(u'units')
 	calendar = d['.'][name].get(u'calendar', u'standard')
+	if re.match(r'^days since -4712-01-01[T ]12:00(:00)?( UTC)?$', units) and \
+	   calendar in (None, 'standard'):
+		units = 'days since -4713-11-24 12:00 UTC'
+		calendar = 'proleptic_gregorian'
 	try:
 		x = cftime.num2date(x, units,
 			calendar=calendar,
@@ -72,9 +76,8 @@ def process_datetime_var(d, name):
 			x[i] = dt.datetime(x[i].year, 1, 1) + \
 			(x[i] - type(x[i])(x[i].year, 1, 1))
 	d[name] = aq.from_datetime(list(x)).reshape(shape)
-	d['.'][name]['units'] = 'days since -4712-01-01 12:00 UTC'
-	if 'calendar' in d['.'][name]:
-		del d['.'][name]['calendar']
+	d['.'][name]['units'] = 'days since -4713-11-24 12:00 UTC'
+	d['.'][name]['calendar'] = 'proleptic_gregorian'
 
 def read(filename, variables=None, sel=None, full=False, jd=False):
 	if type(filename) is bytes and str != bytes:

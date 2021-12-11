@@ -3,7 +3,8 @@ import ds_format as ds
 import aquarius_time as aq
 
 def pretty(x, var):
-	if var.get('units') == 'days since -4712-01-01 12:00 UTC':
+	if var.get('units') == 'days since -4713-11-24 12:00 UTC' and \
+	   var.get('calendar') == 'proleptic_gregorian':
 		return aq.to_iso(x)
 	return str(x)
 
