@@ -160,7 +160,7 @@ Installation on Linux is recommended.
 
 Requirements:
 
-- Python 2.7, Python 3, or a Python distribution such
+- Python 3, or a Python distribution such
 as [Anaconda](https://www.anaconda.com/distribution/)
 
 Required Python packages:
@@ -174,8 +174,6 @@ Install ds-format and dependencies with:
 ```
 pip3 install ds-format
 ```
-
-**Note:** Use `pip` instead of `pip3` to install with Python 2.
 
 **Note:** Append `--user` to install in your home directory on unix-like
 operating systems (make sure `~/.local/bin` is included in the PATH
