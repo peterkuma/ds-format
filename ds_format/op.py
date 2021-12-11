@@ -1,3 +1,4 @@
+from collections import Mapping, Iterable
 import copy as copy_
 import numpy as np
 import datetime as dt
@@ -7,7 +8,7 @@ def select_var(d, name, sel):
 	var_dims = list(d['.'][name]['.dims'])
 	d['.'][name]['.dims'] = var_dims
 	for key, value in sel.items():
-		if type(value) == dict:
+		if isinstance(value, Mapping):
 			if len(sel) > 1: raise ValueError('invalid selector')
 			newdim = key
 			dims = value.keys()
@@ -23,7 +24,7 @@ def select_var(d, name, sel):
 			d['.'][name]['.dims'].append(newdim)
 		else:
 			dim, idxs = key, value
-			idxs = np.array(idxs) if type(idxs) == list else idxs
+			idxs = np.array(idxs) if type(idxs) in (list, tuple) else idxs
 			if isinstance(idxs, np.ndarray) and idxs.dtype == np.bool:
 				idxs = np.nonzero(idxs)[0]
 			if dim in var_dims:
@@ -32,23 +33,59 @@ def select_var(d, name, sel):
 				if not isinstance(idxs, np.ndarray):
 					var_dims.remove(dim)
 
+def filter_hidden(x):
+	if isinstance(x, Mapping):
+		return {k: v for k, v in x.items() if not k.startswith('.')}
+	if isinstance(x, Iterable):
+		return [k for k in x if not k.startswith('.')]
+	return x
+
 def select(d, sel):
 	for name in d.keys():
 		if name.startswith('.'):
 			continue
 		select_var(d, name, sel)
 
-def get_dims(d):
-	dims = {}
-	for name in d.keys():
-		if name.startswith('.'):
-			continue
-		for i, dim in enumerate(d['.'][name]['.dims']):
-			dims[dim] = d[name].shape[i]
-	return dims
+def get_dims(d, name=None):
+	if name is None:
+		dims = {}
+		for name in get_vars(d):
+			data = get_var(d, name)
+			for i, dim in enumerate(get_dims(d, name)):
+				dims[dim] = data.shape[i]
+		return dims
+	else:
+		try: return d['.'][name]['.dims']
+		except KeyError: return gen_dims(d, name)
 
 def get_vars(d):
-	return [x for x in d.keys() if not x.startswith('.')]
+	return filter_hidden(d.keys())
+
+def get_var(d, name):
+	data = d[name]
+	if type(data) is np.ndarray:
+		return data
+	else:
+		return np.array(data)
+
+def get_meta(d, name=None):
+	if name is None:
+		return d.get('.', {})
+	else:
+		try: return d['.'][name]
+		except KeyError: return {}
+
+def get_attrs(d, name=None):
+	if name is None:
+		try: return filter_hidden(d['.']['.'])
+		except KeyError: return {}
+	else:
+		try: return filter_hidden(d['.'][name])
+		except KeyError: return {}
+
+def gen_dims(d, name):
+	data = get_var(d, name)
+	return [name + ('_%d' % i) for i in range(1, data.ndim + 1)]
 
 def parse_time(t):
 	formats = [
@@ -64,16 +101,7 @@ def parse_time(t):
 def time_dt(time):
 	return [parse_time(t) for t in time]
 
-#def merge_var(dx, d, var, dim):
-#	dimsx = dx['.'][var]['.dims']
-#	dims = d['.'][var]['.dims']
-#	if dims == dimsx and dim in dimsx:
-#		i = dims.index(dim)
-#		dx[var] = np.concatenate([dx[var], d[var]], axis=i)
-#	else:
-#		pass
-
-def merge_var(dd, var, dim, new=False):
+def merge_var(dd, var, dim):
 	if len(dd) == 0:
 		return None, None
 	x0 = dd[0][var]
@@ -86,38 +114,22 @@ def merge_var(dd, var, dim, new=False):
 			[d[var] for d in dd if d['.'][var]['.dims'] == dims0],
 			axis=i
 		)
-	elif new:
+	else:
 		meta['.dims'] = [dim] + list(meta['.dims'])
 		x = np.stack([d[var] for d in dd if d['.'][var]['.dims'] == dims0])
-	else:
-		x = x0
-		meta = meta0
 	return x, meta
 
-	# x = None
-	# meta = None
-	# for d in dd:
-	# 	if new:
-	# 		x0 = d[var][np.newaxis,...]
-	# 		meta0 = copy.deepcopy(d['.'][var])
-	# 		meta0['.dims'] = [dim] + list(d['.'][var]['.dims'])
-	# 	else:
-	# 		x0 = d[var]
-	# 		meta0 = copy.deepcopy(d['.'][var])
-	# 	if x is None:
-	# 		x = x0
-	# 		meta = meta0
-	# 		continue
-	# 	if meta['.dims'] == meta0['.dims'] and dim in meta['.dims']:
-	# 		i = meta['.dims'].index(dim)
-	# 		x = np.concatenate([x, x0], axis=i)
-	# return x, meta
-
-def merge(dd, dim, new=False):
+def merge(dd, dim, new=False, variables=None):
 	dx = {'.': {'.': {}}}
 	vars_ = [x for d in dd for x in get_vars(d)]
+	dims = [k for d in dd for k in get_dims(d).keys()]
+	new = dim not in dims
 	for var in vars_:
-		x, meta = merge_var(dd, var, dim=dim, new=new)
+		if (new and (variables is None or var in variables)) or \
+		   dim in get_dims(dd[0], var):
+			x, meta = merge_var(dd, var, dim=dim)
+		else:
+			x, meta = dd[0][var], dd[0]['.'][var]
 		dx[var] = x
 		dx['.'][var] = meta
 	for d in dd:

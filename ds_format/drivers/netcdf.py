@@ -109,27 +109,18 @@ def write(filename, d):
 		dims = ds.get_dims(d)
 		for k, v in dims.items():
 			f.createDimension(k, v)
-		for name, data in d.items():
-			if name.startswith('.'):
-				continue
-			var = d['.'][name]
-			if type(data) is not np.ndarray:
-				data = np.array([data])
+		for name in ds.get_vars(d):
+			data = ds.get_var(d, name)
 			if data.dtype == 'O' and \
 				len(data.flatten()) > 0 and \
 				type(data.flatten()[0]) is str:
 				dtype = str
 			else:
 				dtype = data.dtype
-			v = f.createVariable(name, dtype, var['.dims'])
-			v.setncatts({
-				k: v
-				for k, v in var.items()
-				if not k.startswith('.')
-			})
+			v = f.createVariable(name, dtype, ds.get_dims(d, name))
+			v.setncatts(ds.get_attrs(d, name))
 			v[::] = data
-		if '.' in d['.']:
-			f.setncatts(d['.']['.'])
+		f.setncatts(ds.get_attrs(d))
 
 from_netcdf = read
 to_netcdf = write

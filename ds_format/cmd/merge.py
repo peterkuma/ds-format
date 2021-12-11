@@ -7,5 +7,7 @@ def merge(dim, *args, **opts):
 	for filename in input_:
 		d = ds.read(filename)
 		dd.append(d)
-	d = ds.op.merge(dd, dim)
+	d = ds.op.merge(dd, dim,
+		variables=opts.get('variables')
+	)
 	ds.write(output, d)
