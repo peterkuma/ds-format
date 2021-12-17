@@ -58,7 +58,8 @@ def process_datetime_var(d, name):
 	shape = d[name].shape
 	units = d['.'][name].get(u'units')
 	calendar = d['.'][name].get(u'calendar', u'standard')
-	if re.match(r'^days since -4712-01-01[T ]12:00(:00)?( UTC)?$', units) and \
+	if units is not None and \
+	   re.match(r'^days since -4712-01-01[T ]12:00(:00)?( UTC)?$', units) and \
 	   calendar in (None, 'standard'):
 		units = 'days since -4713-11-24 12:00 UTC'
 		calendar = 'proleptic_gregorian'
