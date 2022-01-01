@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ds-format',
-    version='1.1.1',
+    version='1.1.2',
     scripts=['bin/ds'],
     packages=find_packages(),
     description='Python implementation of a dataset format DS for storing data along with metadata',
@@ -13,6 +13,7 @@ setup(
     keywords=['dataset', 'netcdf', 'hdf', 'json', 'numpy'],
     url='https://github.com/peterkuma/ds-format',
     platforms=['any'],
+	python_requires='>=3.0',
     install_requires=[
 		'netCDF4',
 		'cftime>=1.5.1',

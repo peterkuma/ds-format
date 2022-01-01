@@ -710,6 +710,11 @@ the MIT license. See [LICENSE.md](LICENSE.md).
 
 ## Releases
 
+#### 1.1.2 (2022-01-01)
+
+- Fixed handling of NetCDF time variables.
+- Fixed merge function definition and implementation.
+
 #### 1.1.1 (2021-12-11)
 
 - Dataset validation on write.
