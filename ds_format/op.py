@@ -119,15 +119,18 @@ def merge_var(dd, var, dim):
 		x = np.stack([d[var] for d in dd if d['.'][var]['.dims'] == dims0])
 	return x, meta
 
-def merge(dd, dim, new=False, variables=None):
+def merge(dd, dim, new=None, variables=None):
 	dx = {'.': {'.': {}}}
 	vars_ = [x for d in dd for x in get_vars(d)]
 	dims = [k for d in dd for k in get_dims(d).keys()]
-	new = dim not in dims
+	is_new = dim not in dims
 	for var in vars_:
-		if (new and (variables is None or var in variables)) or \
-		   dim in get_dims(dd[0], var):
-			x, meta = merge_var(dd, var, dim=dim)
+		var_dims = get_dims(dd[0], var)
+		if is_new and (variables is None or var in variables) or \
+		   dim in var_dims:
+			x, meta = merge_var(dd, var, dim)
+		elif new is not None and (variables is None or var in variables):
+			x, meta = merge_var(dd, var, new)
 		else:
 			x, meta = dd[0][var], dd[0]['.'][var]
 		dx[var] = x

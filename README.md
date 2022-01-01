@@ -284,26 +284,27 @@ Arguments:
 #### merge
 
 ```sh
-ds merge <dim> <input>... <output> {variables: <variables>}
+ds merge <dim> <input>... <output> [new: <new>] [variables: { <var>... }]
 ```
 
-Merge datasets along a dimension. If the dimension is not defined in the
-dataset, merge along a new dimension. If `variables` is not None, merge only
-these variables along the new dimensions, and for other variables, select the
-the first occurrence. If the dimension is defined in the dataset, merge
-variables which have the dimension, and for other variables, select the the
-first occurrence. For variables with incompatible dimensions, select the first
-occurrence.
+Merge datasets along a dimension `dim`. If the dimension is not defined in the
+dataset, merge along a new dimension `dim`. If `new` is `none` and `dim` is not
+new, variables without the dimension are set with the first occurrence of the
+variable. If `new` is not `none` and `dim` is not new, variables without the
+dimension `dim` are merged along a new dimension `new`. If `variables` is not
+`none`, only those variables are merged along a new dimension and other
+variables are set to the first occurrence of the variable.
 
 Arugments:
 
-- `dim` - Dimension name.
+- `dim` - Name of a dimension to merge along.
 - `input` - Input file.
 - `output` - Output file.
 
 Options:
 
-- `variables` - If the dimension is new, variables to merge or `none` for all
+- `new` - Name of a new dimension.
+- `variables` - Variables to merge along a new dimension or `none` for all
 variables.
 
 Examples:
@@ -568,24 +569,24 @@ Returns None.
 #### merge
 
 ```python
-ds.merge(dd, dim, new=False, variables=None)
+ds.merge(dd, dim, new=None, variables=None)
 ```
 
-Merge datasets along a dimension. If the dimension is not defined in the
-dataset, merge along a new dimension (`new` is obsolete and ignored). If
-`variables` is not None, merge only these variables along the new dimensions,
-and for other variables, select the the first occurrence. If the dimension is
-defined in the dataset, merge variables which have the dimension, and for other
-variables, select the the first occurrence. For variables with incompatible
-dimensions, select the first occurrence.
+Merge datasets along a dimension `dim`. If the dimension is not defined in the
+dataset, merge along a new dimension `dim`. If `new` is None and `dim` is not
+new, variables without the dimension are set with the first occurrence of the
+variable. If `new` is not None and `dim` is not new, variables without the
+dimension `dim` are merged along a new dimension `new`. If `variables` is not
+None, only those variables are merged along a new dimension and other variables
+are set to the first occurrence of the variable.
 
 Arguments:
 
-- `dd` - Datasets (list of dict).
-- `dim` - Name of dimension (str).
-- `new` - Merge datasets along a new dimension (bool) [obsolete].
-- `variables` - If the dimension is new, Variables to merge (list) or None for
-all variables.
+- `dd` - Datasets (list).
+- `dim` - Name of a dimension to merge along (str).
+- `new` - Name of a new dimension (str) or None.
+- `variables` - Variables to merge along a new dimension (list) or None for all
+variables.
 
 Returns a dataset (dict).
 
