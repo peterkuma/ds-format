@@ -13,7 +13,7 @@ setup(
     keywords=['dataset', 'netcdf', 'hdf', 'json', 'numpy'],
     url='https://github.com/peterkuma/ds-format',
     platforms=['any'],
-	python_requires='>=3.0',
+    python_requires='>=3.0',
     install_requires=[
 		'netCDF4',
 		'cftime>=1.5.1',
