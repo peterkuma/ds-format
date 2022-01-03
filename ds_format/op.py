@@ -121,7 +121,7 @@ def merge_var(dd, var, dim):
 
 def merge(dd, dim, new=None, variables=None):
 	dx = {'.': {'.': {}}}
-	vars_ = [x for d in dd for x in get_vars(d)]
+	vars_ = list(set([x for d in dd for x in get_vars(d)]))
 	dims = [k for d in dd for k in get_dims(d).keys()]
 	is_new = dim not in dims
 	for var in vars_:
