@@ -62,8 +62,10 @@ def get_vars(d):
 	return filter_hidden(d.keys())
 
 def get_var(d, name):
+	if name not in d:
+		return None
 	data = d[name]
-	if type(data) is np.ndarray:
+	if isinstance(data, np.ndarray):
 		return data
 	else:
 		return np.array(data)
@@ -85,7 +87,8 @@ def get_attrs(d, name=None):
 
 def gen_dims(d, name):
 	data = get_var(d, name)
-	return [name + ('_%d' % i) for i in range(1, data.ndim + 1)]
+	ndim = data.ndim if data is not None else len(get_meta(d, name)['.size'])
+	return [name + ('_%d' % i) for i in range(1, ndim + 1)]
 
 def parse_time(t):
 	formats = [
