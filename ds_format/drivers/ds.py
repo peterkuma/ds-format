@@ -141,7 +141,7 @@ def write(filename, d):
 			continue
 		var['.offset'] = offset
 		var['.missing'] = bool(isinstance(data, np.ma.MaskedArray) and \
-			np.ma.getmask(data.mask) != np.ma.nomask)
+			np.ma.is_masked(data))
 		var['.len'] += int(np.ceil(var['.missing']*count/8))
 		if data.dtype.kind in ('U', 'S', 'O'):
 			var['.endian'] = sys.byteorder
