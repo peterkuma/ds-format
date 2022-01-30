@@ -710,46 +710,49 @@ other standard formats. This format is compatible with the most commonly used
 features of NetCDF. Over NetCDF, this format has an advantage of being much
 simpler and faster (up to 10 times), especially when reading or writing many
 small files. Unlike NetCDF, which is editable, the ds format is inteded to be
-written only once (the copy-on-write paradigm). The greatly simplifies the format
-and implementation, and improves performance. The ds format can be used by
-reading or writing files an extension ".ds". Existing NetCDF files can be
+written only once (the copy-on-write paradigm). This greatly simplifies the
+format and implementation, and improves performance. The ds format can be used
+by reading or writing files an extension ".ds". Existing NetCDF files can be
 converted to ds with `ds select input.nc output.ds`, where `input.nc` is the
 input NetCDF files and `output.ds` is the output ds file.
 
-The format is composed of a header and body, separated by a newline character
-(`\n`). The header is a one line containing JSON of the metadata. In addition
-to the standard structure described above, the metadata contains a number of
-special fields describing where to find and how to decode the variable data.
-The body is a block of binary data directly following the header. The header
-and body are separated by a single newline character (`\n`). The body contains
-raw bindary data of the variables in a sequential order.
+The format is composed of a header and a body, separated by a newline character
+(`\n`). The header is one line containing JSON of the metadata. In addition
+to the standard structure described [above](#format-description), the metadata
+contains a number of special fields describing where to find and how to decode
+the variable data.  The body is a block of binary data directly following the
+header. The header and body are separated by a single newline character (`\n`).
+The body contains raw bindary data of the variables in a sequential order.
 
-In addition to the variable metadata described above, the ds native format
-uses the following properties:
+In addition to the variable metadata described [above](#format-description),
+the ds native format uses the following properties:
 
 - `.offset`: Data offset in bytes relative to the start of the body.
-- `.len`: Length of data in bytes, including a missing data bitmask, if present.
+- `.len`: Length of data in bytes, including a missing data bitmask or string
+  lengths, if present.
 - `.type`: Data type of the variable. One of:
   `float` (floating-point number) `int` (integer), `uint` (unsigned integer),
   `bool` (boolean), `str` (byte string) and `unicode` (Unicode).
 - `.dsize`: Data type size in bits. E.g. if `.type` is `int` and `.dsize` is 64,
   it means the variable data are 64-bit integers.
 - `.endian`: Endianness. `b` for big endian, `l` for little endian.
-- `.missing`: Signifies that the data array is a masked array. A bitmask of
-  missing data is stored directly after the variable data, and is bitpacked.
+- `.missing`: A boolean value signifying if the data array is a masked array. A
+  bitmask of missing data is stored directly after the variable data, and is
+  bitpacked.
 
 The variable data are stored at their offset as a flat sequence of binary values
 in bit ordering as in `.endian`. Multi-dimensional arrays are stored in the
 "C ordering" of rows and columns.
 
-Boolean values are bitpacked, and at the end it is padded with zeros to occupy
-an integer number of bytes. Bit ordering of bitpacked values is alwyas big
-endian.
-
-If missing values are allowed, a missing value bitmask is stored directly after
-the variable data. The bitmask is bitpacked, and at the end it is padded with
+Boolean values (type `bool`) are bitpacked, and at the end are padded with
 zeros to occupy an integer number of bytes. Bit ordering of bitpacked values is
-alwyas big endian.
+alwyas big endian, and `.endian` of boolean variables should be `b`.
+
+If missing values are allowed (`.missing` is true), a missing value bitmask is
+stored directly after the variable data. The bitmask is bitpacked, and at the
+end it is padded with zeros to occupy an integer number of bytes. Bit ordering
+of bitpacked values is alwyas big endian, regardless of `.endian` of the
+variable.
 
 Data of string arrays (type `str` and `unicode`) are stored as an array of
 string lengths, followed by a sequence of the strings, encoded as UTF-8 if the
@@ -762,12 +765,12 @@ the strings.
 
 The ds format is up 10 times faster than NetCDF, while taking the same or less
 space (uncompressed). It is especially faster for reading and writing small
-files. Below are results of a set of performance tests which write and read 10 to
-100000 files:
+files. Below are results of a set of performance tests which write and read
+NetCDF and ds files:
 
 - tiny: one int64 variable of size 1 (`{'x': 1}`).
 - small: one int64 variable of size 1000 (`{'x': np.arange(1000)}`).
-- large: one float64 variable of size 100x1000x1000 (`{`x`: np.ones(100, 1000, 1000)}`).
+- large: one float64 variable of size 100x1000x1000 (`{'x': np.ones(100, 1000, 1000)}`).
 
 |                  | time nc (s) | time ds (s) | speed factor | size nc (MB) | size ds (MB) | size factor |
 | ---------------- | ----------- | ----------- | ------------ | ------------ | ------------ | ----------- |
@@ -778,7 +781,7 @@ files. Below are results of a set of performance tests which write and read 10 t
 | read small 100k  | 70          | 8           | 9            |              |              |             |
 | read large 10    | 3.3         | 2.5         | 1.3          |              |              |             |
 
-(Factors are NetCDF realtive to ds.)
+Factors are NetCDF realtive to ds.
 
 ## License
 
