@@ -27,10 +27,11 @@ class JSONEncoder(json.JSONEncoder):
 def read(filename, variables=None, sel=None, full=False, jd=False):
 	d = {}
 	with open(filename, 'rb') as f:
-		meta_s = f.readline().decode('utf-8')
+		header = f.readline()
+		meta_s = header.decode('utf-8')
 		meta = json.loads(meta_s)
 		d['.'] = meta
-		data_offset = len(meta_s)
+		data_offset = len(header)
 		if variables is not None and not full:
 			meta = {k: v for k, v in meta.items() if k in variables}
 		for name in meta.keys():
@@ -140,7 +141,7 @@ def write(filename, d):
 			continue
 		var['.offset'] = offset
 		var['.missing'] = bool(isinstance(data, np.ma.MaskedArray) and \
-			data.mask != False)
+			np.ma.getmask(data.mask) != np.ma.nomask)
 		var['.len'] += int(np.ceil(var['.missing']*count/8))
 		if data.dtype.kind in ('U', 'S', 'O'):
 			var['.endian'] = sys.byteorder
