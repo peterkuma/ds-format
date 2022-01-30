@@ -11,10 +11,9 @@ def ls(*args, **opts):
 			for x in vars_:
 				dims = d['.'][x]['.dims']
 				size = d['.'][x]['.size']
-				dims_s = ','.join([
-					'%s=%d' % (dim, size0)
-					for dim, size0 in zip(dims, size)
-				])
+				dims_s = ''
+				for i, dim in enumerate(dims):
+					dims_s += '%s%s=%d' % (',' if i > 0 else '', dim, size[i])
 				print('%s(%s)' % (x, dims_s))
 		else:
 			print('\n'.join(vars_))
