@@ -740,19 +740,20 @@ the ds native format uses the following properties:
   bitmask of missing data is stored directly after the variable data, and is
   bitpacked.
 
-The variable data are stored at their offset as a flat sequence of binary values
-in bit ordering as in `.endian`. Multi-dimensional arrays are stored in the
-"C ordering" of rows and columns.
+If missing values are allowed (`.missing` is true), a missing value bitmask is
+stored at the variable offset. The bitmask is bitpacked, and at the end it is
+padded with zeros to occupy an integer number of bytes. Bit ordering of
+bitpacked values is alwyas big endian, regardless of `.endian` of the variable.
+
+The variable data are stored directly after missing value bitmask, or at
+variable offset if missing values are not allowed. They are stored as a flat
+sequence of binary values in bit ordering as in `.endian`. Multi-dimensional
+arrays are stored in the "C ordering" of rows and columns. Missing values are
+not written.
 
 Boolean values (type `bool`) are bitpacked, and at the end are padded with
 zeros to occupy an integer number of bytes. Bit ordering of bitpacked values is
 alwyas big endian, and `.endian` of boolean variables should be `b`.
-
-If missing values are allowed (`.missing` is true), a missing value bitmask is
-stored directly after the variable data. The bitmask is bitpacked, and at the
-end it is padded with zeros to occupy an integer number of bytes. Bit ordering
-of bitpacked values is alwyas big endian, regardless of `.endian` of the
-variable.
 
 Data of string arrays (type `str` and `unicode`) are stored as an array of
 string lengths, followed by a sequence of the strings, encoded as UTF-8 if the

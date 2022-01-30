@@ -60,20 +60,27 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 				'l': '<',
 				'b': '>',
 			}[var['.endian']]
-			dt = dt.newbyteorder(byteorder)
 			count = np.prod(var['.size'])
-			if var['.type'] in ('str', 'unicode'):
-				len_ = 64*count
+			mask_len = int(np.ceil(count/8)) if var['.missing'] else 0
+
+			if var['.missing']:
+				f.seek(data_offset + var['.offset'])
+				mask = np.fromfile(f, 'uint8', count=mask_len)
+				mask = np.unpackbits(mask)[:count].astype(bool)
+				mask = mask.reshape(var['.size'])
+				count2 = np.sum(~mask)
 			else:
-				len_ = int(np.ceil(count*var['.dsize']/8))
-			f.seek(data_offset + var['.offset'])
+				count2 = count
+
+			var_len = int(count2*var['.dsize']/8)
+			f.seek(data_offset + var['.offset'] + mask_len)
 			if var['.type'] == 'bool':
-				data = np.fromfile(f, 'uint8', count=len_)
-				data = np.unpackbits(data)[:count]
+				data = np.fromfile(f, 'uint8', count=var_len)
+				data = np.unpackbits(data)[:count2]
 				data = data.astype(bool)
 			elif var['.type'] in ('str', 'unicode'):
 				dt_slen = np.dtype('uint64').newbyteorder(byteorder)
-				slen = np.fromfile(f, dt_slen, count=count)
+				slen = np.fromfile(f, dt_slen, count=count2)
 				data = []
 				for slen1 in slen:
 					if var['.type'] == 'str':
@@ -82,28 +89,27 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 						data += [f.read(slen1).decode('utf-8')]
 				data = np.array(data, 'O')
 			else:
-				data = np.fromfile(f, dt, count=count)
-			if var['.size'] == 1:
-				data = data[0]
+				dt = dt.newbyteorder(byteorder)
+				data = np.fromfile(f, dt, count=count2)
+
+			if var['.missing']:
+				data2 = np.zeros(var['.size'], dtype=dt)
+				data2[~mask] = data
+				data = np.ma.array(data2, mask=mask)
 			else:
 				data = data.reshape(var['.size'])
 
+			if var['.size'] == 1:
+				data = data[0]
+
 			if sel is not None:
+				#s = ds.misc.sel_slice(sel, dims)
+				#mask = mask[s]
 				dims = ds.get_dims(d, name)
 				s = ds.misc.sel_slice(sel, dims)
 				dims = ds.misc.sel_dims(sel, dims)
 				var['.dims'] = dims
 				data = data[s]
-			if var.get('.missing') is True:
-				mask_len = int(np.ceil(count/8))
-				f.seek(data_offset + var['.offset'] + len_)
-				mask = np.fromfile(f, 'uint8', count=mask_len)
-				mask = np.unpackbits(mask)[:count]
-				mask = mask.reshape(var['.size'])
-				if sel is not None:
-					s = ds.misc.sel_slice(sel, dims)
-					mask = mask[s]
-				data = np.ma.array(data, mask=mask)
 			d[name] = data
 	return d
 
@@ -125,11 +131,18 @@ def write(filename, d):
 		else:
 			var['.dsize'] = data.dtype.itemsize*8
 		count = np.prod(var['.size'])
+		var['.offset'] = offset
+		var['.len'] = 0
+		var['.missing'] = bool(isinstance(data, np.ma.MaskedArray) and \
+			np.ma.is_masked(data))
+		if var['.missing']:
+			var['.len'] += int(np.ceil(count/8))
+		count2 = np.sum(~data.mask) if var['.missing'] else count
 		if data.dtype.kind in ('U', 'O'):
-			var['.len'] = int(8*count + \
+			var['.len'] += int(8*count2 + \
 				sum([len(str(x).encode('utf-8')) for x in data.flatten()]))
 		else:
-			var['.len'] = int(np.ceil(var['.dsize']*count/8))
+			var['.len'] += int(np.ceil(var['.dsize']*count2/8))
 		if data.dtype.kind in TYPES:
 			var['.type'] = TYPES[data.dtype.kind]
 		elif data.dtype.kind == 'O':
@@ -139,12 +152,8 @@ def write(filename, d):
 				var['.type'] = 'unicode'
 		else:
 			continue
-		var['.offset'] = offset
-		var['.missing'] = bool(isinstance(data, np.ma.MaskedArray) and \
-			np.ma.is_masked(data))
-		var['.len'] += int(np.ceil(var['.missing']*count/8))
 		if data.dtype.kind in ('U', 'S', 'O'):
-			var['.endian'] = sys.byteorder
+			var['.endian'] = sys.byteorder[0]
 		elif data.dtype.kind == 'b':
 			pass
 		else:
@@ -159,26 +168,27 @@ def write(filename, d):
 	meta['.'] = ds.get_meta(d, '.')
 	meta_s = json.dumps(meta, cls=JSONEncoder)
 	with open(filename, 'wb') as f:
-		f.write(meta_s.encode('utf-8') + b'\n')
+		header = meta_s.encode('utf-8') + b'\n'
+		f.write(header)
 		for name in ds.get_vars(d):
 			var = meta[name]
 			if name not in meta:
 				continue
-			data = ds.get_var(d, name)
+			if var['.missing'] is True:
+				mask = np.packbits(data.mask)
+				mask.tofile(f)
+			data = ds.get_var(d, name).flatten()
+			data2 = np.array(data) if not var['.missing'] else \
+				np.array(data)[~data.mask]
 			if data.dtype.kind in ('U', 'S', 'O'):
-				slen = np.array([len(x) for x in data.flatten()], np.uint64)
+				slen = np.array([len(x) for x in data2], np.uint64)
 				slen.tofile(f)
-				for x in data.flatten():
+				for x in data2:
 					if data.dtype.kind == 'S':
 						f.write(x)
 					else:
 						f.write(str(x).encode('utf-8'))
 			else:
-				data2 = np.array(data) if isinstance(data, np.ma.MaskedArray) \
-					else data
 				if var['.type'] == 'bool':
 					data2 = np.packbits(data2)
 				data2.tofile(f)
-			if var['.missing'] is True:
-				mask = np.packbits(data.mask)
-				mask.tofile(f)
