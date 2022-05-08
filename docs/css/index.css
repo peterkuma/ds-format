@@ -33,8 +33,15 @@
 	font-style: normal;
 }
 
+@font-face {
+	font-family: "Space Mono";
+	src: url("../fonts/space-mono/SpaceMono-Regular.woff2") format("woff2");
+	font-weight: normal;
+	font-style: normal;
+}
+
 html {
-	font-family: "Source Sans Pro";
+	font-family: "Source Sans Pro", "Open Sans", Helvetica, Arial, sans-serif;
 	font-size: 12pt;
 	line-height: 140%;
 }
@@ -167,7 +174,7 @@ pre.highlight code {
 code {
 	background: rgba(0, 0, 0, 0.05);
 	padding: 0 0.2em;
-	font-family: "Space Mono";
+	font-family: "Space Mono", "Bitstream Vera Sans Mono", monospace;
 	font-size: 95%;
 	line-height: 100%;
 }
