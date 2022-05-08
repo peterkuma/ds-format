@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<title>{{ page.title }} · ds format</title>
+<link rel="stylesheet" href="{{ "/css/index.css" | relative_url }}" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ds-format is an open source program, a Python library and a storage format which provides an interface for reading and writing NetCDF, HDF5 and CSV data files, as well as its own data file format." />
+<meta name="author" content="Peter Kuma" />
+</head>
+<body>
+<header>
+<h1><a href="/">ds format</a></h1>
+<nav>
+<a href="{{ "/" | relative_url }}" {% if page.title == "About" %}class="selected"{% endif %}>About</a>
+<a href="{{ "/Description/" | relative_url }}" {% if page.title == "Description" %}class="selected"{% endif %}>Description</a>
+<a href="{{ "/Installation/" | relative_url }}" {% if page.title == "Installation" %}class="selected"{% endif %}>Installation</a>
+<a href="{{ "/Command_line/" | relative_url }}" {% if page.title == "Command line" %}class="selected"{% endif %}>Command line</a>
+<a href="{{ "/Python_API/" | relative_url }}" {% if page.title == "Python API" %}class="selected"{% endif %}>Python API</a>
+<a href="{{ "/Storage_format/" | relative_url }}" {% if page.title == "Storage format" %}class="selected"{% endif %}>Storage format</a>
+</nav>
+<a href="https://github.com/peterkuma/ds-format" class="github">GitHub</a>
+</header>
+<main>
+{{ content }}
+</main>
+<footer>
+Copyright © 2019–2022 <a href="https://peterkuma.net">Peter Kuma</a><br />
+License: <a href="https://github.com/peterkuma/ds-format/blob/master/LICENSE.md">MIT</a><br />
+Website hosted by <a href="https://github.com/peterkuma/ds-format">GitHub</a>
+</footer>
+</body>
+</html>
