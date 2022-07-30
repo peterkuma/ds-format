@@ -1,0 +1,41 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-STATS" "1" "July 2022" ""
+.SH "NAME"
+\fBds\-stats\fR \- Print variable statistics\.
+.SH "SYNOPSIS"
+\fBds stats\fR \fIvar\fR \fIinput\fR
+.SH "DESCRIPTION"
+The output is formatted as PST\.
+.SH "ARGUMENTS"
+.TP
+\fIvar\fR
+Variable name\.
+.TP
+\fIinput\fR
+Input file\.
+.SH "OUTPUT DESCRIPTION"
+.TP
+\fBcount\fR
+Number of array elements\.
+.TP
+\fBmax\fR
+Maximum value\.
+.TP
+\fBmean\fR
+Sample mean\.
+.TP
+\fBmedian\fR
+Sample median\.
+.TP
+\fBmin\fR
+Minimum value\.
+.SH "EXAMPLES"
+Print statistics of variable temperature in dataset\.nc:
+.IP "" 4
+.nf
+$ ds stats temperature dataset\.nc
+count: 3 min: 16\.000000 max: 21\.000000 mean: 18\.333333 median: 18\.000000
+.fi
+.IP "" 0
+

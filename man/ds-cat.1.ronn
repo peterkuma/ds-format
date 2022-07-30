@@ -1,0 +1,41 @@
+ds-cat(1) -- Print variable.
+============================
+
+## SYNOPSIS
+
+`ds cat` [*options*] *var* *input*<br>
+`ds cat` [*options*] `{` *var*... `}` *input*<br>
+
+## ARGUMENTS
+
+- *var*:
+Variable name.
+- *input*:
+Input file.
+
+## OPTIONS
+
+- `-h`:
+Print human-readable values.
+- `--jd`:
+Convert time variables to Julian dates (see Aquarius Time).
+
+## EXAMPLES
+
+Print temperature values in dataset.nc:
+
+    $ ds cat temperature dataset.nc
+    16.0
+    18.0
+    21.0
+
+Print time and temperature values in dataset.nc:
+
+    $ ds cat { time temperature } dataset.nc
+    1,16.0
+    2,18.0
+    3,21.0
+    4,23.0
+    5,25.0
+    6,28.0
+

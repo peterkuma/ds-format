@@ -14,3 +14,8 @@ def sel_dims(sel, dims):
 			isinstance(sel[dim], np.ndarray) or \
 			type(sel[dim]) in (list, tuple)
 	]
+
+def encoder(x):
+	if isinstance(x, (np.generic, np.ndarray)):
+		return x.item()
+	return x

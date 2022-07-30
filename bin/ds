@@ -1,29 +1,6 @@
-#!/usr/bin/env python
-
+#!/usr/bin/env python3
 import signal
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-
-import sys
-import pst
-import ds_format as ds
-
+from ds_format.cmd.main import main
 if __name__ == '__main__':
-	args, opts = pst.decode_argv(sys.argv, as_unicode=True)
-	if len(args) == 1:
-		sys.stderr.write('Usage: %s [<cmd>] [<options>...]\n' % sys.argv[0])
-		sys.exit(1)
-	cmd = args[1]
-	cmd_args = args[2:]
-	f = ds.cmd.CMDS.get(cmd)
-	if f is None:
-		cmd = 'ls'
-		cmd_args = args[1:]
-		f = ds.cmd.CMDS.get(cmd)
-	if f is None:
-		sys.stderr.write('%s: no such command\n' % cmd)
-		sys.exit(1)
-	try:
-		f(*cmd_args, **opts)
-	except IOError as e:
-		print(e)
-		sys.exit(1)
+	main()

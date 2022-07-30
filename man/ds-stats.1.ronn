@@ -1,0 +1,38 @@
+ds-stats(1) -- Print variable statistics.
+=========================================
+
+## SYNOPSIS
+
+`ds stats` *var* *input*
+
+## DESCRIPTION
+
+The output is formatted as PST.
+
+## ARGUMENTS
+
+- *var*:
+Variable name.
+- *input*:
+Input file.
+
+## OUTPUT DESCRIPTION
+
+- `count`:
+Number of array elements.
+- `max`:
+Maximum value.
+- `mean`:
+Sample mean.
+- `median`:
+Sample median.
+- `min`:
+Minimum value.
+
+## EXAMPLES
+
+Print statistics of variable temperature in dataset.nc:
+
+    $ ds stats temperature dataset.nc
+    count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000
+

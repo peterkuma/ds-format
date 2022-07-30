@@ -1,3 +1,5 @@
+__version__ = '1.2.0-dev'
+
 from .drivers.netcdf import from_netcdf, to_netcdf
 from .op import \
 	copy, \

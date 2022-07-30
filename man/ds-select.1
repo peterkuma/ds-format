@@ -1,0 +1,92 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-SELECT" "1" "July 2022" ""
+.SH "NAME"
+\fBds\-select\fR \- Select and subset variables\.
+.SH "SYNOPSIS"
+\fBds select\fR \fIinput\fR \fIoutput\fR [\fIvariables\fR] [\fIoptions\fR]
+.SH "DESCRIPTION"
+select can also be used to convert between different file formats (\fBds select\fR \fIinput\fR \fIoutput\fR)\.
+.SH "ARGUMENTS"
+.TP
+\fIinput\fR
+Input file\.
+.TP
+\fIoutput\fR
+Output file\.
+.TP
+\fIvariables\fR
+List of variables as \fB{\fR \fIvar1\fR \fIvar2\fR \|\.\|\.\|\. \fB}\fR or \fBnone\fR for all\. Default: \fBnone\fR\.
+.SH "OPTIONS"
+.TP
+\fBsel: {\fR \fIdim1\fR: \fIidx1\fR \fIdim2\fR: \fIidx2\fR \|\.\|\.\|\. \fB}\fR
+Selector, where \fIdim\fIn\fR\fR is dimension name and \fIidx\fIn\fR\fR is a list of indexes as \fB{\fR \fIi1\fR \fIi2\fR \|\.\|\.\|\. \fB}\fR\.
+.SH "SUPPORTED INPUT FORMATS"
+.TP
+NetCDF4
+\fB\.nc\fR, \fB\.nc4\fR, \fB\.nc3\fR, \fB\.netcdf\fR, \fB\.hdf\fR, \fB\.h5\fR
+.TP
+JSON
+\fB\.json\fR
+.SH "SUPPORTED OUTPUT FORMATS"
+.TP
+NetCDF4
+\fB\.nc\fR, \fB\.nc4\fR, \fB\.netcdf\fR
+.TP
+JSON
+\fB\.json\fR
+.SH "EXAMPLES"
+Write data to dataset\.nc:
+.IP "" 4
+.nf
+$ ds write dataset\.nc { time time { 1 2 3 } } { temperature time { 16\. 18\. 21\. } units: degree_celsius } title: "Temperature data"
+.fi
+.IP "" 0
+.P
+List variables in dataset\.nc:
+.IP "" 4
+.nf
+$ ds dataset\.nc
+temperature
+time
+.fi
+.IP "" 0
+.P
+Select variable temperature from dataset\.nc and write to temperature\.nc:
+.IP "" 4
+.nf
+$ ds select dataset\.nc temperature\.nc temperature
+.fi
+.IP "" 0
+.P
+List variables in temperature\.nc:
+.IP "" 4
+.nf
+$ ds temperature\.nc
+.fi
+.IP "" 0
+.P
+Subset by time index 0 and write to 0\.nc:
+.IP "" 4
+.nf
+$ ds select dataset\.nc 0\.nc sel: { time: { 0 } }
+.fi
+.IP "" 0
+.P
+Print variables time and temperature in 0\.nc:
+.IP "" 4
+.nf
+$ ds cat { time temperature } 0\.nc
+1,16\.0
+.fi
+.IP "" 0
+.P
+Convert dataset\.nc to JSON:
+.IP "" 4
+.nf
+$ ds select dataset\.nc dataset\.json
+$ cat dataset\.json
+{"time": [1, 2, 3], "temperature": [16\.0, 18\.0, 21\.0], "\.": {"time": {"\.size": [3], "\.dims": ["time"]}, "temperature": {"units": "degree_celsius", "\.size": [3], "\.dims": ["time"]}, "\.": {"title": "Temperature data"}}}
+.fi
+.IP "" 0
+

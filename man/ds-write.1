@@ -1,0 +1,25 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-WRITE" "1" "July 2022" ""
+.SH "NAME"
+\fBds\-write\fR \- Write dataset to a file\.
+.SH "SYNOPSIS"
+\fBds write\fR \fIoutput\fR \fIvar\fR \|\.\|\.\|\. \fIattrs\fR
+.SH "ARGUMENTS"
+.TP
+\fIoutput\fR
+Output file\.
+.TP
+\fIvar\fR
+Definition of a variable as \fB{\fR \fIname\fR \fB{\fR \fIdim1\fR \fIdim2\fR \fB}\fR \fB{\fR \fIx1\fR \fIx2\fR \|\.\|\.\|\. \fB}\fR \fIattrs\fR \fB}\fR, where \fIname\fR is a variable name, \fIdim\fR is a dimension name, \fIx\fR is a value and \fIattrs\fR are variable\-level attributes (key\-value pairs)\.
+.TP
+\fIattrs\fR
+Dataset\-level attributes (key\-value pairs)\.
+.SH "EXAMPLES"
+Write variables time and temperature to dataset\.nc:
+.IP "" 4
+.nf
+ds write dataset\.nc { time time { 1 2 3 } } { temperature time { 16\. 18\. 21\. } units: degree_celsius } title: "Temperature data"
+.fi
+.IP "" 0
+

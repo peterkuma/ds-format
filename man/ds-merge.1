@@ -1,0 +1,61 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-MERGE" "1" "July 2022" ""
+.SH "NAME"
+\fBds\-merge\fR \- Merge datasets along a dimension dim\.
+.SH "SYNOPSIS"
+\fBds merge\fR \fIdim\fR \fIinput\fR\|\.\|\.\|\. \fIoutput\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Merge datasets along a dimension \fIdim\fR\. If the dimension is not defined in the dataset, merge along a new dimension \fIdim\fR\. If \fInew\fR is \fBnone\fR and \fIdim\fR is not new, variables without the dimension are set with the first occurrence of the variable\. If \fInew\fR is not \fBnone\fR and \fIdim\fR is not new, variables without the dimension dim are merged along a new dimension \fInew\fR\. If variables is not \fBnone\fR, only those variables are merged along a new dimension and other variables are set to the first occurrence of the variable\.
+.SH "ARGUMENTS"
+.TP
+\fIdim\fR
+Name of a dimension to merge along\.
+.TP
+\fIinput\fR
+Input file\.
+.TP
+\fIoutput\fR
+Output file\.
+.SH "OPTIONS"
+.TP
+\fBnew:\fR \fIvalue\fR
+Name of a new dimension\.
+.TP
+\fBvariables:\fR { \fIvalue\fR\|\.\|\.\|\. }
+Variables to merge along a new dimension or none for all variables\.
+.SH "EXAMPLES"
+Write example data to dataset1\.nc:
+.IP "" 4
+.nf
+$ ds write dataset1\.nc { time time { 1 2 3 } } { temperature time { 16\. 18\. 21\. } units: degree_celsius } title: "Temperature data"
+.fi
+.IP "" 0
+.P
+Write example data to dataset2\.nc:
+.IP "" 4
+.nf
+$ ds write dataset2\.nc { time time { 4 5 6 } } { temperature time { 23\. 25\. 28\. } units: degree_celsius } title: "Temperature data"
+.fi
+.IP "" 0
+.P
+Merge dataset1\.nc and dataset2\.nc and write the result to dataset\.nc:
+.IP "" 4
+.nf
+$ ds merge time dataset1\.nc dataset2\.nc dataset\.nc
+.fi
+.IP "" 0
+.P
+Print time and temperature variables in dataset\.nc:
+.IP "" 4
+.nf
+$ ds cat { time temperature } dataset\.nc
+1,16\.0
+2,18\.0
+3,21\.0
+4,23\.0
+5,25\.0
+6,28\.0
+.fi
+.IP "" 0
+

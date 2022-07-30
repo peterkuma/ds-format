@@ -3,6 +3,15 @@ import json
 from ds_format.cmd import UsageError, NumpyEncoder
 
 def get(*args, **opts):
+	'''
+	title: "get"
+	caption: "Get attribute at path."
+	usage: "`ds get` *path* *input*"
+	arguments: {{
+		*path*: "Attribute path."
+		*input*: "Input file."
+	}}
+	'''
 	if len(args) != 2:
 		raise TypeError('Usage: get <path> <input>')
 	path = args[0].split('/')

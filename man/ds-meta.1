@@ -1,0 +1,36 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-META" "1" "July 2022" ""
+.SH "NAME"
+\fBds\-meta\fR \- Print metadata\.
+.SH "SYNOPSIS"
+\fBds meta\fR [\fIvar\fR] [\fIinput\fR]
+.SH "DESCRIPTION"
+The output is formatted as PST\.
+.SH "ARGUMENTS"
+.TP
+\fIinput\fR
+Input file\.
+.TP
+\fIvar\fR
+Variable name\.
+.SH "EXAMPLES"
+Print metadata of dataset\.nc:
+.IP "" 4
+.nf
+$ ds meta dataset\.nc
+\&\.: {{
+	title: "Temperature data"
+}}
+time: {{
+	\.dims: { time }
+	\.size: { 3 }
+}}
+temperature: {{
+	units: degree_celsius
+	\.dims: { time }
+	\.size: { 3 }
+}}
+.fi
+.IP "" 0
+

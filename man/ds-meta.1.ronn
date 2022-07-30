@@ -1,0 +1,36 @@
+ds-meta(1) -- Print metadata.
+=============================
+
+## SYNOPSIS
+
+`ds meta` [*var*] [*input*]
+
+## DESCRIPTION
+
+The output is formatted as PST.
+
+## ARGUMENTS
+
+- *input*:
+Input file.
+- *var*:
+Variable name to print metadata for. If not specified, print metadata for the whole file.
+
+## EXAMPLES
+
+Print metadata of dataset.nc:
+
+    $ ds meta dataset.nc
+    .: {{
+    	title: "Temperature data"
+    }}
+    time: {{
+    	.dims: { time }
+    	.size: { 3 }
+    }}
+    temperature: {{
+    	units: degree_celsius
+    	.dims: { time }
+    	.size: { 3 }
+    }}
+

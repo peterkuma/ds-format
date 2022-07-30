@@ -1,0 +1,40 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-LS" "1" "July 2022" ""
+.SH "NAME"
+\fBds\-ls\fR \- List variables\.
+.SH "SYNOPSIS"
+\fBds\fR [\fIoptions\fR] \fIinput\fR\|\.\|\.\|\.
+.br
+\fBds ls\fR [\fIoptions\fR] \fIinput\fR\|\.\|\.\|\.
+.br
+.SH "ARGUMENTS"
+.TP
+\fIinput\fR
+Input file\.
+.SH "OPTIONS"
+.TP
+\fB\-l\fR
+Print a detailed list (dimensions and long_name)\.
+.TP
+\fB\-L\fR
+Print a more detailed list (dimensions and attributes)\.
+.SH "EXAMPLES"
+Print list variables in dataset\.nc:
+.IP "" 4
+.nf
+$ ds dataset\.nc
+temperature
+time
+.fi
+.IP "" 0
+.P
+Print detailed list of variables in dataset\.nc:
+.IP "" 4
+.nf
+$ ds \-l dataset\.nc
+temperature time: 3
+time time: 3
+.fi
+.IP "" 0
+

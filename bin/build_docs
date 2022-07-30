@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+
+from ds_format.cmd import CMDS
+from ds_format.cmd.main import main
+from ds_format import help
+
+if __name__ == '__main__':
+	with open('docs/_includes/cmds.md', 'w') as f:
+		f.write('{% raw %}')
+		for cmd, func in sorted(CMDS.items()):
+			f.write(help.help_to_md(func.__doc__))
+			f.write('\n')
+		f.write('{% endraw %}')
+
+	with open('man/ds.1.ronn', 'w') as f:
+		f.write(help.help_to_ronn(main.__doc__))
+
+	for cmd, func in sorted(CMDS.items()):
+		cmd_s = cmd.replace('/', '')
+		with open('man/ds-%s.1.ronn' % cmd_s, 'w') as f:
+			f.write(help.help_to_ronn(func.__doc__))

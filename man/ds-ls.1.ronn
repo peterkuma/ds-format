@@ -1,0 +1,34 @@
+ds-ls(1) -- List variables.
+===========================
+
+## SYNOPSIS
+
+`ds` [*options*] *input*...<br>
+`ds ls` [*options*] *input*...<br>
+
+## ARGUMENTS
+
+- *input*:
+Input file.
+
+## OPTIONS
+
+- `-l`:
+Print a detailed list (dimensions and long_name).
+- `-L`:
+Print a more detailed list (dimensions and attributes).
+
+## EXAMPLES
+
+Print list variables in dataset.nc:
+
+    $ ds dataset.nc
+    temperature
+    time
+
+Print detailed list of variables in dataset.nc:
+
+    $ ds -l dataset.nc
+    temperature time: 3
+    time time: 3
+

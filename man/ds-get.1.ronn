@@ -1,0 +1,13 @@
+ds-get(1) -- Get attribute at path.
+===================================
+
+## SYNOPSIS
+
+`ds get` *path* *input*
+
+## ARGUMENTS
+
+- *path*:
+Attribute path.
+- *input*:
+Input file.
