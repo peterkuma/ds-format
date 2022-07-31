@@ -27,9 +27,13 @@ pages.
 
 ### Release notes
 
-#### 1.2.0-dev (master branch)
+#### 2.0.0 (2022-07-31)
 
-- New ds file format.
+- Command line documentation and man pages.
+- Command output in PST format.
+- ds ls: Added `a:` *attrs* option.
+- New ds file format (experimental).
+- Documentation website.
 
 #### 1.1.2 (2022-01-01)
 

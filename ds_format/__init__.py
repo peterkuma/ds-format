@@ -1,4 +1,4 @@
-__version__ = '1.2.0-dev'
+__version__ = '2.0.0'
 
 from .drivers.netcdf import from_netcdf, to_netcdf
 from .op import \
