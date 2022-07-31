@@ -48,7 +48,7 @@ time time: 3"
 						y += [attrs['long_name']]
 					s = pst.encode(y, encoder=misc.encoder)
 				elif opts.get('L'):
-					s = pst.encode([x, dims, attrs])
+					s = pst.encode([x, dims, attrs], encoder=misc.encoder)
 				print(s.decode('utf-8'))
 				#dims = d['.'][x]['.dims']
 				#size = d['.'][x]['.size']
