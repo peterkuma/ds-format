@@ -7,6 +7,10 @@ ds(1) -- Tool for reading, writing and manipulating dataset files.
 `ds --help` [*cmd*]<br>
 `ds --version`<br>
 
+## DESCRIPTION
+
+The command line interface is based on the [PST format](https://github.com/peterkuma/pst).
+
 ## ARGUMENTS
 
 - *cmd*:

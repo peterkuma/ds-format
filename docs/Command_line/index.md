@@ -8,22 +8,12 @@ title: Command line
 The ds-format Python package provides a command `ds` for reading, writing and
 manipulating data files.
 
+On Unix-like operating systems, manual pages are available for the commands
+with `man ds` and `man ds` *cmd*.
+
 ### Synopsis
 
-```
-ds [<cmd>] [<options>]
-ds --help [<cmd>]
-```
-
-Arguments:
-
-- `cmd`: Command to execute or show help for. If omitted, the command `ls` is assumed.
-
-Options:
-
-- `--help`: Show a help message or help for a command.
-
-The command line interface is based on the [PST format](https://github.com/peterkuma/pst).
+{% include cmd_ds.md %}
 
 ### Commands
 

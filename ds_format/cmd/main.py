@@ -20,6 +20,7 @@ def main():
 		`--help`: "Show this help message or help for a command."
 		`--version`: "Print version number and exit."
 	}}
+	desc: "The command line interface is based on the [PST format](https://github.com/peterkuma/pst)."
 	"Available commands": {{
 		`ls`: "List variables."
 		`cat`: "Print variable."

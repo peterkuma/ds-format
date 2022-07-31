@@ -19,9 +19,11 @@ To install ds-format and dependencies:
 pip3 install ds-format
 ```
 
-**Note:** If installing as a non-root user on Linux, you might have to add  `$HOME/.local/bin`
-to the PATH environmental variable in `~/.profile` (or an equivalent configuration
-file) in order to be able to run the `ds` command.
+If installing as a non-root user on Linux, you might have to add
+`$HOME/.local/bin` to the PATH environment variable in `~/.profile` (or an
+equivalent configuration file) in order to be able to run the `ds` command,
+and `$HOME/.local/share/man` to MANPATH in order to have access to the manual
+pages.
 
 ### Release notes
 
