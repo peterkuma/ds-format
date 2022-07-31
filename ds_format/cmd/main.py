@@ -32,7 +32,6 @@ def main():
 	}}
 	author: "Written by Peter Kuma."
 	copyright: "Copyright (c) 2019-2022 Peter Kuma. This software is distributed under an MIT license."
-	footer: "More information available at https://peterkuma.net/ds-format/."
 	'''
 	args, opts = pst.decode_argv(sys.argv, as_unicode=True)
 	if opts.get('help'):
