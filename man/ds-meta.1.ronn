@@ -7,7 +7,7 @@ ds-meta(1) -- Print metadata.
 
 ## DESCRIPTION
 
-The output is formatted as PST.
+The output is formatted as [PST](https://github.com/peterkuma/pst).
 
 ## ARGUMENTS
 

@@ -22,7 +22,7 @@ def cat(vars_, *input_, **opts):
 	}}
 	options: {{
 		`-h`: "Print human-readable values."
-		`--jd`: "Convert time variables to Julian dates (see Aquarius Time)."
+		`--jd`: "Convert time variables to Julian dates (see [Aquarius Time](https://github.com/peterkuma/aquarius-time))."
 	}}
 	examples: {{
 "Print temperature values in dataset.nc.":

@@ -16,7 +16,7 @@ Arguments:
 Options:
 
 - `-h`: Print human-readable values.
-- `--jd`: Convert time variables to Julian dates (see Aquarius Time).
+- `--jd`: Convert time variables to Julian dates (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)).
 
 Examples:
 
@@ -62,7 +62,7 @@ Usage:
 `ds ls` [*options*] *input*...<br />
 
 
-Lines in the output are formatted as PST.
+Lines in the output are formatted as [PST](https://github.com/peterkuma/pst).
 
 Arguments:
 
@@ -164,7 +164,7 @@ Print metadata.
 
 Usage:`ds meta` [*var*] [*input*]
 
-The output is formatted as PST.
+The output is formatted as [PST](https://github.com/peterkuma/pst).
 
 Arguments:
 
@@ -278,7 +278,7 @@ Print variable statistics.
 
 Usage:`ds stats` *var* *input*
 
-The output is formatted as PST.
+The output is formatted as [PST](https://github.com/peterkuma/pst).
 
 Arguments:
 

@@ -20,7 +20,7 @@ def stats(*args, **opts):
 		`median`: "Sample median."
 		`min`: "Minimum value."
 	}}
-	desc: "The output is formatted as PST."
+	desc: "The output is formatted as [PST](https://github.com/peterkuma/pst)."
 	examples: {{
 "Print statistics of variable temperature in dataset.nc.":
 "$ ds stats temperature dataset.nc

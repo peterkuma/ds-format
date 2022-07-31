@@ -19,7 +19,7 @@ def ls(*args, **opts):
 		`-l`: "Print a detailed list (name and dimensions)."
 		"`-a` *attrs*": "Print given variable attributes. *attrs* can be a string or an array."
 	}}
-	desc: "Lines in the output are formatted as PST."
+	desc: "Lines in the output are formatted as [PST](https://github.com/peterkuma/pst)."
 	examples: {{
 "Print a list of variables in dataset.nc.":
 "$ ds dataset.nc

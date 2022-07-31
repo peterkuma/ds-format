@@ -8,7 +8,7 @@ ds-ls(1) -- List variables.
 
 ## DESCRIPTION
 
-Lines in the output are formatted as PST.
+Lines in the output are formatted as [PST](https://github.com/peterkuma/pst).
 
 ## ARGUMENTS
 

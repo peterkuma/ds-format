@@ -13,7 +13,7 @@ def meta(*args, **opts):
 		*input*: "Input file."
 		*var*: "Variable name to print metadata for. If not specified, print metadata for the whole file."
 	}}
-	desc: "The output is formatted as PST."
+	desc: "The output is formatted as [PST](https://github.com/peterkuma/pst)."
 	examples: {{
 "Print metadata of dataset.nc.":
 "$ ds meta dataset.nc

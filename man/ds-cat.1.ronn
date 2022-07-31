@@ -18,7 +18,7 @@ Input file.
 - `-h`:
 Print human-readable values.
 - `--jd`:
-Convert time variables to Julian dates (see Aquarius Time).
+Convert time variables to Julian dates (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)).
 
 ## EXAMPLES
 
