@@ -22,7 +22,7 @@ def stats(*args, **opts):
 	}}
 	desc: "The output is formatted as PST."
 	examples: {{
-"Print statistics of variable temperature in dataset.nc":
+"Print statistics of variable temperature in dataset.nc.":
 "$ ds stats temperature dataset.nc
 count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000"
 	}}

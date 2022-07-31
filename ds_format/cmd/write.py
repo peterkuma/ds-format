@@ -14,8 +14,8 @@ def write(*args, **opts):
 		*attrs*: "Dataset-level attributes (key-value pairs)."
 	}}
 	examples: {{
-"Write variables time and temperature to dataset.nc":
-"ds write dataset.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } units: degree_celsius } title: \\"Temperature data\\""
+"Write variables time and temperature to dataset.nc.":
+"ds write dataset.nc { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: \\"Temperature data\\""
 	}}
 	'''
 	d = {'.': {}}

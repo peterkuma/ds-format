@@ -20,7 +20,7 @@ Options:
 
 Examples:
 
-Print temperature values in dataset.nc
+Print temperature values in dataset.nc.
 
 ```
 $ ds cat temperature dataset.nc
@@ -29,7 +29,7 @@ $ ds cat temperature dataset.nc
 21.0
 ```
 
-Print time and temperature values in dataset.nc
+Print time and temperature values in dataset.nc.
 
 ```
 $ ds cat { time temperature } dataset.nc
@@ -62,18 +62,20 @@ Usage:
 `ds ls` [*options*] *input*...<br />
 
 
+Lines in the output are formatted as PST.
+
 Arguments:
 
 - *input*: Input file.
 
 Options:
 
-- `-l`: Print a detailed list (dimensions and long_name).
-- `-L`: Print a more detailed list (dimensions and attributes).
+- `-l`: Print a detailed list (name and dimensions).
+- `-a` *attrs*: Print given variable attributes. *attrs* can be a string or an array.
 
 Examples:
 
-Print list variables in dataset.nc
+Print a list of variables in dataset.nc.
 
 ```
 $ ds dataset.nc
@@ -81,12 +83,28 @@ temperature
 time
 ```
 
-Print detailed list of variables in dataset.nc
+Print a detailed list of variables in dataset.nc.
 
 ```
 $ ds -l dataset.nc
 temperature time: 3
 time time: 3
+```
+
+Print a list of variables with an attribute `units`.
+
+```
+$ ds dataset.nc a: units
+temperature celsius
+time s
+```
+
+Print a list of variables with attributes `long_name` and `units`.
+
+```
+$ ds dataset.nc a: { long_name units }
+temperature temperature celsius
+time time s
 ```
 
 #### merge
@@ -110,25 +128,25 @@ Options:
 
 Examples:
 
-Write example data to dataset1.nc
+Write example data to dataset1.nc.
 
 ```
-$ ds write dataset1.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } units: degree_celsius } title: "Temperature data"
+$ ds write dataset1.nc { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data"
 ```
 
-Write example data to dataset2.nc
+Write example data to dataset2.nc.
 
 ```
-$ ds write dataset2.nc { time time { 4 5 6 } } { temperature time { 23. 25. 28. } units: degree_celsius } title: "Temperature data"
+$ ds write dataset2.nc { time time { 4 5 6 } long_name: time units: s } { temperature time { 23. 25. 28. } long_name: temperature units: celsius title: "Temperature data"
 ```
 
-Merge dataset1.nc and dataset2.nc and write the result to dataset.nc
+Merge dataset1.nc and dataset2.nc and write the result to dataset.nc.
 
 ```
 $ ds merge time dataset1.nc dataset2.nc dataset.nc
 ```
 
-Print time and temperature variables in dataset.nc
+Print time and temperature variables in dataset.nc.
 
 ```
 $ ds cat { time temperature } dataset.nc
@@ -155,7 +173,7 @@ Arguments:
 
 Examples:
 
-Print metadata of dataset.nc
+Print metadata of dataset.nc.
 
 ```
 $ ds meta dataset.nc
@@ -163,11 +181,14 @@ $ ds meta dataset.nc
 	title: "Temperature data"
 }}
 time: {{
+	long_name: time
+	units: s
 	.dims: { time }
 	.size: { 3 }
 }}
 temperature: {{
-	units: degree_celsius
+	long_name: temperature
+	units: celsius
 	.dims: { time }
 	.size: { 3 }
 }}
@@ -203,13 +224,13 @@ Supported output formats:
 
 Examples:
 
-Write data to dataset.nc
+Write data to dataset.nc.
 
 ```
-$ ds write dataset.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } units: degree_celsius } title: "Temperature data"
+$ ds write dataset.nc { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius title: "Temperature data"
 ```
 
-List variables in dataset.nc
+List variables in dataset.nc.
 
 ```
 $ ds dataset.nc
@@ -217,37 +238,38 @@ temperature
 time
 ```
 
-Select variable temperature from dataset.nc and write to temperature.nc
+Select variable temperature from dataset.nc and write to temperature.nc.
 
 ```
 $ ds select dataset.nc temperature.nc temperature
 ```
 
-List variables in temperature.nc
+List variables in temperature.nc.
 
 ```
 $ ds temperature.nc
+temperature
 ```
 
-Subset by time index 0 and write to 0.nc
+Subset by time index 0 and write to 0.nc.
 
 ```
 $ ds select dataset.nc 0.nc sel: { time: { 0 } }
 ```
 
-Print variables time and temperature in 0.nc
+Print variables time and temperature in 0.nc.
 
 ```
 $ ds cat { time temperature } 0.nc
 1,16.0
 ```
 
-Convert dataset.nc to JSON
+Convert dataset.nc to JSON.
 
 ```
 $ ds select dataset.nc dataset.json
 $ cat dataset.json
-{"time": [1, 2, 3], "temperature": [16.0, 18.0, 21.0], ".": {"time": {".size": [3], ".dims": ["time"]}, "temperature": {"units": "degree_celsius", ".size": [3], ".dims": ["time"]}, ".": {"title": "Temperature data"}}}
+{"time": [1, 2, 3], "temperature": [16.0, 18.0, 21.0], ".": {".": {"title": "Temperature data"}, "time": {"long_name": "time", "units": "s", ".dims": ["time"], ".size": [3]}, "temperature": {"long_name": "temperature", "units": "celsius ".dims": ["time"], ".size": [3]}}}
 ```
 
 #### stats
@@ -273,7 +295,7 @@ Output description:
 
 Examples:
 
-Print statistics of variable temperature in dataset.nc
+Print statistics of variable temperature in dataset.nc.
 
 ```
 $ ds stats temperature dataset.nc
@@ -294,10 +316,10 @@ Arguments:
 
 Examples:
 
-Write variables time and temperature to dataset.nc
+Write variables time and temperature to dataset.nc.
 
 ```
-ds write dataset.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } units: degree_celsius } title: "Temperature data"
+ds write dataset.nc { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data"
 ```
 
 {% endraw %}

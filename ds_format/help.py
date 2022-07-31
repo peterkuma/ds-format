@@ -139,7 +139,7 @@ def help_to_ronn(x):
 		s += '\n## EXAMPLES\n\n'
 		if type(d['examples']) is dict:
 			for k, v in d['examples'].items():
-				s += '%s:\n\n' % k
+				s += '%s\n\n' % k
 				for line in v.split('\n'):
 					s += '    %s\n' % line
 				s += '\n'

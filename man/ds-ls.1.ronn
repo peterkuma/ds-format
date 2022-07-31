@@ -6,6 +6,10 @@ ds-ls(1) -- List variables.
 `ds` [*options*] *input*...<br>
 `ds ls` [*options*] *input*...<br>
 
+## DESCRIPTION
+
+Lines in the output are formatted as PST.
+
 ## ARGUMENTS
 
 - *input*:
@@ -14,21 +18,33 @@ Input file.
 ## OPTIONS
 
 - `-l`:
-Print a detailed list (dimensions and long_name).
-- `-L`:
-Print a more detailed list (dimensions and attributes).
+Print a detailed list (name and dimensions).
+- `-a` *attrs*:
+Print given variable attributes. *attrs* can be a string or an array.
 
 ## EXAMPLES
 
-Print list variables in dataset.nc:
+Print a list of variables in dataset.nc.
 
     $ ds dataset.nc
     temperature
     time
 
-Print detailed list of variables in dataset.nc:
+Print a detailed list of variables in dataset.nc.
 
     $ ds -l dataset.nc
     temperature time: 3
     time time: 3
+
+Print a list of variables with an attribute `units`.
+
+    $ ds dataset.nc a: units
+    temperature celsius
+    time s
+
+Print a list of variables with attributes `long_name` and `units`.
+
+    $ ds dataset.nc a: { long_name units }
+    temperature temperature celsius
+    time time s
 

@@ -16,16 +16,16 @@ def merge(dim, *args, **opts):
 		"`variables:` `{` *value*... `}`": "Variables to merge along a new dimension or none for all variables."
 	}}
 	examples: {{
-"Write example data to dataset1.nc":
-"$ ds write dataset1.nc { time time { 1 2 3 } } { temperature time { 16. 18. 21. } units: degree_celsius } title: \\"Temperature data\\""
+"Write example data to dataset1.nc.":
+"$ ds write dataset1.nc { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: \\"Temperature data\\""
 
-"Write example data to dataset2.nc":
-"$ ds write dataset2.nc { time time { 4 5 6 } } { temperature time { 23. 25. 28. } units: degree_celsius } title: \\"Temperature data\\""
+"Write example data to dataset2.nc.":
+"$ ds write dataset2.nc { time time { 4 5 6 } long_name: time units: s } { temperature time { 23. 25. 28. } long_name: temperature units: celsius title: \\"Temperature data\\""
 
-"Merge dataset1.nc and dataset2.nc and write the result to dataset.nc":
+"Merge dataset1.nc and dataset2.nc and write the result to dataset.nc.":
 "$ ds merge time dataset1.nc dataset2.nc dataset.nc"
 
-"Print time and temperature variables in dataset.nc":
+"Print time and temperature variables in dataset.nc.":
 "$ ds cat { time temperature } dataset.nc
 1,16.0
 2,18.0

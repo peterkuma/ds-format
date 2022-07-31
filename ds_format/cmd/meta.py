@@ -15,17 +15,20 @@ def meta(*args, **opts):
 	}}
 	desc: "The output is formatted as PST."
 	examples: {{
-"Print metadata of dataset.nc":
+"Print metadata of dataset.nc.":
 "$ ds meta dataset.nc
 .: {{
 	title: \\"Temperature data\\"
 }}
 time: {{
+	long_name: time
+	units: s
 	.dims: { time }
 	.size: { 3 }
 }}
 temperature: {{
-	units: degree_celsius
+	long_name: temperature
+	units: celsius
 	.dims: { time }
 	.size: { 3 }
 }}"

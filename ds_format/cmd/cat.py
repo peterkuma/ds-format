@@ -25,13 +25,13 @@ def cat(vars_, *input_, **opts):
 		`--jd`: "Convert time variables to Julian dates (see Aquarius Time)."
 	}}
 	examples: {{
-"Print temperature values in dataset.nc":
+"Print temperature values in dataset.nc.":
 "$ ds cat temperature dataset.nc
 16.0
 18.0
 21.0"
 
-"Print time and temperature values in dataset.nc":
+"Print time and temperature values in dataset.nc.":
 "$ ds cat { time temperature } dataset.nc
 1,16.0
 2,18.0
