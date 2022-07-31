@@ -109,7 +109,7 @@ def help_to_ronn(x):
 	d = pst.decode(x.encode('utf-8'), as_unicode=True)
 	s = ''
 	if 'title' in d:
-		line = 'ds-%s(1)' % d['title']
+		line = ('%s(1)' if d['title'] == 'ds' else 'ds-%s(1)') % d['title']
 		if 'caption' in d:
 			line += ' -- %s' % d['caption']
 		n = len(line)
