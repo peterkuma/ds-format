@@ -1,10 +1,11 @@
-ds-ds(1) -- Tool for reading, writing and manipulating dataset files.
-=====================================================================
+ds(1) -- Tool for reading, writing and manipulating dataset files.
+==================================================================
 
 ## SYNOPSIS
 
 `ds` [*cmd*] [*options*]<br>
 `ds --help` [*cmd*]<br>
+`ds --version`<br>
 
 ## ARGUMENTS
 
@@ -15,6 +16,8 @@ Command to execute or show help for. If omitted, the command `ls` is assumed. Av
 
 - `--help`:
 Show this help message or help for a command.
+- `--version`:
+Print version number and exit.
 
 ## AVAILABLE COMMANDS
 
