@@ -1,6 +1,6 @@
 .\" generated with Ronn-NG/v0.9.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.9.1
-.TH "DS\-MERGE" "1" "July 2022" ""
+.TH "DS\-MERGE" "1" "August 2022" ""
 .SH "NAME"
 \fBds\-merge\fR \- Merge datasets along a dimension dim\.
 .SH "SYNOPSIS"
@@ -25,28 +25,28 @@ Name of a new dimension\.
 \fBvariables:\fR \fB{\fR \fIvalue\fR\|\.\|\.\|\. \fB}\fR
 Variables to merge along a new dimension or none for all variables\.
 .SH "EXAMPLES"
-Write example data to dataset1\.nc:
+Write example data to dataset1\.nc\.
 .IP "" 4
 .nf
-$ ds write dataset1\.nc { time time { 1 2 3 } } { temperature time { 16\. 18\. 21\. } units: degree_celsius } title: "Temperature data"
+$ ds write dataset1\.nc { time time { 1 2 3 } long_name: time units: s } { temperature time { 16\. 18\. 21\. } long_name: temperature units: celsius } title: "Temperature data"
 .fi
 .IP "" 0
 .P
-Write example data to dataset2\.nc:
+Write example data to dataset2\.nc\.
 .IP "" 4
 .nf
-$ ds write dataset2\.nc { time time { 4 5 6 } } { temperature time { 23\. 25\. 28\. } units: degree_celsius } title: "Temperature data"
+$ ds write dataset2\.nc { time time { 4 5 6 } long_name: time units: s } { temperature time { 23\. 25\. 28\. } long_name: temperature units: celsius title: "Temperature data"
 .fi
 .IP "" 0
 .P
-Merge dataset1\.nc and dataset2\.nc and write the result to dataset\.nc:
+Merge dataset1\.nc and dataset2\.nc and write the result to dataset\.nc\.
 .IP "" 4
 .nf
 $ ds merge time dataset1\.nc dataset2\.nc dataset\.nc
 .fi
 .IP "" 0
 .P
-Print time and temperature variables in dataset\.nc:
+Print time and temperature variables in dataset\.nc\.
 .IP "" 4
 .nf
 $ ds cat { time temperature } dataset\.nc

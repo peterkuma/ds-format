@@ -1,6 +1,6 @@
 .\" generated with Ronn-NG/v0.9.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.9.1
-.TH "DS\-CAT" "1" "July 2022" ""
+.TH "DS\-CAT" "1" "August 2022" ""
 .SH "NAME"
 \fBds\-cat\fR \- Print variable\.
 .SH "SYNOPSIS"
@@ -21,9 +21,9 @@ Input file\.
 Print human\-readable values\.
 .TP
 \fB\-\-jd\fR
-Convert time variables to Julian dates (see Aquarius Time)\.
+Convert time variables to Julian dates (see Aquarius Time \fIhttps://github\.com/peterkuma/aquarius\-time\fR)\.
 .SH "EXAMPLES"
-Print temperature values in dataset\.nc:
+Print temperature values in dataset\.nc\.
 .IP "" 4
 .nf
 $ ds cat temperature dataset\.nc
@@ -33,7 +33,7 @@ $ ds cat temperature dataset\.nc
 .fi
 .IP "" 0
 .P
-Print time and temperature values in dataset\.nc:
+Print time and temperature values in dataset\.nc\.
 .IP "" 4
 .nf
 $ ds cat { time temperature } dataset\.nc

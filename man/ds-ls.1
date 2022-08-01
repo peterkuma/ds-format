@@ -1,6 +1,6 @@
 .\" generated with Ronn-NG/v0.9.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.9.1
-.TH "DS\-LS" "1" "July 2022" ""
+.TH "DS\-LS" "1" "August 2022" ""
 .SH "NAME"
 \fBds\-ls\fR \- List variables\.
 .SH "SYNOPSIS"
@@ -9,7 +9,7 @@
 \fBds ls\fR [\fIoptions\fR] \fIinput\fR\|\.\|\.\|\.
 .br
 .SH "DESCRIPTION"
-Lines in the output are formatted as PST\.
+Lines in the output are formatted as PST \fIhttps://github\.com/peterkuma/pst\fR\.
 .SH "ARGUMENTS"
 .TP
 \fIinput\fR
@@ -19,10 +19,10 @@ Input file\.
 \fB\-l\fR
 Print a detailed list (name and dimensions)\.
 .TP
-\fB\-L\fR
-Print a more detailed list (name, dimensions and attributes)\.
+\fB\-a\fR \fIattrs\fR
+Print given variable attributes\. \fIattrs\fR can be a string or an array\.
 .SH "EXAMPLES"
-Print list variables in dataset\.nc:
+Print a list of variables in dataset\.nc\.
 .IP "" 4
 .nf
 $ ds dataset\.nc
@@ -31,12 +31,30 @@ time
 .fi
 .IP "" 0
 .P
-Print detailed list of variables in dataset\.nc:
+Print a detailed list of variables in dataset\.nc\.
 .IP "" 4
 .nf
 $ ds \-l dataset\.nc
 temperature time: 3
 time time: 3
+.fi
+.IP "" 0
+.P
+Print a list of variables with an attribute \fBunits\fR\.
+.IP "" 4
+.nf
+$ ds dataset\.nc a: units
+temperature celsius
+time s
+.fi
+.IP "" 0
+.P
+Print a list of variables with attributes \fBlong_name\fR and \fBunits\fR\.
+.IP "" 4
+.nf
+$ ds dataset\.nc a: { long_name units }
+temperature temperature celsius
+time time s
 .fi
 .IP "" 0
 

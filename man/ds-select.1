@@ -1,6 +1,6 @@
 .\" generated with Ronn-NG/v0.9.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.9.1
-.TH "DS\-SELECT" "1" "July 2022" ""
+.TH "DS\-SELECT" "1" "August 2022" ""
 .SH "NAME"
 \fBds\-select\fR \- Select and subset variables\.
 .SH "SYNOPSIS"
@@ -36,14 +36,14 @@ NetCDF4
 JSON
 \fB\.json\fR
 .SH "EXAMPLES"
-Write data to dataset\.nc:
+Write data to dataset\.nc\.
 .IP "" 4
 .nf
-$ ds write dataset\.nc { time time { 1 2 3 } } { temperature time { 16\. 18\. 21\. } units: degree_celsius } title: "Temperature data"
+$ ds write dataset\.nc { time time { 1 2 3 } long_name: time units: s } { temperature time { 16\. 18\. 21\. } long_name: temperature units: celsius title: "Temperature data"
 .fi
 .IP "" 0
 .P
-List variables in dataset\.nc:
+List variables in dataset\.nc\.
 .IP "" 4
 .nf
 $ ds dataset\.nc
@@ -52,28 +52,29 @@ time
 .fi
 .IP "" 0
 .P
-Select variable temperature from dataset\.nc and write to temperature\.nc:
+Select variable temperature from dataset\.nc and write to temperature\.nc\.
 .IP "" 4
 .nf
 $ ds select dataset\.nc temperature\.nc temperature
 .fi
 .IP "" 0
 .P
-List variables in temperature\.nc:
+List variables in temperature\.nc\.
 .IP "" 4
 .nf
 $ ds temperature\.nc
+temperature
 .fi
 .IP "" 0
 .P
-Subset by time index 0 and write to 0\.nc:
+Subset by time index 0 and write to 0\.nc\.
 .IP "" 4
 .nf
 $ ds select dataset\.nc 0\.nc sel: { time: { 0 } }
 .fi
 .IP "" 0
 .P
-Print variables time and temperature in 0\.nc:
+Print variables time and temperature in 0\.nc\.
 .IP "" 4
 .nf
 $ ds cat { time temperature } 0\.nc
@@ -81,12 +82,12 @@ $ ds cat { time temperature } 0\.nc
 .fi
 .IP "" 0
 .P
-Convert dataset\.nc to JSON:
+Convert dataset\.nc to JSON\.
 .IP "" 4
 .nf
 $ ds select dataset\.nc dataset\.json
 $ cat dataset\.json
-{"time": [1, 2, 3], "temperature": [16\.0, 18\.0, 21\.0], "\.": {"time": {"\.size": [3], "\.dims": ["time"]}, "temperature": {"units": "degree_celsius", "\.size": [3], "\.dims": ["time"]}, "\.": {"title": "Temperature data"}}}
+{"time": [1, 2, 3], "temperature": [16\.0, 18\.0, 21\.0], "\.": {"\.": {"title": "Temperature data"}, "time": {"long_name": "time", "units": "s", "\.dims": ["time"], "\.size": [3]}, "temperature": {"long_name": "temperature", "units": "celsius "\.dims": ["time"], "\.size": [3]}}}
 .fi
 .IP "" 0
 

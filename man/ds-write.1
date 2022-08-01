@@ -1,6 +1,6 @@
 .\" generated with Ronn-NG/v0.9.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.9.1
-.TH "DS\-WRITE" "1" "July 2022" ""
+.TH "DS\-WRITE" "1" "August 2022" ""
 .SH "NAME"
 \fBds\-write\fR \- Write dataset to a file\.
 .SH "SYNOPSIS"
@@ -16,10 +16,10 @@ Definition of a variable as \fB{\fR \fIname\fR \fB{\fR \fIdim\fR \|\.\|\.\|\. \f
 \fIattrs\fR
 Dataset\-level attributes (key\-value pairs)\.
 .SH "EXAMPLES"
-Write variables time and temperature to dataset\.nc:
+Write variables time and temperature to dataset\.nc\.
 .IP "" 4
 .nf
-ds write dataset\.nc { time time { 1 2 3 } } { temperature time { 16\. 18\. 21\. } units: degree_celsius } title: "Temperature data"
+ds write dataset\.nc { time time { 1 2 3 } long_name: time units: s } { temperature time { 16\. 18\. 21\. } long_name: temperature units: celsius } title: "Temperature data"
 .fi
 .IP "" 0
 

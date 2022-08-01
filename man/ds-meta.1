@@ -1,12 +1,12 @@
 .\" generated with Ronn-NG/v0.9.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.9.1
-.TH "DS\-META" "1" "July 2022" ""
+.TH "DS\-META" "1" "August 2022" ""
 .SH "NAME"
 \fBds\-meta\fR \- Print metadata\.
 .SH "SYNOPSIS"
 \fBds meta\fR [\fIvar\fR] [\fIinput\fR]
 .SH "DESCRIPTION"
-The output is formatted as PST\.
+The output is formatted as PST \fIhttps://github\.com/peterkuma/pst\fR\.
 .SH "ARGUMENTS"
 .TP
 \fIinput\fR
@@ -15,7 +15,7 @@ Input file\.
 \fIvar\fR
 Variable name to print metadata for\. If not specified, print metadata for the whole file\.
 .SH "EXAMPLES"
-Print metadata of dataset\.nc:
+Print metadata of dataset\.nc\.
 .IP "" 4
 .nf
 $ ds meta dataset\.nc
@@ -23,11 +23,14 @@ $ ds meta dataset\.nc
 	title: "Temperature data"
 }}
 time: {{
+	long_name: time
+	units: s
 	\.dims: { time }
 	\.size: { 3 }
 }}
 temperature: {{
-	units: degree_celsius
+	long_name: temperature
+	units: celsius
 	\.dims: { time }
 	\.size: { 3 }
 }}
