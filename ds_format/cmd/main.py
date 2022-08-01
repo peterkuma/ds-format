@@ -27,6 +27,7 @@ def main():
 		`get`: "Get attribute at a path."
 		`merge`: "Merge files along a dimension."
 		`meta`: "Print metadata."
+		`rm`: "Remove variables."
 		`select`: "Select and subset variables."
 		`stats`: "Print variable statistics."
 		`write`: "Write dataset to a file."

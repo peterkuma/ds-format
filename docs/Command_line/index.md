@@ -24,6 +24,7 @@ with `man ds` and `man ds` *cmd*.
 | [get](#get) | Get attribute at a path. |
 | [merge](#merge) | Merge files along a dimension. |
 | [meta](#meta) | Print metadata. |
+| [rm](#rm) | Remove variables. |
 | [select](#select) | Select and subset variables. |
 | [stats](#stats) | Print variable statistics. |
 | [write](#write) | Write dataset to a file. |

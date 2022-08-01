@@ -9,6 +9,7 @@ from .stats import stats
 from .get import get
 from .select import select
 from .write import write
+from .rm import rm
 
 CMDS = {
 	'merge': merge,
@@ -19,5 +20,6 @@ CMDS = {
 	'get': get,
 	'select': select,
 	'write': write,
+	'rm': rm,
 #	'dims': dims,
 }

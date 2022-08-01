@@ -194,6 +194,35 @@ temperature: {{
 }}
 ```
 
+#### rm
+
+Remove variables.
+
+Usage:
+
+`ds rm` *var*... *input* *output*<br />
+
+
+Arguments:
+
+- *var*: Variable name.
+- *input*: Input file.
+- *output*: Output file.
+
+Examples:
+
+Remove variable temperature from dataset.nc and save the output in output.nc.
+
+```
+$ ds rm temperature dataset.nc output.nc
+```
+
+Remove variables time and temperature from dataset.nc and save the output in output.nc.
+
+```
+$ ds rm time temperature dataset.nc output.nc
+```
+
 #### select
 
 Select and subset variables.
