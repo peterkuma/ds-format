@@ -6,8 +6,8 @@ import pst
 
 def meta(*args, **opts):
 	'''
-	title: "meta"
-	caption: "Print metadata."
+	title: meta
+	caption: "Print dataset metadata."
 	usage: "`ds meta` [*var*] [*input*]"
 	arguments: {{
 		*input*: "Input file."

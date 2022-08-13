@@ -1,0 +1,41 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-RENAME_ATTR" "1" "August 2022" ""
+.SH "NAME"
+\fBds\-rename_attr\fR \- Rename an attribute in a dataset\.
+.SH "SYNOPSIS"
+\fBds rename_attr\fR [\fIvar\fR] \fIold\fR \fInew\fR \fIinput\fR \fIoutput\fR
+.br
+\fBds rename_attr\fR [\fIvar\fR] { \fIold\fR \fInew\fR }\|\.\|\.\|\. \fIinput\fR \fIoutput\fR
+.br
+.SH "ARGUMENTS"
+.TP
+\fIvar\fR
+Variable name\.
+.TP
+\fIold\fR
+Old attribute name\.
+.TP
+\fInew\fR
+New attribute name\.
+.TP
+\fIinput\fR
+Input file\.
+.TP
+\fIoutput\fR
+Output file\.
+.SH "EXAMPLES"
+Rename the attribute \fBtitle\fR in \fBdataset\.nc\fR to \fBnewtitle\fR and save the output in \fBoutput\.nc\fR\.
+.IP "" 4
+.nf
+$ ds rename_attr title newtitle dataset\.nc output\.nc
+.fi
+.IP "" 0
+.P
+Rename the attribute \fBunits\fR of the variable \fBtemperature\fR in \fBdataset\.nc\fR to \fBnewunits\fR and save the output in \fBoutput\.nc\fR\.
+.IP "" 4
+.nf
+$ ds rename_attr temperature units newunits dataset\.nc output\.nc
+.fi
+.IP "" 0
+

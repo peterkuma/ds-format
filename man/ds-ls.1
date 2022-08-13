@@ -4,23 +4,26 @@
 .SH "NAME"
 \fBds\-ls\fR \- List variables\.
 .SH "SYNOPSIS"
-\fBds\fR [\fIoptions\fR] \fIinput\fR\|\.\|\.\|\.
+\fBds\fR [\fIoptions\fR] [\fIvar\fR]\|\.\|\.\|\. \fIinput\fR
 .br
-\fBds ls\fR [\fIoptions\fR] \fIinput\fR\|\.\|\.\|\.
+\fBds ls\fR [\fIoptions\fR] [\fIvar\fR]\|\.\|\.\|\. \fIinput\fR
 .br
 .SH "DESCRIPTION"
 Lines in the output are formatted as PST \fIhttps://github\.com/peterkuma/pst\fR\.
 .SH "ARGUMENTS"
+.TP
+\fIvar\fR
+Variable to list\.
 .TP
 \fIinput\fR
 Input file\.
 .SH "OPTIONS"
 .TP
 \fB\-l\fR
-Print a detailed list (name and dimensions)\.
+Print a detailed list of variabes (name and dimensions), preceded with a line with dataset dimensions\.
 .TP
-\fB\-a\fR \fIattrs\fR
-Print given variable attributes\. \fIattrs\fR can be a string or an array\.
+\fBa:\fR \fIattrs\fR
+Print variable attributes\. \fIattrs\fR can be a string or an array\.
 .SH "EXAMPLES"
 Print a list of variables in dataset\.nc\.
 .IP "" 4
@@ -35,8 +38,9 @@ Print a detailed list of variables in dataset\.nc\.
 .IP "" 4
 .nf
 $ ds \-l dataset\.nc
-temperature time: 3
-time time: 3
+time: 3
+temperature
+time
 .fi
 .IP "" 0
 .P

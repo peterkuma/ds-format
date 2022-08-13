@@ -1,0 +1,31 @@
+ds-dims(1) -- Print dimensions of a dataset or a variable.
+==========================================================
+
+## SYNOPSIS
+
+`ds dims` [*var*] *input*
+
+## ARGUMENTS
+
+- *var*:
+Variable to print dimensions of.
+- *input*:
+Input file.
+
+## OPTIONS
+
+- `-s`, `--size`:
+If *var* is defined, print the size of dimensions as an object instead of an array of dimensions. The order is not guaranteed.
+
+## EXAMPLES
+
+Print dimensions of a dataset.
+
+    $ ds dims dataset.nc
+    time
+
+Print dimensions of the variable `temperature`.
+
+    $ ds dims temperature dataset.nc
+    time
+

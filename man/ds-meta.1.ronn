@@ -1,5 +1,5 @@
-ds-meta(1) -- Print metadata.
-=============================
+ds-meta(1) -- Print dataset metadata.
+=====================================
 
 ## SYNOPSIS
 

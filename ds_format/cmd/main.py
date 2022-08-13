@@ -3,10 +3,11 @@ import sys
 import pst
 import ds_format as ds
 from ds_format import help
+from ds_format.cmd import UsageError
 
 def main():
 	'''
-	title: "ds"
+	title: ds
 	caption: "Tool for reading, writing and manipulating dataset files."
 	usage: {
 		"`ds` [*cmd*] [*options*]"
@@ -22,13 +23,22 @@ def main():
 	}}
 	desc: "The command line interface is based on the [PST format](https://github.com/peterkuma/pst)."
 	"Available commands": {{
-		`ls`: "List variables."
+		`attrs`: "Print attributes in a dataset."
 		`cat`: "Print variable."
+		`dims`: "Print dimensions of a dataset or a variable."
 		`get`: "Get attribute at a path."
+		`ls`: "List variables."
 		`merge`: "Merge files along a dimension."
-		`meta`: "Print metadata."
+		`meta`: "Print dataset metadata."
+		`rm`: "Remove variables."
+		`rename`: "Rename variables."
+		`rename_attr`: "Rename an attribute in a dataset."
+		`rename_dim`: "Rename a dimension."
 		`rm`: "Remove variables."
 		`select`: "Select and subset variables."
+		`set`: "Set or add variable data, dimensions and attributes in an existing dataset."
+		`set_attrs`: "Set attributes in a dataset."
+		`set_dims`: "Set variable dimensions."
 		`stats`: "Print variable statistics."
 		`write`: "Write dataset to a file."
 	}}
@@ -70,3 +80,7 @@ def main():
 	except IOError as e:
 		print(e)
 		sys.exit(1)
+	except UsageError as e:
+		print('%s' % e, file=sys.stderr)
+		print(help.help_to_usage(f.__doc__), end='', file=sys.stderr)
+		print('Use `ds %s --help` for command help.' % cmd, file=sys.stderr)

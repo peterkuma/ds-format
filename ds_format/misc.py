@@ -20,4 +20,5 @@ def encoder(x):
 		return x.item()
 	elif isinstance(x, np.ndarray):
 		return x.tolist()
-	return x
+	else:
+		return x

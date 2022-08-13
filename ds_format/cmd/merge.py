@@ -2,8 +2,8 @@ import ds_format as ds
 
 def merge(dim, *args, **opts):
 	'''
-	title: "merge"
-	caption: "Merge datasets along a dimension dim."
+	title: merge
+	caption: "Merge datasets along a dimension."
 	usage: "`ds merge` *dim* *input*... *output* [*options*]"
 	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is `none` and *dim* is not new, variables without the dimension are set with the first occurrence of the variable. If *new* is not `none` and *dim* is not new, variables without the dimension dim are merged along a new dimension *new*. If variables is not `none`, only those variables are merged along a new dimension and other variables are set to the first occurrence of the variable."
 	arguments: {{

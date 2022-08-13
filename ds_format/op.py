@@ -46,20 +46,31 @@ def select(d, sel):
 			continue
 		select_var(d, name, sel)
 
-def get_dims(d, name=None):
+def get_dims(d, name=None, full=False, size=False):
+	dims = {}
 	if name is None:
-		dims = {}
-		for name in get_vars(d):
-			data = get_var(d, name)
-			for i, dim in enumerate(get_dims(d, name)):
-				dims[dim] = data.shape[i]
-		return dims
+		for name in get_vars(d, full):
+			var_dims = get_dims(d, name, size=True)
+			for k, v in var_dims.items():
+				dims[k] = dims.get(k) if v is None else v
 	else:
-		try: return d['.'][name]['.dims']
-		except KeyError: return gen_dims(d, name)
+		meta = get_meta(d, name)
+		if not size: return meta.get('.dims', gen_dims(d, name))
+		data = get_var(d, name)
+		var_size = meta.get('.size')
+		var_dims = meta.get('.dims', gen_dims(d, name))
+		for i, dim in enumerate(var_dims):
+			if data is not None:
+				dims[dim] = data.shape[i]
+			elif var_size is not None:
+				dims[dim] = var_size[i]
+			else:
+				dims[dim] = None
+	return dims
 
-def get_vars(d):
-	return filter_hidden(d.keys())
+def get_vars(d, full=False):
+	vars_ = get_meta(d).keys() if full else d.keys()
+	return filter_hidden(vars_)
 
 def get_var(d, name):
 	if name not in d:
@@ -72,10 +83,14 @@ def get_var(d, name):
 
 def get_meta(d, name=None):
 	if name is None:
-		return d.get('.', {})
+		if '.' in d: return d['.']
+		d['.'] = {}
+		return d['.']
 	else:
-		try: return d['.'][name]
-		except KeyError: return {}
+		meta = get_meta(d)
+		if name in meta: return meta[name]
+		meta[name] = {}
+		return meta[name]
 
 def get_attrs(d, name=None):
 	if name is None:
@@ -87,7 +102,13 @@ def get_attrs(d, name=None):
 
 def gen_dims(d, name):
 	data = get_var(d, name)
-	ndim = data.ndim if data is not None else len(get_meta(d, name)['.size'])
+	var_meta = get_meta(d, name)
+	if data is not None:
+		ndim = data.ndim
+	elif '.size' in var_meta:
+		ndim = len(var_meta['.size'])
+	else:
+		ndim = 0
 	return [name + ('_%d' % i) for i in range(1, ndim + 1)]
 
 def parse_time(t):
@@ -125,7 +146,7 @@ def merge_var(dd, var, dim):
 def merge(dd, dim, new=None, variables=None):
 	dx = {'.': {'.': {}}}
 	vars_ = list(set([x for d in dd for x in get_vars(d)]))
-	dims = [k for d in dd for k in get_dims(d).keys()]
+	dims = [k for d in dd for k in get_dims(d)]
 	is_new = dim not in dims
 	for var in vars_:
 		var_dims = get_dims(dd[0], var)
@@ -146,14 +167,14 @@ def merge(dd, dim, new=None, variables=None):
 def rename_dim(d, old, new):
 	if old == new:
 		return
-	if '.' in d:
-		for var in d['.'].keys():
-			meta = d['.'][var]
-			if '.dims' in d['.'][var]:
-				dims = d['.'][var]['.dims']
-				for i, dim in enumerate(dims):
-					if dim == old:
-						dims[i] = new
+	for var in get_vars(d, full=True):
+		meta = get_meta(d, var)
+		if '.dims' in meta:
+			dims = list(meta['.dims'])
+			for i, dim in enumerate(dims):
+				if dim == old:
+					dims[i] = new
+			meta['.dims'] = dims
 
 def rename(d, old, new):
 	if old == new:

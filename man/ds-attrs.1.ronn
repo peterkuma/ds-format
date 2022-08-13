@@ -1,0 +1,30 @@
+ds-attrs(1) -- Print attributes in a dataset.
+=============================================
+
+## SYNOPSIS
+
+`ds attrs` [*var*] *input*
+
+## DESCRIPTION
+
+The output is formatted as [PST](https://github.com/peterkuma/pst).
+
+## ARGUMENTS
+
+- *var*:
+Variable name.
+- *input*:
+Input file.
+
+## EXAMPLES
+
+Print dataset attributes in `dataset.nc`.
+
+    $ ds attrs dataset.nc
+    title: "Temperature data"
+
+Print attributes of the variable `temperature` in `dataset.nc`.
+
+    $ ds attrs temperature dataset.nc
+    long_name: temperature units: celsius
+

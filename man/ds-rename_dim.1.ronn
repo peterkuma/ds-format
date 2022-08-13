@@ -1,0 +1,33 @@
+ds-rename_dim(1) -- Rename a dimension.
+=======================================
+
+## SYNOPSIS
+
+`ds rename_dim` *old* *new* *input* *output*<br>
+`ds rename_dim` { *old* *new* }... *input* *output*<br>
+
+## ARGUMENTS
+
+- *old*:
+Old dimension name.
+- *new*:
+New dimension name.
+- *input*:
+Input file.
+- *output*:
+Output file.
+
+## EXAMPLES
+
+Rename dimension `time` to `newtime` in `dataset.nc` and save the output in `output.nc`.
+
+    $ ds -l dataset.nc
+    time: 3
+    temperature
+    time
+    $ ds rename_dim time newtime dataset.nc output.nc
+    $ ds -l output.nc
+    newtime: 3
+    temperature
+    time
+

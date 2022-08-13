@@ -1,0 +1,35 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-DIMS" "1" "August 2022" ""
+.SH "NAME"
+\fBds\-dims\fR \- Print dimensions of a dataset or a variable\.
+.SH "SYNOPSIS"
+\fBds dims\fR [\fIvar\fR] \fIinput\fR
+.SH "ARGUMENTS"
+.TP
+\fIvar\fR
+Variable to print dimensions of\.
+.TP
+\fIinput\fR
+Input file\.
+.SH "OPTIONS"
+.TP
+\fB\-s\fR, \fB\-\-size\fR
+If \fIvar\fR is defined, print the size of dimensions as an object instead of an array of dimensions\. The order is not guaranteed\.
+.SH "EXAMPLES"
+Print dimensions of a dataset\.
+.IP "" 4
+.nf
+$ ds dims dataset\.nc
+time
+.fi
+.IP "" 0
+.P
+Print dimensions of the variable \fBtemperature\fR\.
+.IP "" 4
+.nf
+$ ds dims temperature dataset\.nc
+time
+.fi
+.IP "" 0
+

@@ -1,0 +1,29 @@
+ds-rm_attr(1) -- Remove an attribute in a dataset.
+==================================================
+
+## SYNOPSIS
+
+`ds rm_attr` [*var*] *attr* *input* *output*<br>
+`ds rm_attr` [*var*] { *attr*... } *input* *output*<br>
+
+## ARGUMENTS
+
+- *var*:
+Variable name.
+- *attr*:
+Attribute to remove.
+- *input*:
+Input file.
+- *output*:
+Output file.
+
+## EXAMPLES
+
+Remove the attribute `title` from `dqtaset.nc` and save the output in `output.nc`.
+
+    $ ds rm_attr title dataset.nc output.nc
+
+Remove the attribute `units` of the variable `temperature` in `dataset.nc` and save the output in `output.nc`.
+
+    $ ds rm_attr temperature title dataset.nc output.nc
+

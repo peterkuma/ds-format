@@ -3,7 +3,7 @@ from ds_format.cmd import UsageError
 
 def select(input_, output, variables=None, sel=None):
 	'''
-	title: "select"
+	title: select
 	caption: "Select and subset variables."
 	usage: "`ds select` *input* *output* [*variables*] [*options*]"
 	desc: "select can also be used to convert between different file formats (`ds select` *input* *output*)."

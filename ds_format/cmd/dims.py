@@ -1,14 +1,34 @@
+from ds_format.cmd import UsageError
 import ds_format as ds
+import pst
 
 def dims(*args, **opts):
-	if len(args) == 0:
-		raise TypeError('Usage: dims <input>...')
-	input_ = args
-	for filename in input_:
-		d = ds.read(filename, [])
-		dims = ds.get_dims(d)
-		for dim in dims:
-			print(dim)
-		out = {x: for x in dims}
-		j = json.dumps(out, indent=4)
-		print(j)
+	'''
+	title: dims
+	caption: "Print dimensions of a dataset or a variable."
+	usage: "`ds dims` [*var*] *input*"
+	arguments: {{
+		*var*: "Variable to print dimensions of."
+		*input*: "Input file."
+	}}
+	options: {{
+		"`-s`, `--size`": "If *var* is defined, print the size of dimensions as an object instead of an array of dimensions. The order is not guaranteed."
+	}}
+	examples: {{
+		"Print dimensions of a dataset.":
+"$ ds dims dataset.nc
+time"
+		"Print dimensions of the variable `temperature`.":
+"$ ds dims temperature dataset.nc
+time"
+
+	}}
+	'''
+	if len(args) not in (1, 2):
+		raise UsageError('Invalid number of arguments')
+	var = args[0] if len(args) == 2 else None
+	input_ = args[-1]
+	size = opts.get('s', False) or opts.get('size', False)
+	d = ds.read(input_, [], full=True)
+	dims = ds.get_dims(d, var, full=True, size=size)
+	print(pst.encode(dims).decode('utf-8'))

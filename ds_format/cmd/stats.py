@@ -6,7 +6,7 @@ import pst
 
 def stats(*args, **opts):
 	'''
-	title: "stats"
+	title: stats
 	caption: "Print variable statistics."
 	usage: "`ds stats` *var* *input*"
 	arguments: {{

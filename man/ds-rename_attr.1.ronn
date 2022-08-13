@@ -1,0 +1,31 @@
+ds-rename_attr(1) -- Rename an attribute in a dataset.
+======================================================
+
+## SYNOPSIS
+
+`ds rename_attr` [*var*] *old* *new* *input* *output*<br>
+`ds rename_attr` [*var*] { *old* *new* }... *input* *output*<br>
+
+## ARGUMENTS
+
+- *var*:
+Variable name.
+- *old*:
+Old attribute name.
+- *new*:
+New attribute name.
+- *input*:
+Input file.
+- *output*:
+Output file.
+
+## EXAMPLES
+
+Rename the attribute `title` in `dataset.nc` to `newtitle` and save the output in `output.nc`.
+
+    $ ds rename_attr title newtitle dataset.nc output.nc
+
+Rename the attribute `units` of the variable `temperature` in `dataset.nc` to `newunits` and save the output in `output.nc`.
+
+    $ ds rename_attr temperature units newunits dataset.nc output.nc
+

@@ -1,0 +1,26 @@
+ds-rm(1) -- Remove variables.
+=============================
+
+## SYNOPSIS
+
+`ds rm` *var*... *input* *output*<br>
+
+## ARGUMENTS
+
+- *var*:
+Variable name.
+- *input*:
+Input file.
+- *output*:
+Output file.
+
+## EXAMPLES
+
+Remove variable temperature from dataset.nc and save the output in output.nc.
+
+    $ ds rm temperature dataset.nc output.nc
+
+Remove variables time and temperature from dataset.nc and save the output in output.nc.
+
+    $ ds rm time temperature dataset.nc output.nc
+

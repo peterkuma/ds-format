@@ -2,13 +2,27 @@ import pst
 from markdown import markdown
 from bs4 import BeautifulSoup
 
+def f(s):
+	soup = BeautifulSoup(markdown(s), features='lxml')
+	for e in soup.find_all('em'):
+		if e.string is not None:
+			e.string = e.string.upper()
+	return soup.get_text()
+
+def help_to_usage(x):
+	d = pst.decode(x.encode('utf-8'), as_unicode=True)
+	s = ''
+	if 'usage' in d:
+		s += 'Usage: '
+		if type(d['usage']) is list:
+			for i, line in enumerate(d['usage']):
+				if i > 0: s += '       '
+				s += '%s\n' % f(line)
+		else:
+			s += '%s\n' % f(d['usage'])
+	return s
+
 def help_to_text(x):
-	def f(s):
-		soup = BeautifulSoup(markdown(s), features='lxml')
-		for e in soup.find_all('em'):
-			if e.string is not None:
-				e.string = e.string.upper()
-		return soup.get_text()
 	def to_list(label, items):
 		s = ''
 		s += '\n%s:\n\n' % label
@@ -69,7 +83,7 @@ def help_to_md(x):
 	if 'caption' in d:
 		s += '\n%s\n' % d['caption']
 	if 'usage' in d:
-		s += '\nUsage:'
+		s += '\nUsage: '
 		if type(d['usage']) is list:
 			s += '\n\n'
 			for i, line in enumerate(d['usage']):

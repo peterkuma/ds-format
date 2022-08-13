@@ -1,0 +1,38 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-RM_ATTR" "1" "August 2022" ""
+.SH "NAME"
+\fBds\-rm_attr\fR \- Remove an attribute in a dataset\.
+.SH "SYNOPSIS"
+\fBds rm_attr\fR [\fIvar\fR] \fIattr\fR \fIinput\fR \fIoutput\fR
+.br
+\fBds rm_attr\fR [\fIvar\fR] { \fIattr\fR\|\.\|\.\|\. } \fIinput\fR \fIoutput\fR
+.br
+.SH "ARGUMENTS"
+.TP
+\fIvar\fR
+Variable name\.
+.TP
+\fIattr\fR
+Attribute to remove\.
+.TP
+\fIinput\fR
+Input file\.
+.TP
+\fIoutput\fR
+Output file\.
+.SH "EXAMPLES"
+Remove the attribute \fBtitle\fR from \fBdqtaset\.nc\fR and save the output in \fBoutput\.nc\fR\.
+.IP "" 4
+.nf
+$ ds rm_attr title dataset\.nc output\.nc
+.fi
+.IP "" 0
+.P
+Remove the attribute \fBunits\fR of the variable \fBtemperature\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
+.IP "" 4
+.nf
+$ ds rm_attr temperature title dataset\.nc output\.nc
+.fi
+.IP "" 0
+

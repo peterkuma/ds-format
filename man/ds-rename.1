@@ -1,0 +1,38 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-RENAME" "1" "August 2022" ""
+.SH "NAME"
+\fBds\-rename\fR \- Rename variables\.
+.SH "SYNOPSIS"
+\fBds rename\fR \fIold\fR \fInew\fR \fIinput\fR \fIoutput\fR
+.br
+\fBds rename\fR { \fIold\fR \fInew\fR }\|\.\|\.\|\. \fIinput\fR \fIoutput\fR
+.br
+.SH "ARGUMENTS"
+.TP
+\fIold\fR
+Old variable name\.
+.TP
+\fInew\fR
+New variable name\.
+.TP
+\fIinput\fR
+Input file\.
+.TP
+\fIoutput\fR
+Output file\.
+.SH "EXAMPLES"
+Rename variable time to a in dataset\.nc and save the output in output\.nc\.
+.IP "" 4
+.nf
+$ ds rename time a dataset\.nc output\.nc
+.fi
+.IP "" 0
+.P
+Rename variable \fBtime\fR to \fBa and\fRtemperature\fBto\fRb` in dataset\.nc and save the output in output\.nc\.
+.IP "" 4
+.nf
+$ ds rename { time a } { temperature b } dataset\.nc output\.nc
+.fi
+.IP "" 0
+

@@ -2,7 +2,7 @@
 
 Tool for reading, writing and manipulating dataset files.
 
-Usage:
+Usage: 
 
 `ds` [*cmd*] [*options*]<br />
 `ds --help` [*cmd*]<br />
@@ -22,13 +22,21 @@ Options:
 
 Available commands:
 
-- `ls`: List variables.
+- `attrs`: Print attributes in a dataset.
 - `cat`: Print variable.
+- `dims`: Print dimensions of a dataset or a variable.
 - `get`: Get attribute at a path.
+- `ls`: List variables.
 - `merge`: Merge files along a dimension.
-- `meta`: Print metadata.
+- `meta`: Print dataset metadata.
 - `rm`: Remove variables.
+- `rename`: Rename variables.
+- `rename_attr`: Rename an attribute in a dataset.
+- `rename_dim`: Rename a dimension.
 - `select`: Select and subset variables.
+- `set`: Set or add variable data, dimensions and attributes in an existing dataset.
+- `set_attrs`: Set attributes in a dataset.
+- `set_dims`: Set variable dimensions.
 - `stats`: Print variable statistics.
 - `write`: Write dataset to a file.
 

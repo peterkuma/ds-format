@@ -1,0 +1,36 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-SET_DIMS" "1" "August 2022" ""
+.SH "NAME"
+\fBds\-set_dims\fR \- Set variable dimensions\.
+.SH "SYNOPSIS"
+\fBds set_dims\fR \fIvar\fR \fIdim\fR\|\.\|\.\|\. \fIinput\fR \fIoutput\fR
+.SH "ARGUMENTS"
+.TP
+\fIvar\fR
+Variable to set dimensions for\.
+.TP
+\fIdim\fR
+Dimension name\.
+.TP
+\fIinput\fR
+Input file\.
+.TP
+\fIoutput\fR
+Output file\.
+.SH "EXAMPLES"
+Set dimensions of the variable \fBtemperature\fR in \fBdataset\.nc\fR to (\fBnewtime\fR) and save the output in \fBoutput\.nc\fR\.
+.IP "" 4
+.nf
+$ ds \-l dataset\.nc
+time: 3
+temperature
+time
+$ ds set_dims temperature newtime dataset\.nc output\.nc
+$ ds \-l output\.nc
+newtime: 3
+temperature
+time
+.fi
+.IP "" 0
+

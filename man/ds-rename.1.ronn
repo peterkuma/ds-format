@@ -1,0 +1,29 @@
+ds-rename(1) -- Rename variables.
+=================================
+
+## SYNOPSIS
+
+`ds rename` *old* *new* *input* *output*<br>
+`ds rename` { *old* *new* }... *input* *output*<br>
+
+## ARGUMENTS
+
+- *old*:
+Old variable name.
+- *new*:
+New variable name.
+- *input*:
+Input file.
+- *output*:
+Output file.
+
+## EXAMPLES
+
+Rename variable time to a in dataset.nc and save the output in output.nc.
+
+    $ ds rename time a dataset.nc output.nc
+
+Rename variable `time` to `a and `temperature` to `b` in dataset.nc and save the output in output.nc.
+
+    $ ds rename { time a } { temperature b } dataset.nc output.nc
+

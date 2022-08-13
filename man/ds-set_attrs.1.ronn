@@ -1,0 +1,26 @@
+ds-set_attrs(1) -- Set attributes in a dataset.
+===============================================
+
+## SYNOPSIS
+
+`ds set_attrs` [*var*] [*attr*: *value*]... *input* *output*
+
+## ARGUMENTS
+
+- *var*:
+Variable name.
+- *attr*:
+Attribute to set.
+- *value*:
+Attribute value.
+- *input*:
+Input file.
+- *output*:
+Output file.
+
+## EXAMPLES
+
+Set the attribute `newtitle` to `New title` in `dataset.nc` and save the output in `output.nc`.
+
+    $ ds set_attrs newtitle: "New title" dataset.nc output.nc
+

@@ -1,5 +1,5 @@
-ds-merge(1) -- Merge datasets along a dimension dim.
-====================================================
+ds-merge(1) -- Merge datasets along a dimension.
+================================================
 
 ## SYNOPSIS
 

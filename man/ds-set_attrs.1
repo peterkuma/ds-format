@@ -1,0 +1,31 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-SET_ATTRS" "1" "August 2022" ""
+.SH "NAME"
+\fBds\-set_attrs\fR \- Set attributes in a dataset\.
+.SH "SYNOPSIS"
+\fBds set_attrs\fR [\fIvar\fR] [\fIattr\fR: \fIvalue\fR]\|\.\|\.\|\. \fIinput\fR \fIoutput\fR
+.SH "ARGUMENTS"
+.TP
+\fIvar\fR
+Variable name\.
+.TP
+\fIattr\fR
+Attribute to set\.
+.TP
+\fIvalue\fR
+Attribute value\.
+.TP
+\fIinput\fR
+Input file\.
+.TP
+\fIoutput\fR
+Output file\.
+.SH "EXAMPLES"
+Set the attribute \fBnewtitle\fR to \fBNew title\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
+.IP "" 4
+.nf
+$ ds set_attrs newtitle: "New title" dataset\.nc output\.nc
+.fi
+.IP "" 0
+

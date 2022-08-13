@@ -3,7 +3,7 @@ import ds_format as ds
 
 def rm(*args, **opts):
 	'''
-	title: "rm"
+	title: rm
 	caption: "Remove variables."
 	usage: {
 		"`ds rm` *var*... *input* *output*"
@@ -22,7 +22,7 @@ def rm(*args, **opts):
 	}}
 	'''
 	if len(args) < 3:
-		raise ValueError('Too few arguments')
+		raise UsageError('Too few arguments')
 	vars_ = args[:-2]
 	input_ = args[-2]
 	output = args[-1]

@@ -1,0 +1,39 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-RENAME_DIM" "1" "August 2022" ""
+.SH "NAME"
+\fBds\-rename_dim\fR \- Rename a dimension\.
+.SH "SYNOPSIS"
+\fBds rename_dim\fR \fIold\fR \fInew\fR \fIinput\fR \fIoutput\fR
+.br
+\fBds rename_dim\fR { \fIold\fR \fInew\fR }\|\.\|\.\|\. \fIinput\fR \fIoutput\fR
+.br
+.SH "ARGUMENTS"
+.TP
+\fIold\fR
+Old dimension name\.
+.TP
+\fInew\fR
+New dimension name\.
+.TP
+\fIinput\fR
+Input file\.
+.TP
+\fIoutput\fR
+Output file\.
+.SH "EXAMPLES"
+Rename dimension \fBtime\fR to \fBnewtime\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
+.IP "" 4
+.nf
+$ ds \-l dataset\.nc
+time: 3
+temperature
+time
+$ ds rename_dim time newtime dataset\.nc output\.nc
+$ ds \-l output\.nc
+newtime: 3
+temperature
+time
+.fi
+.IP "" 0
+

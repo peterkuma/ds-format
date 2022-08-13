@@ -1,20 +1,17 @@
+import numpy as np
 from ds_format.cmd import UsageError
 import ds_format as ds
+from ds_format import misc
 import aquarius_time as aq
+import pst
 
-def pretty(x, var):
-	if var.get('units') == 'days since -4713-11-24 12:00 UTC' and \
-	   var.get('calendar') == 'proleptic_gregorian':
-		return aq.to_iso(x)
-	return str(x)
-
-def cat(vars_, *input_, **opts):
+def cat(*args, **opts):
 	'''
-	title: "cat"
+	title: cat
 	caption: "Print variable."
 	usage: {
 		"`ds cat` [*options*] *var* *input*"
-		"`ds cat` [*options*] `{` *var*... `}` *input*"
+		"`ds cat` [*options*] *var*... *input*"
 	}
 	arguments: {{
 		*var*: "Variable name."
@@ -27,39 +24,44 @@ def cat(vars_, *input_, **opts):
 	examples: {{
 "Print temperature values in dataset.nc.":
 "$ ds cat temperature dataset.nc
-16.0
-18.0
-21.0"
+16.000000
+18.000000
+21.000000"
 
 "Print time and temperature values in dataset.nc.":
-"$ ds cat { time temperature } dataset.nc
-1,16.0
-2,18.0
-3,21.0
-4,23.0
-5,25.0
-6,28.0"
+"$ ds cat time temperature dataset.nc
+1 16.000000
+2 18.000000
+3 21.000000"
 	}}
 	'''
-	if not isinstance(vars_, list):
-		vars_ = [vars_]
-	for filename in input_:
-		d = ds.read(filename, vars_,
-			full=False,
-			jd=(opts.get('jd') or opts.get('h')),
-		)
-		varsx = [x for x in d.keys() if not x.startswith('.')]
-		if len(varsx) == 0:
-			return
-		dims0 = d['.'][varsx[0]]['.dims']
-		for var in varsx:
-			dims = d['.'][var]['.dims']
-			if dims != dims0:
-				raise ValueError('incompatible dimensions')
-		n = d[vars_[0]].flatten().shape[0]
-		for i in range(n):
-			if opts.get('h'):
-				s = ','.join([pretty(d[var].flatten()[i], d['.'][var]) for var in vars_])
-			else:
-				s = ','.join([str(d[var].flatten()[i]) for var in vars_])
-			print(s)
+	if len(args) < 1:
+		raise UsageError('Invalid number of arguments')
+	vars_ = args[:-1]
+	input_ = args[-1]
+
+	d = ds.read(input_, vars_,
+		full=False,
+		jd=(opts.get('jd') or opts.get('h')),
+	)
+	if len(vars_) == 0:
+		return
+	dims = [ds.get_dims(d, var) for var in vars_]
+	if not all([dim == dims[0] for dim in dims]):
+		raise ValueError('incompatible dimensions')
+
+	xx = []
+	for var in vars_:
+		attrs = ds.get_attrs(d, var)
+		x = d[var]
+		if opts.get('h') and \
+		   attrs.get('units') == 'days since -4713-11-24 12:00 UTC' and \
+		   attrs.get('calendar') == 'proleptic_gregorian':
+			x = aq.to_iso(x)
+		if not isinstance(x, np.ndarray) or x.ndim == 0:
+			x = [x]
+		xx += [x]
+	n = len(xx[0])
+	for i in range(n):
+		y = [x[i] for x in xx]
+		print(pst.encode(y, encoder=misc.encoder).decode('utf-8'))
