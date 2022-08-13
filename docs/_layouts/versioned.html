@@ -1,0 +1,12 @@
+---
+layout: default
+---
+{% assign versions = "master,2.0.0" | split:',' %}
+<div class="versions">
+<strong>Documentation version:</strong>
+{% for version in versions %}
+<a href="../{{version}}/" {% if page.version == version %}class="selected"{% endif %}>{{version}}</a>
+{% endfor %}
+</div>
+
+{{ content }}

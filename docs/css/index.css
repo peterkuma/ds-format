@@ -205,6 +205,14 @@ tr:last-child td {
 	border-bottom: none;
 }
 
+.versions a.selected {
+	font-weight: bold;
+}
+
+.versions a:not(:last-child):after {
+	content: ", ";
+	font-weight: normal;
+}
 
 @media (max-width: 800px) {
 	html {

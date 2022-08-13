@@ -1,5 +1,6 @@
 ---
-layout: default
+layout: versioned
+version: master
 title: Python API
 ---
 
