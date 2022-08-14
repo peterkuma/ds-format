@@ -29,15 +29,11 @@ Available commands:
 - `ls`: List variables.
 - `merge`: Merge files along a dimension.
 - `meta`: Print dataset metadata.
-- `rm`: Remove variables.
-- `rename`: Rename variables.
-- `rename_attr`: Rename an attribute in a dataset.
+- `rename`: Rename variables and attributes.
 - `rename_dim`: Rename a dimension.
+- `rm`: Remove variables or attributes.
 - `select`: Select and subset variables.
-- `set`: Set or add variable data, dimensions and attributes in an existing dataset.
-- `set_attrs`: Set attributes in a dataset.
-- `set_dims`: Set variable dimensions.
+- `set`: Set variable data, dimensions and attributes in a dataset.
 - `stats`: Print variable statistics.
-- `write`: Write dataset to a file.
 
 {% endraw %}

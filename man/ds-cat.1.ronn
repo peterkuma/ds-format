@@ -4,7 +4,7 @@ ds-cat(1) -- Print variable.
 ## SYNOPSIS
 
 `ds cat` [*options*] *var* *input*<br>
-`ds cat` [*options*] `{` *var*... `}` *input*<br>
+`ds cat` [*options*] *var*... *input*<br>
 
 ## ARGUMENTS
 
@@ -25,17 +25,14 @@ Convert time variables to Julian dates (see [Aquarius Time](https://github.com/p
 Print temperature values in dataset.nc.
 
     $ ds cat temperature dataset.nc
-    16.0
-    18.0
-    21.0
+    16.000000
+    18.000000
+    21.000000
 
 Print time and temperature values in dataset.nc.
 
-    $ ds cat { time temperature } dataset.nc
-    1,16.0
-    2,18.0
-    3,21.0
-    4,23.0
-    5,25.0
-    6,28.0
+    $ ds cat time temperature dataset.nc
+    1 16.000000
+    2 18.000000
+    3 21.000000
 

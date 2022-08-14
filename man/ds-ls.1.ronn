@@ -13,7 +13,7 @@ Lines in the output are formatted as [PST](https://github.com/peterkuma/pst).
 ## ARGUMENTS
 
 - *var*:
-Variable to list.
+Variable name to list.
 - *input*:
 Input file.
 

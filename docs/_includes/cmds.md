@@ -34,7 +34,7 @@ Print variable.
 Usage: 
 
 `ds cat` [*options*] *var* *input*<br />
-`ds cat` [*options*] `{` *var*... `}` *input*<br />
+`ds cat` [*options*] *var*... *input*<br />
 
 
 Arguments:
@@ -53,21 +53,18 @@ Print temperature values in dataset.nc.
 
 ```
 $ ds cat temperature dataset.nc
-16.0
-18.0
-21.0
+16.000000
+18.000000
+21.000000
 ```
 
 Print time and temperature values in dataset.nc.
 
 ```
-$ ds cat { time temperature } dataset.nc
-1,16.0
-2,18.0
-3,21.0
-4,23.0
-5,25.0
-6,28.0
+$ ds cat time temperature dataset.nc
+1 16.000000
+2 18.000000
+3 21.000000
 ```
 
 #### dims
@@ -126,7 +123,7 @@ Lines in the output are formatted as [PST](https://github.com/peterkuma/pst).
 
 Arguments:
 
-- *var*: Variable to list.
+- *var*: Variable name to list.
 - *input*: Input file.
 
 Options:
@@ -258,65 +255,41 @@ temperature: {{
 
 #### rename
 
-Rename variables.
+Rename variables and attributes.
 
 Usage: 
 
-`ds rename` *old* *new* *input* *output*<br />
-`ds rename` { *old* *new* }... *input* *output*<br />
+`ds rename` *vars* *input* *output*<br />
+`ds rename` *var* *attrs* *input* *output*<br />
+`ds rename` `{` *var* *attrs* `}`... *input* *output*<br />
 
 
 Arguments:
 
-- *old*: Old variable name.
-- *new*: New variable name.
+- *var*: Variable name or an array of variable names whose attributes to rename or `none` to change dataset attributes.
+- *vars*: Pairs of old and new variable names as *var*`:` *newvar*. If *newattr* is `none`, remove the attribute.
+- *attrs*: Pairs of old and new attribute names as *attr*`:` *newattr*. If *newattr* is `none`, remove the attribute.
 - *input*: Input file.
 - *output*: Output file.
 
 Examples:
 
-Rename variable time to a in dataset.nc and save the output in output.nc.
+Rename variable `time` to `newtime` and `temperature` to `newtemperature` in `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds rename time a dataset.nc output.nc
+$ ds rename time: newtime temperature: newtemperature dataset.nc output.nc
 ```
 
-Rename variable `time` to `a and `temperature` to `b` in dataset.nc and save the output in output.nc.
+Rename a dataset attribute `title` to `newtitle` in `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds rename { time a } { temperature b } dataset.nc output.nc
+$ ds rename none title: newtitle dataset.nc output.nc
 ```
 
-#### rename_attr
-
-Rename an attribute in a dataset.
-
-Usage: 
-
-`ds rename_attr` [*var*] *old* *new* *input* *output*<br />
-`ds rename_attr` [*var*] { *old* *new* }... *input* *output*<br />
-
-
-Arguments:
-
-- *var*: Variable name.
-- *old*: Old attribute name.
-- *new*: New attribute name.
-- *input*: Input file.
-- *output*: Output file.
-
-Examples:
-
-Rename the attribute `title` in `dataset.nc` to `newtitle` and save the output in `output.nc`.
+Rename an attribute `units` of a variable `temperature` to `newunits` in `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds rename_attr title newtitle dataset.nc output.nc
-```
-
-Rename the attribute `units` of the variable `temperature` in `dataset.nc` to `newunits` and save the output in `output.nc`.
-
-```
-$ ds rename_attr temperature units newunits dataset.nc output.nc
+$ ds rename temperature units: newunits dataset.nc output.nc
 ```
 
 #### rename_dim
@@ -354,62 +327,45 @@ time
 
 #### rm
 
-Remove variables.
+Remove variables or attributes.
 
 Usage: 
 
-`ds rm` *var*... *input* *output*<br />
+`ds rm` *var* *input* *output*<br />
+`ds rm` *var* *attr* *input* *output*<br />
 
 
 Arguments:
 
-- *var*: Variable name.
+- *var*: Variable name, an array of variable names or `none` to remove a dataset attribute.
+- *attr*: Attribute name or an array of attribute names.
 - *input*: Input file.
 - *output*: Output file.
 
 Examples:
 
-Remove variable temperature from dataset.nc and save the output in output.nc.
+Remove a variable `temperature` from `dataset.nc` and save the output in `output.nc`.
 
 ```
 $ ds rm temperature dataset.nc output.nc
 ```
 
-Remove variables time and temperature from dataset.nc and save the output in output.nc.
+Remove variables `time` and `temperature` from `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds rm time temperature dataset.nc output.nc
+$ ds rm { time temperature } dataset.nc output.nc
 ```
 
-#### rm_attr
-
-Remove an attribute in a dataset.
-
-Usage: 
-
-`ds rm_attr` [*var*] *attr* *input* *output*<br />
-`ds rm_attr` [*var*] { *attr*... } *input* *output*<br />
-
-
-Arguments:
-
-- *var*: Variable name.
-- *attr*: Attribute to remove.
-- *input*: Input file.
-- *output*: Output file.
-
-Examples:
-
-Remove the attribute `title` from `dqtaset.nc` and save the output in `output.nc`.
+Remove an attribute `title` from `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds rm_attr title dataset.nc output.nc
+$ ds rm none title dataset.nc output.nc
 ```
 
-Remove the attribute `units` of the variable `temperature` in `dataset.nc` and save the output in `output.nc`.
+Remove an attribute `units` of the variable `temperature` in `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds rm_attr temperature title dataset.nc output.nc
+$ ds rm temperature title dataset.nc output.nc
 ```
 
 #### select
@@ -492,93 +448,61 @@ $ cat dataset.json
 
 #### set
 
-Set or add variable data, dimensions and attributes in an existing dataset.
+Set variable data, dimensions and attributes in a dataset.
 
 Usage: 
 
-`ds set` *var* [*dims*] *data* [*attrs*]... *input* *output*<br />
-`ds set` `{` *var* [*dims*] *data* [*attrs*]... `}`... *ds_attrs* *input* *output*<br />
+`ds set` *ds_attrs* *input* *output*<br />
+`ds set` *var* *dims* [*data*] [*attrs*]... *input* *output*<br />
+`ds set` `{` *var* *dims* [*data*] [*attrs*]... `}`... *ds_attrs* *input* *output*<br />
 
 
 Arguments:
 
-- *var*: Variable name.
-- *dims*: List of variable dimensions or `none` for autogenerated.
+- *var*: Variable name or `none` to set dataset attributes.
+- *dims*: Variable dimension name (if single), an array of variable dimensions (if multiple), `none` to keep original dimension or autogenerate if a new variable, or `{ }` to autogenerate new dimension names.
 - *data*: Variable data. This can be a [PST](https://github.com/peterkuma/pst)-formatted scalar or an array.
-- *attrs*: Variable attributes as *attr*: *value* pairs.
+- *attrs*: Variable attributes or dataset attributes if *var* is `none` as *attr*: *value* pairs.
 - *ds_attrs*: Dataset attributes as *attr*: *value* pairs.
 - *input*: Input file or `none` for a new file to be created.
 - *output*: Output file.
 
 Examples:
 
-Set the variable `temperature` data to an array of 16.0, 18.0, 21.0.
+Write variables `time` and `temperature` to `dataset.nc`.
+
+```
+$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" none dataset.nc
+```
+
+Set data of a variable `temperature` to an array of 16.0, 18.0, 21.0 in `dataset.nc` and save the output in `output.nc`.
 
 ```
 $ ds set temperature { 16. 18. 21. } dataset.nc output.nc
 ```
 
-Set the variable `temperature` dimension to time, data to an array of 16.0, 18.0, 21.0, its attributes `long_name` to temperature and `units` to celsius.
+Set a dimension of a  variable `temperature` to time, data to an array of 16.0, 18.0, 21.0, its attributes `long_name` to "temperature" and `units` to "celsius" in `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds set temperature time { 16. 18. 21. } long_name: temperature units: celsius
+$ ds set temperature time { 16. 18. 21. } long_name: temperature units: celsius dataset.nc output.nc
 ```
 
-Set multiple variables in a dataset and a dataset attribute.
+Set multiple variables in `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: Temperature
+$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" dataset.nc output.nc
 ```
 
-#### set_attrs
-
-Set attributes in a dataset.
-
-Usage: `ds set_attrs` [*var*] [*attr*: *value*]... *input* *output*
-
-Arguments:
-
-- *var*: Variable name.
-- *attr*: Attribute to set.
-- *value*: Attribute value.
-- *input*: Input file.
-- *output*: Output file.
-
-Examples:
-
-Set the attribute `newtitle` to `New title` in `dataset.nc` and save the output in `output.nc`.
+Set an attribute `newtitle` to `New title` in `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds set_attrs newtitle: "New title" dataset.nc output.nc
+$ ds set newtitle: "New title" dataset.nc output.nc
 ```
 
-#### set_dims
-
-Set variable dimensions.
-
-Usage: `ds set_dims` *var* *dim*... *input* *output*
-
-Arguments:
-
-- *var*: Variable to set dimensions for.
-- *dim*: Dimension name.
-- *input*: Input file.
-- *output*: Output file.
-
-Examples:
-
-Set dimensions of the variable `temperature` in `dataset.nc` to (`newtime`) and save the output in `output.nc`.
+Set an attribute `newunits` of a variable `temperature` to `K` in `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds -l dataset.nc
-time: 3
-temperature
-time
-$ ds set_dims temperature newtime dataset.nc output.nc
-$ ds -l output.nc
-newtime: 3
-temperature
-time
+$ ds set temperature newunits: K dataset.nc output.nc
 ```
 
 #### stats
@@ -609,35 +533,6 @@ Print statistics of variable temperature in dataset.nc.
 ```
 $ ds stats temperature dataset.nc
 count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000
-```
-
-#### write
-
-Write dataset to a file.
-
-Usage: 
-
-`ds write` *var* [*dims*] *data* [*attrs*]... *input* *output*<br />
-`ds write` `{` *var* [*dims*] *data* [*attrs*]... `}`... *ds_attrs* *input* *output*<br />
-
-
-`ds write` is a shorthand for `ds set` with *input* set to `none`.
-
-Arguments:
-
-- *var*: Variable name.
-- *dims*: List of variable dimensions or `none` for autogenerated.
-- *data*: Variable data. This can be a PST-formatted scalar or an array.
-- *attrs*: Variable attributes as *attr*: *value* pairs.
-- *ds_attrs*: Dataset attributes as *attr*: *value* pairs.
-- *output*: Output file.
-
-Examples:
-
-Write variables time and temperature to dataset.nc.
-
-```
-$ ds write { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" dataset.nc
 ```
 
 {% endraw %}

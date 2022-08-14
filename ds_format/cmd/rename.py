@@ -4,46 +4,69 @@ import ds_format as ds
 def rename(*args, **opts):
 	'''
 	title: "rename"
-	caption: "Rename variables."
+	caption: "Rename variables and attributes."
 	usage: {
-		"`ds rename` *old* *new* *input* *output*"
-		"`ds rename` { *old* *new* }... *input* *output*"
+		"`ds rename` *vars* *input* *output*"
+		"`ds rename` *var* *attrs* *input* *output*"
+		"`ds rename` `{` *var* *attrs* `}`... *input* *output*"
 	}
 	arguments: {{
-		*old*: "Old variable name."
-		*new*: "New variable name."
+		*var*: "Variable name or an array of variable names whose attributes to rename or `none` to change dataset attributes."
+		*vars*: "Pairs of old and new variable names as *var*`:` *newvar*. If *newattr* is `none`, remove the attribute."
+		*attrs*: "Pairs of old and new attribute names as *attr*`:` *newattr*. If *newattr* is `none`, remove the attribute."
 		*input*: "Input file."
 		*output*: "Output file."
 	}}
 	examples: {{
-"Rename variable time to a in dataset.nc and save the output in output.nc.":
-"$ ds rename time a dataset.nc output.nc"
-
-"Rename variable `time` to `a and `temperature` to `b` in dataset.nc and save the output in output.nc.":
-"$ ds rename { time a } { temperature b } dataset.nc output.nc"
+		"Rename variable `time` to `newtime` and `temperature` to `newtemperature` in `dataset.nc` and save the output in `output.nc`.":
+		"$ ds rename time: newtime temperature: newtemperature dataset.nc output.nc"
+		"Rename a dataset attribute `title` to `newtitle` in `dataset.nc` and save the output in `output.nc`.":
+		"$ ds rename none title: newtitle dataset.nc output.nc"
+		"Rename an attribute `units` of a variable `temperature` to `newunits` in `dataset.nc` and save the output in `output.nc`.":
+		"$ ds rename temperature units: newunits dataset.nc output.nc"
 	}}
 	'''
-	if len(args) < 3:
-		raise ValueError('too few arguments')
-	args1 = args[:-2]
+	if len(args) < 2:
+		raise UsageError('Invalid number of arguments')
+	args1 = list(args[:-2])
 	input_ = args[-2]
 	output = args[-1]
+
+	if all([type(arg) is list for arg in args1]):
+		items = []
+		for arg in args1:
+			if len(arg) != 2:
+				raise UsageError('Invalid arguments')
+			var = arg[0]
+			if type(var) is not list: var = [var]
+			attrs = arg[1]
+			items += [[{}, var, attrs]]
+	elif len(args1) == 0:
+		vars_ = opts
+		items = [[vars_, None, {}]]
+	elif len(args1) == 1:
+		var = args1[0]
+		if type(var) is not list: var = [var]
+		attrs = opts
+		items = [[{}, var, attrs]]
+	else:
+		raise UsageError('Invalid arguments')
+
 	d = ds.read(input_)
 
-	def rename1(old, new):
-		if not type(old) is str and type(new) is str:
-			raise TypeError('invalid type of arguments')
-		if old in d:
-			d[new] = d[old]
-		else:
-			raise ValueError('variable "%s" not found' % old)
-		del d[old]
-
-	if all(type(arg) is list for arg in args1):
-		for vars_ in args1:
-			if len(vars_) != 2:
-				raise TypeError('invalid type of arguments')
-			rename1(vars_[0], vars_[1])
-	else:
-		rename1(args1[0], args1[1])
-	ds.write(output, d)
+	for vars_, var, attrs in items:
+		for oldvar, newvar in vars_.items():
+			if newvar is not None:
+				if oldvar in d:
+					ds.rename(d, oldvar, newvar)
+			else:
+				del d[oldvar]
+		for var1 in var:
+			meta = ds.get_meta(d)['.'] if var1 is None \
+				else ds.get_meta(d, var1)
+			for oldattr, newattr in attrs.items():
+				if oldattr in meta:
+					if newattr is not None:
+						meta[newattr] = meta[oldattr]
+					del meta[oldattr]
+		ds.write(output, d)

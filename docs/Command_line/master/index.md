@@ -32,15 +32,11 @@ with `man ds` and `man ds` *cmd*.
 | [ls](#ls) | List variables. |
 | [merge](#merge) | Merge files along a dimension. |
 | [meta](#meta) | Print dataset metadata. |
-| [rm](#rm) | Remove variables. |
-| [rename](#rename) | Rename variables. |
-| [rename\_attr](#rename_attr) | Rename an attribute in a dataset. |
+| [rename](#rename) | Rename variables and attributes. |
 | [rename\_dim](#rename_dim) | Rename a dimension. |
+| [rm](#rm) | Remove variables or attributes. |
 | [select](#select) | Select and subset variables. |
-| [set](#set) | Set or add variable data, dimensions and attributes in an existing dataset. |
-| [set\_attrs](#set_attrs) | Set attributes in a dataset. |
-| [set\_dims](#set_dims) | Set variable dimensions. stats: Print |
+| [set](#set) | Set variable data, dimensions and attributes in a dataset. |
 | [stats](#stats) | Print variable statistics. |
-| [write](#write) | Write dataset to a file. |
 
 {% include cmds.md %}

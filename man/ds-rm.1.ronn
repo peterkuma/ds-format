@@ -1,14 +1,17 @@
-ds-rm(1) -- Remove variables.
-=============================
+ds-rm(1) -- Remove variables or attributes.
+===========================================
 
 ## SYNOPSIS
 
-`ds rm` *var*... *input* *output*<br>
+`ds rm` *var* *input* *output*<br>
+`ds rm` *var* *attr* *input* *output*<br>
 
 ## ARGUMENTS
 
 - *var*:
-Variable name.
+Variable name, an array of variable names or `none` to remove a dataset attribute.
+- *attr*:
+Attribute name or an array of attribute names.
 - *input*:
 Input file.
 - *output*:
@@ -16,11 +19,19 @@ Output file.
 
 ## EXAMPLES
 
-Remove variable temperature from dataset.nc and save the output in output.nc.
+Remove a variable `temperature` from `dataset.nc` and save the output in `output.nc`.
 
     $ ds rm temperature dataset.nc output.nc
 
-Remove variables time and temperature from dataset.nc and save the output in output.nc.
+Remove variables `time` and `temperature` from `dataset.nc` and save the output in `output.nc`.
 
-    $ ds rm time temperature dataset.nc output.nc
+    $ ds rm { time temperature } dataset.nc output.nc
+
+Remove an attribute `title` from `dataset.nc` and save the output in `output.nc`.
+
+    $ ds rm none title dataset.nc output.nc
+
+Remove an attribute `units` of the variable `temperature` in `dataset.nc` and save the output in `output.nc`.
+
+    $ ds rm temperature title dataset.nc output.nc
 

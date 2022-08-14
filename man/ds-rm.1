@@ -2,14 +2,19 @@
 .\" http://github.com/apjanke/ronn-ng/tree/0.9.1
 .TH "DS\-RM" "1" "August 2022" ""
 .SH "NAME"
-\fBds\-rm\fR \- Remove variables\.
+\fBds\-rm\fR \- Remove variables or attributes\.
 .SH "SYNOPSIS"
-\fBds rm\fR \fIvar\fR\|\.\|\.\|\. \fIinput\fR \fIoutput\fR
+\fBds rm\fR \fIvar\fR \fIinput\fR \fIoutput\fR
+.br
+\fBds rm\fR \fIvar\fR \fIattr\fR \fIinput\fR \fIoutput\fR
 .br
 .SH "ARGUMENTS"
 .TP
 \fIvar\fR
-Variable name\.
+Variable name, an array of variable names or \fBnone\fR to remove a dataset attribute\.
+.TP
+\fIattr\fR
+Attribute name or an array of attribute names\.
 .TP
 \fIinput\fR
 Input file\.
@@ -17,17 +22,31 @@ Input file\.
 \fIoutput\fR
 Output file\.
 .SH "EXAMPLES"
-Remove variable temperature from dataset\.nc and save the output in output\.nc\.
+Remove a variable \fBtemperature\fR from \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
 .IP "" 4
 .nf
 $ ds rm temperature dataset\.nc output\.nc
 .fi
 .IP "" 0
 .P
-Remove variables time and temperature from dataset\.nc and save the output in output\.nc\.
+Remove variables \fBtime\fR and \fBtemperature\fR from \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
 .IP "" 4
 .nf
-$ ds rm time temperature dataset\.nc output\.nc
+$ ds rm { time temperature } dataset\.nc output\.nc
+.fi
+.IP "" 0
+.P
+Remove an attribute \fBtitle\fR from \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
+.IP "" 4
+.nf
+$ ds rm none title dataset\.nc output\.nc
+.fi
+.IP "" 0
+.P
+Remove an attribute \fBunits\fR of the variable \fBtemperature\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
+.IP "" 4
+.nf
+$ ds rm temperature title dataset\.nc output\.nc
 .fi
 .IP "" 0
 
