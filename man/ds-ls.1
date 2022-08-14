@@ -9,15 +9,18 @@
 \fBds ls\fR [\fIoptions\fR] [\fIvar\fR]\|\.\|\.\|\. \fIinput\fR
 .br
 .SH "DESCRIPTION"
-Lines in the output are formatted as PST \fIhttps://github\.com/peterkuma/pst\fR\.
+Lines in the output are formatted as PST \fIhttps://github\.com/peterkuma/pst\fR\. glob pattern matching follows the rules of Python fnmatch \fIhttps://docs\.python\.org/3/library/fnmatch\.html\fR\. Note that the pattern needs to be enclosed in quotes in order to prevent the shell from interpreting the glob\.
 .SH "ARGUMENTS"
 .TP
 \fIvar\fR
-Variable name to list\.
+Variable name to list\. glob pattern matching is performed unless \fB\-s\fR is used\.
 .TP
 \fIinput\fR
 Input file\.
 .SH "OPTIONS"
+.TP
+\fB\-s\fR
+Strict mode\. \fIvar\fR is taken as a literal string instead of a glob\.
 .TP
 \fB\-l\fR
 Print a detailed list of variables (name and an array of dimensions), preceded with a line with dataset dimensions\.
@@ -25,7 +28,7 @@ Print a detailed list of variables (name and an array of dimensions), preceded w
 \fBa:\fR \fIattrs\fR
 Print variable attributes after the variable name and dimensions\. \fIattrs\fR can be a string or an array\.
 .SH "EXAMPLES"
-Print a list of variables in dataset\.nc\.
+Print a list of variables in \fBdataset\.nc\fR\.
 .IP "" 4
 .nf
 $ ds ls dataset\.nc
@@ -34,7 +37,7 @@ time
 .fi
 .IP "" 0
 .P
-Print a detailed list of variables in dataset\.nc\.
+Print a detailed list of variables in \fBdataset\.nc\fR\.
 .IP "" 4
 .nf
 $ ds ls \-l dataset\.nc
@@ -59,6 +62,15 @@ Print a list of variables with attributes \fBlong_name\fR and \fBunits\fR\.
 $ ds ls dataset\.nc a: { long_name units }
 temperature temperature celsius
 time time s
+.fi
+.IP "" 0
+.P
+Print all variables matching a glob "temp*" in \fBdataset\.nc\fR\.
+.IP "" 4
+.nf
+$ ds ls 'temp*' dataset\.nc
+time: 3
+temperature { time }
 .fi
 .IP "" 0
 

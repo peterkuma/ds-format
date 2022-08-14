@@ -125,21 +125,22 @@ Usage:
 `ds ls` [*options*] [*var*]... *input*<br />
 
 
-Lines in the output are formatted as [PST](https://github.com/peterkuma/pst).
+Lines in the output are formatted as [PST](https://github.com/peterkuma/pst). glob pattern matching follows the rules of Python [fnmatch](https://docs.python.org/3/library/fnmatch.html). Note that the pattern needs to be enclosed in quotes in order to prevent the shell from interpreting the glob.
 
 Arguments:
 
-- *var*: Variable name to list.
+- *var*: Variable name to list. glob pattern matching is performed unless `-s` is used.
 - *input*: Input file.
 
 Options:
 
+- `-s`: Strict mode. *var* is taken as a literal string instead of a glob.
 - `-l`: Print a detailed list of variables (name and an array of dimensions), preceded with a line with dataset dimensions.
 - `a:` *attrs*: Print variable attributes after the variable name and dimensions. *attrs* can be a string or an array.
 
 Examples:
 
-Print a list of variables in dataset.nc.
+Print a list of variables in `dataset.nc`.
 
 ```
 $ ds ls dataset.nc
@@ -147,7 +148,7 @@ temperature
 time
 ```
 
-Print a detailed list of variables in dataset.nc.
+Print a detailed list of variables in `dataset.nc`.
 
 ```
 $ ds ls -l dataset.nc
@@ -170,6 +171,14 @@ Print a list of variables with attributes `long_name` and `units`.
 $ ds ls dataset.nc a: { long_name units }
 temperature temperature celsius
 time time s
+```
+
+Print all variables matching a glob "temp*" in `dataset.nc`.
+
+```
+$ ds ls 'temp*' dataset.nc
+time: 3
+temperature { time }
 ```
 
 #### merge
