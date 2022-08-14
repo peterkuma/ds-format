@@ -25,7 +25,7 @@ def select(input_, output, variables=None, sel=None):
 	}}
 	examples: {{
 "Write data to dataset.nc.":
-"$ ds set dataset.nc { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius title: \\"Temperature data\\""
+"$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius title: \\"Temperature data\\" dataset.nc"
 "List variables in dataset.nc.":
 "$ ds dataset.nc
 temperature

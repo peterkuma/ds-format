@@ -17,10 +17,10 @@ def merge(dim, *args, **opts):
 	}}
 	examples: {{
 "Write example data to dataset1.nc.":
-"$ ds set dataset1.nc { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: \\"Temperature data\\""
+"$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: \\"Temperature data\\" dataset1.nc"
 
 "Write example data to dataset2.nc.":
-"$ ds set dataset2.nc { time time { 4 5 6 } long_name: time units: s } { temperature time { 23. 25. 28. } long_name: temperature units: celsius title: \\"Temperature data\\""
+"$ ds set { time time { 4 5 6 } long_name: time units: s } { temperature time { 23. 25. 28. } long_name: temperature units: celsius title: \\"Temperature data\\" dataset2.nc"
 
 "Merge dataset1.nc and dataset2.nc and write the result to dataset.nc.":
 "$ ds merge time dataset1.nc dataset2.nc dataset.nc"
