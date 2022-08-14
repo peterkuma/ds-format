@@ -11,14 +11,14 @@ def rename(*args, **opts):
 		"`ds rename` `{` *var* *attrs* `}`... *input* *output*"
 	}
 	arguments: {{
-		*var*: "Variable name or an array of variable names whose attributes to rename or `none` to change dataset attributes."
-		*vars*: "Pairs of old and new variable names as *var*`:` *newvar*. If *newattr* is `none`, remove the attribute."
-		*attrs*: "Pairs of old and new attribute names as *attr*`:` *newattr*. If *newattr* is `none`, remove the attribute."
+		*var*: "Variable name, or an array of variable names whose attributes to rename, or `none` to rename dataset attributes."
+		*vars*: "Pairs of old and new variable names as *oldvar*`:` *newvar*. If *newattr* is `none`, remove the attribute."
+		*attrs*: "Pairs of old and new attribute names as *oldattr*`:` *newattr*. If *newattr* is `none`, remove the attribute."
 		*input*: "Input file."
 		*output*: "Output file."
 	}}
 	examples: {{
-		"Rename variable `time` to `newtime` and `temperature` to `newtemperature` in `dataset.nc` and save the output in `output.nc`.":
+		"Rename variables `time` to `newtime` and `temperature` to `newtemperature` in `dataset.nc` and save the output in `output.nc`.":
 		"$ ds rename time: newtime temperature: newtemperature dataset.nc output.nc"
 		"Rename a dataset attribute `title` to `newtitle` in `dataset.nc` and save the output in `output.nc`.":
 		"$ ds rename none title: newtitle dataset.nc output.nc"

@@ -9,7 +9,7 @@ def attrs(*args, **opts):
 	caption: "Print attributes in a dataset."
 	usage: "`ds attrs` [*var*] *input*"
 	arguments: {{
-		*var*: "Variable name."
+		*var*: "Variable name. If omitted, print dataset attributes."
 		*input*: "Input file."
 	}}
 	desc: "The output is formatted as [PST](https://github.com/peterkuma/pst)."
@@ -17,7 +17,7 @@ def attrs(*args, **opts):
 		"Print dataset attributes in `dataset.nc`.":
 "$ ds attrs dataset.nc
 title: \\"Temperature data\\""
-		"Print attributes of the variable `temperature` in `dataset.nc`.":
+		"Print attributes of a variable `temperature` in `dataset.nc`.":
 "$ ds attrs temperature dataset.nc
 long_name: temperature units: celsius"
 	}}

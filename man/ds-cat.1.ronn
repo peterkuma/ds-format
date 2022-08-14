@@ -1,10 +1,14 @@
-ds-cat(1) -- Print variable.
-============================
+ds-cat(1) -- Print variable data.
+=================================
 
 ## SYNOPSIS
 
-`ds cat` [*options*] *var* *input*<br>
-`ds cat` [*options*] *var*... *input*<br>
+`ds cat` *var* *input* [*options*]<br>
+`ds cat` *var*... *input* [*options*]<br>
+
+## DESCRIPTION
+
+Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array.
 
 ## ARGUMENTS
 
@@ -16,9 +20,9 @@ Input file.
 ## OPTIONS
 
 - `-h`:
-Print human-readable values.
+Print human-readable values (time as ISO 8601).
 - `--jd`:
-Convert time variables to Julian dates (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)).
+Convert time variables to Julian date (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)).
 
 ## EXAMPLES
 

@@ -15,7 +15,7 @@ def meta(*args, **opts):
 	}}
 	desc: "The output is formatted as [PST](https://github.com/peterkuma/pst)."
 	examples: {{
-"Print metadata of dataset.nc.":
+"Print metadata of `dataset.nc`.":
 "$ ds meta dataset.nc
 .: {{
 	title: \\"Temperature data\\"

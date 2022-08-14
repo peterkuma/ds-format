@@ -20,9 +20,9 @@ Input file.
 ## OPTIONS
 
 - `-l`:
-Print a detailed list of variabes (name and dimensions), preceded with a line with dataset dimensions.
+Print a detailed list of variables (name and an array of dimensions), preceded with a line with dataset dimensions.
 - `a:` *attrs*:
-Print variable attributes. *attrs* can be a string or an array.
+Print variable attributes after the variable name and dimensions. *attrs* can be a string or an array.
 
 ## EXAMPLES
 

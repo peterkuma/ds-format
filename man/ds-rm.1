@@ -22,28 +22,28 @@ Input file\.
 \fIoutput\fR
 Output file\.
 .SH "EXAMPLES"
-Remove a variable \fBtemperature\fR from \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
+Remove a variable \fBtemperature\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
 .IP "" 4
 .nf
 $ ds rm temperature dataset\.nc output\.nc
 .fi
 .IP "" 0
 .P
-Remove variables \fBtime\fR and \fBtemperature\fR from \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
+Remove variables \fBtime\fR and \fBtemperature\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
 .IP "" 4
 .nf
 $ ds rm { time temperature } dataset\.nc output\.nc
 .fi
 .IP "" 0
 .P
-Remove an attribute \fBtitle\fR from \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
+Remove a dataset attribute \fBtitle\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
 .IP "" 4
 .nf
 $ ds rm none title dataset\.nc output\.nc
 .fi
 .IP "" 0
 .P
-Remove an attribute \fBunits\fR of the variable \fBtemperature\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
+Remove an attribute \fBunits\fR of a variable \fBtemperature\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
 .IP "" 4
 .nf
 $ ds rm temperature title dataset\.nc output\.nc

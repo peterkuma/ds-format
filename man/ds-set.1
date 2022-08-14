@@ -2,7 +2,7 @@
 .\" http://github.com/apjanke/ronn-ng/tree/0.9.1
 .TH "DS\-SET" "1" "August 2022" ""
 .SH "NAME"
-\fBds\-set\fR \- Set variable data, dimensions and attributes in a dataset\.
+\fBds\-set\fR \- Set variable data, dimensions and attributes in an existing or new dataset\.
 .SH "SYNOPSIS"
 \fBds set\fR \fIds_attrs\fR \fIinput\fR \fIoutput\fR
 .br
@@ -22,10 +22,10 @@ Variable dimension name (if single), an array of variable dimensions (if multipl
 Variable data\. This can be a PST \fIhttps://github\.com/peterkuma/pst\fR\-formatted scalar or an array\.
 .TP
 \fIattrs\fR
-Variable attributes or dataset attributes if \fIvar\fR is \fBnone\fR as \fIattr\fR: \fIvalue\fR pairs\.
+Variable attributes or dataset attributes if \fIvar\fR is \fBnone\fR as \fIattr\fR\fB:\fR \fIvalue\fR pairs\.
 .TP
 \fIds_attrs\fR
-Dataset attributes as \fIattr\fR: \fIvalue\fR pairs\.
+Dataset attributes as \fIattr\fR\fB:\fR \fIvalue\fR pairs\.
 .TP
 \fIinput\fR
 Input file or \fBnone\fR for a new file to be created\.
@@ -43,11 +43,11 @@ $ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 1
 Set data of a variable \fBtemperature\fR to an array of 16\.0, 18\.0, 21\.0 in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
 .IP "" 4
 .nf
-$ ds set temperature { 16\. 18\. 21\. } dataset\.nc output\.nc
+$ ds set temperature none { 16\. 18\. 21\. } dataset\.nc output\.nc
 .fi
 .IP "" 0
 .P
-Set a dimension of a variable \fBtemperature\fR to time, data to an array of 16\.0, 18\.0, 21\.0, its attributes \fBlong_name\fR to "temperature" and \fBunits\fR to "celsius" in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
+Set a dimension of a variable \fBtemperature\fR to time, data to an array of 16\.0, 18\.0, 21\.0, its attribute \fBlong_name\fR to "temperature" and \fBunits\fR to "celsius" in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
 .IP "" 4
 .nf
 $ ds set temperature time { 16\. 18\. 21\. } long_name: temperature units: celsius dataset\.nc output\.nc
@@ -61,7 +61,7 @@ $ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 1
 .fi
 .IP "" 0
 .P
-Set an attribute \fBnewtitle\fR to \fBNew title\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
+Set a dataset attribute \fBnewtitle\fR to \fBNew title\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
 .IP "" 4
 .nf
 $ ds set newtitle: "New title" dataset\.nc output\.nc

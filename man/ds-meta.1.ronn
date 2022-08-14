@@ -18,7 +18,7 @@ Variable name to print metadata for. If not specified, print metadata for the wh
 
 ## EXAMPLES
 
-Print metadata of dataset.nc.
+Print metadata of `dataset.nc`.
 
     $ ds meta dataset.nc
     .: {{

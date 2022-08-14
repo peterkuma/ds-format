@@ -1,10 +1,10 @@
 {% raw %}#### ds
 
-Tool for reading, writing and manipulating dataset files.
+Tool for reading, writing and modifying dataset files.
 
 Usage: 
 
-`ds` [*cmd*] [*options*]<br />
+`ds` [*cmd* [*args*]]<br />
 `ds --help` [*cmd*]<br />
 `ds --version`<br />
 
@@ -13,7 +13,8 @@ The command line interface is based on the [PST format](https://github.com/peter
 
 Arguments:
 
-- *cmd*: Command to execute or show help for. If omitted, the command `ls` is assumed. Available commands are listed below.
+- *cmd*: Command to execute or show help for. If omitted, `ds` is a shorthand for the command `ls`, with a difference that files with the same name as any available command cannot be listed. Available commands are listed below.
+- *args*: Command arguments and options.
 
 Options:
 
@@ -23,7 +24,7 @@ Options:
 Available commands:
 
 - `attrs`: Print attributes in a dataset.
-- `cat`: Print variable.
+- `cat`: Print variable data.
 - `dims`: Print dimensions of a dataset or a variable.
 - `get`: Get attribute at a path.
 - `ls`: List variables.
@@ -33,7 +34,7 @@ Available commands:
 - `rename_dim`: Rename a dimension.
 - `rm`: Remove variables or attributes.
 - `select`: Select and subset variables.
-- `set`: Set variable data, dimensions and attributes in a dataset.
+- `set`: Set variable data, dimensions and attributes in an existing or new dataset.
 - `stats`: Print variable statistics.
 
 {% endraw %}

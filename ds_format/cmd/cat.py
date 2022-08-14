@@ -8,19 +8,20 @@ import pst
 def cat(*args, **opts):
 	'''
 	title: cat
-	caption: "Print variable."
+	caption: "Print variable data."
 	usage: {
-		"`ds cat` [*options*] *var* *input*"
-		"`ds cat` [*options*] *var*... *input*"
+		"`ds cat` *var* *input* [*options*]"
+		"`ds cat` *var*... *input* [*options*]"
 	}
 	arguments: {{
 		*var*: "Variable name."
 		*input*: "Input file."
 	}}
 	options: {{
-		`-h`: "Print human-readable values."
-		`--jd`: "Convert time variables to Julian dates (see [Aquarius Time](https://github.com/peterkuma/aquarius-time))."
+		`-h`: "Print human-readable values (time as ISO 8601)."
+		`--jd`: "Convert time variables to Julian date (see [Aquarius Time](https://github.com/peterkuma/aquarius-time))."
 	}}
+	desc: "Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array."
 	examples: {{
 "Print temperature values in dataset.nc.":
 "$ ds cat temperature dataset.nc

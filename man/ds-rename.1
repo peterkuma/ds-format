@@ -13,13 +13,13 @@
 .SH "ARGUMENTS"
 .TP
 \fIvar\fR
-Variable name or an array of variable names whose attributes to rename or \fBnone\fR to change dataset attributes\.
+Variable name, or an array of variable names whose attributes to rename, or \fBnone\fR to rename dataset attributes\.
 .TP
 \fIvars\fR
-Pairs of old and new variable names as \fIvar\fR\fB:\fR \fInewvar\fR\. If \fInewattr\fR is \fBnone\fR, remove the attribute\.
+Pairs of old and new variable names as \fIoldvar\fR\fB:\fR \fInewvar\fR\. If \fInewattr\fR is \fBnone\fR, remove the attribute\.
 .TP
 \fIattrs\fR
-Pairs of old and new attribute names as \fIattr\fR\fB:\fR \fInewattr\fR\. If \fInewattr\fR is \fBnone\fR, remove the attribute\.
+Pairs of old and new attribute names as \fIoldattr\fR\fB:\fR \fInewattr\fR\. If \fInewattr\fR is \fBnone\fR, remove the attribute\.
 .TP
 \fIinput\fR
 Input file\.
@@ -27,7 +27,7 @@ Input file\.
 \fIoutput\fR
 Output file\.
 .SH "EXAMPLES"
-Rename variable \fBtime\fR to \fBnewtime\fR and \fBtemperature\fR to \fBnewtemperature\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
+Rename variables \fBtime\fR to \fBnewtime\fR and \fBtemperature\fR to \fBnewtemperature\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
 .IP "" 4
 .nf
 $ ds rename time: newtime temperature: newtemperature dataset\.nc output\.nc

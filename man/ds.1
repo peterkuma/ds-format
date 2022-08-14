@@ -2,9 +2,9 @@
 .\" http://github.com/apjanke/ronn-ng/tree/0.9.1
 .TH "DS" "1" "August 2022" ""
 .SH "NAME"
-\fBds\fR \- Tool for reading, writing and manipulating dataset files\.
+\fBds\fR \- Tool for reading, writing and modifying dataset files\.
 .SH "SYNOPSIS"
-\fBds\fR [\fIcmd\fR] [\fIoptions\fR]
+\fBds\fR [\fIcmd\fR [\fIargs\fR]]
 .br
 \fBds \-\-help\fR [\fIcmd\fR]
 .br
@@ -15,7 +15,10 @@ The command line interface is based on the PST format \fIhttps://github\.com/pet
 .SH "ARGUMENTS"
 .TP
 \fIcmd\fR
-Command to execute or show help for\. If omitted, the command \fBls\fR is assumed\. Available commands are listed below\.
+Command to execute or show help for\. If omitted, \fBds\fR is a shorthand for the command \fBls\fR, with a difference that files with the same name as any available command cannot be listed\. Available commands are listed below\.
+.TP
+\fIargs\fR
+Command arguments and options\.
 .SH "OPTIONS"
 .TP
 \fB\-\-help\fR
@@ -29,7 +32,7 @@ Print the version number and exit\.
 Print attributes in a dataset\.
 .TP
 \fBcat\fR
-Print variable\.
+Print variable data\.
 .TP
 \fBdims\fR
 Print dimensions of a dataset or a variable\.
@@ -59,7 +62,7 @@ Remove variables or attributes\.
 Select and subset variables\.
 .TP
 \fBset\fR
-Set variable data, dimensions and attributes in a dataset\.
+Set variable data, dimensions and attributes in an existing or new dataset\.
 .TP
 \fBstats\fR
 Print variable statistics\.

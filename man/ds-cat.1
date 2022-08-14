@@ -2,12 +2,14 @@
 .\" http://github.com/apjanke/ronn-ng/tree/0.9.1
 .TH "DS\-CAT" "1" "August 2022" ""
 .SH "NAME"
-\fBds\-cat\fR \- Print variable\.
+\fBds\-cat\fR \- Print variable data\.
 .SH "SYNOPSIS"
-\fBds cat\fR [\fIoptions\fR] \fIvar\fR \fIinput\fR
+\fBds cat\fR \fIvar\fR \fIinput\fR [\fIoptions\fR]
 .br
-\fBds cat\fR [\fIoptions\fR] \fIvar\fR\|\.\|\.\|\. \fIinput\fR
+\fBds cat\fR \fIvar\fR\|\.\|\.\|\. \fIinput\fR [\fIoptions\fR]
 .br
+.SH "DESCRIPTION"
+Data are printed by the first index, one item per line, formatted as PST \fIhttps://github\.com/peterkuma/pst\fR\-formatted\. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array\.
 .SH "ARGUMENTS"
 .TP
 \fIvar\fR
@@ -18,10 +20,10 @@ Input file\.
 .SH "OPTIONS"
 .TP
 \fB\-h\fR
-Print human\-readable values\.
+Print human\-readable values (time as ISO 8601)\.
 .TP
 \fB\-\-jd\fR
-Convert time variables to Julian dates (see Aquarius Time \fIhttps://github\.com/peterkuma/aquarius\-time\fR)\.
+Convert time variables to Julian date (see Aquarius Time \fIhttps://github\.com/peterkuma/aquarius\-time\fR)\.
 .SH "EXAMPLES"
 Print temperature values in dataset\.nc\.
 .IP "" 4

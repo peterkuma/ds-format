@@ -16,13 +16,13 @@ def rm(*args, **opts):
 		*output*: "Output file."
 	}}
 	examples: {{
-		"Remove a variable `temperature` from `dataset.nc` and save the output in `output.nc`.":
+		"Remove a variable `temperature` in `dataset.nc` and save the output in `output.nc`.":
 		"$ ds rm temperature dataset.nc output.nc"
-		"Remove variables `time` and `temperature` from `dataset.nc` and save the output in `output.nc`.":
+		"Remove variables `time` and `temperature` in `dataset.nc` and save the output in `output.nc`.":
 		"$ ds rm { time temperature } dataset.nc output.nc"
-		"Remove an attribute `title` from `dataset.nc` and save the output in `output.nc`.":
+		"Remove a dataset attribute `title` in `dataset.nc` and save the output in `output.nc`.":
 		"$ ds rm none title dataset.nc output.nc"
-		"Remove an attribute `units` of the variable `temperature` in `dataset.nc` and save the output in `output.nc`.":
+		"Remove an attribute `units` of a variable `temperature` in `dataset.nc` and save the output in `output.nc`.":
 		"$ ds rm temperature title dataset.nc output.nc"
 	}}
 	'''

@@ -17,8 +17,8 @@ def ls(*args, **opts):
 		*input*: "Input file."
 	}}
 	options: {{
-		`-l`: "Print a detailed list of variabes (name and dimensions), preceded with a line with dataset dimensions."
-		"`a:` *attrs*": "Print variable attributes. *attrs* can be a string or an array."
+		`-l`: "Print a detailed list of variables (name and an array of dimensions), preceded with a line with dataset dimensions."
+		"`a:` *attrs*": "Print variable attributes after the variable name and dimensions. *attrs* can be a string or an array."
 	}}
 	desc: "Lines in the output are formatted as [PST](https://github.com/peterkuma/pst)."
 	examples: {{

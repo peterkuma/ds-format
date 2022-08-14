@@ -12,7 +12,7 @@ The output is formatted as [PST](https://github.com/peterkuma/pst).
 ## ARGUMENTS
 
 - *var*:
-Variable name.
+Variable name. If omitted, print dataset attributes.
 - *input*:
 Input file.
 
@@ -23,7 +23,7 @@ Print dataset attributes in `dataset.nc`.
     $ ds attrs dataset.nc
     title: "Temperature data"
 
-Print attributes of the variable `temperature` in `dataset.nc`.
+Print attributes of a variable `temperature` in `dataset.nc`.
 
     $ ds attrs temperature dataset.nc
     long_name: temperature units: celsius
