@@ -26,7 +26,6 @@ Available commands:
 - `attrs`: Print attributes in a dataset.
 - `cat`: Print variable data.
 - `dims`: Print dimensions of a dataset or a variable.
-- `get`: Get attribute at a path.
 - `ls`: List variables.
 - `merge`: Merge files along a dimension.
 - `meta`: Print dataset metadata.

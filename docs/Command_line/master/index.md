@@ -30,7 +30,6 @@ variable in order to access the manual pages.
 | [attrs](#attrs) | Print attributes in a dataset. |
 | [cat](#cat) | Print variable data. |
 | [dims](#dims) | Print dimensions of a dataset or a variable. |
-| [get](#get) | Get attribute at a path. |
 | [ls](#ls) | List variables. |
 | [merge](#merge) | Merge files along a dimension. |
 | [meta](#meta) | Print dataset metadata. |

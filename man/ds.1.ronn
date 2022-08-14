@@ -33,8 +33,6 @@ Print attributes in a dataset.
 Print variable data.
 - `dims`:
 Print dimensions of a dataset or a variable.
-- `get`:
-Get attribute at a path.
 - `ls`:
 List variables.
 - `merge`:

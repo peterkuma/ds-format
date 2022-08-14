@@ -7,9 +7,10 @@ def attrs(*args, **opts):
 	'''
 	title: attrs
 	caption: "Print attributes in a dataset."
-	usage: "`ds attrs` [*var*] *input*"
+	usage: "`ds attrs` [*var*] [*attr*] *input*"
 	arguments: {{
-		*var*: "Variable name. If omitted, print dataset attributes."
+		*var*: "Variable name or `none` to print a dataset attribute *attr*. If omitted, print all dataset attributes."
+		*attr*: "Attribute name."
 		*input*: "Input file."
 	}}
 	desc: "The output is formatted as [PST](https://github.com/peterkuma/pst)."
@@ -20,12 +21,23 @@ title: \\"Temperature data\\""
 		"Print attributes of a variable `temperature` in `dataset.nc`.":
 "$ ds attrs temperature dataset.nc
 long_name: temperature units: celsius"
+		"Print a dataset attribute `title`.":
+"$ ds attrs none title dataset.nc
+\\"Temperature data\\""
+		"Print an attribute units of a variable `temperature`.":
+"$ ds attrs temperature units dataset.nc
+celsius"
 	}}
 	'''
-	if len(args) not in (1, 2):
+	if len(args) not in (1, 2, 3):
 		raise UsageError('Invalid number of arguments')
-	var = args[0] if len(args) == 2 else None
+	var = args[0] if len(args) > 1 else None
+	attr = args[1] if len(args) > 2 else None
 	input_ = args[-1]
 	d = ds.read(input_)
 	attrs = ds.get_attrs(d, var)
-	print(pst.encode(attrs, encoder=misc.encoder).decode('utf-8'))
+	if attr is not None:
+		value = attrs[attr]
+	else:
+		value = attrs
+	print(pst.encode(value, encoder=misc.encoder).decode('utf-8'))

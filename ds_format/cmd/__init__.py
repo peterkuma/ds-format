@@ -3,7 +3,6 @@ from .misc import UsageError, NumpyEncoder
 from .attrs import attrs
 from .cat import cat
 from .dims import dims
-from .get import get
 from .ls import ls
 from .merge import merge
 from .meta import meta
@@ -18,7 +17,6 @@ CMDS = {
 	'attrs': attrs,
 	'cat': cat,
 	'dims': dims,
-	'get': get,
 	'ls': ls,
 	'merge': merge,
 	'meta': meta,

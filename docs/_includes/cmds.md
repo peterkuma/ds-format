@@ -2,13 +2,14 @@
 
 Print attributes in a dataset.
 
-Usage: `ds attrs` [*var*] *input*
+Usage: `ds attrs` [*var*] [*attr*] *input*
 
 The output is formatted as [PST](https://github.com/peterkuma/pst).
 
 Arguments:
 
-- *var*: Variable name. If omitted, print dataset attributes.
+- *var*: Variable name or `none` to print a dataset attribute *attr*. If omitted, print all dataset attributes.
+- *attr*: Attribute name.
 - *input*: Input file.
 
 Examples:
@@ -25,6 +26,20 @@ Print attributes of a variable `temperature` in `dataset.nc`.
 ```
 $ ds attrs temperature dataset.nc
 long_name: temperature units: celsius
+```
+
+Print a dataset attribute `title`.
+
+```
+$ ds attrs none title dataset.nc
+"Temperature data"
+```
+
+Print an attribute units of a variable `temperature`.
+
+```
+$ ds attrs temperature units dataset.nc
+celsius
 ```
 
 #### cat
@@ -99,17 +114,6 @@ Print dimensions of the variable `temperature`.
 $ ds dims temperature dataset.nc
 time
 ```
-
-#### get
-
-Get attribute at path.
-
-Usage: `ds get` *path* *input*
-
-Arguments:
-
-- *path*: Attribute path.
-- *input*: Input file.
 
 #### ls
 
