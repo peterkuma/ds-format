@@ -142,7 +142,7 @@ Examples:
 Print a list of variables in dataset.nc.
 
 ```
-$ ds dataset.nc
+$ ds ls dataset.nc
 temperature
 time
 ```
@@ -150,7 +150,7 @@ time
 Print a detailed list of variables in dataset.nc.
 
 ```
-$ ds -l dataset.nc
+$ ds ls -l dataset.nc
 time: 3
 temperature
 time
@@ -159,7 +159,7 @@ time
 Print a list of variables with an attribute `units`.
 
 ```
-$ ds dataset.nc a: units
+$ ds ls dataset.nc a: units
 temperature celsius
 time s
 ```
@@ -167,7 +167,7 @@ time s
 Print a list of variables with attributes `long_name` and `units`.
 
 ```
-$ ds dataset.nc a: { long_name units }
+$ ds ls dataset.nc a: { long_name units }
 temperature temperature celsius
 time time s
 ```
