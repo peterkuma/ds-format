@@ -65,6 +65,8 @@ temperature { time }"
 		for var in vars_:
 			vars1 += fnmatch.filter(available_vars, var)
 
+	vars1 = sorted(vars1)
+
 	if opts.get('l'):
 		listed_dims = set()
 		for var in vars1:
