@@ -45,6 +45,7 @@ temperature: {{
 	else:
 		raise ValueError('Too many arguments')
 	d = ds.read(filename, [], full=True)
-	info = ds.get_meta(d, var)
-	s = pst.encode(info, encoder=misc.encoder, indent=True)
+	meta = ds.get_meta(d, var)
+	meta = {k: meta[k] for k in sorted(meta.keys())}
+	s = pst.encode(meta, encoder=misc.encoder, indent=True)
 	print(s.decode('utf-8'))
