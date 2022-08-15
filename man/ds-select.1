@@ -4,19 +4,19 @@
 .SH "NAME"
 \fBds\-select\fR \- Select and subset variables\.
 .SH "SYNOPSIS"
-\fBds select\fR \fIinput\fR \fIoutput\fR [\fIvariables\fR] [\fIoptions\fR]
+\fBds select\fR [\fIvar\fR\|\.\|\.\|\.] \fIinput\fR \fIoutput\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 select can also be used to convert between different file formats (\fBds select\fR \fIinput\fR \fIoutput\fR)\.
 .SH "ARGUMENTS"
+.TP
+\fIvar\fR
+Variable name\.
 .TP
 \fIinput\fR
 Input file\.
 .TP
 \fIoutput\fR
 Output file\.
-.TP
-\fIvariables\fR
-List of variables as \fB{\fR \fIvar1\fR \fIvar2\fR \|\.\|\.\|\. \fB}\fR or \fBnone\fR for all\. Default: \fBnone\fR\.
 .SH "OPTIONS"
 .TP
 \fBsel:\fR \fB{\fR \fIdim1\fR: \fIidx1\fR \fIdim2\fR: \fIidx2\fR \|\.\|\.\|\. \fB}\fR
@@ -39,7 +39,7 @@ JSON
 Write data to dataset\.nc\.
 .IP "" 4
 .nf
-$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16\. 18\. 21\. } long_name: temperature units: celsius title: "Temperature data" dataset\.nc
+$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16\. 18\. 21\. } long_name: temperature units: celsius } title: "Temperature data" none dataset\.nc
 .fi
 .IP "" 0
 .P
@@ -55,7 +55,7 @@ time
 Select variable temperature from dataset\.nc and write to temperature\.nc\.
 .IP "" 4
 .nf
-$ ds select dataset\.nc temperature\.nc temperature
+$ ds select temperature dataset\.nc temperature\.nc
 .fi
 .IP "" 0
 .P
@@ -77,8 +77,8 @@ $ ds select dataset\.nc 0\.nc sel: { time: { 0 } }
 Print variables time and temperature in 0\.nc\.
 .IP "" 4
 .nf
-$ ds cat { time temperature } 0\.nc
-1,16\.0
+$ ds cat time temperature 0\.nc
+1 16\.000000
 .fi
 .IP "" 0
 .P

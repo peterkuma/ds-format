@@ -3,7 +3,7 @@ ds-select(1) -- Select and subset variables.
 
 ## SYNOPSIS
 
-`ds select` *input* *output* [*variables*] [*options*]
+`ds select` [*var*...] *input* *output* [*options*]
 
 ## DESCRIPTION
 
@@ -11,12 +11,12 @@ select can also be used to convert between different file formats (`ds select` *
 
 ## ARGUMENTS
 
+- *var*:
+Variable name.
 - *input*:
 Input file.
 - *output*:
 Output file.
-- *variables*:
-List of variables as `{` *var1* *var2* ... `}` or `none` for all. Default: `none`.
 
 ## OPTIONS
 
@@ -41,7 +41,7 @@ Selector, where *dim* is dimension name and *idx* is a list of indexes as `{` *i
 
 Write data to dataset.nc.
 
-    $ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius title: "Temperature data" dataset.nc
+    $ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" none dataset.nc
 
 List variables in dataset.nc.
 
@@ -51,7 +51,7 @@ List variables in dataset.nc.
 
 Select variable temperature from dataset.nc and write to temperature.nc.
 
-    $ ds select dataset.nc temperature.nc temperature
+    $ ds select temperature dataset.nc temperature.nc
 
 List variables in temperature.nc.
 
@@ -64,8 +64,8 @@ Subset by time index 0 and write to 0.nc.
 
 Print variables time and temperature in 0.nc.
 
-    $ ds cat { time temperature } 0.nc
-    1,16.0
+    $ ds cat time temperature 0.nc
+    1 16.000000
 
 Convert dataset.nc to JSON.
 

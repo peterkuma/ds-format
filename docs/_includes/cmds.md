@@ -121,8 +121,8 @@ List variables.
 
 Usage: 
 
-`ds` [*options*] [*var*]... *input*<br />
-`ds ls` [*options*] [*var*]... *input*<br />
+`ds` [*var*]... *input* [*options*]<br />
+`ds ls` [*var*]... *input* [*options*]<br />
 
 
 Lines in the output are formatted as [PST](https://github.com/peterkuma/pst). glob pattern matching follows the rules of Python [fnmatch](https://docs.python.org/3/library/fnmatch.html). Note that the pattern needs to be enclosed in quotes in order to prevent the shell from interpreting the glob.
@@ -205,13 +205,13 @@ Examples:
 Write example data to dataset1.nc.
 
 ```
-$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" dataset1.nc
+$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" none dataset1.nc
 ```
 
 Write example data to dataset2.nc.
 
 ```
-$ ds set { time time { 4 5 6 } long_name: time units: s } { temperature time { 23. 25. 28. } long_name: temperature units: celsius title: "Temperature data" dataset2.nc
+$ ds set { time time { 4 5 6 } long_name: time units: s } { temperature time { 23. 25. 28. } long_name: temperature units: celsius } title: "Temperature data" none dataset2.nc
 ```
 
 Merge dataset1.nc and dataset2.nc and write the result to dataset.nc.
@@ -387,15 +387,15 @@ $ ds rm temperature title dataset.nc output.nc
 
 Select and subset variables.
 
-Usage: `ds select` *input* *output* [*variables*] [*options*]
+Usage: `ds select` [*var*...] *input* *output* [*options*]
 
 select can also be used to convert between different file formats (`ds select` *input* *output*).
 
 Arguments:
 
+- *var*: Variable name.
 - *input*: Input file.
 - *output*: Output file.
-- *variables*: List of variables as `{` *var1* *var2* ... `}` or `none` for all. Default: `none`.
 
 Options:
 
@@ -416,7 +416,7 @@ Examples:
 Write data to dataset.nc.
 
 ```
-$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius title: "Temperature data" dataset.nc
+$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" none dataset.nc
 ```
 
 List variables in dataset.nc.
@@ -430,7 +430,7 @@ time
 Select variable temperature from dataset.nc and write to temperature.nc.
 
 ```
-$ ds select dataset.nc temperature.nc temperature
+$ ds select temperature dataset.nc temperature.nc
 ```
 
 List variables in temperature.nc.
@@ -449,8 +449,8 @@ $ ds select dataset.nc 0.nc sel: { time: { 0 } }
 Print variables time and temperature in 0.nc.
 
 ```
-$ ds cat { time temperature } 0.nc
-1,16.0
+$ ds cat time temperature 0.nc
+1 16.000000
 ```
 
 Convert dataset.nc to JSON.
