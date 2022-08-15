@@ -9,8 +9,8 @@ def ls(*args, **opts):
 	title: ls
 	caption: "List variables."
 	usage: {
-		"`ds` [*options*] [*var*]... *input*"
-		"`ds ls` [*options*] [*var*]... *input*"
+		"`ds` [*var*]... *input* [*options*]"
+		"`ds ls` [*var*]... *input* [*options*]"
 	}
 	arguments: {{
 		*var*: "Variable name to list. glob pattern matching is performed unless `-s` is used."
