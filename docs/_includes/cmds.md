@@ -223,13 +223,13 @@ $ ds merge time dataset1.nc dataset2.nc dataset.nc
 Print time and temperature variables in dataset.nc.
 
 ```
-$ ds cat { time temperature } dataset.nc
-1,16.0
-2,18.0
-3,21.0
-4,23.0
-5,25.0
-6,28.0
+$ ds cat time temperature dataset.nc
+1 16.000000
+2 18.000000
+3 21.000000
+4 23.000000
+5 25.000000
+6 28.000000
 ```
 
 #### meta
