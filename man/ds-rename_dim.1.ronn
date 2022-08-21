@@ -3,7 +3,7 @@ ds-rename_dim(1) -- Rename a dimension.
 
 ## SYNOPSIS
 
-`ds rename_dim` *dims* *input* *output*<br>
+`ds rename_dim` *dims* *input* *output* [*options*]<br>
 
 ## ARGUMENTS
 
@@ -13,6 +13,8 @@ Pairs of old and new dimension names as *olddim*`:` *newdim*.
 Input file.
 - *output*:
 Output file.
+- *options*:
+See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line.
 
 ## EXAMPLES
 

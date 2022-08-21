@@ -5,23 +5,14 @@ def select(*args, **opts):
 	'''
 	title: select
 	caption: "Select and subset variables."
-	usage: "`ds select` [*var*...] *input* *output* [*options*]"
+	usage: "`ds select` [*var*...] [*sel*] *input* *output* [*options*]"
 	desc: "select can also be used to convert between different file formats (`ds select` *input* *output*)."
 	arguments: {{
 		*var*: "Variable name."
+		*sel*: "Selector as *dim*`:` *idx* pairs, where *dim* is a dimension name and *idx* is an index or a list of indexes as `{` *i*... `}`."
 		*input*: "Input file."
 		*output*: "Output file."
-	}}
-	options: {{
-		"`sel:` `{` *dim1*: *idx1* *dim2*: *idx2* ... `}`": "Selector, where *dim* is dimension name and *idx* is a list of indexes as `{` *i1* *i2* ... `}`."
-	}}
-	"Supported input formats": {{
-		NetCDF4: "`.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`"
-		JSON: `.json`
-	}}
-	"Supported output formats": {{
-		NetCDF4: "`.nc`, `.nc4`, `.netcdf`"
-		JSON: `.json`
+		*options*: "See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line."
 	}}
 	examples: {{
 "Write data to dataset.nc.":
@@ -36,7 +27,7 @@ time"
 "$ ds temperature.nc
 temperature"
 "Subset by time index 0 and write to 0.nc.":
-"$ ds select dataset.nc 0.nc sel: { time: { 0 } }"
+"$ ds select time: 0 dataset.nc 0.nc"
 "Print variables time and temperature in 0.nc.":
 "$ ds cat time temperature 0.nc
 1 16.000000"
@@ -48,10 +39,16 @@ $ cat dataset.json
 	'''
 	if len(args) < 2:
 		raise UsageError('Invalid number of arguments')
-	vars_ = args[:-2]
+	args1 = args[:-2]
 	input_ = args[-2]
 	output = args[-1]
-	sel = opts.get('sel')
-	sel = sel[0] if sel is not None and len(sel) > 0 else None
+	vars_ = [x for x in args1 if type(x) is not dict]
+	sel = {k: v for x in args1 if type(x) is dict for k, v in x.items()}
+	if not opts.get('F'):
+		d = ds.read(input_, [], full=True)
+		vars_ = [x for var in vars_ for x in ds.findall(d, 'var', var)]
+		sel = {ds.find(d, 'dim', k): v for k, v in sel.items()}
 	d = ds.read(input_, vars_ if len(vars_) > 0 else None, sel)
 	ds.write(output, d)
+
+select.disable_cmd_opts = True

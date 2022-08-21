@@ -8,19 +8,19 @@ ds-ls(1) -- List variables.
 
 ## DESCRIPTION
 
-Lines in the output are formatted as [PST](https://github.com/peterkuma/pst). glob pattern matching follows the rules of Python [fnmatch](https://docs.python.org/3/library/fnmatch.html). Note that the pattern needs to be enclosed in quotes in order to prevent the shell from interpreting the glob.
+Lines in the output are formatted as [PST](https://github.com/peterkuma/pst).
 
 ## ARGUMENTS
 
 - *var*:
-Variable name to list. glob pattern matching is performed unless `-s` is used.
+Variable name to list.
 - *input*:
 Input file.
+- *options*:
+See help for ds for global options.
 
 ## OPTIONS
 
-- `-s`:
-Strict mode. *var* is taken as a literal string instead of a glob.
 - `-l`:
 Print a detailed list of variables (name and an array of dimensions), preceded with a line with dataset dimensions.
 - `a:` *attrs*:

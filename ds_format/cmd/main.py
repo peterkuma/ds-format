@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 import sys
 import pst
 import ds_format as ds
@@ -10,7 +11,7 @@ def main():
 	title: ds
 	caption: "Tool for reading, writing and modifying dataset files."
 	usage: {
-		"`ds` [*cmd* [*args*]]"
+		"`ds` [*cmd* [*args*]] [*options*]"
 		"`ds --help` [*cmd*]"
 		"`ds --version`"
 	}
@@ -19,10 +20,11 @@ def main():
 		*args*: "Command arguments and options."
 	}}
 	options: {{
+		`-F`: "Interpret variable, dimension and attribute names as fixed strings, not glob patterns."
 		`--help`: "Show this help message or help for a command."
 		`--version`: "Print the version number and exit."
 	}}
-	desc: "The command line interface is based on the [PST format](https://github.com/peterkuma/pst)."
+	desc: "The command line interface is based on the [PST format](https://github.com/peterkuma/pst). In all commands, variable, dimension and attribute names are interpreted as [glob patterns](https://docs.python.org/3/library/fnmatch.html), unless the `-F` option is enabled. Note that the pattern has to be enclosed in quotes in order to prevent the shell from interpreting the glob."
 	"Available commands": {{
 		`attrs`: "Print attributes in a dataset."
 		`cat`: "Print variable data."
@@ -37,13 +39,36 @@ def main():
 		`set`: "Set variable data, dimensions and attributes in an existing or new dataset."
 		`stats`: "Print variable statistics."
 	}}
+	"Supported input formats": {{
+		NetCDF4: "`.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`"
+		JSON: `.json`
+	}}
+	"Supported output formats": {{
+		NetCDF4: "`.nc`, `.nc4`, `.netcdf`"
+		JSON: `.json`
+	}}
 	author: "Written by Peter Kuma."
 	copyright: "Copyright (c) 2019-2022 Peter Kuma. This software is distributed under an MIT license."
 	'''
-	args, opts = pst.decode_argv(sys.argv, as_unicode=True)
+	a = pst.decode([os.fsencode(y) for y in sys.argv[1:]], as_unicode=True)
+	args = []
+	opts = {}
+	if type(a) is list:
+		if len(a) > 0 and type(a[-1]) is dict:
+			opts = a[-1]
+			a = a[:-1]
+		if len(a) > 0 and type(a[0]) is dict:
+			opts = a[0]
+			a = a[1:]
+		args = a
+	elif type(a) is dict:
+		opts = a
+	elif a is not None:
+		args = [a]
+
 	if opts.get('help'):
-		if len(args) == 2:
-			cmd = args[1]
+		if len(args) == 1:
+			cmd = args[0]
 			f = ds.cmd.CMDS.get(cmd)
 			if f is None:
 				raise ValueError('Unknown command "%s"' % cmd)
@@ -54,22 +79,25 @@ def main():
 	if opts.get('version'):
 		print(ds.__version__)
 		sys.exit(0)
-	if len(args) == 1:
+	if len(args) == 0:
 		sys.stderr.write('Usage: ds [CMD] [OPTIONS]\n')
 		sys.stderr.write('       ds --help\n')
 		sys.stderr.write('       ds --version\n')
 		sys.stderr.write('Use `ds --help` for help.\n')
 		sys.exit(1)
-	cmd = args[1]
-	cmd_args = args[2:]
+	cmd = args[0]
+	cmd_args = args[1:]
 	f = ds.cmd.CMDS.get(cmd)
 	if f is None:
 		cmd = 'ls'
-		cmd_args = args[1:]
+		cmd_args = args
 		f = ds.cmd.CMDS.get(cmd)
 	if f is None:
 		sys.stderr.write('%s: no such command\n' % cmd)
 		sys.exit(1)
+	if not getattr(f, 'disable_cmd_opts', False) and type(cmd_args[0]) is dict:
+		opts.update(cmd_args[0])
+		cmd_args = cmd_args[1:]
 	try:
 		f(*cmd_args, **opts)
 	except IOError as e:

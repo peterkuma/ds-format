@@ -7,11 +7,12 @@ def attrs(*args, **opts):
 	'''
 	title: attrs
 	caption: "Print attributes in a dataset."
-	usage: "`ds attrs` [*var*] [*attr*] *input*"
+	usage: "`ds attrs` [*var*] [*attr*] *input* [*options*]"
 	arguments: {{
 		*var*: "Variable name or `none` to print a dataset attribute *attr*. If omitted, print all dataset attributes."
 		*attr*: "Attribute name."
 		*input*: "Input file."
+		*options*: "See help for ds for global options."
 	}}
 	desc: "The output is formatted as [PST](https://github.com/peterkuma/pst)."
 	examples: {{
@@ -34,7 +35,15 @@ celsius"
 	var = args[0] if len(args) > 1 else None
 	attr = args[1] if len(args) > 2 else None
 	input_ = args[-1]
-	d = ds.read(input_)
+
+	d = ds.read(input_, [], full=True)
+
+	if not opts.get('F'):
+		if var is not None:
+			var = ds.find(d, 'var', var)
+		if attr is not None:
+			attr = ds.find(d, 'attr', attr, var)
+
 	attrs = ds.get_attrs(d, var)
 	if attr is not None:
 		value = attrs[attr]

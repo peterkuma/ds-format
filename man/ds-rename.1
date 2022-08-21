@@ -4,11 +4,11 @@
 .SH "NAME"
 \fBds\-rename\fR \- Rename variables and attributes\.
 .SH "SYNOPSIS"
-\fBds rename\fR \fIvars\fR \fIinput\fR \fIoutput\fR
+\fBds rename\fR \fIvars\fR \fIinput\fR \fIoutput\fR [\fIoptions\fR]
 .br
-\fBds rename\fR \fIvar\fR \fIattrs\fR \fIinput\fR \fIoutput\fR
+\fBds rename\fR \fIvar\fR \fIattrs\fR \fIinput\fR \fIoutput\fR [\fIoptions\fR]
 .br
-\fBds rename\fR \fB{\fR \fIvar\fR \fIattrs\fR \fB}\fR\|\.\|\.\|\. \fIinput\fR \fIoutput\fR
+\fBds rename\fR \fB{\fR \fIvar\fR \fIattrs\fR \fB}\fR\|\.\|\.\|\. \fIinput\fR \fIoutput\fR [\fIoptions\fR]
 .br
 .SH "ARGUMENTS"
 .TP
@@ -26,6 +26,9 @@ Input file\.
 .TP
 \fIoutput\fR
 Output file\.
+.TP
+\fIoptions\fR
+See help for ds for global options\. Note that with this command \fIoptions\fR can only be supplied before the command name or at the end of the command line\.
 .SH "EXAMPLES"
 Rename variables \fBtime\fR to \fBnewtime\fR and \fBtemperature\fR to \fBnewtemperature\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
 .IP "" 4

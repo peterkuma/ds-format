@@ -6,9 +6,9 @@ def set_(*args, **opts):
 	title: set
 	caption: "Set variable data, dimensions and attributes in an existing or new dataset."
 	usage: {
-		"`ds set` *ds_attrs* *input* *output*"
-		"`ds set` *var* *dims* [*data*] [*attrs*]... *input* *output*"
-		"`ds set` `{` *var* *dims* [*data*] [*attrs*]... `}`... *ds_attrs* *input* *output*"
+		"`ds set` *ds_attrs* *input* *output* [*options*]"
+		"`ds set` *var* *dims* [*data*] [*attrs*]... *input* *output* [*options*]"
+		"`ds set` `{` *var* *dims* [*data*] [*attrs*]... `}`... *ds_attrs* *input* *output* [*options*]"
 	}
 	arguments: {{
 		*var*: "Variable name or `none` to set dataset attributes."
@@ -18,6 +18,7 @@ def set_(*args, **opts):
 		*ds_attrs*: "Dataset attributes as *attr*`:` *value* pairs."
 		*input*: "Input file or `none` for a new file to be created."
 		*output*: "Output file."
+		*options*: "See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line."
 	}}
 	examples: {{
 		"Write variables `time` and `temperature` to `dataset.nc`.":
@@ -39,6 +40,9 @@ def set_(*args, **opts):
 	args1 = args[:-2]
 	input_ = args[-2]
 	output = args[-1]
+	cmd_opts = {k: v for x in args1 if type(x) is dict \
+		for k, v in x.items()}
+	args1 = [x for x in args1 if type(x) is not dict]
 
 	def process_args(args):
 		if len(args) not in (2, 3, 4):
@@ -46,31 +50,54 @@ def set_(*args, **opts):
 		if type(args[-1]) is dict:
 			attrs = args[-1]
 			del args[-1]
+		else:
+			attrs = {}
 		var = args[0]
 		dims = args[1] if len(args) > 1 else None
+		if dims is not None and type(dims) is not list:
+			dims = [dims]
 		data = args[2] if len(args) > 2 else None
 		set_data = len(args) > 2
 		return [var, dims, data, set_data, attrs]
 
 	if len(args1) == 0:
-		ds_attrs = opts
+		ds_attrs = cmd_opts
 		items = []
 	elif all([type(x) is list for x in args1]):
-		ds_attrs = opts
+		ds_attrs = cmd_opts
 		items = [process_args(arg) for arg in args1]
 	else:
 		ds_attrs = {}
-		items = [process_args(list(args1) + [opts])]
+		items = [process_args(list(args1) + [cmd_opts])]
 
 	d = ds.read(input_) if input_ is not None else {'.': {'.': {}}}
 	for var, dims, data, set_data, attrs in items:
-		if set_data: d[var] = data
-		var_meta = ds.get_meta(d, var)
-		if dims == []:
-			if '.dims' in var_meta: del var_meta['.dims']
-		elif dims is not None:
-			var_meta['.dims'] = dims if type(dims) is list else [dims]
-		var_meta.update(attrs)
+		if not opts.get('F'):
+			vars_ = ds.findall(d, 'var', var, failsafe=True)
+			if dims is not None:
+				dims = [ds.find(d, 'dim', dim, failsafe=True) for dim in dims]
+		for var in vars_:
+			if set_data: d[var] = data
+			var_meta = ds.get_meta(d, var)
+			if dims == []:
+				if '.dims' in var_meta: del var_meta['.dims']
+			elif dims is not None:
+				var_meta['.dims'] = dims
+			for k, v in attrs.items():
+				if not opts.get('F'):
+					kk = ds.findall(d, 'attr', k, var, failsafe=True)
+					for k1 in kk:
+						var_meta[k1] = v
+				else:
+					var_meta[k] = v
 	meta = ds.get_meta(d)
-	meta['.'].update(ds_attrs)
+	for k, v in ds_attrs.items():
+		if not opts.get('F'):
+			kk = ds.findall(d, 'attr', k, failsafe=True)
+			for k1 in kk:
+				meta['.'][k1] = v
+		else:
+			meta['.'][k] = v
 	ds.write(output, d)
+
+set_.disable_cmd_opts = True

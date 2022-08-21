@@ -6,10 +6,11 @@ def dims(*args, **opts):
 	'''
 	title: dims
 	caption: "Print dimensions of a dataset or a variable."
-	usage: "`ds dims` [*var*] *input*"
+	usage: "`ds dims` [*var*] *input* [*options*]"
 	arguments: {{
 		*var*: "Variable to print dimensions of."
 		*input*: "Input file."
+		*options*: "See help for ds for global options."
 	}}
 	options: {{
 		"`-s`, `--size`": "If *var* is defined, print the size of dimensions as an object instead of an array of dimensions. The order is not guaranteed."
@@ -30,5 +31,8 @@ time"
 	input_ = args[-1]
 	size = opts.get('s', False) or opts.get('size', False)
 	d = ds.read(input_, [], full=True)
+	if not opts.get('F'):
+		if var is not None:
+			var = ds.find(d, 'var', var)
 	dims = ds.get_dims(d, var, full=True, size=size)
 	print(pst.encode(dims).decode('utf-8'))

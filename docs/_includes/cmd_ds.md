@@ -4,12 +4,12 @@ Tool for reading, writing and modifying dataset files.
 
 Usage: 
 
-`ds` [*cmd* [*args*]]<br />
+`ds` [*cmd* [*args*]] [*options*]<br />
 `ds --help` [*cmd*]<br />
 `ds --version`<br />
 
 
-The command line interface is based on the [PST format](https://github.com/peterkuma/pst).
+The command line interface is based on the [PST format](https://github.com/peterkuma/pst). In all commands, variable, dimension and attribute names are interpreted as [glob patterns](https://docs.python.org/3/library/fnmatch.html), unless the `-F` option is enabled. Note that the pattern has to be enclosed in quotes in order to prevent the shell from interpreting the glob.
 
 Arguments:
 
@@ -18,6 +18,7 @@ Arguments:
 
 Options:
 
+- `-F`: Interpret variable, dimension and attribute names as fixed strings, not glob patterns.
 - `--help`: Show this help message or help for a command.
 - `--version`: Print the version number and exit.
 
@@ -35,5 +36,15 @@ Available commands:
 - `select`: Select and subset variables.
 - `set`: Set variable data, dimensions and attributes in an existing or new dataset.
 - `stats`: Print variable statistics.
+
+Supported input formats:
+
+- NetCDF4: `.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`
+- JSON: `.json`
+
+Supported output formats:
+
+- NetCDF4: `.nc`, `.nc4`, `.netcdf`
+- JSON: `.json`
 
 {% endraw %}

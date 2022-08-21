@@ -8,10 +8,11 @@ def stats(*args, **opts):
 	'''
 	title: stats
 	caption: "Print variable statistics."
-	usage: "`ds stats` *var* *input*"
+	usage: "`ds stats` *var* *input* [*options*]"
 	arguments: {{
 		*var*: "Variable name."
 		*input*: "Input file."
+		*options*: "See help for ds for global options."
 	}}
 	"Output description": {{
 		`count`: "Number of array elements."
@@ -27,22 +28,24 @@ def stats(*args, **opts):
 count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000"
 	}}
 	'''
-	if len(args) < 2:
-		raise TypeError('Usage: stats <var> <input>...')
+	if len(args) != 2:
+		raise UsageError('Invalid number of arguments')
 	var = args[0]
-	input_ = args[1:]
-	for filename in input_:
-		d = ds.read(filename, [var])
-		x = d[var].flatten()
-		count = len(x)
-		min_ = np.min(x)
-		max_ = np.max(x)
-		mean = np.mean(x)
-		median = np.median(x)
-		print(pst.encode({
-			'count': count,
-			'min': min_,
-			'max': max_,
-			'mean': mean,
-			'median': median,
-		}, encoder=misc.encoder).decode('utf-8'))
+	input_ = args[1]
+	if not opts.get('F'):
+		d = ds.read(input_, [], full=True)
+		var = ds.find(d, 'var', var)
+	d = ds.read(input_, [var])
+	x = d[var].flatten()
+	count = len(x)
+	min_ = np.min(x)
+	max_ = np.max(x)
+	mean = np.mean(x)
+	median = np.median(x)
+	print(pst.encode({
+		'count': count,
+		'min': min_,
+		'max': max_,
+		'mean': mean,
+		'median': median,
+	}, encoder=misc.encoder).decode('utf-8'))

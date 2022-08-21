@@ -3,9 +3,9 @@ ds-set(1) -- Set variable data, dimensions and attributes in an existing or new 
 
 ## SYNOPSIS
 
-`ds set` *ds_attrs* *input* *output*<br>
-`ds set` *var* *dims* [*data*] [*attrs*]... *input* *output*<br>
-`ds set` `{` *var* *dims* [*data*] [*attrs*]... `}`... *ds_attrs* *input* *output*<br>
+`ds set` *ds_attrs* *input* *output* [*options*]<br>
+`ds set` *var* *dims* [*data*] [*attrs*]... *input* *output* [*options*]<br>
+`ds set` `{` *var* *dims* [*data*] [*attrs*]... `}`... *ds_attrs* *input* *output* [*options*]<br>
 
 ## ARGUMENTS
 
@@ -23,6 +23,8 @@ Dataset attributes as *attr*`:` *value* pairs.
 Input file or `none` for a new file to be created.
 - *output*:
 Output file.
+- *options*:
+See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line.
 
 ## EXAMPLES
 

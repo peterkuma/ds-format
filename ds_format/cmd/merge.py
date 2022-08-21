@@ -10,6 +10,7 @@ def merge(dim, *args, **opts):
 		*dim*: "Name of a dimension to merge along."
 		*input*: "Input file."
 		*output*: "Output file."
+		*options*: "See help for ds for global options."
 	}}
 	options: {{
 		"`new:` *value*": "Name of a new dimension."
@@ -41,6 +42,9 @@ def merge(dim, *args, **opts):
 	for filename in input_:
 		d = ds.read(filename)
 		dd.append(d)
+	if not opts.get('F'):
+		if len(dd) > 0:
+			dim = ds.find(dd[0], 'dim', dim)
 	d = ds.op.merge(dd, dim,
 		variables=opts.get('variables')
 	)

@@ -3,7 +3,7 @@ ds-meta(1) -- Print dataset metadata.
 
 ## SYNOPSIS
 
-`ds meta` [*var*] [*input*]
+`ds meta` [*var*] [*input*] [*options*]
 
 ## DESCRIPTION
 
@@ -15,6 +15,8 @@ The output is formatted as [PST](https://github.com/peterkuma/pst).
 Input file.
 - *var*:
 Variable name to print metadata for. If not specified, print metadata for the whole file.
+- *options*:
+See help for ds for global options.
 
 ## EXAMPLES
 

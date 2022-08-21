@@ -4,14 +4,14 @@
 .SH "NAME"
 \fBds\fR \- Tool for reading, writing and modifying dataset files\.
 .SH "SYNOPSIS"
-\fBds\fR [\fIcmd\fR [\fIargs\fR]]
+\fBds\fR [\fIcmd\fR [\fIargs\fR]] [\fIoptions\fR]
 .br
 \fBds \-\-help\fR [\fIcmd\fR]
 .br
 \fBds \-\-version\fR
 .br
 .SH "DESCRIPTION"
-The command line interface is based on the PST format \fIhttps://github\.com/peterkuma/pst\fR\.
+The command line interface is based on the PST format \fIhttps://github\.com/peterkuma/pst\fR\. In all commands, variable, dimension and attribute names are interpreted as glob patterns \fIhttps://docs\.python\.org/3/library/fnmatch\.html\fR, unless the \fB\-F\fR option is enabled\. Note that the pattern has to be enclosed in quotes in order to prevent the shell from interpreting the glob\.
 .SH "ARGUMENTS"
 .TP
 \fIcmd\fR
@@ -20,6 +20,9 @@ Command to execute or show help for\. If omitted, \fBds\fR is a shorthand for th
 \fIargs\fR
 Command arguments and options\.
 .SH "OPTIONS"
+.TP
+\fB\-F\fR
+Interpret variable, dimension and attribute names as fixed strings, not glob patterns\.
 .TP
 \fB\-\-help\fR
 Show this help message or help for a command\.
@@ -63,6 +66,20 @@ Set variable data, dimensions and attributes in an existing or new dataset\.
 .TP
 \fBstats\fR
 Print variable statistics\.
+.SH "SUPPORTED INPUT FORMATS"
+.TP
+NetCDF4
+\fB\.nc\fR, \fB\.nc4\fR, \fB\.nc3\fR, \fB\.netcdf\fR, \fB\.hdf\fR, \fB\.h5\fR
+.TP
+JSON
+\fB\.json\fR
+.SH "SUPPORTED OUTPUT FORMATS"
+.TP
+NetCDF4
+\fB\.nc\fR, \fB\.nc4\fR, \fB\.netcdf\fR
+.TP
+JSON
+\fB\.json\fR
 .SH "AUTHOR"
 Written by Peter Kuma\.
 .SH "COPYRIGHT"

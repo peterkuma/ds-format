@@ -13,7 +13,9 @@ from .op import \
 	rename, \
 	rename_dim, \
 	select, \
-	time_dt
+	time_dt, \
+	find, \
+	findall
 from .io import read, readdir, index, write
 from .validate import validate
 from . import cmd

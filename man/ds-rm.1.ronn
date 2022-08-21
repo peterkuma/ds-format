@@ -3,8 +3,8 @@ ds-rm(1) -- Remove variables or attributes.
 
 ## SYNOPSIS
 
-`ds rm` *var* *input* *output*<br>
-`ds rm` *var* *attr* *input* *output*<br>
+`ds rm` *var* *input* *output* [*options*]<br>
+`ds rm` *var* *attr* *input* *output* [*options*]<br>
 
 ## ARGUMENTS
 
@@ -16,6 +16,8 @@ Attribute name or an array of attribute names.
 Input file.
 - *output*:
 Output file.
+- *options*:
+See help for ds for global options.
 
 ## EXAMPLES
 

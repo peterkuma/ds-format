@@ -3,7 +3,7 @@ ds-stats(1) -- Print variable statistics.
 
 ## SYNOPSIS
 
-`ds stats` *var* *input*
+`ds stats` *var* *input* [*options*]
 
 ## DESCRIPTION
 
@@ -15,6 +15,8 @@ The output is formatted as [PST](https://github.com/peterkuma/pst).
 Variable name.
 - *input*:
 Input file.
+- *options*:
+See help for ds for global options.
 
 ## OUTPUT DESCRIPTION
 

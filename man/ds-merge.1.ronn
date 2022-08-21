@@ -17,6 +17,8 @@ Name of a dimension to merge along.
 Input file.
 - *output*:
 Output file.
+- *options*:
+See help for ds for global options.
 
 ## OPTIONS
 

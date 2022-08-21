@@ -6,14 +6,15 @@ def rm(*args, **opts):
 	title: rm
 	caption: "Remove variables or attributes."
 	usage: {
-		"`ds rm` *var* *input* *output*"
-		"`ds rm` *var* *attr* *input* *output*"
+		"`ds rm` *var* *input* *output* [*options*]"
+		"`ds rm` *var* *attr* *input* *output* [*options*]"
 	}
 	arguments: {{
 		*var*: "Variable name, an array of variable names or `none` to remove a dataset attribute."
 		*attr*: "Attribute name or an array of attribute names."
 		*input*: "Input file."
 		*output*: "Output file."
+		*options*: "See help for ds for global options."
 	}}
 	examples: {{
 		"Remove a variable `temperature` in `dataset.nc` and save the output in `output.nc`.":
@@ -39,6 +40,21 @@ def rm(*args, **opts):
 		attrs = [attrs]
 
 	d = ds.read(input_)
+
+	if not opts.get('F'):
+		if vars_ is not None:
+			vars_ = [x for var in vars_ for x in ds.findall(d, 'var', var)]
+		if attrs is not None:
+			if vars_ is None:
+				attrs = [x for attr in attrs \
+					for x in ds.findall(d, 'attr', attr)]
+			else:
+				attrs = [
+					x
+					for attr in attrs
+					for var in vars_
+					for x in ds.findall(d, 'attr', attr, var)
+				]
 
 	if vars_ is None:
 		meta = ds.get_meta(d)

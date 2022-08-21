@@ -2,6 +2,7 @@ from collections import Mapping, Iterable
 import copy as copy_
 import numpy as np
 import datetime as dt
+import fnmatch
 from . import misc
 
 def select_var(d, name, sel):
@@ -213,3 +214,24 @@ def group_by(d, dim, group, func):
 			y = d[var][slice_y]
 			x[slice_x] = func(y, axis=i)
 		d[var] = x
+
+def findall(d, what, name, var=None, failsafe=False):
+	if what == 'var':
+		names = get_vars(d, full=True)
+	elif what == 'attr':
+		names = get_attrs(d, var)
+	elif what == 'dim':
+		names = list(get_dims(d, var, full=True).keys())
+	else:
+		raise ValueError('invalid value of the what argument "%s"' % what)
+	res = fnmatch.filter(names, name)
+	return [name] if len(res) == 0 and failsafe else res
+
+def find(d, what, name, var=None, failsafe=False):
+	names = findall(d, what, name, var, failsafe=failsafe)
+	desc = {'var': 'variable', 'attr': 'attribute', 'dim': 'dimension'}[what]
+	if len(names) > 1:
+		raise ValueError('more than one %s is matching the pattern "%s"' % (desc, name))
+	elif len(names) == 0:
+		raise ValueError('%s: %s not found' % (name, desc))
+	return names[0]

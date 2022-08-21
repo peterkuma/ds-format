@@ -9,7 +9,7 @@
 \fBds cat\fR \fIvar\fR\|\.\|\.\|\. \fIinput\fR [\fIoptions\fR]
 .br
 .SH "DESCRIPTION"
-Data are printed by the first index, one item per line, formatted as PST \fIhttps://github\.com/peterkuma/pst\fR\-formatted\. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array\.
+Data are printed by the first index, one item per line, formatted as PST \fIhttps://github\.com/peterkuma/pst\fR\-formatted\. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array\. The first line is a header containing a list of variables\.
 .SH "ARGUMENTS"
 .TP
 \fIvar\fR
@@ -17,6 +17,9 @@ Variable name\.
 .TP
 \fIinput\fR
 Input file\.
+.TP
+\fIoptions\fR
+See help for ds for global options\.
 .SH "OPTIONS"
 .TP
 \fB\-h\fR
@@ -29,6 +32,7 @@ Print temperature values in dataset\.nc\.
 .IP "" 4
 .nf
 $ ds cat temperature dataset\.nc
+temperature
 16\.000000
 18\.000000
 21\.000000
@@ -39,6 +43,7 @@ Print time and temperature values in dataset\.nc\.
 .IP "" 4
 .nf
 $ ds cat time temperature dataset\.nc
+time temperature
 1 16\.000000
 2 18\.000000
 3 21\.000000

@@ -4,11 +4,11 @@
 .SH "NAME"
 \fBds\-set\fR \- Set variable data, dimensions and attributes in an existing or new dataset\.
 .SH "SYNOPSIS"
-\fBds set\fR \fIds_attrs\fR \fIinput\fR \fIoutput\fR
+\fBds set\fR \fIds_attrs\fR \fIinput\fR \fIoutput\fR [\fIoptions\fR]
 .br
-\fBds set\fR \fIvar\fR \fIdims\fR [\fIdata\fR] [\fIattrs\fR]\|\.\|\.\|\. \fIinput\fR \fIoutput\fR
+\fBds set\fR \fIvar\fR \fIdims\fR [\fIdata\fR] [\fIattrs\fR]\|\.\|\.\|\. \fIinput\fR \fIoutput\fR [\fIoptions\fR]
 .br
-\fBds set\fR \fB{\fR \fIvar\fR \fIdims\fR [\fIdata\fR] [\fIattrs\fR]\|\.\|\.\|\. \fB}\fR\|\.\|\.\|\. \fIds_attrs\fR \fIinput\fR \fIoutput\fR
+\fBds set\fR \fB{\fR \fIvar\fR \fIdims\fR [\fIdata\fR] [\fIattrs\fR]\|\.\|\.\|\. \fB}\fR\|\.\|\.\|\. \fIds_attrs\fR \fIinput\fR \fIoutput\fR [\fIoptions\fR]
 .br
 .SH "ARGUMENTS"
 .TP
@@ -32,6 +32,9 @@ Input file or \fBnone\fR for a new file to be created\.
 .TP
 \fIoutput\fR
 Output file\.
+.TP
+\fIoptions\fR
+See help for ds for global options\. Note that with this command \fIoptions\fR can only be supplied before the command name or at the end of the command line\.
 .SH "EXAMPLES"
 Write variables \fBtime\fR and \fBtemperature\fR to \fBdataset\.nc\fR\.
 .IP "" 4

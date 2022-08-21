@@ -4,7 +4,7 @@
 .SH "NAME"
 \fBds\-rename_dim\fR \- Rename a dimension\.
 .SH "SYNOPSIS"
-\fBds rename_dim\fR \fIdims\fR \fIinput\fR \fIoutput\fR
+\fBds rename_dim\fR \fIdims\fR \fIinput\fR \fIoutput\fR [\fIoptions\fR]
 .br
 .SH "ARGUMENTS"
 .TP
@@ -16,6 +16,9 @@ Input file\.
 .TP
 \fIoutput\fR
 Output file\.
+.TP
+\fIoptions\fR
+See help for ds for global options\. Note that with this command \fIoptions\fR can only be supplied before the command name or at the end of the command line\.
 .SH "EXAMPLES"
 Rename dimension \fBtime\fR to \fBnewtime\fR in \fBdataset\.nc\fR and save the output in \fBoutput\.nc\fR\.
 .IP "" 4

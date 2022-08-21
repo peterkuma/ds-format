@@ -4,7 +4,7 @@
 .SH "NAME"
 \fBds\-select\fR \- Select and subset variables\.
 .SH "SYNOPSIS"
-\fBds select\fR [\fIvar\fR\|\.\|\.\|\.] \fIinput\fR \fIoutput\fR [\fIoptions\fR]
+\fBds select\fR [\fIvar\fR\|\.\|\.\|\.] [\fIsel\fR] \fIinput\fR \fIoutput\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 select can also be used to convert between different file formats (\fBds select\fR \fIinput\fR \fIoutput\fR)\.
 .SH "ARGUMENTS"
@@ -12,29 +12,17 @@ select can also be used to convert between different file formats (\fBds select\
 \fIvar\fR
 Variable name\.
 .TP
+\fIsel\fR
+Selector as \fIdim\fR\fB:\fR \fIidx\fR pairs, where \fIdim\fR is a dimension name and \fIidx\fR is an index or a list of indexes as \fB{\fR \fIi\fR\|\.\|\.\|\. \fB}\fR\.
+.TP
 \fIinput\fR
 Input file\.
 .TP
 \fIoutput\fR
 Output file\.
-.SH "OPTIONS"
 .TP
-\fBsel:\fR \fB{\fR \fIdim1\fR: \fIidx1\fR \fIdim2\fR: \fIidx2\fR \|\.\|\.\|\. \fB}\fR
-Selector, where \fIdim\fR is dimension name and \fIidx\fR is a list of indexes as \fB{\fR \fIi1\fR \fIi2\fR \|\.\|\.\|\. \fB}\fR\.
-.SH "SUPPORTED INPUT FORMATS"
-.TP
-NetCDF4
-\fB\.nc\fR, \fB\.nc4\fR, \fB\.nc3\fR, \fB\.netcdf\fR, \fB\.hdf\fR, \fB\.h5\fR
-.TP
-JSON
-\fB\.json\fR
-.SH "SUPPORTED OUTPUT FORMATS"
-.TP
-NetCDF4
-\fB\.nc\fR, \fB\.nc4\fR, \fB\.netcdf\fR
-.TP
-JSON
-\fB\.json\fR
+\fIoptions\fR
+See help for ds for global options\. Note that with this command \fIoptions\fR can only be supplied before the command name or at the end of the command line\.
 .SH "EXAMPLES"
 Write data to dataset\.nc\.
 .IP "" 4
@@ -70,7 +58,7 @@ temperature
 Subset by time index 0 and write to 0\.nc\.
 .IP "" 4
 .nf
-$ ds select dataset\.nc 0\.nc sel: { time: { 0 } }
+$ ds select time: 0 dataset\.nc 0\.nc
 .fi
 .IP "" 0
 .P

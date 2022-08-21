@@ -3,7 +3,7 @@ ds-attrs(1) -- Print attributes in a dataset.
 
 ## SYNOPSIS
 
-`ds attrs` [*var*] [*attr*] *input*
+`ds attrs` [*var*] [*attr*] *input* [*options*]
 
 ## DESCRIPTION
 
@@ -17,6 +17,8 @@ Variable name or `none` to print a dataset attribute *attr*. If omitted, print a
 Attribute name.
 - *input*:
 Input file.
+- *options*:
+See help for ds for global options.
 
 ## EXAMPLES
 

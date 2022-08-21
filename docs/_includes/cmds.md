@@ -2,7 +2,7 @@
 
 Print attributes in a dataset.
 
-Usage: `ds attrs` [*var*] [*attr*] *input*
+Usage: `ds attrs` [*var*] [*attr*] *input* [*options*]
 
 The output is formatted as [PST](https://github.com/peterkuma/pst).
 
@@ -11,6 +11,7 @@ Arguments:
 - *var*: Variable name or `none` to print a dataset attribute *attr*. If omitted, print all dataset attributes.
 - *attr*: Attribute name.
 - *input*: Input file.
+- *options*: See help for ds for global options.
 
 Examples:
 
@@ -52,12 +53,13 @@ Usage:
 `ds cat` *var*... *input* [*options*]<br />
 
 
-Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array.
+Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array. The first line is a header containing a list of variables.
 
 Arguments:
 
 - *var*: Variable name.
 - *input*: Input file.
+- *options*: See help for ds for global options.
 
 Options:
 
@@ -70,6 +72,7 @@ Print temperature values in dataset.nc.
 
 ```
 $ ds cat temperature dataset.nc
+temperature
 16.000000
 18.000000
 21.000000
@@ -79,6 +82,7 @@ Print time and temperature values in dataset.nc.
 
 ```
 $ ds cat time temperature dataset.nc
+time temperature
 1 16.000000
 2 18.000000
 3 21.000000
@@ -88,12 +92,13 @@ $ ds cat time temperature dataset.nc
 
 Print dimensions of a dataset or a variable.
 
-Usage: `ds dims` [*var*] *input*
+Usage: `ds dims` [*var*] *input* [*options*]
 
 Arguments:
 
 - *var*: Variable to print dimensions of.
 - *input*: Input file.
+- *options*: See help for ds for global options.
 
 Options:
 
@@ -125,16 +130,16 @@ Usage:
 `ds ls` [*var*]... *input* [*options*]<br />
 
 
-Lines in the output are formatted as [PST](https://github.com/peterkuma/pst). glob pattern matching follows the rules of Python [fnmatch](https://docs.python.org/3/library/fnmatch.html). Note that the pattern needs to be enclosed in quotes in order to prevent the shell from interpreting the glob.
+Lines in the output are formatted as [PST](https://github.com/peterkuma/pst).
 
 Arguments:
 
-- *var*: Variable name to list. glob pattern matching is performed unless `-s` is used.
+- *var*: Variable name to list.
 - *input*: Input file.
+- *options*: See help for ds for global options.
 
 Options:
 
-- `-s`: Strict mode. *var* is taken as a literal string instead of a glob.
 - `-l`: Print a detailed list of variables (name and an array of dimensions), preceded with a line with dataset dimensions.
 - `a:` *attrs*: Print variable attributes after the variable name and dimensions. *attrs* can be a string or an array.
 
@@ -194,6 +199,7 @@ Arguments:
 - *dim*: Name of a dimension to merge along.
 - *input*: Input file.
 - *output*: Output file.
+- *options*: See help for ds for global options.
 
 Options:
 
@@ -236,7 +242,7 @@ $ ds cat time temperature dataset.nc
 
 Print dataset metadata.
 
-Usage: `ds meta` [*var*] [*input*]
+Usage: `ds meta` [*var*] [*input*] [*options*]
 
 The output is formatted as [PST](https://github.com/peterkuma/pst).
 
@@ -244,6 +250,7 @@ Arguments:
 
 - *input*: Input file.
 - *var*: Variable name to print metadata for. If not specified, print metadata for the whole file.
+- *options*: See help for ds for global options.
 
 Examples:
 
@@ -274,9 +281,9 @@ Rename variables and attributes.
 
 Usage: 
 
-`ds rename` *vars* *input* *output*<br />
-`ds rename` *var* *attrs* *input* *output*<br />
-`ds rename` `{` *var* *attrs* `}`... *input* *output*<br />
+`ds rename` *vars* *input* *output* [*options*]<br />
+`ds rename` *var* *attrs* *input* *output* [*options*]<br />
+`ds rename` `{` *var* *attrs* `}`... *input* *output* [*options*]<br />
 
 
 Arguments:
@@ -286,6 +293,7 @@ Arguments:
 - *attrs*: Pairs of old and new attribute names as *oldattr*`:` *newattr*. If *newattr* is `none`, remove the attribute.
 - *input*: Input file.
 - *output*: Output file.
+- *options*: See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line.
 
 Examples:
 
@@ -313,16 +321,15 @@ Rename a dimension.
 
 Usage: 
 
-`ds rename_dim` *old* *new* *input* *output*<br />
-`ds rename_dim` { *old* *new* }... *input* *output*<br />
+`ds rename_dim` *dims* *input* *output* [*options*]<br />
 
 
 Arguments:
 
-- *old*: Old dimension name.
-- *new*: New dimension name.
+- *dims*: Pairs of old and new dimension names as *olddim*`:` *newdim*.
 - *input*: Input file.
 - *output*: Output file.
+- *options*: See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line.
 
 Examples:
 
@@ -333,7 +340,7 @@ $ ds -l dataset.nc
 time: 3
 temperature
 time
-$ ds rename_dim time newtime dataset.nc output.nc
+$ ds rename_dim time: newtime dataset.nc output.nc
 $ ds -l output.nc
 newtime: 3
 temperature
@@ -346,8 +353,8 @@ Remove variables or attributes.
 
 Usage: 
 
-`ds rm` *var* *input* *output*<br />
-`ds rm` *var* *attr* *input* *output*<br />
+`ds rm` *var* *input* *output* [*options*]<br />
+`ds rm` *var* *attr* *input* *output* [*options*]<br />
 
 
 Arguments:
@@ -356,6 +363,7 @@ Arguments:
 - *attr*: Attribute name or an array of attribute names.
 - *input*: Input file.
 - *output*: Output file.
+- *options*: See help for ds for global options.
 
 Examples:
 
@@ -387,29 +395,17 @@ $ ds rm temperature title dataset.nc output.nc
 
 Select and subset variables.
 
-Usage: `ds select` [*var*...] *input* *output* [*options*]
+Usage: `ds select` [*var*...] [*sel*] *input* *output* [*options*]
 
 select can also be used to convert between different file formats (`ds select` *input* *output*).
 
 Arguments:
 
 - *var*: Variable name.
+- *sel*: Selector as *dim*`:` *idx* pairs, where *dim* is a dimension name and *idx* is an index or a list of indexes as `{` *i*... `}`.
 - *input*: Input file.
 - *output*: Output file.
-
-Options:
-
-- `sel:` `{` *dim1*: *idx1* *dim2*: *idx2* ... `}`: Selector, where *dim* is dimension name and *idx* is a list of indexes as `{` *i1* *i2* ... `}`.
-
-Supported input formats:
-
-- NetCDF4: `.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`
-- JSON: `.json`
-
-Supported output formats:
-
-- NetCDF4: `.nc`, `.nc4`, `.netcdf`
-- JSON: `.json`
+- *options*: See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line.
 
 Examples:
 
@@ -443,7 +439,7 @@ temperature
 Subset by time index 0 and write to 0.nc.
 
 ```
-$ ds select dataset.nc 0.nc sel: { time: { 0 } }
+$ ds select time: 0 dataset.nc 0.nc
 ```
 
 Print variables time and temperature in 0.nc.
@@ -467,9 +463,9 @@ Set variable data, dimensions and attributes in an existing or new dataset.
 
 Usage: 
 
-`ds set` *ds_attrs* *input* *output*<br />
-`ds set` *var* *dims* [*data*] [*attrs*]... *input* *output*<br />
-`ds set` `{` *var* *dims* [*data*] [*attrs*]... `}`... *ds_attrs* *input* *output*<br />
+`ds set` *ds_attrs* *input* *output* [*options*]<br />
+`ds set` *var* *dims* [*data*] [*attrs*]... *input* *output* [*options*]<br />
+`ds set` `{` *var* *dims* [*data*] [*attrs*]... `}`... *ds_attrs* *input* *output* [*options*]<br />
 
 
 Arguments:
@@ -481,6 +477,7 @@ Arguments:
 - *ds_attrs*: Dataset attributes as *attr*`:` *value* pairs.
 - *input*: Input file or `none` for a new file to be created.
 - *output*: Output file.
+- *options*: See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line.
 
 Examples:
 
@@ -524,7 +521,7 @@ $ ds set temperature newunits: K dataset.nc output.nc
 
 Print variable statistics.
 
-Usage: `ds stats` *var* *input*
+Usage: `ds stats` *var* *input* [*options*]
 
 The output is formatted as [PST](https://github.com/peterkuma/pst).
 
@@ -532,6 +529,7 @@ Arguments:
 
 - *var*: Variable name.
 - *input*: Input file.
+- *options*: See help for ds for global options.
 
 Output description:
 

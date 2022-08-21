@@ -1,4 +1,3 @@
-import fnmatch
 import numpy as np
 import ds_format as ds
 from ds_format import misc
@@ -13,15 +12,15 @@ def ls(*args, **opts):
 		"`ds ls` [*var*]... *input* [*options*]"
 	}
 	arguments: {{
-		*var*: "Variable name to list. glob pattern matching is performed unless `-s` is used."
+		*var*: "Variable name to list."
 		*input*: "Input file."
+		*options*: "See help for ds for global options."
 	}}
 	options: {{
-		`-s`: "Strict mode. *var* is taken as a literal string instead of a glob."
 		`-l`: "Print a detailed list of variables (name and an array of dimensions), preceded with a line with dataset dimensions."
 		"`a:` *attrs*": "Print variable attributes after the variable name and dimensions. *attrs* can be a string or an array."
 	}}
-	desc: "Lines in the output are formatted as [PST](https://github.com/peterkuma/pst). glob pattern matching follows the rules of Python [fnmatch](https://docs.python.org/3/library/fnmatch.html). Note that the pattern needs to be enclosed in quotes in order to prevent the shell from interpreting the glob."
+	desc: "Lines in the output are formatted as [PST](https://github.com/peterkuma/pst)."
 	examples: {{
 "Print a list of variables in `dataset.nc`.":
 "$ ds ls dataset.nc
@@ -58,12 +57,12 @@ temperature { time }"
 	available_vars = ds.get_vars(d, full=True)
 	if len(vars_) == 0:
 		vars1 = available_vars
-	elif opts.get('s'):
+	elif opts.get('F'):
 		vars1 = list(set(vars_) & set(available_vars))
 	else:
 		vars1 = []
 		for var in vars_:
-			vars1 += fnmatch.filter(available_vars, var)
+			vars1 += ds.findall(d, 'var', var)
 
 	vars1 = sorted(vars1)
 

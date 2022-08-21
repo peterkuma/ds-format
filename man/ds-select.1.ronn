@@ -3,7 +3,7 @@ ds-select(1) -- Select and subset variables.
 
 ## SYNOPSIS
 
-`ds select` [*var*...] *input* *output* [*options*]
+`ds select` [*var*...] [*sel*] *input* *output* [*options*]
 
 ## DESCRIPTION
 
@@ -13,29 +13,14 @@ select can also be used to convert between different file formats (`ds select` *
 
 - *var*:
 Variable name.
+- *sel*:
+Selector as *dim*`:` *idx* pairs, where *dim* is a dimension name and *idx* is an index or a list of indexes as `{` *i*... `}`.
 - *input*:
 Input file.
 - *output*:
 Output file.
-
-## OPTIONS
-
-- `sel:` `{` *dim1*: *idx1* *dim2*: *idx2* ... `}`:
-Selector, where *dim* is dimension name and *idx* is a list of indexes as `{` *i1* *i2* ... `}`.
-
-## SUPPORTED INPUT FORMATS
-
-- NetCDF4:
-`.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`
-- JSON:
-`.json`
-
-## SUPPORTED OUTPUT FORMATS
-
-- NetCDF4:
-`.nc`, `.nc4`, `.netcdf`
-- JSON:
-`.json`
+- *options*:
+See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line.
 
 ## EXAMPLES
 
@@ -60,7 +45,7 @@ List variables in temperature.nc.
 
 Subset by time index 0 and write to 0.nc.
 
-    $ ds select dataset.nc 0.nc sel: { time: { 0 } }
+    $ ds select time: 0 dataset.nc 0.nc
 
 Print variables time and temperature in 0.nc.
 

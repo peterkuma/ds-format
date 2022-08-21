@@ -9,18 +9,18 @@
 \fBds ls\fR [\fIvar\fR]\|\.\|\.\|\. \fIinput\fR [\fIoptions\fR]
 .br
 .SH "DESCRIPTION"
-Lines in the output are formatted as PST \fIhttps://github\.com/peterkuma/pst\fR\. glob pattern matching follows the rules of Python fnmatch \fIhttps://docs\.python\.org/3/library/fnmatch\.html\fR\. Note that the pattern needs to be enclosed in quotes in order to prevent the shell from interpreting the glob\.
+Lines in the output are formatted as PST \fIhttps://github\.com/peterkuma/pst\fR\.
 .SH "ARGUMENTS"
 .TP
 \fIvar\fR
-Variable name to list\. glob pattern matching is performed unless \fB\-s\fR is used\.
+Variable name to list\.
 .TP
 \fIinput\fR
 Input file\.
-.SH "OPTIONS"
 .TP
-\fB\-s\fR
-Strict mode\. \fIvar\fR is taken as a literal string instead of a glob\.
+\fIoptions\fR
+See help for ds for global options\.
+.SH "OPTIONS"
 .TP
 \fB\-l\fR
 Print a detailed list of variables (name and an array of dimensions), preceded with a line with dataset dimensions\.

@@ -6,12 +6,13 @@ def rename_dim(*args, **opts):
 	title: rename_dim
 	caption: "Rename a dimension."
 	usage: {
-		"`ds rename_dim` *dims* *input* *output*"
+		"`ds rename_dim` *dims* *input* *output* [*options*]"
 	}
 	arguments: {{
 		*dims*: "Pairs of old and new dimension names as *olddim*`:` *newdim*."
 		*input*: "Input file."
 		*output*: "Output file."
+		*options*: "See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line."
 	}}
 	examples: {{
 		"Rename dimension `time` to `newtime` in `dataset.nc` and save the output in `output.nc`.":
@@ -26,12 +27,16 @@ temperature
 time"
 	}}
 	'''
-	if len(args) != 2:
+	if len(args) != 3:
 		raise UsageError('Invalid number of arguments')
-	input_ = args[0]
-	output = args[1]
-	dims = opts
+	dims = args[0]
+	input_ = args[1]
+	output = args[2]
 	d = ds.read(input_)
-	for olddim, newdim in opts.items():
+	for olddim, newdim in dims.items():
+		if not opts.get('F'):
+			olddim = ds.find(d, 'dim', olddim)
 		ds.rename_dim(d, olddim, newdim)
 	ds.write(output, d)
+
+rename_dim.disable_cmd_opts = True
