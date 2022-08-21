@@ -6,12 +6,10 @@ def rename_dim(*args, **opts):
 	title: rename_dim
 	caption: "Rename a dimension."
 	usage: {
-		"`ds rename_dim` *old* *new* *input* *output*"
-		"`ds rename_dim` { *old* *new* }... *input* *output*"
+		"`ds rename_dim` *dims* *input* *output*"
 	}
 	arguments: {{
-		*old*: "Old dimension name."
-		*new*: "New dimension name."
+		*dims*: "Pairs of old and new dimension names as *olddim*`:` *newdim*."
 		*input*: "Input file."
 		*output*: "Output file."
 	}}
@@ -21,26 +19,19 @@ def rename_dim(*args, **opts):
 time: 3
 temperature
 time
-$ ds rename_dim time newtime dataset.nc output.nc
+$ ds rename_dim time: newtime dataset.nc output.nc
 $ ds -l output.nc
 newtime: 3
 temperature
 time"
 	}}
 	'''
-	if len(args) < 3:
+	if len(args) != 2:
 		raise UsageError('Invalid number of arguments')
-	args1 = args[:-2]
-	input_ = args[-2]
-	output = args[-1]
-	if all([type(x) is list and len(x) == 2 for x in args1]) and \
-	   all([type(x[0]) is str and type(x[1]) is str for x in args1]):
-		args2 = args1
-	elif len(args1) == 2 and all([type(x) is str for x in args1]):
-		args2 = [args1]
-	else:
-		raise UsageError('Invalid arguments')
+	input_ = args[0]
+	output = args[1]
+	dims = opts
 	d = ds.read(input_)
-	for old, new in args2:
-		ds.rename_dim(d, old, new)
+	for olddim, newdim in opts.items():
+		ds.rename_dim(d, olddim, newdim)
 	ds.write(output, d)

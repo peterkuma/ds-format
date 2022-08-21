@@ -4,17 +4,12 @@
 .SH "NAME"
 \fBds\-rename_dim\fR \- Rename a dimension\.
 .SH "SYNOPSIS"
-\fBds rename_dim\fR \fIold\fR \fInew\fR \fIinput\fR \fIoutput\fR
-.br
-\fBds rename_dim\fR { \fIold\fR \fInew\fR }\|\.\|\.\|\. \fIinput\fR \fIoutput\fR
+\fBds rename_dim\fR \fIdims\fR \fIinput\fR \fIoutput\fR
 .br
 .SH "ARGUMENTS"
 .TP
-\fIold\fR
-Old dimension name\.
-.TP
-\fInew\fR
-New dimension name\.
+\fIdims\fR
+Pairs of old and new dimension names as \fIolddim\fR\fB:\fR \fInewdim\fR\.
 .TP
 \fIinput\fR
 Input file\.
@@ -29,7 +24,7 @@ $ ds \-l dataset\.nc
 time: 3
 temperature
 time
-$ ds rename_dim time newtime dataset\.nc output\.nc
+$ ds rename_dim time: newtime dataset\.nc output\.nc
 $ ds \-l output\.nc
 newtime: 3
 temperature
