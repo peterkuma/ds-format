@@ -95,7 +95,8 @@ def main():
 	if f is None:
 		sys.stderr.write('%s: no such command\n' % cmd)
 		sys.exit(1)
-	if not getattr(f, 'disable_cmd_opts', False) and type(cmd_args[0]) is dict:
+	if not getattr(f, 'disable_cmd_opts', False) and len(cmd_args) > 0 and \
+	   type(cmd_args[0]) is dict:
 		opts.update(cmd_args[0])
 		cmd_args = cmd_args[1:]
 	try:
