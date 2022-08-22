@@ -215,7 +215,7 @@ def group_by(d, dim, group, func):
 			x[slice_x] = func(y, axis=i)
 		d[var] = x
 
-def findall(d, what, name, var=None, failsafe=False):
+def findall(d, what, name, var=None):
 	if what == 'var':
 		names = get_vars(d, full=True)
 	elif what == 'attr':
@@ -225,10 +225,10 @@ def findall(d, what, name, var=None, failsafe=False):
 	else:
 		raise ValueError('invalid value of the what argument "%s"' % what)
 	res = fnmatch.filter(names, name)
-	return [name] if len(res) == 0 and failsafe else res
+	return [name] if len(res) == 0 else res
 
-def find(d, what, name, var=None, failsafe=False):
-	names = findall(d, what, name, var, failsafe=failsafe)
+def find(d, what, name, var=None):
+	names = findall(d, what, name, var)
 	desc = {'var': 'variable', 'attr': 'attribute', 'dim': 'dimension'}[what]
 	if len(names) > 1:
 		raise ValueError('more than one %s is matching the pattern "%s"' % (desc, name))

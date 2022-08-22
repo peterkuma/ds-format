@@ -73,9 +73,9 @@ def set_(*args, **opts):
 	d = ds.read(input_) if input_ is not None else {'.': {'.': {}}}
 	for var, dims, data, set_data, attrs in items:
 		if not opts.get('F'):
-			vars_ = ds.findall(d, 'var', var, failsafe=True)
+			vars_ = ds.findall(d, 'var', var)
 			if dims is not None:
-				dims = [ds.find(d, 'dim', dim, failsafe=True) for dim in dims]
+				dims = [ds.find(d, 'dim', dim) for dim in dims]
 		for var in vars_:
 			if set_data: d[var] = data
 			var_meta = ds.get_meta(d, var)
@@ -85,7 +85,7 @@ def set_(*args, **opts):
 				var_meta['.dims'] = dims
 			for k, v in attrs.items():
 				if not opts.get('F'):
-					kk = ds.findall(d, 'attr', k, var, failsafe=True)
+					kk = ds.findall(d, 'attr', k, var)
 					for k1 in kk:
 						var_meta[k1] = v
 				else:
@@ -93,7 +93,7 @@ def set_(*args, **opts):
 	meta = ds.get_meta(d)
 	for k, v in ds_attrs.items():
 		if not opts.get('F'):
-			kk = ds.findall(d, 'attr', k, failsafe=True)
+			kk = ds.findall(d, 'attr', k)
 			for k1 in kk:
 				meta['.'][k1] = v
 		else:

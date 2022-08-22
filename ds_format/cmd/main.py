@@ -95,10 +95,10 @@ def main():
 	if f is None:
 		sys.stderr.write('%s: no such command\n' % cmd)
 		sys.exit(1)
-	if not getattr(f, 'disable_cmd_opts', False) and len(cmd_args) > 0 and \
-	   type(cmd_args[0]) is dict:
-		opts.update(cmd_args[0])
-		cmd_args = cmd_args[1:]
+	if not getattr(f, 'disable_cmd_opts', False):
+		opts.update({k: v for x in cmd_args if type(x) is dict \
+			for k, v in x.items()})
+		cmd_args = [x for x in cmd_args if type(x) is not dict]
 	try:
 		f(*cmd_args, **opts)
 	except IOError as e:
