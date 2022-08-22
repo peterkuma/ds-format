@@ -11,7 +11,7 @@ def meta(*args, **opts):
 	usage: "`ds meta` [*var*] [*input*] [*options*]"
 	arguments: {{
 		*input*: "Input file."
-		*var*: "Variable name to print metadata for. If not specified, print metadata for the whole file."
+		*var*: "Variable name to print metadata for or \\".\\" to print dataset metadata. If not specified, print metadata for the whole file."
 		*options*: "See help for ds for global options."
 	}}
 	desc: "The output is formatted as [PST](https://github.com/peterkuma/pst)."
@@ -49,7 +49,7 @@ temperature: {{
 	if not opts.get('F'):
 		if var is not None:
 			var = ds.find(d, 'var', var)
-	meta = ds.get_meta(d, var)
+	meta = ds.get_meta(d, var) if var != '.' else ds.get_meta(d)['.']
 	meta = {k: meta[k] for k in sorted(meta.keys())}
 	s = pst.encode(meta, encoder=misc.encoder, indent=True)
 	print(s.decode('utf-8'))

@@ -233,5 +233,6 @@ def find(d, what, name, var=None, failsafe=False):
 	if len(names) > 1:
 		raise ValueError('more than one %s is matching the pattern "%s"' % (desc, name))
 	elif len(names) == 0:
-		raise ValueError('%s: %s not found' % (name, desc))
+		#raise ValueError('%s: %s not found' % (name, desc))
+		return name
 	return names[0]

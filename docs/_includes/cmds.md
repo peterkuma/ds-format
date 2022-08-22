@@ -249,7 +249,7 @@ The output is formatted as [PST](https://github.com/peterkuma/pst).
 Arguments:
 
 - *input*: Input file.
-- *var*: Variable name to print metadata for. If not specified, print metadata for the whole file.
+- *var*: Variable name to print metadata for or "." to print dataset metadata. If not specified, print metadata for the whole file.
 - *options*: See help for ds for global options.
 
 Examples:
