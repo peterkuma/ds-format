@@ -53,8 +53,8 @@ temperature { time }"
 	input_ = args[-1]
 
 	d = ds.read(input_, [], full=True)
-
 	available_vars = ds.get_vars(d, full=True)
+
 	if len(vars_) == 0:
 		vars1 = available_vars
 	elif opts.get('F'):
@@ -64,7 +64,7 @@ temperature { time }"
 		for var in vars_:
 			vars1 += ds.findall(d, 'var', var)
 
-	vars1 = sorted(vars1)
+	vars1 = list(set(vars1) & set(available_vars))
 
 	if opts.get('l'):
 		listed_dims = set()

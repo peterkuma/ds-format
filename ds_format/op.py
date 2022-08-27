@@ -82,24 +82,34 @@ def get_var(d, name):
 	else:
 		return np.array(data)
 
-def get_meta(d, name=None):
+def get_meta(d, name=None, create=False):
 	if name is None:
-		if '.' in d: return d['.']
-		d['.'] = {}
-		return d['.']
+		if '.' in d:
+			return d['.']
+		if create:
+			d['.'] = {}
+			return d['.']
+		return {}
+	elif name == '':
+		meta = get_meta(d, create=create)
+		if '.' in meta:
+			return meta['.']
+		if create:
+			meta['.'] = {}
+			return meta['.']
+		return {}
 	else:
 		meta = get_meta(d)
-		if name in meta: return meta[name]
-		meta[name] = {}
-		return meta[name]
+		if name in meta:
+			return meta[name]
+		if create:
+			meta[name] = {}
+			return meta[name]
+		return {}
 
 def get_attrs(d, name=None):
-	if name is None:
-		try: return filter_hidden(d['.']['.'])
-		except KeyError: return {}
-	else:
-		try: return filter_hidden(d['.'][name])
-		except KeyError: return {}
+	meta = ds.get_meta(d, name)
+	return filter_hidden(meta)
 
 def gen_dims(d, name):
 	data = get_var(d, name)
