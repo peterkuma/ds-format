@@ -27,6 +27,9 @@ Interpret variable, dimension and attribute names as fixed strings, not glob pat
 \fB\-\-help\fR
 Show this help message or help for a command\.
 .TP
+\fB\-v\fR
+Be verbose\. Print more detailed information and error messages\.
+.TP
 \fB\-\-version\fR
 Print the version number and exit\.
 .SH "AVAILABLE COMMANDS"
@@ -68,18 +71,28 @@ Set variable data, dimensions and attributes in an existing or new dataset\.
 Print variable statistics\.
 .SH "SUPPORTED INPUT FORMATS"
 .TP
-NetCDF4
-\fB\.nc\fR, \fB\.nc4\fR, \fB\.nc3\fR, \fB\.netcdf\fR, \fB\.hdf\fR, \fB\.h5\fR
+DS
+\fB\.ds\fR
 .TP
 JSON
 \fB\.json\fR
+.TP
+NetCDF4
+\fB\.nc\fR, \fB\.nc4\fR, \fB\.nc3\fR, \fB\.netcdf\fR, \fB\.hdf\fR, \fB\.h5\fR
 .SH "SUPPORTED OUTPUT FORMATS"
+.TP
+DS
+\fB\.ds\fR
+.TP
+JSON
+\fB\.json\fR
 .TP
 NetCDF4
 \fB\.nc\fR, \fB\.nc4\fR, \fB\.netcdf\fR
+.SH "ENVIRONMENT"
 .TP
-JSON
-\fB\.json\fR
+DS_MODE
+Error handling mode\. If \fBstrict\fR, handle missing variables, dimensions and attributes as errors\. If \fBmoderate\fR, report a warning\. If \fBsoft\fR, ignore missing items\.
 .SH "AUTHOR"
 Written by Peter Kuma\.
 .SH "COPYRIGHT"

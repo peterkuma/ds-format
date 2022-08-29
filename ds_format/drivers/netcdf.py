@@ -98,7 +98,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 			else:
 				d[name], d['.'][name] = read_var(f, name, sel)
 	if jd:
-		for name in ds.get_vars(d):
+		for name in ds.vars(d):
 			process_datetime_var(d, name)
 	return d
 
@@ -107,21 +107,21 @@ def write(filename, d):
 	if type(filename) is bytes and hasattr(os, 'fsdecode'):
 		filename = os.fsdecode(filename)
 	with Dataset(filename, 'w') as f:
-		dims = ds.get_dims(d)
+		dims = ds.dims(d)
 		for k, v in dims.items():
 			f.createDimension(k, v)
-		for name in ds.get_vars(d):
-			data = ds.get_var(d, name)
+		for name in ds.vars(d):
+			data = ds.var(d, name)
 			if data.dtype == 'O' and \
 				len(data.flatten()) > 0 and \
 				type(data.flatten()[0]) is str:
 				dtype = str
 			else:
 				dtype = data.dtype
-			v = f.createVariable(name, dtype, ds.get_dims(d, name))
-			v.setncatts(ds.get_attrs(d, name))
+			v = f.createVariable(name, dtype, ds.dims(d, name))
+			v.setncatts(ds.attrs(d, name))
 			v[::] = data
-		f.setncatts(ds.get_attrs(d))
+		f.setncatts(ds.attrs(d))
 
 from_netcdf = read
 to_netcdf = write

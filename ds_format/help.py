@@ -53,7 +53,7 @@ def help_to_text(x):
 	if 'options' in d:
 		s += to_list('Options', d['options'])
 	for k, v in d.items():
-		if k in ['title', 'usage', 'desc', 'arguments', 'options', 'examples', 'footer']:
+		if k in ['title', 'usage', 'desc', 'arguments', 'options', 'examples', 'environment', 'footer']:
 			continue
 		if type(v) is not dict:
 			continue
@@ -64,6 +64,8 @@ def help_to_text(x):
 			s += '\n%s\n\n' % k
 			for line in v.split('\n'):
 				s += '  %s\n' % line
+	if 'environment' in d:
+		s += to_list('Environment variables', d['environment'])
 	if 'footer' in d:
 		s += '\n%s\n' % d['footer']
 	return s
@@ -97,12 +99,16 @@ def help_to_md(x):
 		s += to_list('Arguments', d['arguments'], True)
 	if 'options' in d:
 		s += to_list('Options', d['options'], True)
+	if 'returns' in d:
+		s += '\nReturn value:\n\n%s\n' % d['returns']
 	for k, v in d.items():
-		if k in ['title', 'usage', 'desc', 'arguments', 'options', 'examples', 'footer']:
+		if k in ['title', 'usage', 'desc', 'arguments', 'options', 'examples', 'environment', 'footer']:
 			continue
 		if type(v) is not dict:
 			continue
 		s += to_list(k, v, True)
+	if 'environment' in d:
+		s += to_list('Environment variables', d['environment'], True)
 	if 'examples' in d:
 		s += '\nExamples:\n'
 		for k, v in d['examples'].items():
@@ -144,7 +150,7 @@ def help_to_ronn(x):
 	if 'options' in d:
 		s += to_list('Options', d['options'], True)
 	for k, v in d.items():
-		if k in ['title', 'usage', 'desc', 'arguments', 'options', 'examples', 'footer']:
+		if k in ['title', 'usage', 'desc', 'arguments', 'options', 'examples', 'environment', 'footer']:
 			continue
 		if type(v) is not dict:
 			continue
@@ -157,6 +163,8 @@ def help_to_ronn(x):
 				for line in v.split('\n'):
 					s += '    %s\n' % line
 				s += '\n'
+	if 'environment' in d:
+		s += to_list('Environment', d['environment'], True)
 	if 'author' in d:
 		s += '\n## AUTHOR\n'
 		s += '\n%s\n' % d['author']

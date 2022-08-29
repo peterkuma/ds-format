@@ -44,9 +44,8 @@ celsius"
 		if attr is not None:
 			attr = ds.find(d, 'attr', attr, var)
 
-	attrs = ds.get_attrs(d, var)
 	if attr is not None:
-		value = attrs[attr]
+		value = ds.attr(d, attr, var=var)
 	else:
-		value = attrs
+		value = ds.attrs(d, var)
 	print(pst.encode(value, encoder=misc.encoder).decode('utf-8'))

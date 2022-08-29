@@ -1,3 +1,4 @@
+from warnings import warn
 import numpy as np
 import ds_format as ds
 from ds_format import misc
@@ -53,7 +54,7 @@ temperature { time }"
 	input_ = args[-1]
 
 	d = ds.read(input_, [], full=True)
-	available_vars = ds.get_vars(d, full=True)
+	available_vars = ds.vars(d, full=True)
 
 	if len(vars_) == 0:
 		vars1 = available_vars
@@ -64,23 +65,23 @@ temperature { time }"
 		for var in vars_:
 			vars1 += ds.findall(d, 'var', var)
 
-	vars1 = list(set(vars1) & set(available_vars))
-
 	if opts.get('l'):
 		listed_dims = set()
 		for var in vars1:
-			var_dims = ds.get_dims(d, var)
+			var_dims = ds.dims(d, var)
 			listed_dims |= set(var_dims)
-		ds_dims = ds.get_dims(d, full=True)
+		ds_dims = ds.dims(d, full=True)
 		dims = {k: v for k, v in ds_dims.items() if k in listed_dims}
 		print(pst.encode(dims).decode('utf-8'))
 	for x in vars1:
+		if not ds.require(d, 'var', x, full=True):
+			continue
 		y = [x]
 		if opts.get('l'):
-			dims = ds.get_dims(d, x)
+			dims = ds.dims(d, x)
 			y += [dims]
 		if opts.get('a'):
-			attrs = ds.get_attrs(d, x)
+			attrs = ds.attrs(d, x)
 			if type(opts['a']) is list:
 				y += [attrs.get(a, None) for a in opts['a']]
 			elif type(opts['a']) is str:

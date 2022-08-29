@@ -1,5 +1,6 @@
 from collections import Mapping, Iterable
-from .op import *
+import ds_format as ds
+from .op import gen_dims
 
 def validate(d):
 	if not isinstance(d, Mapping):
@@ -9,9 +10,9 @@ def validate(d):
 	if '.' in d and '.' in d['.'] and not isinstance(d['.']['.'], Mapping):
 		raise ValueError('dataset attributes "./." must be a dictionary')
 	dim_size = {}
-	for name in get_vars(d):
-		dims = get_dims(d, name)
-		data = get_var(d, name)
+	for name in ds.vars(d):
+		dims = ds.dims(d, name)
+		data = ds.var(d, name)
 		if len(dims) != data.ndim:
 			raise ValueError('dataset variable "%s" has inconsistent number of dimensions: %d dimensions defined ("%s") but data has %d dimensions' % (name, len(dims), dims, data.ndim))
 		for i, dim in enumerate(dims):

@@ -57,16 +57,16 @@ def rm(*args, **opts):
 				]
 
 	if vars_ is None:
-		meta = ds.get_meta(d)
+		meta = ds.meta(d)
 		for attr in attrs:
 			if attr in meta['.']: del meta['.'][attr]
 	elif attrs is None:
 		for var in vars_:
-			if var in d: del d[var]
+			ds.rm(d, var)
 	else:
 		for var in vars_:
 			for attr in attrs:
-				meta = ds.get_meta(d, var)
+				meta = ds.meta(d, var)
 				if attr in meta: del meta[attr]
 
 	ds.write(output, d)

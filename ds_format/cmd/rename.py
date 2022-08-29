@@ -77,8 +77,8 @@ def rename(*args, **opts):
 					for var1 in var
 					for k, v in attrs.items()
 				}
-			meta = ds.get_meta(d)['.'] if var1 is None \
-				else ds.get_meta(d, var1)
+			meta = ds.meta(d)['.'] if var1 is None \
+				else ds.meta(d, var1)
 			for oldattr, newattr in attrs1.items():
 				if oldattr in meta:
 					if newattr is not None:

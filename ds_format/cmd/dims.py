@@ -34,5 +34,5 @@ time"
 	if not opts.get('F'):
 		if var is not None:
 			var = ds.find(d, 'var', var)
-	dims = ds.get_dims(d, var, full=True, size=size)
+	dims = ds.dims(d, var, full=True, size=size)
 	print(pst.encode(dims).decode('utf-8'))

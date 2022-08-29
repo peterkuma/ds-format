@@ -54,7 +54,7 @@ time temperature
 	)
 	if len(vars_) == 0:
 		return
-	dims = [ds.get_dims(d, var) for var in vars_]
+	dims = [ds.dims(d, var) for var in vars_]
 	if not all([dim == dims[0] for dim in dims]):
 		raise ValueError('incompatible dimensions')
 
@@ -62,8 +62,8 @@ time temperature
 
 	xx = []
 	for var in vars_:
-		attrs = ds.get_attrs(d, var)
-		x = d[var]
+		attrs = ds.attrs(d, var)
+		x = ds.var(d, var)
 		if opts.get('h') and \
 		   attrs.get('units') == 'days since -4713-11-24 12:00 UTC' and \
 		   attrs.get('calendar') == 'proleptic_gregorian':

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
+import traceback
 import pst
 import ds_format as ds
 from ds_format import help
@@ -22,6 +23,7 @@ def main():
 	options: {{
 		`-F`: "Interpret variable, dimension and attribute names as fixed strings, not glob patterns."
 		`--help`: "Show this help message or help for a command."
+		`-v`: "Be verbose. Print more detailed information and error messages."
 		`--version`: "Print the version number and exit."
 	}}
 	desc: "The command line interface is based on the [PST format](https://github.com/peterkuma/pst). In all commands, variable, dimension and attribute names are interpreted as [glob patterns](https://docs.python.org/3/library/fnmatch.html), unless the `-F` option is enabled. Note that the pattern has to be enclosed in quotes in order to prevent the shell from interpreting the glob."
@@ -40,12 +42,17 @@ def main():
 		`stats`: "Print variable statistics."
 	}}
 	"Supported input formats": {{
-		NetCDF4: "`.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`"
+		DS: `.ds`
 		JSON: `.json`
+		NetCDF4: "`.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`"
 	}}
 	"Supported output formats": {{
-		NetCDF4: "`.nc`, `.nc4`, `.netcdf`"
+		DS: `.ds`
 		JSON: `.json`
+		NetCDF4: "`.nc`, `.nc4`, `.netcdf`"
+	}}
+	environment: {{
+		DS_MODE: "Error handling mode. If `strict`, handle missing variables, dimensions and attributes as errors. If `moderate`, report a warning. If `soft`, ignore missing items."
 	}}
 	author: "Written by Peter Kuma."
 	copyright: "Copyright (c) 2019-2022 Peter Kuma. This software is distributed under an MIT license."
@@ -108,3 +115,8 @@ def main():
 		print('%s' % e, file=sys.stderr)
 		print(help.help_to_usage(f.__doc__), end='', file=sys.stderr)
 		print('Use `ds %s --help` for command help.' % cmd, file=sys.stderr)
+	except (NameError, ValueError, TypeError) as e:
+		if opts.get('v'):
+			traceback.print_exc()
+		else:
+			print('%s: %s' % (type(e).__name__, e), file=sys.stderr)

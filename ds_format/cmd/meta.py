@@ -49,7 +49,7 @@ temperature: {{
 	if not opts.get('F'):
 		if var is not None:
 			var = ds.find(d, 'var', var)
-	meta = ds.get_meta(d, var) if var != '.' else ds.get_meta(d, '')
+	meta = ds.meta(d, var) if var != '.' else ds.meta(d, '')
 	meta = {k: meta[k] for k in sorted(meta.keys())}
 	s = pst.encode(meta, encoder=misc.encoder, indent=True)
 	print(s.decode('utf-8'))

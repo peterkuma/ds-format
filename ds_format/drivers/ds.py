@@ -105,7 +105,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 			if sel is not None:
 				#s = ds.misc.sel_slice(sel, dims)
 				#mask = mask[s]
-				dims = ds.get_dims(d, name)
+				dims = ds.dims(d, name)
 				s = ds.misc.sel_slice(sel, dims)
 				dims = ds.misc.sel_dims(sel, dims)
 				var['.dims'] = dims
@@ -117,9 +117,9 @@ def write(filename, d):
 	ds.validate(d)
 	offset = 0
 	meta = {}
-	for name in ds.get_vars(d):
-		var = copy(ds.get_meta(d, name))
-		data = ds.get_var(d, name)
+	for name in ds.vars(d):
+		var = copy(ds.meta(d, name))
+		data = ds.var(d, name)
 		if data.shape == ():
 			var['.size'] = 1
 		else:
@@ -165,19 +165,19 @@ def write(filename, d):
 			}[data.dtype.byteorder]
 		offset += var['.len']
 		meta[name] = var
-	meta['.'] = ds.get_meta(d, '.')
+	meta['.'] = ds.meta(d, '.')
 	meta_s = json.dumps(meta, cls=JSONEncoder)
 	with open(filename, 'wb') as f:
 		header = meta_s.encode('utf-8') + b'\n'
 		f.write(header)
-		for name in ds.get_vars(d):
+		for name in ds.vars(d):
 			var = meta[name]
 			if name not in meta:
 				continue
 			if var['.missing'] is True:
 				mask = np.packbits(data.mask)
 				mask.tofile(f)
-			data = ds.get_var(d, name).flatten()
+			data = ds.var(d, name).flatten()
 			data2 = np.array(data) if not var['.missing'] else \
 				np.array(data)[~data.mask]
 			if data.dtype.kind in ('U', 'S', 'O'):

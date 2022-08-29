@@ -20,6 +20,7 @@ Options:
 
 - `-F`: Interpret variable, dimension and attribute names as fixed strings, not glob patterns.
 - `--help`: Show this help message or help for a command.
+- `-v`: Be verbose. Print more detailed information and error messages.
 - `--version`: Print the version number and exit.
 
 Available commands:
@@ -39,12 +40,18 @@ Available commands:
 
 Supported input formats:
 
-- NetCDF4: `.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`
+- DS: `.ds`
 - JSON: `.json`
+- NetCDF4: `.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`
 
 Supported output formats:
 
-- NetCDF4: `.nc`, `.nc4`, `.netcdf`
+- DS: `.ds`
 - JSON: `.json`
+- NetCDF4: `.nc`, `.nc4`, `.netcdf`
+
+Environment variables:
+
+- DS_MODE: Error handling mode. If `strict`, handle missing variables, dimensions and attributes as errors. If `moderate`, report a warning. If `soft`, ignore missing items.
 
 {% endraw %}
