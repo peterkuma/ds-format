@@ -106,6 +106,7 @@ def dim(d, name, full=False):
 def dims(d, name=None, *value, full=False, size=False):
 	'''
 	title: dims
+	aliases: { get_dims }
 	usage: "`dims`(*d*, *name*=`None`, \**value*, *full*=`False`, *size*=`False`)"
 	caption: "Get dataset or variable dimensions or set variable dimensions."
 	arguments: {{
@@ -152,6 +153,7 @@ dims.aliases = ['get_dims']
 def vars_(d, full=False):
 	'''
 	title: vars
+	aliases: { get_vars }
 	caption: "Get all variable names in a dataset."
 	usage: "`get_vars`(*d*, *full*=`False`)"
 	arguments: {{
@@ -196,6 +198,7 @@ def var(d, name, *value):
 def meta(d, var=None, create=False):
 	'''
 	title: meta
+	aliases: { get_meta }
 	caption: "Get dataset or variable metadata."
 	usage: "`meta`(*d*, *var*=`None`, *create*=`False`)"
 	arguments: {{
@@ -232,6 +235,7 @@ def meta(d, var=None, create=False):
 		require(d, 'var', var, full=True)
 		return {}
 
+meta.aliases = ['get_meta']
 get_meta = meta
 
 def attr(d, name, *value, var=None):

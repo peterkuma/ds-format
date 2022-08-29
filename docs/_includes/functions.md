@@ -57,6 +57,9 @@ Dimension size or 0 if the dimension does not exist (`int`).
 
 #### dims
 
+Aliases:  get_dims
+
+
 Get dataset or variable dimensions or set variable dimensions.
 
 Usage: `dims`(*d*, *name*=`None`, **value*, *full*=`False`, *size*=`False`)
@@ -93,25 +96,6 @@ Options:
 Return value:
 
 Attributes (`dict`).
-
-#### meta
-
-Get dataset or variable metadata.
-
-Usage: `meta`(*d*, *var*=`None`, *create*=`False`)
-
-Arguments:
-
-- *d*: Dataset (`dict`).
-
-Options:
-
-- *var*: Variable name (`str`), or `None` to get dataset metadata, or an empty string to get dataset attributes.
-- *create*: Create (modifyable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if not present in the dataset.
-
-Return value:
-
-Metadata (`dict`).
 
 #### group_by
 
@@ -155,6 +139,9 @@ Return value:
 A dataset (`dict`).
 
 #### meta
+
+Aliases:  get_meta
+
 
 Get dataset or variable metadata.
 
@@ -339,6 +326,9 @@ Return value:
 Variable data as a numpy array (`np.ndarray`) or `None` if the variable data are not defined or `value` is supplied.
 
 #### vars
+
+Aliases:  get_vars
+
 
 Get all variable names in a dataset.
 

@@ -82,6 +82,11 @@ def help_to_md(x):
 	s = ''
 	if 'title' in d:
 		s += '#### %s\n' % d['title']
+	if 'aliases' in d:
+		s += '\nAliases: '
+		for alias in d['aliases']:
+			s += ' %s' % alias
+		s += '\n\n'
 	if 'caption' in d:
 		s += '\n%s\n' % d['caption']
 	if 'usage' in d:
