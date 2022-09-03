@@ -39,10 +39,6 @@ import ds_format as ds
 | [vars](#vars) | Get all variable names in a dataset. |
 | [write](#write) | Write dataset to a file. |
 
-<!--| [find](#find) | Find a variable, dimension or attribute matching a pattern. |-->
-<!--| [findall](#findall) | Find variables, dimensions or attributes matching a pattern. |-->
-<!--| [require](#require) | Require a variable, dimension or attribute to be present in a dataset. |-->
-
 ### Constants
 
 #### ds.drivers.netcdf.JD_UNITS
@@ -56,6 +52,28 @@ NetCDF units for storing Julian date time variables.
 `proleptic_greogorian`
 
 NetCDF calendar for storing Julian date time variables.
+
+### Variables
+
+#### mode
+
+Error handling mode. If "strict", handle missing variables, dimensions and
+attributes as errors. If "moderate", report a warning. If "soft", ignore
+missing items. Overrides the environment variable `DS_MODE`.
+
+Examples:
+
+Set error handling mode to strict.
+
+```
+ds.mode = "strict"
+```
+
+### Environment variables
+
+#### DS_MODE
+
+The same as [mode](#mode).
 
 ### Functions
 
