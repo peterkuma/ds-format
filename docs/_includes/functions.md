@@ -79,6 +79,48 @@ Return value:
 
 Dimension names (`list` of `str`) or a dictionary of dimension sizes (`dict`).
 
+#### find
+
+Find a variable, dimension or attribute matching a glob pattern in a dataset.
+
+Usage: `find`(*d*, *what*, *name*, *var*=`None`)
+
+If more than one name matches the pattern, raises `ValueError`.
+
+Arguments:
+
+- *d*: Dataset (`dict`).
+- *what*: Type of item to find (`str`). One of: "var" (variable), "dim" (dimension), "attr" (attribute).
+- *name*: [Glob pattern](https://docs.python.org/3/library/fnmatch.html) matching a variable, dimension or attribute name (`str`).
+
+Options:
+
+- *var*: Variable name (`str`) or `None`. Applies only if *what* is "attr". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name.
+
+Return value:
+
+A variable, dimension or attribute name matching the pattern, or *name* if no matching name is found (`str`).
+
+#### findall
+
+Find variables, dimensions or attributes matching a glob pattern in a dataset.
+
+Usage: `findall`(*d*, *what*, *name*, *var*=`None`)
+
+Arguments:
+
+- *d*: Dataset (`dict`).
+- *what*: Type of item to find (`str`). One of: "var" (variable), "dim" (dimension), "attr" (attribute).
+- *name*: [Glob pattern](https://docs.python.org/3/library/fnmatch.html) matching a variable, dimension or attribute name (`str`).
+
+Options:
+
+- *var*: Variable name (`str`) or `None`. Applies only if *what* is "attr". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name.
+
+Return value:
+
+A list of variables, dimensions or attributes matching the pattern, or [*name*] if no matching names are found (`list` of `str`).
+
 #### attrs
 
 Get variable or dataset attributes.
@@ -259,6 +301,29 @@ Arguments:
 Return value:
 
 `None`
+
+#### require
+
+Require that a variable, dimension or attribute is defined in a dataset.
+
+Usage: `require`(*d*, *what*, *name*, *var*=`None`, *full*=`False`)
+
+If the item is not found and the mode is "soft", returns `False`. If the mode is "strict", raises `NameError`. If the mode is "moderate", produces a warning and returns `False`.
+
+Arguments:
+
+- *d*: Dataset (`dict`).
+- *what*: Type of item to require. One of: "var" (variable), "dim" (dimension), "attr" (attribute) (`str`).
+- *name*: Variable, dimension or attribute name (`str`).
+
+Options:
+
+- *var*: Variable name (`str`) or `None`. Applies only if *what* is "attr". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name.
+- *full*: Also look for items which are defined only in dataset metadata (`bool`).
+
+Return value:
+
+`true` if the required item is defined in the dataset, otherwise `false` or raises an exception depending on the mode.
 
 #### rm
 

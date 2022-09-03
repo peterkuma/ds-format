@@ -26,7 +26,6 @@ from .op import \
 	rm, \
 	rm_attr, \
 	select, \
-	require, \
 	var, \
 	vars_ as vars, \
 	time_dt

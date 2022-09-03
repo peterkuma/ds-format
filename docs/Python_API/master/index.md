@@ -21,6 +21,8 @@ import ds_format as ds
 | [attrs](#attrs) | Get variable or dataset attributes. |
 | [dim](#dim) | Get a dimension size. |
 | [dims](#dims) | Get dataset or variable dimensions or set variable dimensions. |
+| [find](#find) | Find a variable, dimension or attribute matching a glob pattern in a dataset. |
+| [findall](#findall) | Find variables, dimensions or attributes matching a glob pattern in a dataset. |
 | [group_by](#group_by) | Group values along a dimension. |
 | [merge](#merge) | Merge datasets along a dimension. |
 | [meta](#meta) | Get dataset or variable metadata. |
@@ -29,6 +31,7 @@ import ds_format as ds
 | [rename](#rename) | Rename a variable. |
 | [rename_attr](#rename_attr) | Rename a dataset or variable attribute. |
 | [rename_dim](#rename_dim) | Rename a dimension. |
+| [require](#require) | Require that a variable, dimension or attribute is defined in a dataset. |
 | [rm](#rm) | Remove a variable. |
 | [rm_attr](#rm_attr) | Remove a dataset or variable attribute. |
 | [select](#select) | Filter dataset by a selector. |

@@ -8,6 +8,22 @@ from . import misc
 from warnings import warn
 
 def require(d, what, name, var=None, full=False):
+	'''
+	title: require
+	caption: "Require that a variable, dimension or attribute is defined in a dataset."
+	usage: "`require`(*d*, *what*, *name*, *var*=`None`, *full*=`False`)"
+	desc: "If the item is not found and the mode is \\"soft\\", returns `False`. If the mode is \\"strict\\", raises `NameError`. If the mode is \\"moderate\\", produces a warning and returns `False`."
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*what*: "Type of item to require. One of: \\"var\\" (variable), \\"dim\\" (dimension), \\"attr\\" (attribute) (`str`)."
+		*name*: "Variable, dimension or attribute name (`str`)."
+	}}
+	options: {{
+		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
+		*full*: "Also look for items which are defined only in dataset metadata (`bool`)."
+	}}
+	returns: "`true` if the required item is defined in the dataset, otherwise `false` or raises an exception depending on the mode."
+	'''
 	if what == 'var':
 		if name in ds.vars(d, full=full):
 			return True
@@ -498,6 +514,20 @@ def group_by(d, dim, group, func):
 		d[var] = x
 
 def findall(d, what, name, var=None):
+	'''
+	title: findall
+	caption: "Find variables, dimensions or attributes matching a glob pattern in a dataset."
+	usage: "`findall`(*d*, *what*, *name*, *var*=`None`)"
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*what*: "Type of item to find (`str`). One of: \\"var\\" (variable), \\"dim\\" (dimension), \\"attr\\" (attribute)."
+		*name*: "[Glob pattern](https://docs.python.org/3/library/fnmatch.html) matching a variable, dimension or attribute name (`str`)."
+	}}
+	options: {{
+		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
+	}}
+	returns: "A list of variables, dimensions or attributes matching the pattern, or [*name*] if no matching names are found (`list` of `str`)."
+	'''
 	if what == 'var':
 		names = ds.vars(d, full=True)
 	elif what == 'attr':
@@ -510,6 +540,21 @@ def findall(d, what, name, var=None):
 	return [name] if len(res) == 0 else res
 
 def find(d, what, name, var=None):
+	'''
+	title: find
+	caption: "Find a variable, dimension or attribute matching a glob pattern in a dataset."
+	usage: "`find`(*d*, *what*, *name*, *var*=`None`)"
+	desc: "If more than one name matches the pattern, raises `ValueError`."
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*what*: "Type of item to find (`str`). One of: \\"var\\" (variable), \\"dim\\" (dimension), \\"attr\\" (attribute)."
+		*name*: "[Glob pattern](https://docs.python.org/3/library/fnmatch.html) matching a variable, dimension or attribute name (`str`)."
+	}}
+	options: {{
+		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
+	}}
+	returns: "A variable, dimension or attribute name matching the pattern, or *name* if no matching name is found (`str`)."
+	'''
 	names = findall(d, what, name, var)
 	desc = {'var': 'variable', 'attr': 'attribute', 'dim': 'dimension'}[what]
 	if len(names) > 1:
