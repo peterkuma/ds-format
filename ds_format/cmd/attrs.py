@@ -1,5 +1,5 @@
 import ds_format as ds
-from ds_format.cmd import UsageError
+from ds_format.cmd import UsageError, check
 from ds_format import misc
 import pst
 
@@ -35,6 +35,10 @@ celsius"
 	var = args[0] if len(args) > 1 else None
 	attr = args[1] if len(args) > 2 else None
 	input_ = args[-1]
+
+	check(var, 'var', (str, None))
+	check(attr, 'attr', (str, None))
+	check(input_, 'input', str)
 
 	d = ds.read(input_, [], full=True)
 

@@ -1,5 +1,5 @@
 import ds_format as ds
-from ds_format.cmd import UsageError
+from ds_format.cmd import UsageError, check
 
 def select(*args, **opts):
 	'''
@@ -42,8 +42,13 @@ $ cat dataset.json
 	args1 = args[:-2]
 	input_ = args[-2]
 	output = args[-1]
+
 	vars_ = [x for x in args1 if type(x) is not dict]
 	sel = {k: v for x in args1 if type(x) is dict for k, v in x.items()}
+
+	check(input_, 'input', str)
+	check(output, 'output', str)
+
 	if not opts.get('F'):
 		d = ds.read(input_, [], full=True)
 		vars_ = [x for var in vars_ for x in ds.findall(d, 'var', var)]

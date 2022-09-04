@@ -1,4 +1,4 @@
-from ds_format.cmd import UsageError
+from ds_format.cmd import UsageError, check
 import ds_format as ds
 
 def set_(*args, **opts):
@@ -43,6 +43,9 @@ def set_(*args, **opts):
 	cmd_opts = {k: v for x in args1 if type(x) is dict \
 		for k, v in x.items()}
 	args1 = [x for x in args1 if type(x) is not dict]
+
+	check(input_, 'input', [str, None])
+	check(output, 'output', str)
 
 	def process_args(args):
 		if len(args) not in (2, 3, 4):

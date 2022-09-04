@@ -1,4 +1,4 @@
-from ds_format.cmd import UsageError
+from ds_format.cmd import UsageError, check
 import ds_format as ds
 
 def rename(*args, **opts):
@@ -33,6 +33,9 @@ def rename(*args, **opts):
 	input_ = args[-2]
 	output = args[-1]
 
+	check(input_, 'input', str)
+	check(output, 'output', str)
+
 	if len(args1) == 1 and type(args1[0]) is dict:
 		vars_ = args1[0]
 		items = [[vars_, [], {}]]
@@ -57,6 +60,9 @@ def rename(*args, **opts):
 	d = ds.read(input_)
 
 	for vars_, var, attrs in items:
+		check(vars_, 'vars', dict)
+		check(var, 'var', list, str, elemental=True)
+		check(attrs, 'attrs', dict, str, [str, None])
 		if not opts.get('F'):
 			vars_ = {ds.find(d, 'var', k): v for k, v in vars_.items()}
 			var = [x \

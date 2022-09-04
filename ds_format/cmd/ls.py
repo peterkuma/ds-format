@@ -2,6 +2,7 @@ from warnings import warn
 import numpy as np
 import ds_format as ds
 from ds_format import misc
+from ds_format.cmd import check
 import pst
 
 def ls(*args, **opts):
@@ -52,6 +53,11 @@ temperature { time }"
 	'''
 	vars_ = args[:-1]
 	input_ = args[-1]
+	attrs = opts.get('a')
+
+	check(vars_, 'var', list, str, elemental=True)
+	check(input_, 'input', str)
+	check(attrs, 'attrs', [None, str, [list, str]])
 
 	d = ds.read(input_, [], full=True)
 	available_vars = ds.vars(d, full=True)
@@ -80,11 +86,11 @@ temperature { time }"
 		if opts.get('l'):
 			dims = ds.dims(d, x)
 			y += [dims]
-		if opts.get('a'):
-			attrs = ds.attrs(d, x)
-			if type(opts['a']) is list:
-				y += [attrs.get(a, None) for a in opts['a']]
-			elif type(opts['a']) is str:
-				y += [attrs.get(opts['a'], None)]
+		if attrs is not None:
+			var_attrs = ds.attrs(d, x)
+			if type(attrs) is list:
+				y += [var_attrs.get(a) for a in opts['a']]
+			elif type(attrs) is str:
+				y += [var_attrs.get(attrs)]
 		s = pst.encode(y, encoder=misc.encoder)
 		print(s.decode('utf-8'))

@@ -1,4 +1,4 @@
-from ds_format.cmd import UsageError
+from ds_format.cmd import UsageError, check
 import ds_format as ds
 
 def rename_dim(*args, **opts):
@@ -32,6 +32,11 @@ time"
 	dims = args[0]
 	input_ = args[1]
 	output = args[2]
+
+	check(dims, 'dims', dict, str, str)
+	check(input_, 'input', str)
+	check(output, 'output', str)
+
 	d = ds.read(input_)
 	for olddim, newdim in dims.items():
 		if not opts.get('F'):

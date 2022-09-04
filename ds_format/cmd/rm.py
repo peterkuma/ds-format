@@ -1,4 +1,4 @@
-from ds_format.cmd import UsageError
+from ds_format.cmd import UsageError, check
 import ds_format as ds
 
 def rm(*args, **opts):
@@ -38,6 +38,11 @@ def rm(*args, **opts):
 		vars_ = [vars_]
 	if attrs is not None and type(attrs) is not list:
 		attrs = [attrs]
+
+	check(vars_, 'var', [None, [list, str]], elemental=True)
+	check(attrs, 'attr', [None, [list, str]])
+	check(input_, 'input', str)
+	check(output, 'output', str)
 
 	d = ds.read(input_)
 

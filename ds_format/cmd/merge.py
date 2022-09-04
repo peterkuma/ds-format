@@ -1,4 +1,5 @@
 import ds_format as ds
+from ds_format.cmd import check
 
 def merge(dim, *args, **opts):
 	'''
@@ -38,6 +39,11 @@ def merge(dim, *args, **opts):
 	'''
 	input_ = args[:-1]
 	output = args[-1]
+
+	check(dim, 'dim', str)
+	check(input_, 'input', list, str)
+	check(output, 'output', str)
+
 	dd = []
 	for filename in input_:
 		d = ds.read(filename)

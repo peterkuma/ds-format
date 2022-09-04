@@ -1,7 +1,7 @@
 import numpy as np
 import ds_format as ds
 from ds_format import misc
-from ds_format.cmd import UsageError, NumpyEncoder
+from ds_format.cmd import UsageError, check
 import pst
 
 def stats(*args, **opts):
@@ -32,11 +32,18 @@ count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000"
 		raise UsageError('Invalid number of arguments')
 	var = args[0]
 	input_ = args[1]
+
+	check(var, 'var', str)
+	check(input_, 'input', str)
+
 	if not opts.get('F'):
 		d = ds.read(input_, [], full=True)
 		var = ds.find(d, 'var', var)
 	d = ds.read(input_, [var])
-	x = ds.var(d, var).flatten()
+	x = ds.var(d, var)
+	if x is None:
+		return
+	x = x.flatten()
 	count = len(x)
 	min_ = np.min(x)
 	max_ = np.max(x)

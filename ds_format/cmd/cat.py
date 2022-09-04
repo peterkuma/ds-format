@@ -1,5 +1,5 @@
 import numpy as np
-from ds_format.cmd import UsageError
+from ds_format.cmd import UsageError, check
 import ds_format as ds
 from ds_format import misc
 import aquarius_time as aq
@@ -43,6 +43,9 @@ time temperature
 		raise UsageError('Invalid number of arguments')
 	vars_ = args[:-1]
 	input_ = args[-1]
+
+	check(vars_, 'var', list, str, elemental=True)
+	check(input_, 'input', str)
 
 	if not opts.get('F'):
 		d = ds.read(input_, [], full=True)
