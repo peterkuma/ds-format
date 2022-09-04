@@ -8,7 +8,7 @@ ds-cat(1) -- Print variable data.
 
 ## DESCRIPTION
 
-Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array. The first line is a header containing a list of variables.
+Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array. The first line is a header containing a list of variables. Missing values are printed as empty rows (if printing one single dimensional variable) or as `none`.
 
 ## ARGUMENTS
 

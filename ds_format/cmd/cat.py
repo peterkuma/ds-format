@@ -22,7 +22,7 @@ def cat(*args, **opts):
 		`-h`: "Print human-readable values (time as ISO 8601)."
 		`--jd`: "Convert time variables to Julian date (see [Aquarius Time](https://github.com/peterkuma/aquarius-time))."
 	}}
-	desc: "Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array. The first line is a header containing a list of variables."
+	desc: "Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array. The first line is a header containing a list of variables. Missing values are printed as empty rows (if printing one single dimensional variable) or as `none`."
 	examples: {{
 "Print temperature values in dataset.nc.":
 "$ ds cat temperature dataset.nc

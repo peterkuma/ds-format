@@ -13,7 +13,7 @@ def set_(*args, **opts):
 	arguments: {{
 		*var*: "Variable name."
 		*dims*: "Variable dimension name (if single), an array of variable dimensions (if multiple), `none` to keep original dimension or autogenerate if a new variable, or `{ }` to autogenerate new dimension names."
-		*data*: "Variable data. This can be a [PST](https://github.com/peterkuma/pst)-formatted scalar or an array."
+		*data*: "Variable data. This can be a [PST](https://github.com/peterkuma/pst)-formatted scalar or an array. `none` values are interpreted as missing values."
 		*attrs*: "Variable attributes or dataset attributes if *var* is `none` as *attr*`:` *value* pairs."
 		*ds_attrs*: "Dataset attributes as *attr*`:` *value* pairs."
 		*input*: "Input file or `none` for a new file to be created."

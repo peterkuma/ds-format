@@ -53,7 +53,7 @@ Usage:
 `ds cat` *var*... *input* [*options*]<br />
 
 
-Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array. The first line is a header containing a list of variables.
+Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array. The first line is a header containing a list of variables. Missing values are printed as empty rows (if printing one single dimensional variable) or as `none`.
 
 Arguments:
 
@@ -472,7 +472,7 @@ Arguments:
 
 - *var*: Variable name.
 - *dims*: Variable dimension name (if single), an array of variable dimensions (if multiple), `none` to keep original dimension or autogenerate if a new variable, or `{ }` to autogenerate new dimension names.
-- *data*: Variable data. This can be a [PST](https://github.com/peterkuma/pst)-formatted scalar or an array.
+- *data*: Variable data. This can be a [PST](https://github.com/peterkuma/pst)-formatted scalar or an array. `none` values are interpreted as missing values.
 - *attrs*: Variable attributes or dataset attributes if *var* is `none` as *attr*`:` *value* pairs.
 - *ds_attrs*: Dataset attributes as *attr*`:` *value* pairs.
 - *input*: Input file or `none` for a new file to be created.
