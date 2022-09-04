@@ -71,6 +71,8 @@ time temperature
 		   attrs.get('units') == 'days since -4713-11-24 12:00 UTC' and \
 		   attrs.get('calendar') == 'proleptic_gregorian':
 			x = aq.to_iso(x)
+		if x is None:
+			x = np.array([])
 		if not isinstance(x, np.ndarray) or x.ndim == 0:
 			x = [x]
 		xx += [x]
