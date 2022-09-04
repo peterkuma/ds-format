@@ -65,11 +65,7 @@ def rename(*args, **opts):
 					ds.findall(d, 'var', var1) if var1 is not None else [None]
 				)]
 		for oldvar, newvar in vars_.items():
-			if newvar is not None:
-				if oldvar in d:
-					ds.rename(d, oldvar, newvar)
-			else:
-				del d[oldvar]
+			ds.rename(d, oldvar, newvar)
 		for var1 in var:
 			if not opts.get('F'):
 				attrs1 = {
@@ -77,13 +73,8 @@ def rename(*args, **opts):
 					for var1 in var
 					for k, v in attrs.items()
 				}
-			meta = ds.meta(d)['.'] if var1 is None \
-				else ds.meta(d, var1)
 			for oldattr, newattr in attrs1.items():
-				if oldattr in meta:
-					if newattr is not None:
-						meta[newattr] = meta[oldattr]
-					del meta[oldattr]
-		ds.write(output, d)
+				ds.rename_attr(d, oldattr, newattr, var=var1)
+			ds.write(output, d)
 
 rename.disable_cmd_opts = True

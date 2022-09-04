@@ -24,7 +24,7 @@ def rm(*args, **opts):
 		"Remove a dataset attribute `title` in `dataset.nc` and save the output in `output.nc`.":
 		"$ ds rm none title dataset.nc output.nc"
 		"Remove an attribute `units` of a variable `temperature` in `dataset.nc` and save the output in `output.nc`.":
-		"$ ds rm temperature title dataset.nc output.nc"
+		"$ ds rm temperature units dataset.nc output.nc"
 	}}
 	'''
 	if len(args) not in (3, 4):
@@ -57,16 +57,14 @@ def rm(*args, **opts):
 				]
 
 	if vars_ is None:
-		meta = ds.meta(d)
 		for attr in attrs:
-			if attr in meta['.']: del meta['.'][attr]
+			ds.rm_attr(d, attr)
 	elif attrs is None:
 		for var in vars_:
 			ds.rm(d, var)
 	else:
 		for var in vars_:
 			for attr in attrs:
-				meta = ds.meta(d, var)
-				if attr in meta: del meta[attr]
+				ds.rm_attr(d, attr, var=var)
 
 	ds.write(output, d)

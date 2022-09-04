@@ -77,27 +77,26 @@ def set_(*args, **opts):
 			if dims is not None:
 				dims = [ds.find(d, 'dim', dim) for dim in dims]
 		for var in vars_:
-			if set_data: d[var] = data
-			var_meta = ds.meta(d, var, create=True)
+			if set_data:
+				ds.var(d, var, data)
 			if dims == []:
-				if '.dims' in var_meta: del var_meta['.dims']
+				ds.dims(d, var, None)
 			elif dims is not None:
-				var_meta['.dims'] = dims
+				ds.dims(d, var, dims)
 			for k, v in attrs.items():
 				if not opts.get('F'):
 					kk = ds.findall(d, 'attr', k, var)
 					for k1 in kk:
-						var_meta[k1] = v
+						ds.attr(d, k1, v, var=var)
 				else:
-					var_meta[k] = v
-	meta = ds.meta(d, '', create=True)
+					ds.attr(d, k, v, var=var)
 	for k, v in ds_attrs.items():
 		if not opts.get('F'):
 			kk = ds.findall(d, 'attr', k)
 			for k1 in kk:
-				meta[k1] = v
+				ds.attr(d, k1, v)
 		else:
-			meta[k] = v
+			ds.attr(d, k, v)
 	ds.write(output, d)
 
 set_.disable_cmd_opts = True

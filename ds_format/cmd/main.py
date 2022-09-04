@@ -119,4 +119,4 @@ def main():
 		if opts.get('v'):
 			traceback.print_exc()
 		else:
-			print('%s: %s' % (type(e).__name__, e), file=sys.stderr)
+			print(e, file=sys.stderr)

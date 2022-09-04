@@ -30,6 +30,7 @@ time"
 	var = args[0] if len(args) == 2 else None
 	input_ = args[-1]
 	size = opts.get('s', False) or opts.get('size', False)
+
 	d = ds.read(input_, [], full=True)
 	if not opts.get('F'):
 		if var is not None:

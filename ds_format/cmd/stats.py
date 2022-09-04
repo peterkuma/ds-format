@@ -36,7 +36,7 @@ count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000"
 		d = ds.read(input_, [], full=True)
 		var = ds.find(d, 'var', var)
 	d = ds.read(input_, [var])
-	x = d[var].flatten()
+	x = ds.var(d, var).flatten()
 	count = len(x)
 	min_ = np.min(x)
 	max_ = np.max(x)

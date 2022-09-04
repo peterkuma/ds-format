@@ -388,7 +388,7 @@ $ ds rm none title dataset.nc output.nc
 Remove an attribute `units` of a variable `temperature` in `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds rm temperature title dataset.nc output.nc
+$ ds rm temperature units dataset.nc output.nc
 ```
 
 #### select
