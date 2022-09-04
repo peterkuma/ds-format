@@ -7,47 +7,9 @@ import fnmatch
 from . import misc
 from warnings import warn
 
-def require(d, what, name, var=None, full=False):
-	'''
-	title: require
-	caption: "Require that a variable, dimension or attribute is defined in a dataset."
-	usage: "`require`(*d*, *what*, *name*, *var*=`None`, *full*=`False`)"
-	desc: "If the item is not found and the mode is \\"soft\\", returns `False`. If the mode is \\"strict\\", raises `NameError`. If the mode is \\"moderate\\", produces a warning and returns `False`."
-	arguments: {{
-		*d*: "Dataset (`dict`)."
-		*what*: "Type of item to require. One of: \\"var\\" (variable), \\"dim\\" (dimension), \\"attr\\" (attribute) (`str`)."
-		*name*: "Variable, dimension or attribute name (`str`)."
-	}}
-	options: {{
-		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
-		*full*: "Also look for items which are defined only in dataset metadata (`bool`)."
-	}}
-	returns: "`true` if the required item is defined in the dataset, otherwise `false` or raises an exception depending on the mode."
-	'''
-	if what == 'var':
-		if name in ds.vars(d, full=full):
-			return True
-	elif what == 'dim':
-		dims = ds.dims(d, '' if var is None else var)
-		if name in dims:
-			return True
-	elif what == 'attr':
-		meta = ds.meta(d, '' if var is None else var)
-		if name in meta:
-			return True
-	else:
-		raise ValueError('invalid value of the what argument "%s"' % what)
-	label = {
-		'var': 'variable',
-		'dim': 'dimension',
-		'attr': 'attribute',
-	}[what]
-	err = '%s: %s not found' % (name, label)
-	if ds.mode == 'strict':
-		raise NameError(err)
-	elif ds.mode == 'moderate':
-		warn(err)
-	return False
+#
+# Private functions.
+#
 
 def select_var(d, name, sel):
 	var_dims = list(d['.'][name]['.dims'])
@@ -85,21 +47,102 @@ def filter_hidden(x):
 		return [k for k in x if not k.startswith('.')]
 	return x
 
-def select(d, sel):
+def gen_dims(d, var):
+	data = ds.var(d, var)
+	var_meta = ds.meta(d, var)
+	if data is not None:
+		ndim = data.ndim
+	elif '.size' in var_meta:
+		ndim = len(var_meta['.size'])
+	else:
+		ndim = 0
+	return [var + ('_%d' % i) for i in range(1, ndim + 1)]
+
+def parse_time(t):
+	formats = [
+		'%Y-%m-%d %H:%M:%S.%f',
+		'%Y-%m-%d %H:%M:%S',
+		'%Y-%m-%dT%H:%M:%SZ',
+	]
+	for f in formats:
+		try: return dt.datetime.strptime(t, f)
+		except: pass
+	return None
+
+def time_dt(time):
+	return [parse_time(t) for t in time]
+
+def merge_var(dd, var, dim):
+	if len(dd) == 0:
+		return None, None
+	x0 = dd[0][var]
+	meta0 = dd[0]['.'][var]
+	dims0 = meta0['.dims']
+	meta = copy_.deepcopy(meta0)
+	if dim in dims0:
+		i = dims0.index(dim)
+		x = np.concatenate(
+			[d[var] for d in dd if d['.'][var]['.dims'] == dims0],
+			axis=i
+		)
+	else:
+		meta['.dims'] = [dim] + list(meta['.dims'])
+		x = np.stack([d[var] for d in dd if d['.'][var]['.dims'] == dims0])
+	return x, meta
+
+def copy(d):
+	d2 = {}
+	for var in ds.vars(d):
+		d2[var] = d[var]
+	d2['.'] = copy_.deepcopy(d['.'])
+	return d2
+
+#
+# Public functions.
+#
+
+def attr(d, attr, *value, var=None):
 	'''
-	title: select
-	caption: "Filter dataset by a selector."
-	usage: "`select`(*d*, *sel*)"
+	title: attr
+	caption: "Get or set a dataset or variable attribute."
+	usage: "`attr`(*d*, *attr*, \**value*, *var*=`None`)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
-		*sel*: "Selector (`dict`). Selector is a dictionary where each key is a dimension name and value is a mask to apply along the dimension or a list of indexes."
+		*attr*: "Attribute name (`str`)."
+		*value*: "Attribute value. If supplied, set the attribute value, otherwise get the attribute value."
 	}}
-	returns: `None`
+	options: {{
+		*var*: "Variable name (`str`) to get or set a variable attribute, or `None` to get or set a dataset attribute."
+	}}
+	returns: "Attribute value if *value* is not set, otherwise `None`."
 	'''
-	for name in d.keys():
-		if name.startswith('.'):
-			continue
-		select_var(d, name, sel)
+	if len(value) > 1:
+		raise TypeError('only one value argument is expected')
+	if len(value) == 0:
+		if require(d, 'attr', attr, var):
+			attrs = ds.attrs(d, var)
+			return attrs[attr]
+	else:
+		meta = ds.meta(d, '' if var is None else var, create=True)
+		meta[attr] = value[0]
+
+def attrs(d, var=None):
+	'''
+	title: attrs
+	caption: "Get variable or dataset attributes."
+	usage: "`attrs`(*d*, *var*=`None`)"
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+	}}
+	options: {{
+		*var*: "Variable name (`str`) or `None` to get dataset attributes."
+	}}
+	returns: "Attributes (`dict`)."
+	'''
+	meta = ds.meta(d, '' if var is None else var)
+	return filter_hidden(meta)
+
+get_attrs = attrs
 
 def dim(d, dim, full=False):
 	'''
@@ -170,50 +213,126 @@ def dims(d, var=None, *value, full=False, size=False):
 get_dims = dims
 dims.aliases = ['get_dims']
 
-def vars_(d, full=False):
+def find(d, what, name, var=None):
 	'''
-	title: vars
-	aliases: { get_vars }
-	caption: "Get all variable names in a dataset."
-	usage: "`get_vars`(*d*, *full*=`False`)"
+	title: find
+	caption: "Find a variable, dimension or attribute matching a glob pattern in a dataset."
+	usage: "`find`(*d*, *what*, *name*, *var*=`None`)"
+	desc: "If more than one name matches the pattern, raises `ValueError`."
 	arguments: {{
 		*d*: "Dataset (`dict`)."
+		*what*: "Type of item to find (`str`). One of: \\"var\\" (variable), \\"dim\\" (dimension), \\"attr\\" (attribute)."
+		*name*: "[Glob pattern](https://docs.python.org/3/library/fnmatch.html) matching a variable, dimension or attribute name (`str`)."
 	}}
 	options: {{
-		*full*: "Also return variable names which are only defined in the metadata."
+		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
 	}}
-	returns: "Variable names (`list` of `str`)."
+	returns: "A variable, dimension or attribute name matching the pattern, or *name* if no matching name is found (`str`)."
 	'''
-	vars_ = ds.meta(d).keys() if full else d.keys()
-	return filter_hidden(vars_)
+	names = findall(d, what, name, var)
+	desc = {'var': 'variable', 'attr': 'attribute', 'dim': 'dimension'}[what]
+	if len(names) > 1:
+		raise ValueError('more than one %s is matching the pattern "%s"' % (desc, name))
+	elif len(names) == 0:
+		#raise ValueError('%s: %s not found' % (name, desc))
+		return name
+	return names[0]
 
-vars_.aliases = ['get_vars']
-get_vars = vars_
-
-def var(d, var, *value):
+def findall(d, what, name, var=None):
 	'''
-	title: var
-	caption: "Get or set variable data."
-	usage: "`var`(*d*, *var*, \**value*)"
+	title: findall
+	caption: "Find variables, dimensions or attributes matching a glob pattern in a dataset."
+	usage: "`findall`(*d*, *what*, *name*, *var*=`None`)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
-		*var*: "Variable name (`str`)."
-		*value*: "Variable data. If supplied, set variable data, otherwise get variable data."
+		*what*: "Type of item to find (`str`). One of: \\"var\\" (variable), \\"dim\\" (dimension), \\"attr\\" (attribute)."
+		*name*: "[Glob pattern](https://docs.python.org/3/library/fnmatch.html) matching a variable, dimension or attribute name (`str`)."
 	}}
-	returns: "Variable data as a numpy array (`np.ndarray`) or `None` if the variable data are not defined or `value` is supplied."
+	options: {{
+		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
+	}}
+	returns: "A list of variables, dimensions or attributes matching the pattern, or [*name*] if no matching names are found (`list` of `str`)."
 	'''
-	if len(value) > 1:
-		raise TypeError('only one value argument is expected')
-	if len(value) == 0:
-		if require(d, 'var', var):
-			data = d[var]
-			if isinstance(data, np.ndarray):
-				return data
-			else:
-				return np.array(data)
-		return None
+	if what == 'var':
+		names = ds.vars(d, full=True)
+	elif what == 'attr':
+		names = ds.attrs(d, var)
+	elif what == 'dim':
+		names = list(ds.dims(d, var, full=True).keys())
 	else:
-		d[var] = value[0]
+		raise ValueError('invalid value of the what argument "%s"' % what)
+	res = fnmatch.filter(names, name)
+	return [name] if len(res) == 0 else res
+
+def group_by(d, dim, group, func):
+	'''
+	title: group_by
+	caption: "Group values along a dimension."
+	usage: "`group_by`(*d*, *dim*, *group*, *func*)"
+	desc: "Each variable with a given dimension *dim* is split by *group* into subsets. Each subset is replaced with a value computed by *func*."
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*dim*: "Dimension to group along (`str`)."
+		*group*: "Groups (`ndarray` or `list`). Array of the same length as the dimension."
+		*func*: "Group function (`function`). *func*(*y*, axis=*i*) is called for each subset *y*, where *i* is the index of the dimension."
+	}}
+	returns: `None`
+	'''
+	groups = sorted(list(set(group)))
+	vars_ = ds.vars(d)
+	n = len(groups)
+	for var in vars_:
+		dims = d['.'][var]['.dims']
+		try:
+			i = dims.index(dim)
+		except ValueError:
+			continue
+		size = list(d[var].shape)
+		size[i] = n
+		x = np.empty(size, d[var].dtype)
+		for j, g in enumerate(groups):
+			mask = group == g
+			slice_x = misc.sel_slice({dim: j}, dims)
+			slice_y = misc.sel_slice({dim: mask}, dims)
+			y = d[var][slice_y]
+			x[slice_x] = func(y, axis=i)
+		d[var] = x
+
+def merge(dd, dim, new=None, variables=None):
+	'''
+	title: merge
+	caption: "Merge datasets along a dimension."
+	usage: "`merge`(*dd*, *dim*, *new*=`None`, *variables*=`None`)"
+	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension and other variables are set to the first occurrence of the variable."
+	arguments: {{
+		*dd*: "Datasets (`list`)."
+		*dim*: "Name of a dimension to merge along (`str`)."
+	}}
+	options: {{
+		*new*: "Name of a new dimension (`str`) or `None`."
+		*variables*: "Variables to merge along a new dimension (`list`) or `None` for all variables."
+	}}
+	returns: "A dataset (`dict`)."
+	'''
+	dx = {'.': {'.': {}}}
+	vars_ = list(set([x for d in dd for x in ds.vars(d)]))
+	dims = [k for d in dd for k in ds.dims(d)]
+	is_new = dim not in dims
+	for var in vars_:
+		var_dims = ds.dims(dd[0], var)
+		if is_new and (variables is None or var in variables) or \
+		   dim in var_dims:
+			x, meta = merge_var(dd, var, dim)
+		elif new is not None and (variables is None or var in variables):
+			x, meta = merge_var(dd, var, new)
+		else:
+			x, meta = dd[0][var], dd[0]['.'][var]
+		dx[var] = x
+		dx['.'][var] = meta
+	for d in dd:
+		if '.' in d['.']:
+			dx['.']['.'].update(d['.']['.'])
+	return dx
 
 def meta(d, var=None, create=False):
 	'''
@@ -258,151 +377,6 @@ def meta(d, var=None, create=False):
 meta.aliases = ['get_meta']
 get_meta = meta
 
-def attr(d, attr, *value, var=None):
-	'''
-	title: attr
-	caption: "Get or set a dataset or variable attribute."
-	usage: "`attr`(*d*, *attr*, \**value*, *var*=`None`)"
-	arguments: {{
-		*d*: "Dataset (`dict`)."
-		*attr*: "Attribute name (`str`)."
-		*value*: "Attribute value. If supplied, set the attribute value, otherwise get the attribute value."
-	}}
-	options: {{
-		*var*: "Variable name (`str`) to get or set a variable attribute, or `None` to get or set a dataset attribute."
-	}}
-	returns: "Attribute value if *value* is not set, otherwise `None`."
-	'''
-	if len(value) > 1:
-		raise TypeError('only one value argument is expected')
-	if len(value) == 0:
-		if require(d, 'attr', attr, var):
-			attrs = ds.attrs(d, var)
-			return attrs[attr]
-	else:
-		meta = ds.meta(d, '' if var is None else var, create=True)
-		meta[attr] = value[0]
-
-def attrs(d, var=None):
-	'''
-	title: attrs
-	caption: "Get variable or dataset attributes."
-	usage: "`attrs`(*d*, *var*=`None`)"
-	arguments: {{
-		*d*: "Dataset (`dict`)."
-	}}
-	options: {{
-		*var*: "Variable name (`str`) or `None` to get dataset attributes."
-	}}
-	returns: "Attributes (`dict`)."
-	'''
-	meta = ds.meta(d, '' if var is None else var)
-	return filter_hidden(meta)
-
-get_attrs = attrs
-
-def gen_dims(d, var):
-	data = ds.var(d, var)
-	var_meta = ds.meta(d, var)
-	if data is not None:
-		ndim = data.ndim
-	elif '.size' in var_meta:
-		ndim = len(var_meta['.size'])
-	else:
-		ndim = 0
-	return [var + ('_%d' % i) for i in range(1, ndim + 1)]
-
-def parse_time(t):
-	formats = [
-		'%Y-%m-%d %H:%M:%S.%f',
-		'%Y-%m-%d %H:%M:%S',
-		'%Y-%m-%dT%H:%M:%SZ',
-	]
-	for f in formats:
-		try: return dt.datetime.strptime(t, f)
-		except: pass
-	return None
-
-def time_dt(time):
-	return [parse_time(t) for t in time]
-
-def merge_var(dd, var, dim):
-	if len(dd) == 0:
-		return None, None
-	x0 = dd[0][var]
-	meta0 = dd[0]['.'][var]
-	dims0 = meta0['.dims']
-	meta = copy_.deepcopy(meta0)
-	if dim in dims0:
-		i = dims0.index(dim)
-		x = np.concatenate(
-			[d[var] for d in dd if d['.'][var]['.dims'] == dims0],
-			axis=i
-		)
-	else:
-		meta['.dims'] = [dim] + list(meta['.dims'])
-		x = np.stack([d[var] for d in dd if d['.'][var]['.dims'] == dims0])
-	return x, meta
-
-def merge(dd, dim, new=None, variables=None):
-	'''
-	title: merge
-	caption: "Merge datasets along a dimension."
-	usage: "`merge`(*dd*, *dim*, *new*=`None`, *variables*=`None`)"
-	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension and other variables are set to the first occurrence of the variable."
-	arguments: {{
-		*dd*: "Datasets (`list`)."
-		*dim*: "Name of a dimension to merge along (`str`)."
-	}}
-	options: {{
-		*new*: "Name of a new dimension (`str`) or `None`."
-		*variables*: "Variables to merge along a new dimension (`list`) or `None` for all variables."
-	}}
-	returns: "A dataset (`dict`)."
-	'''
-	dx = {'.': {'.': {}}}
-	vars_ = list(set([x for d in dd for x in ds.vars(d)]))
-	dims = [k for d in dd for k in ds.dims(d)]
-	is_new = dim not in dims
-	for var in vars_:
-		var_dims = ds.dims(dd[0], var)
-		if is_new and (variables is None or var in variables) or \
-		   dim in var_dims:
-			x, meta = merge_var(dd, var, dim)
-		elif new is not None and (variables is None or var in variables):
-			x, meta = merge_var(dd, var, new)
-		else:
-			x, meta = dd[0][var], dd[0]['.'][var]
-		dx[var] = x
-		dx['.'][var] = meta
-	for d in dd:
-		if '.' in d['.']:
-			dx['.']['.'].update(d['.']['.'])
-	return dx
-
-def rename_dim(d, old, new):
-	'''
-	title: rename
-	caption: "Rename a dimension."
-	usage: "`rename_dim`(*d*, *old*, *new*)"
-	arguments: {{
-		*d*: "Dataset (`dict`)."
-		*old*: "Old dimension name (`str`)."
-		*new*: "New dimension name (`str`)."
-	}}
-	returns: `None`
-	'''
-	if old == new:
-		return
-	for var in ds.vars(d, full=True):
-		meta = ds.meta(d, var)
-		if '.dims' in meta:
-			dims = list(meta['.dims'])
-			for i, dim in enumerate(dims):
-				if dim == old:
-					dims[i] = new
-			meta['.dims'] = dims
-
 def rename(d, old, new):
 	'''
 	title: rename
@@ -446,6 +420,71 @@ def rename_attr(d, old, new, var=None):
 		meta[new] = meta[old]
 		del meta[old]
 
+def rename_dim(d, old, new):
+	'''
+	title: rename
+	caption: "Rename a dimension."
+	usage: "`rename_dim`(*d*, *old*, *new*)"
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*old*: "Old dimension name (`str`)."
+		*new*: "New dimension name (`str`)."
+	}}
+	returns: `None`
+	'''
+	if old == new:
+		return
+	for var in ds.vars(d, full=True):
+		meta = ds.meta(d, var)
+		if '.dims' in meta:
+			dims = list(meta['.dims'])
+			for i, dim in enumerate(dims):
+				if dim == old:
+					dims[i] = new
+			meta['.dims'] = dims
+
+def require(d, what, name, var=None, full=False):
+	'''
+	title: require
+	caption: "Require that a variable, dimension or attribute is defined in a dataset."
+	usage: "`require`(*d*, *what*, *name*, *var*=`None`, *full*=`False`)"
+	desc: "If the item is not found and the mode is \\"soft\\", returns `False`. If the mode is \\"strict\\", raises `NameError`. If the mode is \\"moderate\\", produces a warning and returns `False`."
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*what*: "Type of item to require. One of: \\"var\\" (variable), \\"dim\\" (dimension), \\"attr\\" (attribute) (`str`)."
+		*name*: "Variable, dimension or attribute name (`str`)."
+	}}
+	options: {{
+		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
+		*full*: "Also look for items which are defined only in dataset metadata (`bool`)."
+	}}
+	returns: "`true` if the required item is defined in the dataset, otherwise `false` or raises an exception depending on the mode."
+	'''
+	if what == 'var':
+		if name in ds.vars(d, full=full):
+			return True
+	elif what == 'dim':
+		dims = ds.dims(d, '' if var is None else var)
+		if name in dims:
+			return True
+	elif what == 'attr':
+		meta = ds.meta(d, '' if var is None else var)
+		if name in meta:
+			return True
+	else:
+		raise ValueError('invalid value of the what argument "%s"' % what)
+	label = {
+		'var': 'variable',
+		'dim': 'dimension',
+		'attr': 'attribute',
+	}[what]
+	err = '%s: %s not found' % (name, label)
+	if ds.mode == 'strict':
+		raise NameError(err)
+	elif ds.mode == 'moderate':
+		warn(err)
+	return False
+
 def rm(d, var):
 	'''
 	title: rm
@@ -478,94 +517,63 @@ def rm_attr(d, attr, var=None):
 		meta = ds.meta(d, '' if var is None else var)
 		del meta[attr]
 
-def copy(d):
-	d2 = {}
-	for var in ds.vars(d):
-		d2[var] = d[var]
-	d2['.'] = copy_.deepcopy(d['.'])
-	return d2
-
-def group_by(d, dim, group, func):
+def select(d, sel):
 	'''
-	title: group_by
-	caption: "Group values along a dimension."
-	usage: "`group_by`(*d*, *dim*, *group*, *func*)"
-	desc: "Each variable with a given dimension *dim* is split by *group* into subsets. Each subset is replaced with a value computed by *func*."
+	title: select
+	caption: "Filter dataset by a selector."
+	usage: "`select`(*d*, *sel*)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
-		*dim*: "Dimension to group along (`str`)."
-		*group*: "Groups (`ndarray` or `list`). Array of the same length as the dimension."
-		*func*: "Group function (`function`). *func*(*y*, axis=*i*) is called for each subset *y*, where *i* is the index of the dimension."
+		*sel*: "Selector (`dict`). Selector is a dictionary where each key is a dimension name and value is a mask to apply along the dimension or a list of indexes."
 	}}
 	returns: `None`
 	'''
-	groups = sorted(list(set(group)))
-	vars_ = ds.vars(d)
-	n = len(groups)
-	for var in vars_:
-		dims = d['.'][var]['.dims']
-		try:
-			i = dims.index(dim)
-		except ValueError:
+	for name in d.keys():
+		if name.startswith('.'):
 			continue
-		size = list(d[var].shape)
-		size[i] = n
-		x = np.empty(size, d[var].dtype)
-		for j, g in enumerate(groups):
-			mask = group == g
-			slice_x = misc.sel_slice({dim: j}, dims)
-			slice_y = misc.sel_slice({dim: mask}, dims)
-			y = d[var][slice_y]
-			x[slice_x] = func(y, axis=i)
-		d[var] = x
+		select_var(d, name, sel)
 
-def findall(d, what, name, var=None):
+def var(d, var, *value):
 	'''
-	title: findall
-	caption: "Find variables, dimensions or attributes matching a glob pattern in a dataset."
-	usage: "`findall`(*d*, *what*, *name*, *var*=`None`)"
+	title: var
+	caption: "Get or set variable data."
+	usage: "`var`(*d*, *var*, \**value*)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
-		*what*: "Type of item to find (`str`). One of: \\"var\\" (variable), \\"dim\\" (dimension), \\"attr\\" (attribute)."
-		*name*: "[Glob pattern](https://docs.python.org/3/library/fnmatch.html) matching a variable, dimension or attribute name (`str`)."
+		*var*: "Variable name (`str`)."
+		*value*: "Variable data. If supplied, set variable data, otherwise get variable data."
 	}}
-	options: {{
-		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
-	}}
-	returns: "A list of variables, dimensions or attributes matching the pattern, or [*name*] if no matching names are found (`list` of `str`)."
+	returns: "Variable data as a numpy array (`np.ndarray`) or `None` if the variable data are not defined or `value` is supplied."
 	'''
-	if what == 'var':
-		names = ds.vars(d, full=True)
-	elif what == 'attr':
-		names = ds.attrs(d, var)
-	elif what == 'dim':
-		names = list(ds.dims(d, var, full=True).keys())
+	if len(value) > 1:
+		raise TypeError('only one value argument is expected')
+	if len(value) == 0:
+		if require(d, 'var', var):
+			data = d[var]
+			if isinstance(data, np.ndarray):
+				return data
+			else:
+				return np.array(data)
+		return None
 	else:
-		raise ValueError('invalid value of the what argument "%s"' % what)
-	res = fnmatch.filter(names, name)
-	return [name] if len(res) == 0 else res
+		d[var] = value[0]
 
-def find(d, what, name, var=None):
+def vars_(d, full=False):
 	'''
-	title: find
-	caption: "Find a variable, dimension or attribute matching a glob pattern in a dataset."
-	usage: "`find`(*d*, *what*, *name*, *var*=`None`)"
-	desc: "If more than one name matches the pattern, raises `ValueError`."
+	title: vars
+	aliases: { get_vars }
+	caption: "Get all variable names in a dataset."
+	usage: "`get_vars`(*d*, *full*=`False`)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
-		*what*: "Type of item to find (`str`). One of: \\"var\\" (variable), \\"dim\\" (dimension), \\"attr\\" (attribute)."
-		*name*: "[Glob pattern](https://docs.python.org/3/library/fnmatch.html) matching a variable, dimension or attribute name (`str`)."
 	}}
 	options: {{
-		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
+		*full*: "Also return variable names which are only defined in the metadata."
 	}}
-	returns: "A variable, dimension or attribute name matching the pattern, or *name* if no matching name is found (`str`)."
+	returns: "Variable names (`list` of `str`)."
 	'''
-	names = findall(d, what, name, var)
-	desc = {'var': 'variable', 'attr': 'attribute', 'dim': 'dimension'}[what]
-	if len(names) > 1:
-		raise ValueError('more than one %s is matching the pattern "%s"' % (desc, name))
-	elif len(names) == 0:
-		#raise ValueError('%s: %s not found' % (name, desc))
-		return name
-	return names[0]
+	vars_ = ds.meta(d).keys() if full else d.keys()
+	return filter_hidden(vars_)
+
+vars_.aliases = ['get_vars']
+get_vars = vars_
