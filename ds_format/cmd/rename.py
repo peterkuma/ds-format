@@ -60,8 +60,8 @@ def rename(*args, **opts):
 	d = ds.read(input_)
 
 	for vars_, var, attrs in items:
-		check(vars_, 'vars', dict)
-		check(var, 'var', list, str, elemental=True)
+		check(vars_, 'vars', dict, str, [str, None])
+		check(var, 'var', list, [str, None], elemental=True)
 		check(attrs, 'attrs', dict, str, [str, None])
 		if not opts.get('F'):
 			vars_ = {ds.find(d, 'var', k): v for k, v in vars_.items()}
@@ -81,6 +81,6 @@ def rename(*args, **opts):
 				}
 			for oldattr, newattr in attrs1.items():
 				ds.rename_attr(d, oldattr, newattr, var=var1)
-			ds.write(output, d)
+	ds.write(output, d)
 
 rename.disable_cmd_opts = True

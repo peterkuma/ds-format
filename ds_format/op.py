@@ -417,7 +417,8 @@ def rename_attr(d, old, new, var=None):
 	'''
 	if require(d, 'attr', old, var):
 		meta = ds.meta(d, '' if var is None else var)
-		meta[new] = meta[old]
+		if new is not None:
+			meta[new] = meta[old]
 		del meta[old]
 
 def rename_dim(d, old, new):

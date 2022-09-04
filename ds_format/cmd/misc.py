@@ -12,9 +12,7 @@ class NumpyEncoder(json.JSONEncoder):
 class UsageError(TypeError):
 	pass
 
-def check(x, name, arg, *args, elemental=False):
-	def check_type(y, type_):
-		return type(y) is type_ or y is None and type_ is None
+def check(x, name, arg, *args, elemental=False, fail=True):
 	if type(x) is tuple:
 		x = list(x)
 	t = type(x)
@@ -25,14 +23,20 @@ def check(x, name, arg, *args, elemental=False):
 	for a in arg:
 		if type(a) not in (list, tuple):
 			a = [a]
-		if check_type(x, a[0]):
+		if type(x) is a[0] or x is None and a[0] is None:
 			if a[0] in (list, tuple) and len(a) >= 2:
-				res = all([check_type(y, a[1]) for y in x])
+				res = all([
+					check(y, name, a[1], elemental=elemental, fail=False) \
+					for y in x
+				])
 			elif a[0] is dict and len(a) >= 3:
-				res = all([check_type(k, a[1]) and check_type(v, a[2]) \
+				res = all([
+					check(k, name, a[1], elemental=elemental, fail=False) and \
+					check(v, name, a[2], elemental=elemental, fail=False) \
 					for k, v in x.items()
 				])
 			else:
 				res = True
-	if not res:
+	if not res and fail:
 		raise ValueError('%s: invalid type' % name)
+	return res
