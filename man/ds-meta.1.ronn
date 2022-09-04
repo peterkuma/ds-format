@@ -3,7 +3,7 @@ ds-meta(1) -- Print dataset metadata.
 
 ## SYNOPSIS
 
-`ds meta` [*var*] [*input*] [*options*]
+`ds meta` [*var*] *input* [*options*]
 
 ## DESCRIPTION
 

@@ -27,6 +27,15 @@ Interpret variable, dimension and attribute names as fixed strings, not glob pat
 \fB\-\-help\fR
 Show this help message or help for a command\.
 .TP
+\fB\-m\fR
+Moderate error handling mode\. Report a warning on missing variables, dimensions and attributes\.
+.TP
+\fB\-s\fR
+Strict error handling mode\. Handle missing variables, dimensions and attributes as errors\. Overrides DS_MODE environment variable\.
+.TP
+\fB\-t\fR
+Soft error handling mode\. Ignore missing variables, dimensions and attributes\. Overrides DS_MODE environment variable\.
+.TP
 \fB\-v\fR
 Be verbose\. Print more detailed information and error messages\.
 .TP

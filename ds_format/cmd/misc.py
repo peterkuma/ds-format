@@ -29,12 +29,18 @@ def check(x, name, arg, *args, elemental=False, fail=True):
 					check(y, name, a[1], elemental=elemental, fail=False) \
 					for y in x
 				])
-			elif a[0] is dict and len(a) >= 3:
-				res = all([
-					check(k, name, a[1], elemental=elemental, fail=False) and \
-					check(v, name, a[2], elemental=elemental, fail=False) \
-					for k, v in x.items()
-				])
+			elif a[0] is dict and len(a) >= 2:
+				if len(a) == 2:
+					res = all([
+						check(k, name, a[1], elemental=elemental, fail=False)
+						for k, v in x.items()
+					])
+				else:
+					res = all([
+						check(k, name, a[1], elemental=elemental, fail=False) and \
+						check(v, name, a[2], elemental=elemental, fail=False) \
+						for k, v in x.items()
+					])
 			else:
 				res = True
 	if not res and fail:

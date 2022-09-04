@@ -10,7 +10,7 @@ ds-set(1) -- Set variable data, dimensions and attributes in an existing or new 
 ## ARGUMENTS
 
 - *var*:
-Variable name or `none` to set dataset attributes.
+Variable name.
 - *dims*:
 Variable dimension name (if single), an array of variable dimensions (if multiple), `none` to keep original dimension or autogenerate if a new variable, or `{ }` to autogenerate new dimension names.
 - *data*:

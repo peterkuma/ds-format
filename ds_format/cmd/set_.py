@@ -11,7 +11,7 @@ def set_(*args, **opts):
 		"`ds set` `{` *var* *dims* [*data*] [*attrs*]... `}`... *ds_attrs* *input* *output* [*options*]"
 	}
 	arguments: {{
-		*var*: "Variable name or `none` to set dataset attributes."
+		*var*: "Variable name."
 		*dims*: "Variable dimension name (if single), an array of variable dimensions (if multiple), `none` to keep original dimension or autogenerate if a new variable, or `{ }` to autogenerate new dimension names."
 		*data*: "Variable data. This can be a [PST](https://github.com/peterkuma/pst)-formatted scalar or an array."
 		*attrs*: "Variable attributes or dataset attributes if *var* is `none` as *attr*`:` *value* pairs."
@@ -73,8 +73,13 @@ def set_(*args, **opts):
 		ds_attrs = {}
 		items = [process_args(list(args1) + [cmd_opts])]
 
+	check(ds_attrs, 'ds_attrs', dict, str)
+
 	d = ds.read(input_) if input_ is not None else {'.': {'.': {}}}
 	for var, dims, data, set_data, attrs in items:
+		check(var, 'var', str)
+		check(dims, 'dims', [None, [list, str]])
+		check(attrs, 'attrs', dict, str)
 		if not opts.get('F'):
 			vars_ = ds.findall(d, 'var', var)
 			if dims is not None:

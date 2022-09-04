@@ -20,6 +20,9 @@ Options:
 
 - `-F`: Interpret variable, dimension and attribute names as fixed strings, not glob patterns.
 - `--help`: Show this help message or help for a command.
+- `-m`: Moderate error handling mode. Report a warning on missing variables, dimensions and attributes.
+- `-s`: Strict error handling mode. Handle missing variables, dimensions and attributes as errors. Overrides DS_MODE environment variable.
+- `-t`: Soft error handling mode. Ignore missing variables, dimensions and attributes. Overrides DS_MODE environment variable.
 - `-v`: Be verbose. Print more detailed information and error messages.
 - `--version`: Print the version number and exit.
 

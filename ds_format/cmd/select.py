@@ -46,8 +46,10 @@ $ cat dataset.json
 	vars_ = [x for x in args1 if type(x) is not dict]
 	sel = {k: v for x in args1 if type(x) is dict for k, v in x.items()}
 
+	check(vars_, 'var', list, str, elemental=True)
 	check(input_, 'input', str)
 	check(output, 'output', str)
+	check(sel, 'sel', dict, str, [int, [list, int]])
 
 	if not opts.get('F'):
 		d = ds.read(input_, [], full=True)

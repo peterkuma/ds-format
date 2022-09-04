@@ -242,7 +242,7 @@ $ ds cat time temperature dataset.nc
 
 Print dataset metadata.
 
-Usage: `ds meta` [*var*] [*input*] [*options*]
+Usage: `ds meta` [*var*] *input* [*options*]
 
 The output is formatted as [PST](https://github.com/peterkuma/pst).
 
@@ -470,7 +470,7 @@ Usage:
 
 Arguments:
 
-- *var*: Variable name or `none` to set dataset attributes.
+- *var*: Variable name.
 - *dims*: Variable dimension name (if single), an array of variable dimensions (if multiple), `none` to keep original dimension or autogenerate if a new variable, or `{ }` to autogenerate new dimension names.
 - *data*: Variable data. This can be a [PST](https://github.com/peterkuma/pst)-formatted scalar or an array.
 - *attrs*: Variable attributes or dataset attributes if *var* is `none` as *attr*`:` *value* pairs.
