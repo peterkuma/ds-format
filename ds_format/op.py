@@ -101,36 +101,36 @@ def select(d, sel):
 			continue
 		select_var(d, name, sel)
 
-def dim(d, name, full=False):
+def dim(d, dim, full=False):
 	'''
 	title: dim
 	caption: "Get a dimension size."
-	usage: "`dim`(*d*, *name*, *full*=`None`)"
+	usage: "`dim`(*d*, *dim*, *full*=`None`)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
-		*name*: "Dimension name (`str`)."
+		*dim*: "Dimension name (`str`)."
 	}}
 	options: {{
 		*full*: "Return dimension size also for a dimension for which no variable data are defined, i.e. it is only defined in dataset metadata."
 	}}
 	returns: "Dimension size or 0 if the dimension does not exist (`int`)."
 	'''
-	if require(d, 'dim', name):
-		return dims(d, full=full, size=True)[name]
+	if require(d, 'dim', dim):
+		return dims(d, full=full, size=True)[dim]
 	return 0
 
-def dims(d, name=None, *value, full=False, size=False):
+def dims(d, var=None, *value, full=False, size=False):
 	'''
 	title: dims
 	aliases: { get_dims }
-	usage: "`dims`(*d*, *name*=`None`, \**value*, *full*=`False`, *size*=`False`)"
+	usage: "`dims`(*d*, *var*=`None`, \**value*, *full*=`False`, *size*=`False`)"
 	caption: "Get dataset or variable dimensions or set variable dimensions."
 	arguments: {{
 		*d*: "Dataset (`dict`)."
 		*value*: "A list of dimensions (`list` of `str`). If supplied, set variable dimensions, otherwise get dataset or variable dimensions."
 	}}
 	options: {{
-		*name*: "Variable name (`str`)."
+		*var*: "Variable name (`str`)."
 		*full*: "Get variable dimensions even if the variable is only defined in the matadata (`bool`)."
 		*size*: "Return a dictionary containing dimension sizes."
 	}}
@@ -140,17 +140,17 @@ def dims(d, name=None, *value, full=False, size=False):
 		raise TypeError('only one value argument is expected')
 	if len(value) == 0:
 		dims = {}
-		if name is None:
+		if var is None:
 			for name in ds.vars(d, full):
 				var_dims = ds.dims(d, name, size=True)
 				for k, v in var_dims.items():
 					dims[k] = dims.get(k) if v is None else v
 		else:
-			meta = ds.meta(d, name)
-			if not size: return meta.get('.dims', gen_dims(d, name))
-			data = ds.var(d, name)
+			meta = ds.meta(d, var)
+			if not size: return meta.get('.dims', gen_dims(d, var))
+			data = ds.var(d, var)
 			var_size = meta.get('.size')
-			var_dims = meta.get('.dims', gen_dims(d, name))
+			var_dims = meta.get('.dims', gen_dims(d, var))
 			for i, dim in enumerate(var_dims):
 				if data is not None:
 					dims[dim] = data.shape[i]
@@ -160,7 +160,7 @@ def dims(d, name=None, *value, full=False, size=False):
 					dims[dim] = None
 		return dims
 	else:
-		meta = ds.meta(d, name, create=True)
+		meta = ds.meta(d, var, create=True)
 		meta['.dims'] = value[0]
 
 get_dims = dims
@@ -186,14 +186,14 @@ def vars_(d, full=False):
 vars_.aliases = ['get_vars']
 get_vars = vars_
 
-def var(d, name, *value):
+def var(d, var, *value):
 	'''
 	title: var
 	caption: "Get or set variable data."
-	usage: "`var`(*d*, *name*, \**value*)"
+	usage: "`var`(*d*, *var*, \**value*)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
-		*name*: "Variable name (`str`)."
+		*var*: "Variable name (`str`)."
 		*value*: "Variable data. If supplied, set variable data, otherwise get variable data."
 	}}
 	returns: "Variable data as a numpy array (`np.ndarray`) or `None` if the variable data are not defined or `value` is supplied."
@@ -201,15 +201,15 @@ def var(d, name, *value):
 	if len(value) > 1:
 		raise TypeError('only one value argument is expected')
 	if len(value) == 0:
-		if require(d, 'var', name):
-			data = d[name]
+		if require(d, 'var', var):
+			data = d[var]
 			if isinstance(data, np.ndarray):
 				return data
 			else:
 				return np.array(data)
 		return None
 	else:
-		d[name] = value[0]
+		d[var] = value[0]
 
 def meta(d, var=None, create=False):
 	'''
@@ -254,14 +254,14 @@ def meta(d, var=None, create=False):
 meta.aliases = ['get_meta']
 get_meta = meta
 
-def attr(d, name, *value, var=None):
+def attr(d, attr, *value, var=None):
 	'''
 	title: attr
 	caption: "Get or set a dataset or variable attribute."
-	usage: "`attr`(*d*, *name*, \**value*, *var*=`None`)"
+	usage: "`attr`(*d*, *attr*, \**value*, *var*=`None`)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
-		*name*: "Attribute name (`str`)."
+		*attr*: "Attribute name (`str`)."
 		*value*: "Attribute value. If supplied, set the attribute value, otherwise get the attribute value."
 	}}
 	options: {{
@@ -272,12 +272,12 @@ def attr(d, name, *value, var=None):
 	if len(value) > 1:
 		raise TypeError('only one value argument is expected')
 	if len(value) == 0:
-		if require(d, 'attr', name, var):
+		if require(d, 'attr', attr, var):
 			attrs = ds.attrs(d, var)
-			return attrs[name]
+			return attrs[attr]
 	else:
 		meta = ds.meta(d, '' if var is None else var, create=True)
-		meta[name] = value[0]
+		meta[attr] = value[0]
 
 def attrs(d, var=None):
 	'''
@@ -297,16 +297,16 @@ def attrs(d, var=None):
 
 get_attrs = attrs
 
-def gen_dims(d, name):
-	data = ds.var(d, name)
-	var_meta = ds.meta(d, name)
+def gen_dims(d, var):
+	data = ds.var(d, var)
+	var_meta = ds.meta(d, var)
 	if data is not None:
 		ndim = data.ndim
 	elif '.size' in var_meta:
 		ndim = len(var_meta['.size'])
 	else:
 		ndim = 0
-	return [name + ('_%d' % i) for i in range(1, ndim + 1)]
+	return [var + ('_%d' % i) for i in range(1, ndim + 1)]
 
 def parse_time(t):
 	formats = [
@@ -440,37 +440,37 @@ def rename_attr(d, old, new, var=None):
 		meta[new] = meta[old]
 		del meta[old]
 
-def rm(d, name):
+def rm(d, var):
 	'''
 	title: rm
 	caption: "Remove a variable."
 	usage: "`rm`(*d*, *var*)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
-		*name*: "Variable name (`str`)."
+		*var*: "Variable name (`str`)."
 	}}
 	returns: `None`
 	'''
-	if require(d, 'var', name):
-		del d[name]
+	if require(d, 'var', var):
+		del d[var]
 
-def rm_attr(d, name, var=None):
+def rm_attr(d, attr, var=None):
 	'''
 	title: rm_attr
 	caption: "Remove a dataset or variable attribute."
 	usage: "`rm_attr`(*d*, *attr*, *var*)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
-		*name*: "Attribute name (`str`)."
+		*attr*: "Attribute name (`str`)."
 	}}
 	options: {{
 		*var*: "Variable name (`str`) to remove a variable attribute or `None` to remove a dataset attribute."
 	}}
 	returns: `None`
 	'''
-	if require(d, 'attr', name, var):
+	if require(d, 'attr', attr, var):
 		meta = ds.meta(d, '' if var is None else var)
-		del meta[name]
+		del meta[attr]
 
 def copy(d):
 	d2 = {}

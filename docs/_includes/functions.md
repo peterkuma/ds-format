@@ -2,12 +2,12 @@
 
 Get or set a dataset or variable attribute.
 
-Usage: `attr`(*d*, *name*, **value*, *var*=`None`)
+Usage: `attr`(*d*, *attr*, **value*, *var*=`None`)
 
 Arguments:
 
 - *d*: Dataset (`dict`).
-- *name*: Attribute name (`str`).
+- *attr*: Attribute name (`str`).
 - *value*: Attribute value. If supplied, set the attribute value, otherwise get the attribute value.
 
 Options:
@@ -40,12 +40,12 @@ Attributes (`dict`).
 
 Get a dimension size.
 
-Usage: `dim`(*d*, *name*, *full*=`None`)
+Usage: `dim`(*d*, *dim*, *full*=`None`)
 
 Arguments:
 
 - *d*: Dataset (`dict`).
-- *name*: Dimension name (`str`).
+- *dim*: Dimension name (`str`).
 
 Options:
 
@@ -62,7 +62,7 @@ Aliases:  get_dims
 
 Get dataset or variable dimensions or set variable dimensions.
 
-Usage: `dims`(*d*, *name*=`None`, **value*, *full*=`False`, *size*=`False`)
+Usage: `dims`(*d*, *var*=`None`, **value*, *full*=`False`, *size*=`False`)
 
 Arguments:
 
@@ -71,7 +71,7 @@ Arguments:
 
 Options:
 
-- *name*: Variable name (`str`).
+- *var*: Variable name (`str`).
 - *full*: Get variable dimensions even if the variable is only defined in the matadata (`bool`).
 - *size*: Return a dictionary containing dimension sizes.
 
@@ -334,7 +334,7 @@ Usage: `rm`(*d*, *var*)
 Arguments:
 
 - *d*: Dataset (`dict`).
-- *name*: Variable name (`str`).
+- *var*: Variable name (`str`).
 
 Return value:
 
@@ -349,7 +349,7 @@ Usage: `rm_attr`(*d*, *attr*, *var*)
 Arguments:
 
 - *d*: Dataset (`dict`).
-- *name*: Attribute name (`str`).
+- *attr*: Attribute name (`str`).
 
 Options:
 
@@ -378,12 +378,12 @@ Return value:
 
 Get or set variable data.
 
-Usage: `var`(*d*, *name*, **value*)
+Usage: `var`(*d*, *var*, **value*)
 
 Arguments:
 
 - *d*: Dataset (`dict`).
-- *name*: Variable name (`str`).
+- *var*: Variable name (`str`).
 - *value*: Variable data. If supplied, set variable data, otherwise get variable data.
 
 Return value:
