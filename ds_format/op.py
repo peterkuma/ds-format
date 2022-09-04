@@ -554,7 +554,13 @@ def var(d, var, *value):
 			if isinstance(data, np.ndarray):
 				return data
 			else:
-				return np.array(data)
+				data = np.array(data)
+				mask = data == None
+				if np.any(mask):
+					data[mask] = 0
+					dtype = np.array(data.flatten().tolist()).dtype
+					data = np.ma.array(data, dtype, mask=mask)
+				return data
 		return None
 	else:
 		d[var] = value[0]

@@ -18,6 +18,9 @@ def sel_dims(sel, dims):
 def encoder(x):
 	if isinstance(x, np.generic):
 		return x.item()
+	elif isinstance(x, np.ma.MaskedArray) or \
+		isinstance(x, np.ma.core.MaskedConstant):
+		return x.tolist(None)
 	elif isinstance(x, np.ndarray):
 		return x.tolist()
 	else:
