@@ -25,3 +25,13 @@ def encoder(x):
 		return x.tolist()
 	else:
 		return x
+
+def escape(name):
+	return '\\' + name \
+		if name is not None and name.startswith(('.', '\\')) \
+		else name
+
+def unescape(name):
+	return name[1:] \
+		if name is not None and name.startswith(('\\.', '\\\\')) \
+		else name

@@ -3,6 +3,9 @@ __version__ = '2.0.0'
 import os
 mode = os.environ.get('DS_MODE', 'soft')
 
+from .misc import \
+	escape, \
+	unescape
 from .drivers.netcdf import from_netcdf, to_netcdf
 from .op import \
 	attr, \

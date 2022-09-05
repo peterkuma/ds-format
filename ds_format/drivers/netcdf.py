@@ -22,8 +22,8 @@ def detect(filename):
 
 def read_attrs(var):
 	d = {}
-	for name in var.ncattrs():
-		d[name] = var.getncattr(name)
+	for attr in var.ncattrs():
+		d[attr] = var.getncattr(attr)
 	return d
 
 def read_var(f, name, sel=None, data=True):
@@ -49,15 +49,17 @@ def read_var(f, name, sel=None, data=True):
 	})
 	return [x, attrs]
 
-def process_datetime_var(d, name):
-	if not isinstance(d[name], np.ndarray):
+def process_datetime_var(d, var):
+	data = ds.var(d, var)
+	if not isinstance(data, np.ndarray):
 		return
-	x = d[name].flatten()
+	x = data.flatten()
 	if len(x) == 0:
 		return
-	shape = d[name].shape
-	units = d['.'][name].get(u'units')
-	calendar = d['.'][name].get(u'calendar', u'standard')
+	shape = data.shape
+	attrs = ds.attrs(d, var)
+	units = attrs.get('units')
+	calendar = attrs.get('calendar', 'standard')
 	if units is not None and \
 	   re.match(r'^days since -4712-01-01[T ]12:00(:00)?( UTC)?$', units) and \
 	   calendar in (None, 'standard'):
@@ -80,26 +82,28 @@ def process_datetime_var(d, name):
 		for i in range(len(x)):
 			x[i] = dt.datetime(x[i].year, 1, 1) + \
 			(x[i] - type(x[i])(x[i].year, 1, 1))
-	d[name] = aq.from_datetime(list(x)).reshape(shape)
-	d['.'][name]['units'] = 'days since -4713-11-24 12:00 UTC'
-	d['.'][name]['calendar'] = 'proleptic_gregorian'
+	ds.var(d, var, aq.from_datetime(list(x)).reshape(shape))
+	ds.attr(d, 'units', 'days since -4713-11-24 12:00 UTC', var=var)
+	ds.attr(d, 'calendar', 'proleptic_gregorian', var=var)
 
 def read(filename, variables=None, sel=None, full=False, jd=False):
 	if type(filename) is bytes and str != bytes:
 		filename = os.fsdecode(filename)
 	with Dataset(filename, 'r') as f:
 		d = {}
-		d['.'] = {}
-		d['.']['.'] = read_attrs(f)
-		for name in f.variables.keys():
-			if variables is not None and name not in variables:
+		ds.attrs(d, None, read_attrs(f))
+		for var in f.variables.keys():
+			if variables is not None and var not in variables:
 				if full:
-					_, d['.'][name] = read_var(f, name, sel, False)
+					_, var_meta = read_var(f, var, sel, False)
+					ds.meta(d, var, var_meta)
 			else:
-				d[name], d['.'][name] = read_var(f, name, sel)
+				data, var_meta = read_var(f, var, sel)
+				ds.var(d, var, data)
+				ds.meta(d, var, var_meta)
 	if jd:
-		for name in ds.vars(d):
-			process_datetime_var(d, name)
+		for var in ds.vars(d):
+			process_datetime_var(d, var)
 	return d
 
 def write(filename, d):
@@ -110,16 +114,16 @@ def write(filename, d):
 		dims = ds.dims(d)
 		for k, v in dims.items():
 			f.createDimension(k, v)
-		for name in ds.vars(d):
-			data = ds.var(d, name)
+		for var in ds.vars(d):
+			data = ds.var(d, var)
 			if data.dtype == 'O' and \
 				len(data.flatten()) > 0 and \
 				type(data.flatten()[0]) is str:
 				dtype = str
 			else:
 				dtype = data.dtype
-			v = f.createVariable(name, dtype, ds.dims(d, name))
-			v.setncatts(ds.attrs(d, name))
+			v = f.createVariable(var, dtype, ds.dims(d, var))
+			v.setncatts(ds.attrs(d, var))
 			v[::] = data
 		f.setncatts(ds.attrs(d))
 
