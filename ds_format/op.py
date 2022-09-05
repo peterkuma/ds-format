@@ -135,7 +135,7 @@ def attrs(d, var=None, *value):
 	'''
 	title: attrs
 	caption: "Get variable or dataset attributes."
-	usage: "`attrs`(*d*, *var*=`None`)"
+	usage: "`attrs`(*d*, *var*=`None`, \**value*)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
 		*value*: "Attributes to set (`dict`). If supplied, set attributes to *value*, otherwise get attributes."
@@ -352,7 +352,7 @@ def meta(d, var=None, meta=None, create=False):
 	title: meta
 	aliases: { get_meta }
 	caption: "Get or set dataset or variable metadata."
-	usage: "`meta`(*d*, *var*=`None`, *create*=`False`)"
+	usage: "`meta`(*d*, *var*=`None`, *meta*=`None`, *create*=`False`)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
 	}}

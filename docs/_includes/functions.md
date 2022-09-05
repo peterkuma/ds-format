@@ -22,7 +22,7 @@ Attribute value if *value* is not set, otherwise `None`.
 
 Get variable or dataset attributes.
 
-Usage: `attrs`(*d*, *var*=`None`)
+Usage: `attrs`(*d*, *var*=`None`, **value*)
 
 Arguments:
 
@@ -126,7 +126,7 @@ A list of variables, dimensions or attributes matching the pattern, or [*name*] 
 
 Get variable or dataset attributes.
 
-Usage: `attrs`(*d*, *var*=`None`)
+Usage: `attrs`(*d*, *var*=`None`, **value*)
 
 Arguments:
 
@@ -189,7 +189,7 @@ Aliases:  get_meta
 
 Get or set dataset or variable metadata.
 
-Usage: `meta`(*d*, *var*=`None`, *create*=`False`)
+Usage: `meta`(*d*, *var*=`None`, *meta*=`None`, *create*=`False`)
 
 Arguments:
 
