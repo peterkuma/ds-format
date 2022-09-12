@@ -447,6 +447,7 @@ Print variables time and temperature in 0.nc.
 
 ```
 $ ds cat time temperature 0.nc
+time temperature
 1 16.000000
 ```
 

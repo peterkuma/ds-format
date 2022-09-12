@@ -30,6 +30,7 @@ temperature"
 "$ ds select time: 0 dataset.nc 0.nc"
 "Print variables time and temperature in 0.nc.":
 "$ ds cat time temperature 0.nc
+time temperature
 1 16.000000"
 "Convert dataset.nc to JSON.":
 "$ ds select dataset.nc dataset.json
