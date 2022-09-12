@@ -18,11 +18,11 @@ Arguments:
 
 Options:
 
-- `-F`: Interpret variable, dimension and attribute names as fixed strings, not glob patterns.
-- `--help`: Show this help message or help for a command.
-- `-m`: Moderate error handling mode. Report a warning on missing variables, dimensions and attributes.
-- `-s`: Strict error handling mode. Handle missing variables, dimensions and attributes as errors. Overrides DS_MODE environment variable.
-- `-t`: Soft error handling mode. Ignore missing variables, dimensions and attributes. Overrides DS_MODE environment variable.
+- `-F`: Interpret variable, dimension and attribute names as fixed strings instead of glob patterns.
+- `--help`: Show this help message or help for a command if *cmd* is supplied.
+- `-m`: Moderate error handling mode. Report a warning on missing variables, dimensions and attributes. Overrides the DS_MODE environment variable.
+- `-s`: Strict error handling mode. Handle missing variables, dimensions and attributes as errors. Overrides the DS_MODE environment variable.
+- `-t`: Soft error handling mode. Ignore missing variables, dimensions and attributes. Overrides the DS_MODE environment variable.
 - `-v`: Be verbose. Print more detailed information and error messages.
 - `--version`: Print the version number and exit.
 
@@ -55,6 +55,6 @@ Supported output formats:
 
 Environment variables:
 
-- DS_MODE: Error handling mode. If `strict`, handle missing variables, dimensions and attributes as errors. If `moderate`, report a warning. If `soft`, ignore missing items.
+- DS_MODE: Error handling mode. If "strict", handle missing variables, dimensions and attributes as errors. If "moderate", report a warning. If "soft", ignore missing items.
 
 {% endraw %}
