@@ -202,7 +202,14 @@ def dims(d, var=None, *value, full=False, size=False):
 					dims[k] = dims.get(k) if v is None else v
 		else:
 			meta = ds.meta(d, var)
-			if not size: return meta.get('.dims', gen_dims(d, var))
+			if not size:
+				dims = meta.get('.dims', gen_dims(d, var))
+				if type(dims) is list:
+					return dims
+				elif type(dims) is tuple:
+					return list(dims)
+				else:
+					return [dims]
 			data = ds.var(d, var)
 			var_size = meta.get('.size')
 			var_dims = meta.get('.dims', gen_dims(d, var))
