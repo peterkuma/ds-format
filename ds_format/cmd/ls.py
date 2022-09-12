@@ -32,8 +32,9 @@ time"
 "Print a detailed list of variables in `dataset.nc`.":
 "$ ds ls -l dataset.nc
 time: 3
-temperature
-time"
+time { time }
+temperature { time }
+"
 
 "Print a list of variables with an attribute `units`.":
 "$ ds ls dataset.nc a: units
@@ -47,8 +48,7 @@ time time s"
 
 "Print all variables matching a glob \\"temp*\\" in `dataset.nc`.":
 "$ ds ls 'temp*' dataset.nc
-time: 3
-temperature { time }"
+temperature"
 	}}
 	'''
 	vars_ = args[:-1]

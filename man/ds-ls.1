@@ -42,8 +42,8 @@ Print a detailed list of variables in \fBdataset\.nc\fR\.
 .nf
 $ ds ls \-l dataset\.nc
 time: 3
-temperature
-time
+time { time }
+temperature { time }
 .fi
 .IP "" 0
 .P
@@ -69,8 +69,7 @@ Print all variables matching a glob "temp*" in \fBdataset\.nc\fR\.
 .IP "" 4
 .nf
 $ ds ls 'temp*' dataset\.nc
-time: 3
-temperature { time }
+temperature
 .fi
 .IP "" 0
 
