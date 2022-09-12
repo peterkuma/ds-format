@@ -230,6 +230,7 @@ Print time and temperature variables in dataset.nc.
 
 ```
 $ ds cat time temperature dataset.nc
+time temperature
 1 16.000000
 2 18.000000
 3 21.000000
