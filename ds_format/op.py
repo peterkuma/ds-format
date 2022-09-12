@@ -553,7 +553,7 @@ def rm_attr(d, attr, var=None):
 	'''
 	if require(d, 'attr', attr, var):
 		meta = ds.meta(d, '' if var is None else var)
-		del meta[ds.encode(attr)]
+		del meta[ds.escape(attr)]
 
 def select(d, sel):
 	'''
