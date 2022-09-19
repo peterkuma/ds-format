@@ -22,7 +22,7 @@ See help for ds for global options.
 ## OPTIONS
 
 - `-l`:
-Print a detailed list of variables (name and an array of dimensions), preceded with a line with dataset dimensions.
+Print a detailed list of variables (name, type and an array of dimensions), preceded with a line with dataset dimensions.
 - `a:` *attrs*:
 Print variable attributes after the variable name and dimensions. *attrs* can be a string or an array.
 
@@ -38,8 +38,8 @@ Print a detailed list of variables in `dataset.nc`.
 
     $ ds ls -l dataset.nc
     time: 3
-    time { time }
-    temperature { time }
+    temperature float64 { time }
+    time int64 { time }
     
 
 Print a list of variables with an attribute `units`.

@@ -140,7 +140,7 @@ Arguments:
 
 Options:
 
-- `-l`: Print a detailed list of variables (name and an array of dimensions), preceded with a line with dataset dimensions.
+- `-l`: Print a detailed list of variables (name, type and an array of dimensions), preceded with a line with dataset dimensions.
 - `a:` *attrs*: Print variable attributes after the variable name and dimensions. *attrs* can be a string or an array.
 
 Examples:
@@ -158,8 +158,8 @@ Print a detailed list of variables in `dataset.nc`.
 ```
 $ ds ls -l dataset.nc
 time: 3
-time { time }
-temperature { time }
+temperature float64 { time }
+time int64 { time }
 
 ```
 
@@ -519,6 +519,27 @@ Set an attribute `newunits` of a variable `temperature` to `K` in `dataset.nc` a
 $ ds set temperature newunits: K dataset.nc output.nc
 ```
 
+#### size
+
+Print a variable size.
+
+Usage: `ds size` *var* *input* [*options*]
+
+Arguments:
+
+- *var*: Variable to print the size of.
+- *input*: Input file.
+- *options*: See help for ds for global options.
+
+Examples:
+
+Print size of a variable `temperature` in a dataset `dataset.nc`.
+
+```
+$ ds size temperature dataset.nc
+3
+```
+
 #### stats
 
 Print variable statistics.
@@ -548,6 +569,27 @@ Print statistics of variable temperature in dataset.nc.
 ```
 $ ds stats temperature dataset.nc
 count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000
+```
+
+#### type
+
+Print a variable type.
+
+Usage: `ds type` *var* *input* [*options*]
+
+Arguments:
+
+- *var*: Variable to print the type of.
+- *input*: Input file.
+- *options*: See help for ds for global options.
+
+Examples:
+
+Print type of a variable `temperature` in a dataset `dataset.nc`.
+
+```
+$ ds type temperature dataset.nc
+float64
 ```
 
 {% endraw %}

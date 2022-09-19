@@ -42,7 +42,9 @@ def main():
 		`rm`: "Remove variables or attributes."
 		`select`: "Select and subset variables."
 		`set`: "Set variable data, dimensions and attributes in an existing or new dataset."
+		`size`: "Print variable size."
 		`stats`: "Print variable statistics."
+		`type`: "Print variable type."
 	}}
 	"Supported input formats": {{
 		DS: `.ds`

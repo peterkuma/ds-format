@@ -12,6 +12,8 @@ from .rm import rm
 from .select import select
 from .stats import stats
 from .set_ import set_
+from .size import size
+from .type_ import type_
 
 CMDS = {
 	'attrs': attrs,
@@ -26,4 +28,6 @@ CMDS = {
 	'select': select,
 	'stats': stats,
 	'set': set_,
+	'size': size,
+	'type': type_,
 }

@@ -35,6 +35,8 @@ import ds_format as ds
 | [rm](#rm) | Remove a variable. |
 | [rm_attr](#rm_attr) | Remove a dataset or variable attribute. |
 | [select](#select) | Filter dataset by a selector. |
+| [size](#size) | Get variable size. |
+| [type](#type) | Get or set variable type. |
 | [var](#var) | Get or set variable data. |
 | [vars](#vars) | Get all variable names in a dataset. |
 | [write](#write) | Write dataset to a file. |
@@ -66,7 +68,7 @@ Examples:
 Set error handling mode to strict.
 
 ```
-ds.mode = "strict"
+ds.mode = 'strict'
 ```
 
 ### Environment variables

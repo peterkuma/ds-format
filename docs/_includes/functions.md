@@ -377,6 +377,41 @@ Return value:
 
 `None`
 
+#### size
+
+Get variable size.
+
+Usage: `size`(*d*, *var*)
+
+Variable size is determined based on the size of the variable data if defined, or by variable metadata attribute `.size`.
+
+Arguments:
+
+- *d*: Dataset (`dict`).
+- *var*: Variable name (`str`).
+
+Return value:
+
+Variable size (`list`) or `None` if not defined.
+
+#### type
+
+Get or set variable type.
+
+Usage: `type`(*d*, *var*, **value*)
+
+Variable type is determined based on the type of the variable data if defined, or by variable metadata attribute `.type`.
+
+Arguments:
+
+- *d*: Dataset (`dict`).
+- *var*: Variable name (`str`).
+- *value*: Variable type (`str`). One of: `float32` and `float64` (32-bit and 64-bit floating-point number, resp.), `int8` `int16`, `int32` and `int64` (8-bit, 16-bit, 32-bit and 64-bit integer, resp.), `uint8`, `uint16`, `uint32` and `uint64` (8-bit, 16-bit, 32-bit and 64-bit unsigned integer, resp.), `bool` (boolean), `str` (string) and `unicode` (Unicode).
+
+Return value:
+
+Variable type (`str`) or `None` if not defined.
+
 #### var
 
 Get or set variable data.
@@ -413,6 +448,23 @@ Options:
 Return value:
 
 Variable names (`list` of `str`).
+
+#### with_mode
+
+Context manager which temporarily changes ds.mode.
+
+Arguments:
+
+- *mode*: Mode to set (`str`). See **[mode](#mode)**.
+
+Examples:
+
+A block of code in which ds.mode is set to "soft".
+
+```
+with ds.with_mode('soft'):
+	...
+```
 
 #### write
 

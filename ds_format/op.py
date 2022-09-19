@@ -8,6 +8,26 @@ from . import misc
 from warnings import warn
 
 #
+# Private variables.
+#
+
+ALLOWED_TYPES = [
+	'float32',
+	'float64',
+	'int8',
+	'int16',
+	'int32',
+	'int64',
+	'uint8',
+	'uint16',
+	'uint32',
+	'uint64',
+	'bool',
+	'str',
+	'unicode',
+]
+
+#
 # Private functions.
 #
 
@@ -568,6 +588,65 @@ def select(d, sel):
 	'''
 	for var in ds.vars(d):
 		select_var(d, var, sel)
+
+def size(d, var):
+	'''
+	title: size
+	caption: "Get variable size."
+	usage: "`size`(*d*, *var*)"
+	desc: "Variable size is determined based on the size of the variable data if defined, or by variable metadata attribute `.size`."
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*var*: "Variable name (`str`)."
+	}}
+	returns: "Variable size (`list`) or `None` if not defined."
+	'''
+	if require(d, 'var', var, full=True):
+		with ds.with_mode('soft'):
+			data = ds.var(d, var)
+		if data is not None:
+			return list(data.shape)
+		else:
+			meta = ds.meta(d, var)
+			return meta.get('.size')
+	else:
+		return None
+
+def type_(d, var, *value):
+	'''
+	title: type
+	caption: "Get or set variable type."
+	usage: "`type`(*d*, *var*, \**value*)"
+	desc: "Variable type is determined based on the type of the variable data if defined, or by variable metadata attribute `.type`."
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*var*: "Variable name (`str`)."
+		*value*: "Variable type (`str`). One of: `float32` and `float64` (32-bit and 64-bit floating-point number, resp.), `int8` `int16`, `int32` and `int64` (8-bit, 16-bit, 32-bit and 64-bit integer, resp.), `uint8`, `uint16`, `uint32` and `uint64` (8-bit, 16-bit, 32-bit and 64-bit unsigned integer, resp.), `bool` (boolean), `str` (string) and `unicode` (Unicode)."
+	}}
+	returns: "Variable type (`str`) or `None` if not defined."
+	'''
+	if len(value) == 0:
+		if not require(d, 'var', var, full=True):
+			return None
+		with ds.with_mode('soft'):
+			data = ds.var(d, var)
+		if data is None:
+			meta = ds.meta(d, var)
+			return meta.get('.type', None)
+		return misc.dtype_to_type(data.dtype)
+	elif len(value) == 1:
+		meta = ds.meta(d, var, create=True)
+		if type(value[0]) is not str or \
+		   value[0] not in ALLOWED_TYPES:
+			raise ValueError('invalid type')
+		meta['.type'] = value[0]
+		data = ds.var(d, var)
+		if data is not None:
+			dt = misc.type_to_dtype(value[0])
+			data = data.astype(dt)
+			ds.var(d, var, data)
+	else:
+		raise TypeError('only one value argument is expected')
 
 def var(d, var, *value):
 	'''

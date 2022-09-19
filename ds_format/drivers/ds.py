@@ -3,18 +3,27 @@ import json
 from copy import copy
 import numpy as np
 import ds_format as ds
+from ds_format import misc
 
 READ_EXT = ['ds']
 WRITE_EXT = ['ds']
 
-TYPES = {
-	'f': 'float',
-	'i': 'int',
-	'u': 'uint',
-	'b': 'bool',
-	'U': 'unicode',
-	'S': 'str',
+TYPE_SIZE = {
+	'int8': 8,
+	'int16': 16,
+	'int32': 32,
+	'int64': 64,
+	'uint8': 8,
+	'uint16': 16,
+	'uint32': 32,
+	'uint64': 64,
+	'float32': 32,
+	'float64': 64,
+	'bool': 1,
+	'str': 8,
+	'unicode': 8,
 }
+
 
 class JSONEncoder(json.JSONEncoder):
 	def default(self, obj):
@@ -41,20 +50,12 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 			var = meta[name]
 			if not ('.offset' in var and \
 			   		'.type' in var and \
-			   		'.dsize' in var and \
 			   		'.len' in var and \
 			   		'.size' in var and \
 					'.endian' in var):
 				continue
-			if var['.type'] in ['float', 'int', 'uint']:
-				dt = np.dtype('%s%d' % (var['.type'], var['.dsize']))
-			elif var['.type'] in ['bool']:
-				dt = np.dtype(var['.type'])
-			elif var['.type'] == 'str':
-				dt = np.bytes_
-			elif var['.type'] == 'unicode':
-				dt = np.unicode_
-			else:
+			dt = misc.type_to_dtype(var['.type'])
+			if dt is None:
 				continue
 			byteorder = {
 				'l': '<',
@@ -72,7 +73,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 			else:
 				count2 = count
 
-			var_len = int(count2*var['.dsize']/8)
+			var_len = int(count2*TYPE_SIZE[var['.type']]/8)
 			f.seek(data_offset + var['.offset'] + mask_len)
 			if var['.type'] == 'bool':
 				data = np.fromfile(f, 'uint8', count=var_len)
@@ -124,15 +125,12 @@ def write(filename, d):
 			var['.size'] = 1
 		else:
 			var['.size'] = data.shape
-		if data.dtype.kind == 'b':
-			var['.dsize'] = 1
-		elif data.dtype.kind in ('U', 'S', 'O'):
-			var['.dsize'] = 8
-		else:
-			var['.dsize'] = data.dtype.itemsize*8
 		count = np.prod(var['.size'])
 		var['.offset'] = offset
 		var['.len'] = 0
+		var['.type'] = misc.dtype_to_type(data.dtype)
+		if var['.type'] is None:
+			continue
 		var['.missing'] = bool(isinstance(data, np.ma.MaskedArray) and \
 			np.ma.is_masked(data))
 		if var['.missing']:
@@ -142,16 +140,7 @@ def write(filename, d):
 			var['.len'] += int(8*count2 + \
 				sum([len(str(x).encode('utf-8')) for x in data.flatten()]))
 		else:
-			var['.len'] += int(np.ceil(var['.dsize']*count2/8))
-		if data.dtype.kind in TYPES:
-			var['.type'] = TYPES[data.dtype.kind]
-		elif data.dtype.kind == 'O':
-			if all([type(x) is bytes for x in data.flatten()]):
-				var['.type'] = 'str'
-			else:
-				var['.type'] = 'unicode'
-		else:
-			continue
+			var['.len'] += int(np.ceil(TYPE_SIZE[var['.type']]*count2/8))
 		if data.dtype.kind in ('U', 'S', 'O'):
 			var['.endian'] = sys.byteorder[0]
 		elif data.dtype.kind == 'b':

@@ -1,5 +1,6 @@
 ---
-layout: default
+layout: versioned
+version: master
 title: Storage format
 ---
 
@@ -32,11 +33,11 @@ following properties:
 - `.offset`: Data offset in bytes relative to the start of the body.
 - `.len`: Length of data in bytes, including a missing data bitmask or string
   lengths, if present.
-- `.type`: Data type of the variable. One of:
-  `float` (floating-point number) `int` (integer), `uint` (unsigned integer),
-  `bool` (boolean), `str` (byte string) and `unicode` (Unicode).
-- `.dsize`: Data type size in bits. E.g. if `.type` is `int` and `.dsize` is 64,
-  it means the variable data are 64-bit integers.
+- `.type`: Data type of the variable. One of: `float32` and `float64` (32-bit
+  and 64-bit floating-point number, resp.), `int8` `int16`, `int32` and `int64`
+  (8-bit, 16-bit, 32-bit and 64-bit integer, resp.), `uint8`, `uint16`,
+  `uint32` and `uint64` (8-bit, 16-bit, 32-bit and 64-bit unsigned integer,
+  resp.), `bool` (boolean), `str` (string) and `unicode` (Unicode).
 - `.endian`: Endianness. `b` for big endian, `l` for little endian.
 - `.missing`: A boolean value signifying if the data array is a masked array. A
   bitmask of missing data is stored directly after the variable data, and is

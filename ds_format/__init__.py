@@ -5,7 +5,8 @@ mode = os.environ.get('DS_MODE', 'soft')
 
 from .misc import \
 	escape, \
-	unescape
+	unescape, \
+	with_mode
 from .drivers.netcdf import from_netcdf, to_netcdf
 from .op import \
 	attr, \
@@ -29,6 +30,8 @@ from .op import \
 	rm, \
 	rm_attr, \
 	select, \
+	size, \
+	type_ as type, \
 	var, \
 	vars_ as vars, \
 	time_dt

@@ -38,6 +38,8 @@ variable in order to access the manual pages.
 | [rm](#rm) | Remove variables or attributes. |
 | [select](#select) | Select and subset variables. |
 | [set](#set) | Set variable data, dimensions and attributes in an existing or new dataset. |
+| [size](#size) | Print a variable size. |
 | [stats](#stats) | Print variable statistics. |
+| [type](#type) | Print a variable type. |
 
 {% include cmds.md %}

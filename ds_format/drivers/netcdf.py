@@ -4,6 +4,7 @@ from netCDF4 import Dataset
 import cftime
 import numpy as np
 import ds_format as ds
+from ds_format import misc
 import datetime as dt
 import aquarius_time as aq
 
@@ -32,6 +33,7 @@ def read_var(f, name, sel=None, data=True):
 	attrs = read_attrs(var)
 	dims = var.dimensions
 	size = var.shape
+	type_ = misc.dtype_to_type(var.dtype)
 	if data:
 		if sel:
 			s = ds.misc.sel_slice(sel, dims)
@@ -46,6 +48,7 @@ def read_var(f, name, sel=None, data=True):
 	attrs.update({
 		'.dims': dims,
 		'.size': size,
+		'.type': type_,
 	})
 	return [x, attrs]
 

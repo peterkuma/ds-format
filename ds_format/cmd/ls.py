@@ -19,7 +19,7 @@ def ls(*args, **opts):
 		*options*: "See help for ds for global options."
 	}}
 	options: {{
-		`-l`: "Print a detailed list of variables (name and an array of dimensions), preceded with a line with dataset dimensions."
+		`-l`: "Print a detailed list of variables (name, type and an array of dimensions), preceded with a line with dataset dimensions."
 		"`a:` *attrs*": "Print variable attributes after the variable name and dimensions. *attrs* can be a string or an array."
 	}}
 	desc: "Lines in the output are formatted as [PST](https://github.com/peterkuma/pst)."
@@ -32,8 +32,8 @@ time"
 "Print a detailed list of variables in `dataset.nc`.":
 "$ ds ls -l dataset.nc
 time: 3
-time { time }
-temperature { time }
+temperature float64 { time }
+time int64 { time }
 "
 
 "Print a list of variables with an attribute `units`.":
@@ -84,8 +84,9 @@ temperature"
 			continue
 		y = [x]
 		if opts.get('l'):
+			type_ = ds.type(d, x)
 			dims = ds.dims(d, x)
-			y += [dims]
+			y += [type_, dims]
 		if attrs is not None:
 			var_attrs = ds.attrs(d, x)
 			if type(attrs) is list:
