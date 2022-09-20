@@ -19,29 +19,44 @@ by reading or writing files an extension ".ds". Existing NetCDF files can be
 converted to ds with `ds select input.nc output.ds`, where `input.nc` is the
 input NetCDF files and `output.ds` is the output ds file.
 
-The format is composed of a header and a body, separated by a newline character
-(`\n`). The header is one line containing JSON of the metadata. In addition
-to the standard structure, the metadata contains a number of special fields
-describing where to find and how to decode
-the variable data.  The body is a block of binary data directly following the
-header. The header and body are separated by a single newline character (`\n`).
-The body contains raw bindary data of the variables in a sequential order.
+The format is composed of a version string, header and body, separated by a
+newline character (`\n`). The version string is `ds-<x>.<y>`, where `x` and `y`
+are a major and minor format version numbers. The header consists of one line
+containing JSON of the metadata. In addition to the [standard
+structure](../../Description), the metadata contains a number of special fields
+describing where to find and how to decode the variable data.  The body is a
+block of binary data directly following the header. The header and body are
+separated by a single newline character (`\n`).  The body contains raw bindary
+data of the variables in a sequential order. Schematically, the structure of
+the format is:
+
+```
+# Three lines of the format version string, header and body.
+ds = ds-<x>.<y>\n<header>\n<body>
+
+# JSON header describing variable metadata.
+header = { "<var>": <var-metadata> ... ".": <dataset-metadata> }
+
+# Body composed of binary data.
+body = <var-data>...
+
+var-data = [<missing-bitmask>]<data>
+```
+
+where `var` is a variable name, `var-metadata` is variable metadata,
+`dataset-metadata` is dataset metadata, `missing-bitmask` is a missing value
+bitmask (described below) and `data` are binary variable data.
 
 In addition to the standard variable metadata, the ds native format uses the
 following properties:
 
-- `.offset`: Data offset in bytes relative to the start of the body.
-- `.len`: Length of data in bytes, including a missing data bitmask or string
-  lengths, if present.
-- `.type`: Data type of the variable. One of: `float32` and `float64` (32-bit
-  and 64-bit floating-point number, resp.), `int8` `int16`, `int32` and `int64`
-  (8-bit, 16-bit, 32-bit and 64-bit integer, resp.), `uint8`, `uint16`,
-  `uint32` and `uint64` (8-bit, 16-bit, 32-bit and 64-bit unsigned integer,
-  resp.), `bool` (boolean), `str` (string) and `unicode` (Unicode).
-- `.endian`: Endianness. `b` for big endian, `l` for little endian.
-- `.missing`: A boolean value signifying if the data array is a masked array. A
-  bitmask of missing data is stored directly after the variable data, and is
-  bitpacked.
+| Property | Description |
+| --- | --- |
+| `.offset` | Data offset in bytes relative to the start of the body. |
+| `.len` | Length of data in bytes, including a missing data bitmask or string lengths, if present. |
+| `.type` | Data type of the variable. One of: `float32` and `float64` (32-bit and 64-bit floating-point number, resp.), `int8` `int16`, `int32` and `int64` (8-bit, 16-bit, 32-bit and 64-bit integer, resp.), `uint8`, `uint16`, `uint32` and `uint64` (8-bit, 16-bit, 32-bit and 64-bit unsigned integer, resp.), `bool` (boolean), `str` (byte string) and `unicode` (Unicode). |
+| `.endian` | Endianness. `b` for big endian, `l` for little endian. |
+| `.missing` | A boolean value signifying if the data array is a masked array. A bitmask of missing data is stored directly after the variable data, and is bitpacked. |
 
 If missing values are allowed (`.missing` is true), a missing value bitmask is
 stored at the variable offset. The bitmask is bitpacked, and at the end it is

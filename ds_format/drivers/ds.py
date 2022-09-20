@@ -5,6 +5,8 @@ import numpy as np
 import ds_format as ds
 from ds_format import misc
 
+VERSION = '1.0'
+
 READ_EXT = ['ds']
 WRITE_EXT = ['ds']
 
@@ -36,6 +38,12 @@ class JSONEncoder(json.JSONEncoder):
 def read(filename, variables=None, sel=None, full=False, jd=False):
 	d = {}
 	with open(filename, 'rb') as f:
+		version_s = f.readline()
+		if not version_s.startswith(b'ds-'):
+			raise IOError('invalid format version string')
+		version = version_s[3:-1]
+		if version != b'1.0':
+			raise IOError('unsupported format version')
 		header = f.readline()
 		meta_s = header.decode('utf-8')
 		meta = json.loads(meta_s)
@@ -157,7 +165,10 @@ def write(filename, d):
 	meta['.'] = ds.meta(d, '.')
 	meta_s = json.dumps(meta, cls=JSONEncoder)
 	with open(filename, 'wb') as f:
-		header = meta_s.encode('utf-8') + b'\n'
+		header = \
+			b'ds-%b\n' % VERSION.encode('utf-8') + \
+			meta_s.encode('utf-8') + \
+			b'\n'
 		f.write(header)
 		for name in ds.vars(d):
 			var = meta[name]
