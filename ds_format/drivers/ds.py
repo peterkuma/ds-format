@@ -69,7 +69,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 				'l': '<',
 				'b': '>',
 			}[var['.endian']]
-			count = np.prod(var['.size'])
+			count = int(np.prod(var['.size']))
 			mask_len = int(np.ceil(count/8)) if var['.missing'] else 0
 
 			if var['.missing']:
@@ -133,7 +133,7 @@ def write(filename, d):
 		var = copy(ds.meta(d, name))
 		data = ds.var(d, name)
 		if data.shape == ():
-			var['.size'] = 1
+			var['.size'] = []
 		else:
 			var['.size'] = data.shape
 		count = np.prod(var['.size'])
@@ -186,14 +186,15 @@ def write(filename, d):
 				mask.tofile(f)
 			data2 = np.array(data) if not var['.missing'] else \
 				np.array(data)[~data.mask]
-			if data.dtype.kind in ('U', 'S', 'O'):
-				slen = np.array([len(x) for x in data2], np.uint64)
+			if var['.type'] in ['str', 'unicode']:
+				data3 = [
+					x.encode('utf-8') if type(x) in [str, np.str_] else x
+					for x in data2
+				]
+				slen = np.array([len(x) for x in data3], np.uint64)
 				slen.tofile(f)
-				for x in data2:
-					if data.dtype.kind == 'S':
-						f.write(x)
-					else:
-						f.write(str(x).encode('utf-8'))
+				for x in data3:
+					f.write(x)
 			else:
 				if var['.type'] == 'bool':
 					data2 = np.packbits(data2)
