@@ -1,6 +1,10 @@
+import datetime as dt
 import ds_format as ds
 import numpy as np
 from contextlib import contextmanager
+import re
+import cftime
+import aquarius_time as aq
 
 KIND_TO_TYPE = {
 	'f': 'float',
@@ -104,3 +108,40 @@ def with_mode(mode):
 	ds.mode = mode
 	yield
 	ds.mode = tmp
+
+def process_time_var(d, var):
+	data = ds.var(d, var)
+	if not isinstance(data, np.ndarray):
+		return
+	x = data.flatten()
+	if len(x) == 0:
+		return
+	shape = data.shape
+	attrs = ds.attrs(d, var)
+	units = attrs.get('units')
+	calendar = attrs.get('calendar', 'standard')
+	if units is not None and \
+	   re.match(r'^days since -4712-01-01[T ]12:00(:00)?( UTC)?$', units) and \
+	   calendar in (None, 'standard'):
+		units = 'days since -4713-11-24 12:00 UTC'
+		calendar = 'proleptic_gregorian'
+	try:
+		x = cftime.num2date(x, units,
+			calendar=calendar,
+			only_use_cftime_datetimes=False,
+		)
+	except: return
+	if not (
+		isinstance(x[0], cftime.real_datetime) or
+		isinstance(x[0], cftime.datetime) or
+		isinstance(x[0], dt.datetime)
+	):
+		return
+	if isinstance(x[0], cftime.real_datetime) or \
+	   isinstance(x[0], cftime.datetime):
+		for i in range(len(x)):
+			x[i] = dt.datetime(x[i].year, 1, 1) + \
+			(x[i] - type(x[i])(x[i].year, 1, 1))
+	ds.var(d, var, aq.from_datetime(list(x)).reshape(shape))
+	ds.attr(d, 'units', 'days since -4713-11-24 12:00 UTC', var=var)
+	ds.attr(d, 'calendar', 'proleptic_gregorian', var=var)

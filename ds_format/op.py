@@ -696,7 +696,7 @@ def vars_(d, full=False):
 	'''
 	meta = ds.meta(d)
 	vars_ = list(set(meta.keys()) | set(d.keys())) if full else d.keys()
-	return [ds.unescape(x) for x in filter_hidden(vars_)]
+	return sorted([ds.unescape(x) for x in filter_hidden(vars_)])
 
 vars_.aliases = ['get_vars']
 get_vars = vars_

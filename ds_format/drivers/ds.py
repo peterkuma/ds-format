@@ -48,7 +48,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 		meta_s = header.decode('utf-8')
 		meta = json.loads(meta_s)
 		d['.'] = meta
-		data_offset = len(header)
+		data_offset = len(version_s) + len(header)
 		if variables is not None and not full:
 			meta = {k: v for k, v in meta.items() if k in variables}
 		for name in meta.keys():
@@ -120,6 +120,9 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 				var['.dims'] = dims
 				data = data[s]
 			d[name] = data
+	if jd:
+		for var in ds.vars(d):
+			misc.process_time_var(d, var)
 	return d
 
 def write(filename, d):
@@ -147,6 +150,9 @@ def write(filename, d):
 		if data.dtype.kind in ('U', 'O'):
 			var['.len'] += int(8*count2 + \
 				sum([len(str(x).encode('utf-8')) for x in data.flatten()]))
+		elif data.dtype.kind == 'S':
+			var['.len'] += int(8*count2 + \
+				sum([len(x) for x in data.flatten()]))
 		else:
 			var['.len'] += int(np.ceil(TYPE_SIZE[var['.type']]*count2/8))
 		if data.dtype.kind in ('U', 'S', 'O'):
@@ -174,10 +180,10 @@ def write(filename, d):
 			var = meta[name]
 			if name not in meta:
 				continue
+			data = ds.var(d, name).flatten()
 			if var['.missing'] is True:
 				mask = np.packbits(data.mask)
 				mask.tofile(f)
-			data = ds.var(d, name).flatten()
 			data2 = np.array(data) if not var['.missing'] else \
 				np.array(data)[~data.mask]
 			if data.dtype.kind in ('U', 'S', 'O'):

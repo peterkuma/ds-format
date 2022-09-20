@@ -1,12 +1,8 @@
 import os
-import re
 from netCDF4 import Dataset
-import cftime
 import numpy as np
 import ds_format as ds
 from ds_format import misc
-import datetime as dt
-import aquarius_time as aq
 
 JD_UNITS = 'days since -4713-11-24 12:00 UTC'
 JD_CALENDAR = 'proleptic_greogorian'
@@ -52,43 +48,6 @@ def read_var(f, name, sel=None, data=True):
 	})
 	return [x, attrs]
 
-def process_datetime_var(d, var):
-	data = ds.var(d, var)
-	if not isinstance(data, np.ndarray):
-		return
-	x = data.flatten()
-	if len(x) == 0:
-		return
-	shape = data.shape
-	attrs = ds.attrs(d, var)
-	units = attrs.get('units')
-	calendar = attrs.get('calendar', 'standard')
-	if units is not None and \
-	   re.match(r'^days since -4712-01-01[T ]12:00(:00)?( UTC)?$', units) and \
-	   calendar in (None, 'standard'):
-		units = 'days since -4713-11-24 12:00 UTC'
-		calendar = 'proleptic_gregorian'
-	try:
-		x = cftime.num2date(x, units,
-			calendar=calendar,
-			only_use_cftime_datetimes=False,
-		)
-	except: return
-	if not (
-		isinstance(x[0], cftime.real_datetime) or
-		isinstance(x[0], cftime.datetime) or
-		isinstance(x[0], dt.datetime)
-	):
-		return
-	if isinstance(x[0], cftime.real_datetime) or \
-	   isinstance(x[0], cftime.datetime):
-		for i in range(len(x)):
-			x[i] = dt.datetime(x[i].year, 1, 1) + \
-			(x[i] - type(x[i])(x[i].year, 1, 1))
-	ds.var(d, var, aq.from_datetime(list(x)).reshape(shape))
-	ds.attr(d, 'units', 'days since -4713-11-24 12:00 UTC', var=var)
-	ds.attr(d, 'calendar', 'proleptic_gregorian', var=var)
-
 def read(filename, variables=None, sel=None, full=False, jd=False):
 	if type(filename) is bytes and str != bytes:
 		filename = os.fsdecode(filename)
@@ -106,7 +65,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 				ds.meta(d, var, var_meta)
 	if jd:
 		for var in ds.vars(d):
-			process_datetime_var(d, var)
+			misc.process_time_var(d, var)
 	return d
 
 def write(filename, d):
