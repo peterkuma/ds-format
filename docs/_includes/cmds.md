@@ -211,13 +211,13 @@ Examples:
 Write example data to dataset1.nc.
 
 ```
-$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" none dataset1.nc
+$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" none dataset1.nc
 ```
 
 Write example data to dataset2.nc.
 
 ```
-$ ds set { time time { 4 5 6 } long_name: time units: s } { temperature time { 23. 25. 28. } long_name: temperature units: celsius } title: "Temperature data" none dataset2.nc
+$ ds set { time none time { 4 5 6 } long_name: time units: s } { temperature none time { 23. 25. 28. } long_name: temperature units: celsius } title: "Temperature data" none dataset2.nc
 ```
 
 Merge dataset1.nc and dataset2.nc and write the result to dataset.nc.
@@ -413,7 +413,7 @@ Examples:
 Write data to dataset.nc.
 
 ```
-$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" none dataset.nc
+$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" none dataset.nc
 ```
 
 List variables in dataset.nc.
@@ -466,13 +466,14 @@ Set variable data, dimensions and attributes in an existing or new dataset.
 Usage: 
 
 `ds set` *ds_attrs* *input* *output* [*options*]<br />
-`ds set` *var* *dims* [*data*] [*attrs*]... *input* *output* [*options*]<br />
-`ds set` `{` *var* *dims* [*data*] [*attrs*]... `}`... *ds_attrs* *input* *output* [*options*]<br />
+`ds set` *var* [*type* [*dims* [*data*]]] [*attrs*]... *input* *output* [*options*]<br />
+`ds set` `{` *var* [*type* [*dims* [*data*]]] [*attrs*]... `}`... *ds_attrs* *input* *output* [*options*]<br />
 
 
 Arguments:
 
 - *var*: Variable name.
+- *type*: Variable type (`str`), or `none` to keep the original type if *data* is not supplied or autodetect based on *data* if *data* is supplied.
 - *dims*: Variable dimension name (if single), an array of variable dimensions (if multiple), `none` to keep original dimension or autogenerate if a new variable, or `{ }` to autogenerate new dimension names.
 - *data*: Variable data. This can be a [PST](https://github.com/peterkuma/pst)-formatted scalar or an array. `none` values are interpreted as missing values.
 - *attrs*: Variable attributes or dataset attributes if *var* is `none` as *attr*`:` *value* pairs.
@@ -486,25 +487,25 @@ Examples:
 Write variables `time` and `temperature` to `dataset.nc`.
 
 ```
-$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" none dataset.nc
+$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" none dataset.nc
 ```
 
 Set data of a variable `temperature` to an array of 16.0, 18.0, 21.0 in `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds set temperature none { 16. 18. 21. } dataset.nc output.nc
+$ ds set temperature none none { 16. 18. 21. } dataset.nc output.nc
 ```
 
 Set a dimension of a  variable `temperature` to time, data to an array of 16.0, 18.0, 21.0, its attribute `long_name` to "temperature" and `units` to "celsius" in `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds set temperature time { 16. 18. 21. } long_name: temperature units: celsius dataset.nc output.nc
+$ ds set temperature none time { 16. 18. 21. } long_name: temperature units: celsius dataset.nc output.nc
 ```
 
 Set multiple variables in `dataset.nc` and save the output in `output.nc`.
 
 ```
-$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" dataset.nc output.nc
+$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" dataset.nc output.nc
 ```
 
 Set a dataset attribute `newtitle` to `New title` in `dataset.nc` and save the output in `output.nc`.
@@ -533,7 +534,7 @@ Arguments:
 
 Examples:
 
-Print size of a variable `temperature` in a dataset `dataset.nc`.
+Print the size of a variable `temperature` in a dataset `dataset.nc`.
 
 ```
 $ ds size temperature dataset.nc
@@ -585,7 +586,7 @@ Arguments:
 
 Examples:
 
-Print type of a variable `temperature` in a dataset `dataset.nc`.
+Print the type of a variable `temperature` in a dataset `dataset.nc`.
 
 ```
 $ ds type temperature dataset.nc

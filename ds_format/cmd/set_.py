@@ -7,11 +7,12 @@ def set_(*args, **opts):
 	caption: "Set variable data, dimensions and attributes in an existing or new dataset."
 	usage: {
 		"`ds set` *ds_attrs* *input* *output* [*options*]"
-		"`ds set` *var* *dims* [*data*] [*attrs*]... *input* *output* [*options*]"
-		"`ds set` `{` *var* *dims* [*data*] [*attrs*]... `}`... *ds_attrs* *input* *output* [*options*]"
+		"`ds set` *var* [*type* [*dims* [*data*]]] [*attrs*]... *input* *output* [*options*]"
+		"`ds set` `{` *var* [*type* [*dims* [*data*]]] [*attrs*]... `}`... *ds_attrs* *input* *output* [*options*]"
 	}
 	arguments: {{
 		*var*: "Variable name."
+		*type*: "Variable type (`str`), or `none` to keep the original type if *data* is not supplied or autodetect based on *data* if *data* is supplied."
 		*dims*: "Variable dimension name (if single), an array of variable dimensions (if multiple), `none` to keep original dimension or autogenerate if a new variable, or `{ }` to autogenerate new dimension names."
 		*data*: "Variable data. This can be a [PST](https://github.com/peterkuma/pst)-formatted scalar or an array. `none` values are interpreted as missing values."
 		*attrs*: "Variable attributes or dataset attributes if *var* is `none` as *attr*`:` *value* pairs."
@@ -22,13 +23,13 @@ def set_(*args, **opts):
 	}}
 	examples: {{
 		"Write variables `time` and `temperature` to `dataset.nc`.":
-		"$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: \\"Temperature data\\" none dataset.nc"
+		"$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: \\"Temperature data\\" none dataset.nc"
 		"Set data of a variable `temperature` to an array of 16.0, 18.0, 21.0 in `dataset.nc` and save the output in `output.nc`.":
-		"$ ds set temperature none { 16. 18. 21. } dataset.nc output.nc"
+		"$ ds set temperature none none { 16. 18. 21. } dataset.nc output.nc"
 		"Set a dimension of a  variable `temperature` to "time", data to an array of 16.0, 18.0, 21.0, its attribute `long_name` to \\"temperature\\" and `units` to \\"celsius\\" in `dataset.nc` and save the output in `output.nc`.":
-		"$ ds set temperature time { 16. 18. 21. } long_name: temperature units: celsius dataset.nc output.nc"
+		"$ ds set temperature none time { 16. 18. 21. } long_name: temperature units: celsius dataset.nc output.nc"
 		"Set multiple variables in `dataset.nc` and save the output in `output.nc`.":
-		"$ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: \\"Temperature data\\" dataset.nc output.nc"
+		"$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: \\"Temperature data\\" dataset.nc output.nc"
 		"Set a dataset attribute `newtitle` to `New title` in `dataset.nc` and save the output in `output.nc`.":
 		"$ ds set newtitle: \\"New title\\" dataset.nc output.nc"
 		"Set an attribute `newunits` of a variable `temperature` to `K` in `dataset.nc` and save the output in `output.nc`.":
@@ -48,7 +49,7 @@ def set_(*args, **opts):
 	check(output, 'output', str)
 
 	def process_args(args):
-		if len(args) not in (2, 3, 4):
+		if len(args) not in (2, 3, 4, 5):
 			raise UsageError('Invalid arguments')
 		if type(args[-1]) is dict:
 			attrs = args[-1]
@@ -56,12 +57,13 @@ def set_(*args, **opts):
 		else:
 			attrs = {}
 		var = args[0]
-		dims = args[1] if len(args) > 1 else None
+		type_ = args[1] if len(args) > 1 else None
+		dims = args[2] if len(args) > 2 else None
 		if dims is not None and type(dims) is not list:
 			dims = [dims]
-		data = args[2] if len(args) > 2 else None
-		set_data = len(args) > 2
-		return [var, dims, data, set_data, attrs]
+		data = args[3] if len(args) > 3 else None
+		set_data = len(args) > 3
+		return [var, type_, dims, data, set_data, attrs]
 
 	if len(args1) == 0:
 		ds_attrs = cmd_opts
@@ -76,7 +78,7 @@ def set_(*args, **opts):
 	check(ds_attrs, 'ds_attrs', dict, str)
 
 	d = ds.read(input_) if input_ is not None else {'.': {'.': {}}}
-	for var, dims, data, set_data, attrs in items:
+	for var, type_, dims, data, set_data, attrs in items:
 		check(var, 'var', str)
 		check(dims, 'dims', [None, [list, str]])
 		check(attrs, 'attrs', dict, str)
@@ -87,6 +89,8 @@ def set_(*args, **opts):
 		for var in vars_:
 			if set_data:
 				ds.var(d, var, data)
+			if type_ is not None:
+				ds.type(d, var, type_)
 			if dims == []:
 				ds.dims(d, var, None)
 			elif dims is not None:

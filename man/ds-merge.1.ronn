@@ -31,11 +31,11 @@ Variables to merge along a new dimension or none for all variables.
 
 Write example data to dataset1.nc.
 
-    $ ds set { time time { 1 2 3 } long_name: time units: s } { temperature time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" none dataset1.nc
+    $ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: "Temperature data" none dataset1.nc
 
 Write example data to dataset2.nc.
 
-    $ ds set { time time { 4 5 6 } long_name: time units: s } { temperature time { 23. 25. 28. } long_name: temperature units: celsius } title: "Temperature data" none dataset2.nc
+    $ ds set { time none time { 4 5 6 } long_name: time units: s } { temperature none time { 23. 25. 28. } long_name: temperature units: celsius } title: "Temperature data" none dataset2.nc
 
 Merge dataset1.nc and dataset2.nc and write the result to dataset.nc.
 

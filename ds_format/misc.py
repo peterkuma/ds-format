@@ -11,7 +11,9 @@ KIND_TO_TYPE = {
 	'S': 'str',
 }
 
-TYPE_TO_DTYPE: {
+TYPE_TO_DTYPE = {
+	'float32': np.float32,
+	'float64': np.float64,
 	'int8': np.int8,
 	'int16': np.int16,
 	'int32': np.int32,
@@ -63,7 +65,11 @@ def unescape(name):
 
 def dtype_to_type(dtype):
 	type_ = None
-	if dtype.kind in KIND_TO_TYPE:
+	if dtype is bytes:
+		return 'str'
+	if dtype is str:
+		return 'unicode'
+	elif dtype.kind in KIND_TO_TYPE:
 		type_ = KIND_TO_TYPE[dtype.kind]
 	elif dtype.kind == 'O':
 		if all([type(x) is bytes for x in data.flatten()]):
