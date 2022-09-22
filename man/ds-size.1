@@ -1,0 +1,26 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-SIZE" "1" "September 2022" ""
+.SH "NAME"
+\fBds\-size\fR \- Print a variable size\.
+.SH "SYNOPSIS"
+\fBds size\fR \fIvar\fR \fIinput\fR [\fIoptions\fR]
+.SH "ARGUMENTS"
+.TP
+\fIvar\fR
+Variable to print the size of\.
+.TP
+\fIinput\fR
+Input file\.
+.TP
+\fIoptions\fR
+See help for ds for global options\.
+.SH "EXAMPLES"
+Print the size of a variable \fBtemperature\fR in a dataset \fBdataset\.nc\fR\.
+.IP "" 4
+.nf
+$ ds size temperature dataset\.nc
+3
+.fi
+.IP "" 0
+

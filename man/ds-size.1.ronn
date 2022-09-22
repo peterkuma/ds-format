@@ -1,0 +1,23 @@
+ds-size(1) -- Print a variable size.
+====================================
+
+## SYNOPSIS
+
+`ds size` *var* *input* [*options*]
+
+## ARGUMENTS
+
+- *var*:
+Variable to print the size of.
+- *input*:
+Input file.
+- *options*:
+See help for ds for global options.
+
+## EXAMPLES
+
+Print the size of a variable `temperature` in a dataset `dataset.nc`.
+
+    $ ds size temperature dataset.nc
+    3
+

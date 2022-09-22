@@ -205,6 +205,11 @@ tr:last-child td {
 	border-bottom: none;
 }
 
+.versions {
+	text-align: center;
+	margin-bottom: 0.5em;
+}
+
 .versions a.selected {
 	font-weight: bold;
 }
@@ -239,4 +244,3 @@ tr:last-child td {
 		padding-bottom: 0;
 	}
 }
-

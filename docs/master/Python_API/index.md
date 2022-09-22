@@ -1,6 +1,5 @@
 ---
-layout: versioned
-version: master
+layout: default
 title: Python API
 ---
 
@@ -79,4 +78,4 @@ The same as [mode](#mode).
 
 ### Functions
 
-{% include functions.md %}
+{% include_relative functions.md %}

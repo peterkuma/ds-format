@@ -1,6 +1,5 @@
 ---
-layout: versioned
-version: 2.0.0
+layout: default
 title: Command line
 ---
 
@@ -14,7 +13,7 @@ with `man ds` and `man ds` *cmd*.
 
 ### Synopsis
 
-{% include cmd_ds.md %}
+{% include_relative cmd_ds.md %}
 
 ### Commands
 
@@ -29,4 +28,4 @@ with `man ds` and `man ds` *cmd*.
 | [stats](#stats) | Print variable statistics. |
 | [write](#write) | Write dataset to a file. |
 
-{% include cmds.md %}
+{% include_relative cmds.md %}

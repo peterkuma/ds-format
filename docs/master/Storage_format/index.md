@@ -1,6 +1,5 @@
 ---
-layout: versioned
-version: master
+layout: default
 title: Storage format
 ---
 

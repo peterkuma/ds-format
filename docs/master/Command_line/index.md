@@ -1,6 +1,5 @@
 ---
-layout: versioned
-version: master
+layout: default
 title: Command line
 ---
 
@@ -21,7 +20,7 @@ variable in order to access the manual pages.
 
 ### Synopsis
 
-{% include cmd_ds.md %}
+{% include_relative cmd_ds.md %}
 
 ### Commands
 
@@ -42,4 +41,4 @@ variable in order to access the manual pages.
 | [stats](#stats) | Print variable statistics. |
 | [type](#type) | Print a variable type. |
 
-{% include cmds.md %}
+{% include_relative cmds.md %}

@@ -1,0 +1,23 @@
+ds-type(1) -- Print a variable type.
+====================================
+
+## SYNOPSIS
+
+`ds type` *var* *input* [*options*]
+
+## ARGUMENTS
+
+- *var*:
+Variable to print the type of.
+- *input*:
+Input file.
+- *options*:
+See help for ds for global options.
+
+## EXAMPLES
+
+Print the type of a variable `temperature` in a dataset `dataset.nc`.
+
+    $ ds type temperature dataset.nc
+    float64
+

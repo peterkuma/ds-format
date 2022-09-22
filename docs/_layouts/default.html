@@ -11,13 +11,20 @@
 <body>
 <header>
 <h1><a href="{{ "/" | relative_url }}">ds format</a></h1>
+<div class="versions">
+<strong>Documentation version:</strong>
+{% assign version = page.path | split: "/" | first %}
+{% for v in site.versions %}
+<a href="/{{v}}/" {% if v == version %}class="selected"{% endif %}>{{v}}</a>
+{% endfor %}
+</div>
 <nav>
-<a href="{{ "/" | relative_url }}" {% if page.title == "About" %}class="selected"{% endif %}>About</a>
-<a href="{{ "/Description/" | relative_url }}" {% if page.title == "Description" %}class="selected"{% endif %}>Description</a>
-<a href="{{ "/Installation/" | relative_url }}" {% if page.title == "Installation" %}class="selected"{% endif %}>Installation</a>
-<a href="{{ "/Command_line/" | relative_url }}" {% if page.title == "Command line" %}class="selected"{% endif %}>Command line</a>
-<a href="{{ "/Python_API/" | relative_url }}" {% if page.title == "Python API" %}class="selected"{% endif %}>Python API</a>
-<a href="{{ "/Storage_format/" | relative_url }}" {% if page.title == "Storage format" %}class="selected"{% endif %}>Storage format</a>
+<a href="/{{version}}/" {% if page.title == "About" %}class="selected"{% endif %}>About</a>
+<a href="/{{version}}/Description/" {% if page.title == "Description" %}class="selected"{% endif %}>Description</a>
+<a href="/{{version}}/Installation/" {% if page.title == "Installation" %}class="selected"{% endif %}>Installation</a>
+<a href="/{{version}}/Command_line/" {% if page.title == "Command line" %}class="selected"{% endif %}>Command line</a>
+<a href="/{{version}}/Python_API/" {% if page.title == "Python API" %}class="selected"{% endif %}>Python API</a>
+<a href="/{{version}}/Storage_format/" {% if page.title == "Storage format" %}class="selected"{% endif %}>Storage format</a>
 </nav>
 <a href="https://github.com/peterkuma/ds-format" class="github">GitHub</a>
 </header>

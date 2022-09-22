@@ -1,0 +1,26 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-TYPE" "1" "September 2022" ""
+.SH "NAME"
+\fBds\-type\fR \- Print a variable type\.
+.SH "SYNOPSIS"
+\fBds type\fR \fIvar\fR \fIinput\fR [\fIoptions\fR]
+.SH "ARGUMENTS"
+.TP
+\fIvar\fR
+Variable to print the type of\.
+.TP
+\fIinput\fR
+Input file\.
+.TP
+\fIoptions\fR
+See help for ds for global options\.
+.SH "EXAMPLES"
+Print the type of a variable \fBtemperature\fR in a dataset \fBdataset\.nc\fR\.
+.IP "" 4
+.nf
+$ ds type temperature dataset\.nc
+float64
+.fi
+.IP "" 0
+

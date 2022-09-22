@@ -7,20 +7,20 @@ from ds_format.cmd.main import main
 from ds_format import help
 
 if __name__ == '__main__':
-	with open('docs/_includes/cmd_ds.md', 'w') as f:
+	with open('docs/master/Command_line/cmd_ds.md', 'w') as f:
 		f.write('{% raw %}')
 		f.write(help.help_to_md(main.__doc__))
 		f.write('\n')
 		f.write('{% endraw %}')
 
-	with open('docs/_includes/cmds.md', 'w') as f:
+	with open('docs/master/Command_line/cmds.md', 'w') as f:
 		f.write('{% raw %}')
 		for cmd, func in sorted(CMDS.items()):
 			f.write(help.help_to_md(func.__doc__))
 			f.write('\n')
 		f.write('{% endraw %}')
 
-	with open('docs/_includes/functions.md', 'w') as f:
+	with open('docs/master/Python_API/functions.md', 'w') as f:
 		f.write('{% raw %}')
 		for name, func in sorted(getmembers(ds)):
 			if not isfunction(func) or \
