@@ -15,7 +15,7 @@
 <strong>Documentation version:</strong>
 {% assign version = page.path | split: "/" | first %}
 {% for v in site.versions %}
-<a href="/{{v}}/" {% if v == version %}class="selected"{% endif %}>{{v}}</a>
+<a href="{{ v | relative_url }}" {% if v == version %}class="selected"{% endif %}>{{v}}</a>
 {% endfor %}
 </div>
 <nav>
