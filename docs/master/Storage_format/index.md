@@ -22,7 +22,7 @@ The format is composed of a version string, header and body, separated by a
 newline character (`\n`). The version string is `ds-<x>.<y>`, where `x` and `y`
 are a major and minor format version numbers. The header consists of one line
 containing JSON of the metadata. In addition to the [standard
-structure](../../Description), the metadata contains a number of special fields
+structure](../Description/), the metadata contains a number of special fields
 describing where to find and how to decode the variable data.  The body is a
 block of binary data directly following the header. The header and body are
 separated by a single newline character (`\n`).  The body contains raw bindary

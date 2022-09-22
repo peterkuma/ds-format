@@ -6,7 +6,7 @@ title: Description
 ## Description
 
 The ds format is both a data structure with a representation in a programming
-language such as Python and a [storage format](/Storage_format/). In Python,
+language such as Python and a [storage format](../Storage_format/). In Python,
 the ds format is a nested dictionary structure containing data and metadata,
 which can be represented schematically as:
 
@@ -59,10 +59,10 @@ array or Python list. `d['.']` contains metadata, `d['.']['<var<n>>']` contains
 variable metadata and `d['.']['.']` contains dataset metadata.
 
 The structure can be manipulated either directly or through the
-[Python API](/Python_API/), which provides convenience functions over direct
+[Python API](../Python_API/), which provides convenience functions over direct
 manipulation. The data and metadata can be saved as NetCDF and other formats
-with **[ds.write](/Python_API/master/#write)**, and loaded from NetCDF and other
-formats with **[ds.read](/Python_API/master/#read)**.
+with **[ds.write](../Python_API/#write)**, and loaded from NetCDF and other
+formats with **[ds.read](../Python_API/#read)**.
 
 Groups and nesting of variables, as implemented in HDF5, is currently not
 supported.
@@ -109,14 +109,14 @@ NetCDF datasets.
 #### Variable size
 
 Variable size is a list of sizes of each dimension of the variable data. It
-is populated by **[ds.read](/Python_API/master/#read)** when reading a dataset
+is populated by **[ds.read](../Python_API/#read)** when reading a dataset
 from a file. Variable size is stored in a key `.size` in the variable metadata.
 Variable data size takes precedence over `.size` if variable data are defined.
 
 #### Variable type
 
 Variable type is a string specifying the data type.  It is populated by
-**[ds.read](/Python_API/master/#read)** when reading a dataset from a file.
+**[ds.read](../Python_API/#read)** when reading a dataset from a file.
 Variable type is stored in a key `.type` in the variable metadata. Variable
 data type takes precedence over `.type` if variable data are defined.
 
