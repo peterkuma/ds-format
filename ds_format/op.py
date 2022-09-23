@@ -246,9 +246,13 @@ def dims(d, var=None, *value, full=False, size=False):
 				return sorted(list(dims))
 		else:
 			meta = ds.meta(d, var)
-			var_dims = meta.get('.dims', gen_dims(d, var))
+			if '.dims' in meta:
+				var_dims = meta['.dims']
+			else:
+				var_dims = gen_dims(d, var)
 			if size:
-				data = ds.var(d, var)
+				with ds.with_mode('soft'):
+					data = ds.var(d, var)
 				var_size = meta.get('.size')
 				dims = {}
 				for i, dim in enumerate(var_dims):
