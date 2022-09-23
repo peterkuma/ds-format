@@ -76,7 +76,7 @@ temperature"
 		for var in vars1:
 			var_dims = ds.dims(d, var)
 			listed_dims |= set(var_dims)
-		ds_dims = ds.dims(d, full=True)
+		ds_dims = ds.dims(d, full=True, size=True)
 		dims = {k: v for k, v in ds_dims.items() if k in listed_dims}
 		print(pst.encode(dims).decode('utf-8'))
 	for x in vars1:
