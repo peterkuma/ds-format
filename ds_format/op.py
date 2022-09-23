@@ -267,7 +267,7 @@ def dims(d, var=None, *value, full=False, size=False):
 				else:
 					return [var_dims]
 	elif len(value) == 1:
-		check(value[0], 'value', [[list, str]])
+		check(value[0], 'value', [[list, str], [tuple, str]])
 		if var is None:
 			raise TypeError('var must be defined')
 		meta = ds.meta(d, var, create=True)
@@ -361,7 +361,7 @@ def group_by(d, dim, group, func):
 	'''
 	check(d, 'd', dict)
 	check(dim, 'dim', str)
-	check(group, 'group', [np.ndarray, list])
+	check(group, 'group', [np.ndarray, list, tuple])
 	check(func, 'func', function)
 	groups = sorted(list(set(group)))
 	vars_ = ds.vars(d)
@@ -400,10 +400,10 @@ def merge(dd, dim, new=None, variables=None):
 	}}
 	returns: "A dataset (`dict`)."
 	'''
-	check(dd, 'dd', [[list, dict]])
+	check(dd, 'dd', [[list, dict], [tuple, dict]])
 	check(dim, 'dim', str)
 	check(new, 'new', [str, None])
-	check(variables, 'variables', [[list, str], None])
+	check(variables, 'variables', [[list, str], [tuple, str], None])
 	dx = {'.': {'.': {}}}
 	vars_ = list(set([x for d in dd for x in ds.vars(d)]))
 	dims = [k for d in dd for k in ds.dims(d)]

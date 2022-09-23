@@ -2,6 +2,7 @@ import os
 import traceback as tb
 from .drivers import DRIVERS
 import ds_format as ds
+from ds_format.misc import check
 import numpy as np
 
 def index(dirname, variables=None, warnings=[], **kwargs):
@@ -44,6 +45,7 @@ def read(filename, *args, **kwargs):
 	}}
 	returns: "Dataset (`dict`)."
 	'''
+	check(filename, 'filename', str)
 	if not os.path.exists(filename):
 		raise IOError('%s: File does not exist' % filename)
 	for name, driver in DRIVERS.items():
@@ -65,13 +67,17 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 		*dirname*: "Directory name."
 	}}
 	options: {{
-		*variables*: "Variable names to read (`list` of `str`)."
-		*merge*: "Dimension name to merge datasets by."
-		*warnings*: "Array to be populated with warnings."
+		*variables*: "Variable names to read (`list` of `str`) or `None` to read all variables."
+		*merge*: "Dimension name to merge datasets by (`str`) or `None`."
+		*warnings*: "A list to be populated with warnings (`list`)."
 		...: "Optional keyword arguments passed to **[read](#read)**."
 	}}
 	returns: "A list of datasets (`list` of `dict`) if *merge* is `None` or a merged dataset (`dict`) if *merge* is a dimension name."
 	'''
+	check(dirname, 'dirname', str)
+	checK(variables, 'variables', [[list, str], [tuple, str], None])
+	check(merge, 'merge', [str, None])
+	check(warnings, 'warnings', list)
 	l = sorted(os.listdir(dirname))
 	dd = []
 	for name in l:
@@ -122,6 +128,8 @@ def write(filename, d):
 	}}
 	returns: `None`
 	'''
+	check(filename, 'filename', str)
+	check(d, 'd', dict)
 	for name, driver in DRIVERS.items():
 		for ext in driver.WRITE_EXT:
 			end = '.' + ext
