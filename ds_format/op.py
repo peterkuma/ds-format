@@ -316,7 +316,7 @@ def findall(d, what, name, var=None):
 	elif what == 'attr':
 		names = ds.attrs(d, var)
 	elif what == 'dim':
-		names = list(ds.dims(d, var, full=True).keys())
+		names = ds.dims(d, var, full=True)
 	else:
 		raise ValueError('invalid value of the what argument "%s"' % what)
 	res = fnmatch.filter(names, name)

@@ -73,7 +73,7 @@ def write(filename, d):
 	if type(filename) is bytes and hasattr(os, 'fsdecode'):
 		filename = os.fsdecode(filename)
 	with Dataset(filename, 'w') as f:
-		dims = ds.dims(d)
+		dims = ds.dims(d, size=True)
 		for k, v in dims.items():
 			f.createDimension(k, v)
 		for var in ds.vars(d):
