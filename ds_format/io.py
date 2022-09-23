@@ -24,7 +24,7 @@ def index(dirname, variables=None, warnings=[], **kwargs):
 		dd.append(d)
 	return dd
 
-def read(filename, *args, **kwargs):
+def read(filename, variables=None, sel=None, full=False, jd=False):
 	'''
 	title: read
 	caption: "Read dataset from a file."
@@ -46,6 +46,10 @@ def read(filename, *args, **kwargs):
 	returns: "Dataset (`dict`)."
 	'''
 	check(filename, 'filename', str)
+	check(variables, 'variables', [[list, str], [tuple, str], None])
+	check(sel, 'sel', [[dict, str], None])
+	check(full, 'full', bool)
+	check(jd, 'jd', bool)
 	if not os.path.exists(filename):
 		raise IOError('%s: File does not exist' % filename)
 	for name, driver in DRIVERS.items():
@@ -54,7 +58,7 @@ def read(filename, *args, **kwargs):
 			if type(filename) is bytes:
 				end = end.encode('utf-8')
 			if filename.endswith(end):
-				d = driver.read(filename, *args, **kwargs)
+				d = driver.read(filename, variables, sel, full, jd)
 				return d
 	raise IOError('%s: Unknown file format' % filename)
 
