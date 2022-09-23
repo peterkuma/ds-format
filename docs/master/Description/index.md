@@ -112,6 +112,7 @@ Variable size is a list of sizes of each dimension of the variable data. It
 is populated by **[ds.read](../Python_API/#read)** when reading a dataset
 from a file. Variable size is stored in a key `.size` in the variable metadata.
 Variable data size takes precedence over `.size` if variable data are defined.
+For scalar variable data, variable size is an empty list `[]`.
 
 #### Variable type
 
