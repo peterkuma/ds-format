@@ -1,7 +1,7 @@
 import numpy as np
 import ds_format as ds
 from ds_format import misc
-from ds_format.cmd import UsageError, check
+from ds_format.misc import UsageError, check
 import pst
 
 def stats(*args, **opts):

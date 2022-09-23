@@ -5,7 +5,7 @@ import traceback
 import pst
 import ds_format as ds
 from ds_format import help
-from ds_format.cmd import UsageError
+from ds_format.misc import UsageError
 
 def main():
 	'''

@@ -1,4 +1,5 @@
 import ds_format as ds
+from ds_format.misc import check
 from collections import Mapping, Iterable
 import copy as copy_
 import numpy as np
@@ -141,15 +142,18 @@ def attr(d, attr, *value, var=None):
 	}}
 	returns: "Attribute value if *value* is not set, otherwise `None`."
 	'''
-	if len(value) > 1:
-		raise TypeError('only one value argument is expected')
+	check(d, 'd', dict)
+	check(attr, 'attr', str)
+	check(var, 'var', [str, None])
 	if len(value) == 0:
 		if require(d, 'attr', attr, var):
 			attrs = ds.attrs(d, var)
 			return attrs[attr]
-	else:
+	if len(value) == 1:
 		meta = ds.meta(d, '' if var is None else var, create=True)
 		meta[ds.escape(attr)] = value[0]
+	else:
+		raise TypeError('only one value argument is expected')
 
 def attrs(d, var=None, *value):
 	'''
@@ -165,10 +169,13 @@ def attrs(d, var=None, *value):
 	}}
 	returns: "Attributes (`dict`)."
 	'''
+	check(d, 'd', dict)
+	check(var, 'var', [str, None])
 	if len(value) == 0:
 		meta = ds.meta(d, '' if var is None else var)
 		return {ds.unescape(k): v for k, v in filter_hidden(meta).items()}
 	elif len(value) == 1:
+		check(value[0], 'value', [[dict, str]])
 		for k, v in value[0].items():
 			ds.attr(d, k, v, var=var)
 	else:
@@ -190,6 +197,9 @@ def dim(d, dim, full=False):
 	}}
 	returns: "Dimension size or 0 if the dimension does not exist (`int`)."
 	'''
+	check(d, 'd', dict)
+	check(dim, 'dim', str)
+	check(full, 'full', bool)
 	if require(d, 'dim', dim):
 		return dims(d, full=full, size=True)[dim]
 	return 0
@@ -215,8 +225,10 @@ def dims(d, var=None, *value, full=False, size=False):
 	}}
 	returns: "If *size* is False, a list of dataset or variable dimension names (`list` of `str`). If *size* is True, a dictionary of dataset or variable dimension names and sizes (`dict`), where a key is a dimension name (`str`) and the value is the dimension size (`int`). The order of keys in the dictionary is not guaranteed. Dataset dimensions are the dimensions of all variables together."
 	'''
-	if len(value) > 1:
-		raise TypeError('only one value argument is expected')
+	check(d, 'd', dict)
+	check(var, 'var', [str, None])
+	check(full, 'full', bool)
+	check(size, 'size', bool)
 	if len(value) == 0:
 		if var is None:
 			if size:
@@ -254,7 +266,8 @@ def dims(d, var=None, *value, full=False, size=False):
 					return list(var_dims)
 				else:
 					return [var_dims]
-	else:
+	elif len(value) == 1:
+		check(value[0], 'value', [[list, str]])
 		if var is None:
 			raise TypeError('var must be defined')
 		meta = ds.meta(d, var, create=True)
@@ -263,6 +276,8 @@ def dims(d, var=None, *value, full=False, size=False):
 				del meta['.dims']
 		else:
 			meta['.dims'] = value[0]
+	else:
+		raise TypeError('only one value argument is expected')
 
 dims.aliases = ['get_dims']
 
@@ -287,6 +302,10 @@ def find(d, what, name, var=None):
 	}}
 	returns: "A variable, dimension or attribute name matching the pattern, or *name* if no matching name is found (`str`)."
 	'''
+	check(d, 'd', dict)
+	check(what, 'what', str)
+	check(name, 'name', str)
+	check(var, 'var', [str, None])
 	names = findall(d, what, name, var)
 	desc = {'var': 'variable', 'attr': 'attribute', 'dim': 'dimension'}[what]
 	if len(names) > 1:
@@ -311,6 +330,10 @@ def findall(d, what, name, var=None):
 	}}
 	returns: "A list of variables, dimensions or attributes matching the pattern, or [*name*] if no matching names are found (`list` of `str`)."
 	'''
+	check(d, 'd', dict)
+	check(what, 'what', str)
+	check(name, 'name', str)
+	check(var, 'var', [str, None])
 	if what == 'var':
 		names = ds.vars(d, full=True)
 	elif what == 'attr':
@@ -336,6 +359,10 @@ def group_by(d, dim, group, func):
 	}}
 	returns: `None`
 	'''
+	check(d, 'd', dict)
+	check(dim, 'dim', str)
+	check(group, 'group', [np.ndarray, list])
+	check(func, 'func', function)
 	groups = sorted(list(set(group)))
 	vars_ = ds.vars(d)
 	n = len(groups)
@@ -373,6 +400,10 @@ def merge(dd, dim, new=None, variables=None):
 	}}
 	returns: "A dataset (`dict`)."
 	'''
+	check(dd, 'dd', [[list, dict]])
+	check(dim, 'dim', str)
+	check(new, 'new', [str, None])
+	check(variables, 'variables', [[list, str], None])
 	dx = {'.': {'.': {}}}
 	vars_ = list(set([x for d in dd for x in ds.vars(d)]))
 	dims = [k for d in dd for k in ds.dims(d)]
@@ -409,6 +440,10 @@ def meta(d, var=None, meta=None, create=False):
 	}}
 	returns: "Metadata (`dict`)."
 	'''
+	check(d, 'd', dict)
+	check(var, 'var', [str, None])
+	check(meta, 'meta', [[dict, str], None])
+	check(create, 'create', bool)
 	var_e = ds.escape(var)
 
 	if meta is not None:
@@ -461,6 +496,9 @@ def rename(d, old, new):
 	}}
 	returns: `None`
 	'''
+	check(d, 'd', dict)
+	check(old, 'old', str)
+	check(new, 'new', [str, None])
 	new_e = ds.escape(new)
 	old_e = ds.escape(old)
 	if require(d, 'var', old):
@@ -488,6 +526,10 @@ def rename_attr(d, old, new, var=None):
 	}}
 	returns: `None`
 	'''
+	check(d, 'd', dict)
+	check(old, 'old', str)
+	check(new, 'new', str)
+	check(var, 'var', [str, None])
 	old_e = ds.escape(old)
 	new_e = ds.escape(new)
 	if require(d, 'attr', old, var):
@@ -508,6 +550,9 @@ def rename_dim(d, old, new):
 	}}
 	returns: `None`
 	'''
+	check(d, 'd', dict)
+	check(old, 'old', str)
+	check(new, 'new', str)
 	if old == new:
 		return
 	for var in ds.vars(d, full=True):
@@ -537,6 +582,11 @@ def require(d, what, name, var=None, full=False):
 	}}
 	returns: "`true` if the required item is defined in the dataset, otherwise `false` or raises an exception depending on the mode."
 	'''
+	check(d, 'd', dict)
+	check(what, 'what', str)
+	check(name, 'name', str)
+	check(var, 'var', [str, None])
+	check(full, 'full', bool)
 	if what == 'var':
 		if name in ds.vars(d, full=full):
 			return True
@@ -573,6 +623,8 @@ def rm(d, var):
 	}}
 	returns: `None`
 	'''
+	check(d, 'd', dict)
+	check(var, 'var', str)
 	if require(d, 'var', var):
 		del d[ds.escape(var)]
 
@@ -590,6 +642,9 @@ def rm_attr(d, attr, var=None):
 	}}
 	returns: `None`
 	'''
+	check(d, 'd', dict)
+	check(attr, 'attr', str)
+	check(var, 'var', [str, None])
 	if require(d, 'attr', attr, var):
 		meta = ds.meta(d, '' if var is None else var)
 		del meta[ds.escape(attr)]
@@ -605,6 +660,8 @@ def select(d, sel):
 	}}
 	returns: `None`
 	'''
+	check(d, 'd', dict)
+	check(sel, 'sel', [[dict, str]])
 	for var in ds.vars(d):
 		select_var(d, var, sel)
 
@@ -620,6 +677,8 @@ def size(d, var):
 	}}
 	returns: "Variable size (`list`) or `None` if not defined."
 	'''
+	check(d, 'd', dict)
+	check(var, 'var', str)
 	if require(d, 'var', var, full=True):
 		with ds.with_mode('soft'):
 			data = ds.var(d, var)
@@ -644,6 +703,8 @@ def type_(d, var, *value):
 	}}
 	returns: "Variable type (`str`) or `None` if not defined."
 	'''
+	check(d, 'd', dict)
+	check(var, 'var', str)
 	if len(value) == 0:
 		if not require(d, 'var', var, full=True):
 			return None
@@ -654,6 +715,7 @@ def type_(d, var, *value):
 			return meta.get('.type', None)
 		return misc.dtype_to_type(data.dtype)
 	elif len(value) == 1:
+		check(value[0], 'value', str)
 		meta = ds.meta(d, var, create=True)
 		if type(value[0]) is not str or \
 		   value[0] not in ALLOWED_TYPES:
@@ -679,9 +741,9 @@ def var(d, var, *value):
 	}}
 	returns: "Variable data as a numpy array (`np.ndarray`) or `None` if the variable data are not defined or `value` is supplied."
 	'''
+	check(d, 'd', dict)
+	check(var, 'var', str)
 	var_e = ds.escape(var)
-	if len(value) > 1:
-		raise TypeError('only one value argument is expected')
 	if len(value) == 0:
 		if require(d, 'var', var):
 			data = d[var_e]
@@ -696,8 +758,10 @@ def var(d, var, *value):
 					data = np.ma.array(data, dtype, mask=mask)
 				return data
 		return None
-	else:
+	elif len(value) == 1:
 		d[var_e] = value[0]
+	else:
+		raise TypeError('only one value argument is expected')
 
 def vars_(d, full=False):
 	'''
@@ -713,6 +777,8 @@ def vars_(d, full=False):
 	}}
 	returns: "Variable names (`list` of `str`)."
 	'''
+	check(d, 'd', dict)
+	check(full, 'full', bool)
 	meta = ds.meta(d)
 	vars_ = list(set(meta.keys()) | set(d.keys())) if full else d.keys()
 	return sorted([ds.unescape(x) for x in filter_hidden(vars_)])

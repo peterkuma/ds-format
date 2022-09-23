@@ -1,4 +1,4 @@
-from ds_format.cmd import UsageError, check
+from ds_format.misc import UsageError, check
 import ds_format as ds
 
 def rename(*args, **opts):

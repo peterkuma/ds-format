@@ -1,5 +1,5 @@
 import numpy as np
-from ds_format.cmd import UsageError, check
+from ds_format.misc import UsageError, check
 import ds_format as ds
 from ds_format import misc
 import aquarius_time as aq

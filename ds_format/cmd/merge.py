@@ -1,5 +1,5 @@
 import ds_format as ds
-from ds_format.cmd import check
+from ds_format.misc import check
 
 def merge(dim, *args, **opts):
 	'''

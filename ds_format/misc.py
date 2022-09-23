@@ -58,11 +58,13 @@ def encoder(x):
 		return x
 
 def escape(name):
+	check(name, 'name', [str, None])
 	return '\\' + name \
 		if name is not None and name.startswith(('.', '\\')) \
 		else name
 
 def unescape(name):
+	check(name, 'name', [str, None])
 	return name[1:] \
 		if name is not None and name.startswith(('\\.', '\\\\')) \
 		else name
@@ -104,6 +106,7 @@ def with_mode(mode):
 	..."
 	}}
 	'''
+	check(mode, 'mode', str)
 	tmp = ds.mode
 	ds.mode = mode
 	yield
@@ -145,3 +148,41 @@ def process_time_var(d, var):
 	ds.var(d, var, aq.from_datetime(list(x)).reshape(shape))
 	ds.attr(d, 'units', 'days since -4713-11-24 12:00 UTC', var=var)
 	ds.attr(d, 'calendar', 'proleptic_gregorian', var=var)
+
+def check(x, name, arg, *args, elemental=False, fail=True):
+	if type(x) is tuple:
+		x = list(x)
+	t = type(x)
+	ta = type(arg)
+	if ta not in (list, tuple):
+		arg = [[arg] + list(args)]
+	res = False
+	for a in arg:
+		if type(a) not in (list, tuple):
+			a = [a]
+		if type(x) is a[0] or x is None and a[0] is None:
+			if a[0] in (list, tuple) and len(a) >= 2:
+				res = all([
+					check(y, name, a[1], elemental=elemental, fail=False) \
+					for y in x
+				])
+			elif a[0] is dict and len(a) >= 2:
+				if len(a) == 2:
+					res = all([
+						check(k, name, a[1], elemental=elemental, fail=False)
+						for k, v in x.items()
+					])
+				else:
+					res = all([
+						check(k, name, a[1], elemental=elemental, fail=False) and \
+						check(v, name, a[2], elemental=elemental, fail=False) \
+						for k, v in x.items()
+					])
+			else:
+				res = True
+	if not res and fail:
+		raise ValueError('%s: invalid type' % name)
+	return res
+
+class UsageError(TypeError):
+	pass
