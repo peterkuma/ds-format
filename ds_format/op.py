@@ -199,7 +199,6 @@ def dim(d, dim, full=False):
 	'''
 	check(d, 'd', dict)
 	check(dim, 'dim', str)
-	check(full, 'full', bool)
 	if require(d, 'dim', dim):
 		return dims(d, full=full, size=True)[dim]
 	return 0
@@ -227,8 +226,6 @@ def dims(d, var=None, *value, full=False, size=False):
 	'''
 	check(d, 'd', dict)
 	check(var, 'var', [str, None])
-	check(full, 'full', bool)
-	check(size, 'size', bool)
 	if len(value) == 0:
 		if var is None:
 			if size:
@@ -447,7 +444,6 @@ def meta(d, var=None, meta=None, create=False):
 	check(d, 'd', dict)
 	check(var, 'var', [str, None])
 	check(meta, 'meta', [[dict, str], None])
-	check(create, 'create', bool)
 	var_e = ds.escape(var)
 
 	if meta is not None:
@@ -590,7 +586,6 @@ def require(d, what, name, var=None, full=False):
 	check(what, 'what', str)
 	check(name, 'name', str)
 	check(var, 'var', [str, None])
-	check(full, 'full', bool)
 	if what == 'var':
 		if name in ds.vars(d, full=full):
 			return True
@@ -782,7 +777,6 @@ def vars_(d, full=False):
 	returns: "Variable names (`list` of `str`)."
 	'''
 	check(d, 'd', dict)
-	check(full, 'full', bool)
 	meta = ds.meta(d)
 	vars_ = list(set(meta.keys()) | set(d.keys())) if full else d.keys()
 	return sorted([ds.unescape(x) for x in filter_hidden(vars_)])

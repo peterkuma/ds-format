@@ -48,8 +48,6 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 	check(filename, 'filename', str)
 	check(variables, 'variables', [str, [list, str], [tuple, str], None])
 	check(sel, 'sel', [[dict, str], None])
-	check(full, 'full', bool)
-	check(jd, 'jd', bool)
 	if not os.path.exists(filename):
 		raise IOError('%s: File does not exist' % filename)
 	for name, driver in DRIVERS.items():
