@@ -220,7 +220,7 @@ Usage: `read`(*filename*, *variables*=`None`, *sel*=`None`, *full*=`False`, *jd*
 Arguments:
 
 - *filename*: Filename (`str`).
-- *variables*: Variable names to read (`list` of `str`).
+- *variables*: Variable names to read (`str` or `list` of `str`) or `None` to read all variables.
 
 Options:
 
@@ -250,9 +250,9 @@ Arguments:
 
 Options:
 
-- *variables*: Variable names to read (`list` of `str`).
-- *merge*: Dimension name to merge datasets by.
-- *warnings*: Array to be populated with warnings.
+- *variables*: Variable names to read (`str` or `list` of `str`) or `None` to read all variables.
+- *merge*: Dimension name to merge datasets by (`str`) or `None`.
+- *warnings*: A list to be populated with warnings (`list`).
 - ...: Optional keyword arguments passed to **[read](#read)**.
 
 Return value:
