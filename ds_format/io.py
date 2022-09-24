@@ -90,7 +90,7 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 			))
 			continue
 		ds.var(d, 'filename', filename)
-        ds.dims(d, 'filename', [])
+		ds.dims(d, 'filename', [])
 		dd.append(d)
 	if merge is None:
 		return dd
