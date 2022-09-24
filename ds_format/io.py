@@ -17,10 +17,8 @@ def index(dirname, variables=None, warnings=[], **kwargs):
 				tb.format_exc()
 			))
 			continue
-		d['filename'] = filename
-		d['.']['filename'] = {
-			'.dims': [],
-		}
+		ds.var(d, 'filename', filename)
+		ds.dims(d, 'filename', [])
 		dd.append(d)
 	return dd
 
@@ -91,10 +89,8 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 				tb.format_exc()
 			))
 			continue
-		d['filename'] = filename
-		d['.']['filename'] = {
-			'.dims': [],
-		}
+		ds.var(d, 'filename', filename)
+        ds.dims(d, 'filename', [])
 		dd.append(d)
 	if merge is None:
 		return dd
@@ -102,14 +98,10 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 		n = 0
 		for n, d in enumerate(dd):
 			m = ds.dims(d, size=True)[merge]
-			d['n'] = np.full(m, n)
-			d['i'] = np.arange(m)
-			d['.']['n'] = {
-				'.dims': [merge],
-			}
-			d['.']['i'] = {
-				'.dims': [merge],
-			}
+			ds.var(d, 'n', np.full(m, n))
+			ds.var(d, 'i', np.arange(m))
+			ds.dims(d, 'n', [merge])
+			ds.dims(d, 'i', [merge])
 		d = ds.op.merge(dd, merge, new='n')
 		return d
 
