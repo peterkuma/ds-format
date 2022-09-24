@@ -31,7 +31,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 	usage: "`read`(*filename*, *variables*=`None`, *sel*=`None`, *full*=`False`, *jd*=`False`)"
 	arguments: {{
 		*filename*: "Filename (`str`)."
-		*variables*: "Variable names to read (`list` of `str`)."
+		*variables*: "Variable names to read (`str` or `list` of `str`) or `None` to read all variables."
 	}}
 	options: {{
 		*sel*: "Selector (see **[select](#select)**)."
@@ -46,7 +46,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 	returns: "Dataset (`dict`)."
 	'''
 	check(filename, 'filename', str)
-	check(variables, 'variables', [[list, str], [tuple, str], None])
+	check(variables, 'variables', [str, [list, str], [tuple, str], None])
 	check(sel, 'sel', [[dict, str], None])
 	check(full, 'full', bool)
 	check(jd, 'jd', bool)
@@ -71,7 +71,7 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 		*dirname*: "Directory name."
 	}}
 	options: {{
-		*variables*: "Variable names to read (`list` of `str`) or `None` to read all variables."
+		*variables*: "Variable names to read (`str` or `list` of `str`) or `None` to read all variables."
 		*merge*: "Dimension name to merge datasets by (`str`) or `None`."
 		*warnings*: "A list to be populated with warnings (`list`)."
 		...: "Optional keyword arguments passed to **[read](#read)**."
@@ -79,7 +79,7 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 	returns: "A list of datasets (`list` of `dict`) if *merge* is `None` or a merged dataset (`dict`) if *merge* is a dimension name."
 	'''
 	check(dirname, 'dirname', str)
-	check(variables, 'variables', [[list, str], [tuple, str], None])
+	check(variables, 'variables', [str, [list, str], [tuple, str], None])
 	check(merge, 'merge', [str, None])
 	check(warnings, 'warnings', list)
 	l = sorted(os.listdir(dirname))
