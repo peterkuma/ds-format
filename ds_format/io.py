@@ -79,7 +79,7 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 	returns: "A list of datasets (`list` of `dict`) if *merge* is `None` or a merged dataset (`dict`) if *merge* is a dimension name."
 	'''
 	check(dirname, 'dirname', str)
-	checK(variables, 'variables', [[list, str], [tuple, str], None])
+	check(variables, 'variables', [[list, str], [tuple, str], None])
 	check(merge, 'merge', [str, None])
 	check(warnings, 'warnings', list)
 	l = sorted(os.listdir(dirname))
