@@ -103,7 +103,7 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 	else:
 		n = 0
 		for n, d in enumerate(dd):
-			m = ds.dims(d)[merge]
+			m = ds.dims(d, size=True)[merge]
 			d['n'] = np.full(m, n)
 			d['i'] = np.arange(m)
 			d['.']['n'] = {
