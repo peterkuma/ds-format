@@ -152,7 +152,6 @@ def process_time_var(d, var):
 def check(x, name, arg, *args, elemental=False, fail=True):
 	if type(x) is tuple:
 		x = list(x)
-	t = type(x)
 	ta = type(arg)
 	if ta not in (list, tuple):
 		arg = [[arg] + list(args)]
@@ -160,7 +159,8 @@ def check(x, name, arg, *args, elemental=False, fail=True):
 	for a in arg:
 		if type(a) not in (list, tuple):
 			a = [a]
-		if type(x) is a[0] or x is None and a[0] is None:
+		if x is None and a[0] is None or \
+		   a[0] is not None and isinstance(x, a[0]):
 			if a[0] in (list, tuple) and len(a) >= 2:
 				res = all([
 					check(y, name, a[1], elemental=elemental, fail=False) \
