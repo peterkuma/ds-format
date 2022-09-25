@@ -64,11 +64,15 @@ def select_var(d, var, sel):
 				if not isinstance(idxs, np.ndarray):
 					var_dims.remove(dim)
 
+def is_hidden(x):
+	return isinstance(x, bytes) and x.startswith(b'.') or \
+		isinstance(x, str) and x.startswith('.')
+
 def filter_hidden(x):
 	if isinstance(x, Mapping):
-		return {k: v for k, v in x.items() if not k.startswith('.')}
+		return {k: v for k, v in x.items() if not is_hidden(k)}
 	if isinstance(x, Iterable):
-		return [k for k in x if not k.startswith('.')]
+		return [k for k in x if not is_hidden(k)]
 	return x
 
 def gen_dims(d, var):

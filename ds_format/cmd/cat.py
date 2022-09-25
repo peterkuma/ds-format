@@ -1,3 +1,4 @@
+import sys
 import numpy as np
 from ds_format.misc import UsageError, check
 import ds_format as ds
@@ -61,7 +62,7 @@ time temperature
 	if not all([dim == dims[0] for dim in dims]):
 		raise ValueError('incompatible dimensions')
 
-	print(pst.encode(vars_, encoder=misc.encoder).decode('utf-8'))
+	sys.stdout.buffer.write(pst.encode(vars_, encoder=misc.encoder) + b'\n')
 
 	xx = []
 	for var in vars_:
@@ -79,4 +80,4 @@ time temperature
 	n = len(xx[0])
 	for i in range(n):
 		y = [x[i] for x in xx]
-		print(pst.encode(y, encoder=misc.encoder).decode('utf-8'))
+		sys.stdout.buffer.write(pst.encode(y, encoder=misc.encoder) + b'\n')

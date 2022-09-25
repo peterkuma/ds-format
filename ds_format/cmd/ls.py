@@ -1,3 +1,4 @@
+import sys
 from warnings import warn
 import numpy as np
 import ds_format as ds
@@ -78,7 +79,7 @@ temperature"
 			listed_dims |= set(var_dims)
 		ds_dims = ds.dims(d, full=True, size=True)
 		dims = {k: v for k, v in ds_dims.items() if k in listed_dims}
-		print(pst.encode(dims).decode('utf-8'))
+		sys.stdout.buffer.write(pst.encode(dims) + b'\n')
 	for x in vars1:
 		if not ds.require(d, 'var', x, full=True):
 			continue
@@ -94,4 +95,4 @@ temperature"
 			elif type(attrs) is str:
 				y += [var_attrs.get(attrs)]
 		s = pst.encode(y, encoder=misc.encoder)
-		print(s.decode('utf-8'))
+		sys.stdout.buffer.write(s + b'\n')

@@ -1,3 +1,4 @@
+import sys
 from ds_format.misc import UsageError, check
 import ds_format as ds
 import pst
@@ -31,4 +32,4 @@ def size(*args, **opts):
 		if var is not None:
 			var = ds.find(d, 'var', var)
 	size = ds.size(d, var)
-	print(pst.encode(size).decode('utf-8'))
+	sys.stdout.buffer.write(pst.encode(size) + b'\n')

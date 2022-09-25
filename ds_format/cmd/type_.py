@@ -1,3 +1,4 @@
+import sys
 from ds_format.misc import UsageError, check
 import ds_format as ds
 import pst
@@ -31,4 +32,4 @@ float64"
 		if var is not None:
 			var = ds.find(d, 'var', var)
 	type_ = ds.type(d, var)
-	print(pst.encode(type_).decode('utf-8'))
+	sys.stdout.buffer.write(pst.encode(type_) + b'\n')
