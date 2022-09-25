@@ -28,7 +28,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 	caption: "Read dataset from a file."
 	usage: "`read`(*filename*, *variables*=`None`, *sel*=`None`, *full*=`False`, *jd*=`False`)"
 	arguments: {{
-		*filename*: "Filename (`str`)."
+		*filename*: "Filename (`str`, `bytes` or `os.PathLike`)."
 		*variables*: "Variable names to read (`str` or `list` of `str`) or `None` to read all variables."
 	}}
 	options: {{
@@ -43,9 +43,10 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 	}}
 	returns: "Dataset (`dict`)."
 	'''
-	check(filename, 'filename', str)
+	check(filename, 'filename', [str, bytes, os.PathLike])
 	check(variables, 'variables', [str, [list, str], [tuple, str], None])
 	check(sel, 'sel', [[dict, str], None])
+	if isinstance(filename, os.PathLike): filename = filename.__fspath__()
 	if not os.path.exists(filename):
 		raise IOError('%s: File does not exist' % filename)
 	for name, driver in DRIVERS.items():
@@ -64,7 +65,7 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 	caption: "Read multiple files in a directory."
 	usage: "`readdir`(*dirname*, *variables*=`None`, *merge*=`None`, *warnings*=[], ...)"
 	arguments: {{
-		*dirname*: "Directory name."
+		*dirname*: "Directory name (`str`, `bytes` or `os.PathLike`)."
 	}}
 	options: {{
 		*variables*: "Variable names to read (`str` or `list` of `str`) or `None` to read all variables."
@@ -74,10 +75,11 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 	}}
 	returns: "A list of datasets (`list` of `dict`) if *merge* is `None` or a merged dataset (`dict`) if *merge* is a dimension name."
 	'''
-	check(dirname, 'dirname', str)
+	check(dirname, 'dirname', [str, bytes, os.PathLike])
 	check(variables, 'variables', [str, [list, str], [tuple, str], None])
 	check(merge, 'merge', [str, None])
 	check(warnings, 'warnings', list)
+	if isinstance(dirname, os.PathLike): dirname = dirname.__fspath__()
 	l = sorted(os.listdir(dirname))
 	dd = []
 	for name in l:
@@ -112,7 +114,7 @@ def write(filename, d):
 	caption: "Write dataset to a file."
 	desc: "The file type is determined from the file extension."
 	arguments: {{
-		*filename*: "Filename (`str`)."
+		*filename*: "Filename (`str`, `bytes` or `os.PathLike`)."
 		*d*: "Dataset (`dict`)."
 	}}
 	"Supported formats": {{
@@ -122,8 +124,9 @@ def write(filename, d):
 	}}
 	returns: `None`
 	'''
-	check(filename, 'filename', str)
+	check(filename, 'filename', [str, bytes, os.PathLike])
 	check(d, 'd', dict)
+	if isinstance(filename, os.PathLike): filename = filename.__fspath__()
 	for name, driver in DRIVERS.items():
 		for ext in driver.WRITE_EXT:
 			end = '.' + ext
