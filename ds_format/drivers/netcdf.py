@@ -41,7 +41,7 @@ def read_var(f, name, sel=None, data=True):
 			except ValueError:
 				var.set_auto_mask(False)
 				x = var[::] if data else None
-	if x is np.ma.masked:
+	if len(size) == 0 and var[()] is np.ma.masked:
 		x = None
 		size = None
 	attrs.update({
