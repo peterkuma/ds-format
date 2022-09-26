@@ -24,6 +24,7 @@ setup(
 		'pst-format>=1.2.0',
 		'aquarius-time>=0.1.0',
 		'beautifulsoup4>=4.9.3',
+		'Markdown>=3.3.4',
 	],
 	license='MIT',
 	classifiers=[
