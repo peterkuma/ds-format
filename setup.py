@@ -5,7 +5,7 @@ from glob import glob
 
 setup(
 	name='ds-format',
-	version='2.0.0',
+	version='2.0.1',
 	scripts=['bin/ds'],
 	packages=find_packages(),
 	description='Python implementation of a dataset format DS for storing data along with metadata',
@@ -24,6 +24,7 @@ setup(
 		'pst-format>=1.2.0',
 		'aquarius-time>=0.1.0',
 		'beautifulsoup4>=4.9.3',
+		'Markdown>=3.3.4',
 	],
 	license='MIT',
 	classifiers=[
