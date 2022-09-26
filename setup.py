@@ -5,7 +5,7 @@ from glob import glob
 
 setup(
 	name='ds-format',
-	version='2.0.0',
+	version='2.0.1',
 	scripts=['bin/ds'],
 	packages=find_packages(),
 	description='Python implementation of a dataset format DS for storing data along with metadata',

@@ -27,6 +27,10 @@ pages.
 
 ### Release notes
 
+#### 2.0.1 (2022-09-26)
+
+- Fixed missing package in setup.py (Markdown).
+
 #### 2.0.0 (2022-07-31)
 
 - Command line documentation and man pages.
