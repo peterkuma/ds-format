@@ -98,8 +98,8 @@ dimensions (`.dims`), size (`.size`) and type (`.type`).
 
 Variable dimensions is a list of names corresponding to the dimensions of the
 variable data. The names can be arbitrary strings. Variable dimensions are
-stored in variable metadata under a key `.dims`. For scalar variable data
-, variable dimensions are an empty list `[]`.
+stored in variable metadata under a key `.dims`. For scalar and empty
+variables, variable dimensions are an empty list (`[]`).
 
 Dimensions can have the same name as another variable, which is then be
 interpreted as the axis in certain programs such as
@@ -112,7 +112,8 @@ Variable size is a list of sizes of each dimension of the variable data. It
 is populated by **[ds.read](../Python_API/#read)** when reading a dataset
 from a file. Variable size is stored in a key `.size` in the variable metadata.
 Variable data size takes precedence over `.size` if variable data are defined.
-For scalar variable data, variable size is an empty list `[]`.
+For scalar variables, variable size is an empty list (`[]`). For empty
+variables, variable size is `None`.
 
 #### Variable type
 

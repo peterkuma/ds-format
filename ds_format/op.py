@@ -77,14 +77,9 @@ def filter_hidden(x):
 
 def gen_dims(d, var):
 	data = ds.var(d, var)
-	var_meta = ds.meta(d, var)
-	if data is not None:
-		ndim = data.ndim
-	elif '.size' in var_meta:
-		ndim = len(var_meta['.size'])
-	else:
-		ndim = 0
-	return [var + ('_%d' % i) for i in range(1, ndim + 1)]
+	size = ds.size(d, var)
+	return [] if size is None else \
+		[var + ('_%d' % i) for i in range(1, len(size) + 1)]
 
 def parse_time(t):
 	formats = [
@@ -378,6 +373,8 @@ def group_by(d, dim, group, func):
 		except ValueError:
 			continue
 		data = ds.var(d, var)
+		if data is None:
+			continue
 		size = list(data.shape)
 		size[i] = n
 		x = np.empty(size, data.dtype)
@@ -683,10 +680,9 @@ def size(d, var):
 	check(d, 'd', dict)
 	check(var, 'var', str)
 	if require(d, 'var', var, full=True):
-		with ds.with_mode('soft'):
+		if var in ds.vars(d):
 			data = ds.var(d, var)
-		if data is not None:
-			return list(data.shape)
+			return None if data is None else data.shape
 		else:
 			meta = ds.meta(d, var)
 			return meta.get('.size')
@@ -742,7 +738,7 @@ def var(d, var, *value):
 		*var*: "Variable name (`str`)."
 		*value*: "Variable data. If supplied, set variable data, otherwise get variable data."
 	}}
-	returns: "Variable data as a numpy array (`np.ndarray`) or `None` if the variable data are not defined or `value` is supplied."
+	returns: "Variable data (`np.ndarray` or `np.generic`) or `None` if the variable data are not defined or `value` is supplied. If the variable data are a `list` or `tuple`, they are converted to `np.ndarray`, or to `np.ma.MaskedArray` if they contain `None`, which is masked. If the variable data are `int`, `float, `bool`, `str` or `bytes`, they are converted to `np.generic`. Raises ValueError if the output dtype is not one of `float32`, `float64`, `int8`, `int16`, `int32`, `int64`, `uint8`, `uint16`, `uint32`, `uint64`, `bool`, `bytes<n>`, `str<n>`, or `object` for which all items are an instance of `str` or `bytes`."
 	'''
 	check(d, 'd', dict)
 	check(var, 'var', str)
@@ -750,16 +746,24 @@ def var(d, var, *value):
 	if len(value) == 0:
 		if require(d, 'var', var):
 			data = d[var_e]
-			if isinstance(data, np.ndarray):
-				return data
-			else:
+			if isinstance(data, (list, tuple)):
 				data = np.array(data)
 				mask = data == None
 				if np.any(mask):
 					data[mask] = 0
 					dtype = np.array(data.flatten().tolist()).dtype
 					data = np.ma.array(data, dtype, mask=mask)
+			if isinstance(data, (int, float, bool, str, bytes)):
+				data = np.array(data)[()]
+			if data is None or \
+				isinstance(data, (np.ndarray, np.generic)) and ( \
+				data.dtype.name in ALLOWED_TYPES or \
+				data.dtype.name.startswith(('str', 'bytes')) or \
+				(data.dtype.name == 'object' and \
+				all([isinstance(x, (str, bytes)) for x in data.flatten()]))):
 				return data
+			else:
+				raise ValueError('invalid data type')
 		return None
 	elif len(value) == 1:
 		d[var_e] = value[0]

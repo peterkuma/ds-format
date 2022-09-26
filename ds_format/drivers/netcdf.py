@@ -41,6 +41,9 @@ def read_var(f, name, sel=None, data=True):
 			except ValueError:
 				var.set_auto_mask(False)
 				x = var[::] if data else None
+	if x is np.ma.masked:
+		x = None
+		size = None
 	attrs.update({
 		'.dims': dims,
 		'.size': size,
@@ -78,6 +81,8 @@ def write(filename, d):
 			f.createDimension(k, v)
 		for var in ds.vars(d):
 			data = ds.var(d, var)
+			if data is None:
+				data = np.array([])
 			if data.dtype == 'O' and \
 				len(data.flatten()) > 0 and \
 				type(data.flatten()[0]) is str:
