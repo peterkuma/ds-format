@@ -219,7 +219,7 @@ Usage: `read`(*filename*, *variables*=`None`, *sel*=`None`, *full*=`False`, *jd*
 
 Arguments:
 
-- *filename*: Filename (`str`).
+- *filename*: Filename (`str`, `bytes` or `os.PathLike`).
 - *variables*: Variable names to read (`str` or `list` of `str`) or `None` to read all variables.
 
 Options:
@@ -246,7 +246,7 @@ Usage: `readdir`(*dirname*, *variables*=`None`, *merge*=`None`, *warnings*=[], .
 
 Arguments:
 
-- *dirname*: Directory name.
+- *dirname*: Directory name (`str`, `bytes` or `os.PathLike`).
 
 Options:
 
@@ -432,7 +432,7 @@ Arguments:
 
 Return value:
 
-Variable data as a numpy array (`np.ndarray`) or `None` if the variable data are not defined or `value` is supplied.
+Variable data (`np.ndarray` or `np.generic`) or `None` if the variable data are not defined or `value` is supplied. If the variable data are a `list` or `tuple`, they are converted to `np.ndarray`, or to `np.ma.MaskedArray` if they contain `None`, which is masked. If the variable data are `int`, `float, `bool`, `str` or `bytes`, they are converted to `np.generic`. Raises ValueError if the output dtype is not one of `float32`, `float64`, `int8`, `int16`, `int32`, `int64`, `uint8`, `uint16`, `uint32`, `uint64`, `bool`, `bytes<n>`, `str<n>`, or `object` for which all items are an instance of `str` or `bytes`.
 
 #### vars
 
@@ -482,7 +482,7 @@ The file type is determined from the file extension.
 
 Arguments:
 
-- *filename*: Filename (`str`).
+- *filename*: Filename (`str`, `bytes` or `os.PathLike`).
 - *d*: Dataset (`dict`).
 
 Return value:
