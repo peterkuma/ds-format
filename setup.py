@@ -8,7 +8,7 @@ setup(
 	version='2.0.1',
 	scripts=['bin/ds'],
 	packages=find_packages(),
-	description='Python implementation of a dataset format DS for storing data along with metadata',
+	description='ds-format is an open source program, a Python package and a storage format which provides an interface for reading and writing NetCDF files, as well as its own data file format.',
 	author='Peter Kuma',
 	author_email='peter@peterkuma.net',
 	keywords=['dataset', 'netcdf', 'hdf', 'json', 'numpy'],
