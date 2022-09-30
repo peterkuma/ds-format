@@ -91,7 +91,13 @@ def write(filename, d):
 				dtype = data.dtype
 			v = f.createVariable(var, dtype, ds.dims(d, var))
 			v.setncatts(ds.attrs(d, var))
-			v[::] = data
+			if isinstance(data, np.ma.MaskedArray) and \
+				data.dtype.kind in ['S', 'U']:
+				data = data.filled('')
+			if isinstance(data, np.generic):
+				v[()] = data
+			else:
+				v[::] = data
 		f.setncatts(ds.attrs(d))
 
 from_netcdf = read
