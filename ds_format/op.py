@@ -284,7 +284,7 @@ dims.aliases = ['get_dims']
 def get_dims(d, var=None, full=False, size=False):
 	if var is None:
 		size = True
-	return dims(d, var, full, size)
+	return dims(d, var, full=full, size=size)
 
 def find(d, what, name, var=None):
 	'''
