@@ -5,8 +5,6 @@ title: Storage format
 
 ## Storage format
 
-**(Experimental in 1.2.0-dev)**
-
 ds-format implements a native format "ds" (file extension ".ds") in addition to
 other standard formats. This format is compatible with the most commonly used
 features of NetCDF. Over NetCDF, this format has an advantage of being much
