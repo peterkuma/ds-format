@@ -16,7 +16,7 @@ as [Anaconda](https://www.anaconda.com/distribution/)
 To install ds-format and dependencies:
 
 ```
-pip3 install https://github.com/peterkuma/ds-format/archive/refs/heads/master.zip
+pip3 install ds-format
 ```
 
 If installing as a non-root user on Linux, you might have to add
