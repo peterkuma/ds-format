@@ -4,7 +4,6 @@ import numpy as np
 import ds_format as ds
 from ds_format import misc
 from ds_format.misc import UsageError, check
-import pst
 
 def meta(*args, **opts):
 	'''
@@ -55,5 +54,4 @@ temperature: {{
 			var = ds.find(d, 'var', var)
 	meta = ds.meta(d, var) if var != '.' else ds.meta(d, '')
 	meta = {k: meta[k] for k in sorted(meta.keys())}
-	s = pst.encode(meta, encoder=misc.encoder, indent=True)
-	sys.stdout.buffer.write(s + b'\n')
+	sys.stdout.buffer.write(misc.encode(meta) + b'\n')

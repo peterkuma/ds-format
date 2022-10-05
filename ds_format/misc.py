@@ -1,10 +1,12 @@
 import datetime as dt
+import json
 import ds_format as ds
 import numpy as np
 from contextlib import contextmanager
 import re
 import cftime
 import aquarius_time as aq
+import pst
 
 KIND_TO_TYPE = {
 	'f': 'float',
@@ -186,3 +188,17 @@ def check(x, name, arg, *args, elemental=False, fail=True):
 
 class UsageError(TypeError):
 	pass
+
+class JSONEncoder(json.JSONEncoder):
+	def default(self, obj):
+		if isinstance(obj, np.generic):
+			return obj.item()
+		if isinstance(obj, np.ndarray):
+			return list(obj)
+		return json.JSONEncoder(self, obj)
+
+def encode(x):
+	if ds.output == 'json':
+		return json.dumps(x, cls=JSONEncoder, indent=4).encode('utf-8')
+	else:
+		return pst.encode(x, encoder=encoder, indent=True)

@@ -2,6 +2,7 @@ __version__ = '3.0.0'
 
 import os
 mode = os.environ.get('DS_MODE', 'soft')
+output = 'pst'
 
 from .misc import \
 	escape, \

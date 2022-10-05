@@ -2,7 +2,6 @@ import sys
 import ds_format as ds
 from ds_format.misc import UsageError, check
 from ds_format import misc
-import pst
 
 def attrs(*args, **opts):
 	'''
@@ -53,4 +52,4 @@ celsius"
 		value = ds.attr(d, attr, var=var)
 	else:
 		value = ds.attrs(d, var)
-	sys.stdout.buffer.write(pst.encode(value, encoder=misc.encoder) + b'\n')
+	sys.stdout.buffer.write(misc.encode(value) + b'\n')

@@ -4,7 +4,6 @@ import numpy as np
 import ds_format as ds
 from ds_format import misc
 from ds_format.misc import check
-import pst
 
 def ls(*args, **opts):
 	'''
@@ -79,7 +78,7 @@ temperature"
 			listed_dims |= set(var_dims)
 		ds_dims = ds.dims(d, full=True, size=True)
 		dims = {k: v for k, v in ds_dims.items() if k in listed_dims}
-		sys.stdout.buffer.write(pst.encode(dims) + b'\n')
+		sys.stdout.buffer.write(misc.encode(dims) + b'\n')
 	for x in vars1:
 		if not ds.require(d, 'var', x, full=True):
 			continue
@@ -94,5 +93,5 @@ temperature"
 				y += [var_attrs.get(a) for a in opts['a']]
 			elif type(attrs) is str:
 				y += [var_attrs.get(attrs)]
-		s = pst.encode(y, encoder=misc.encoder)
+		s = misc.encode(y[0] if len(y) == 1 else y)
 		sys.stdout.buffer.write(s + b'\n')

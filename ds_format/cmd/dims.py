@@ -1,7 +1,7 @@
 import sys
 from ds_format.misc import UsageError, check
 import ds_format as ds
-import pst
+from ds_format import misc
 
 def dims(*args, **opts):
 	'''
@@ -40,4 +40,4 @@ time"
 		if var is not None:
 			var = ds.find(d, 'var', var)
 	dims = ds.dims(d, var, full=True, size=size)
-	sys.stdout.buffer.write(pst.encode(dims) + b'\n')
+	sys.stdout.buffer.write(misc.encode(dims) + b'\n')

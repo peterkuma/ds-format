@@ -3,7 +3,6 @@ import numpy as np
 import ds_format as ds
 from ds_format import misc
 from ds_format.misc import UsageError, check
-import pst
 
 def stats(*args, **opts):
 	'''
@@ -50,10 +49,10 @@ count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000"
 	max_ = np.max(x)
 	mean = np.mean(x)
 	median = np.median(x)
-	sys.stdout.buffer.write(pst.encode({
+	sys.stdout.buffer.write(misc.encode({
 		'count': count,
 		'min': min_,
 		'max': max_,
 		'mean': mean,
 		'median': median,
-	}, encoder=misc.encoder) + b'\n')
+	}) + b'\n')
