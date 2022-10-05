@@ -23,7 +23,7 @@ def main():
 	options: {{
 		`-F`: "Interpret variable, dimension and attribute names as fixed strings instead of glob patterns."
 		`--help`: "Show this help message or help for a command if *cmd* is supplied."
-		`-j`: Print command output as JSON instead of [PST](https://github.com/peterkuma/pst).
+		`-j`: "Print command output as JSON instead of [PST](https://github.com/peterkuma/pst)."
 		`-m`: "Moderate error handling mode. Report a warning on missing variables, dimensions and attributes. Overrides the DS_MODE environment variable."
 		`-s`: "Strict error handling mode. Handle missing variables, dimensions and attributes as errors. Overrides the DS_MODE environment variable."
 		`-t`: "Soft error handling mode. Ignore missing variables, dimensions and attributes. Overrides the DS_MODE environment variable."
