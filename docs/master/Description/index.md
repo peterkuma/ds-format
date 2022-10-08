@@ -60,12 +60,9 @@ variable metadata and `d['.']['.']` contains dataset metadata.
 
 The structure can be manipulated either directly or through the
 [Python API](../Python_API/), which provides convenience functions over direct
-manipulation. The data and metadata can be saved as NetCDF and other formats
-with **[ds.write](../Python_API/#write)**, and loaded from NetCDF and other
-formats with **[ds.read](../Python_API/#read)**.
-
-Groups and nesting of variables, as implemented in HDF5, is currently not
-supported.
+manipulation. The data and metadata can be saved as NetCDF, HDF5 and other
+formats with **[ds.write](../Python_API/#write)**, and loaded from NetCDF, HDF5
+and other formats with **[ds.read](../Python_API/#read)**.
 
 ### Definition
 

@@ -72,15 +72,19 @@ Print variable type.
 
 - DS:
 `.ds`
+- HDF5:
+`.h5`, `.hdf5`, `.hdf`
 - JSON:
 `.json`
 - NetCDF4:
-`.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`
+`.nc`, `.nc4`, `.nc3`, `.netcdf`
 
 ## SUPPORTED OUTPUT FORMATS
 
 - DS:
 `.ds`
+- HDF5:
+`.h5`, `.hdf5`, `.hdf`
 - JSON:
 `.json`
 - NetCDF4:

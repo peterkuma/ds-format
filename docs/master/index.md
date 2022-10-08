@@ -6,15 +6,15 @@ title: About
 ## About
 
 **ds-format is an open source program, a Python package and a storage format
-which provides an interface for reading and writing NetCDF files, as well as its
-own data file format. The data format and interface are simpler alternatives to
-other more complex interfaces and formats, while supporting most of the same
-essential functions.**
+which provides an interface for reading and writing NetCDF and HDF5 files, as
+well as its own data file format. The data format and interface are simpler
+alternatives to other more complex interfaces and formats, while supporting
+most of the same essential functions.**
 
 ds-format defines a structure storing data along with metadata, similar to
 [NetCDF](https://www.unidata.ucar.edu/software/netcdf/) and
 [HDF](https://www.hdfgroup.org). It supports a subset
-of functionality of NetCDF and is compatible with most existing NetCDF
+of functionality of NetCDF and is compatible with most existing NetCDF and HDF5
 datasets and the [CF Conventions](https://cfconventions.org/), if the necessary
 attributes are defined in the dataset.
 

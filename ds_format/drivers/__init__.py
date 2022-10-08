@@ -1,9 +1,11 @@
-from . import netcdf
-from . import json
 from . import ds
+from . import hdf
+from . import json
+from . import netcdf
 
 DRIVERS = {
-	'netcdf': netcdf,
-	'json': json,
 	'ds': ds,
+	'hdf': hdf,
+	'json': json,
+	'netcdf': netcdf,
 }

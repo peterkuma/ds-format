@@ -47,12 +47,14 @@ Available commands:
 Supported input formats:
 
 - DS: `.ds`
+- HDF5: `.h5`, `.hdf5`, `.hdf`
 - JSON: `.json`
-- NetCDF4: `.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`
+- NetCDF4: `.nc`, `.nc4`, `.nc3`, `.netcdf`
 
 Supported output formats:
 
 - DS: `.ds`
+- HDF5: `.h5`, `.hdf5`, `.hdf`
 - JSON: `.json`
 - NetCDF4: `.nc`, `.nc4`, `.netcdf`
 
