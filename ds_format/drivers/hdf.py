@@ -83,7 +83,10 @@ def write(filename, d):
 	with h5py.File(filename, 'w') as f:
 		for var in ds.vars(d):
 			data = ds.var(d, var)
-			f[var] = data
+			if data is not None and data.dtype.kind == 'U':
+				f[var] = data.astype(object)
+			else:
+				f[var] = data
 			for k, v in ds.attrs(d, var).items():
 				f[var].attrs[k] = v
 		for k, v in ds.attrs(d).items():
