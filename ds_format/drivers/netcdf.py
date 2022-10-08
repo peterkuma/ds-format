@@ -4,16 +4,13 @@ import numpy as np
 import ds_format as ds
 from ds_format import misc
 
-JD_UNITS = 'days since -4713-11-24 12:00 UTC'
-JD_CALENDAR = 'proleptic_greogorian'
-
-READ_EXT = ['nc', 'nc4', 'nc3', 'netcdf', 'hdf', 'h5']
+READ_EXT = ['nc', 'nc4', 'nc3', 'netcdf']
 WRITE_EXT = ['nc', 'nc4', 'netcdf']
 
 def detect(filename):
 	try:
-		f = Dataset(filename)
-		return True
+		with Dataset(filename) as f:
+			return True
 	except:
 		return False
 
@@ -52,7 +49,7 @@ def read_var(f, name, sel=None, data=True):
 	return [x, attrs]
 
 def read(filename, variables=None, sel=None, full=False, jd=False):
-	if type(filename) is bytes and str != bytes:
+	if type(filename) is bytes:
 		filename = os.fsdecode(filename)
 	with Dataset(filename, 'r') as f:
 		d = {}
@@ -73,7 +70,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 
 def write(filename, d):
 	ds.validate(d)
-	if type(filename) is bytes and hasattr(os, 'fsdecode'):
+	if type(filename) is bytes:
 		filename = os.fsdecode(filename)
 	with Dataset(filename, 'w') as f:
 		dims = ds.dims(d, size=True)
