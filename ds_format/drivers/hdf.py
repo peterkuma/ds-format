@@ -84,7 +84,9 @@ def write(filename, d):
 		for var in ds.vars(d):
 			data = ds.var(d, var)
 			if data is not None and data.dtype.kind == 'U':
-				f[var] = data.astype(object)
+				data2 = [x.encode('utf-8') for x in data.flatten()]
+				data2 = np.array(data2).reshape(data.shape)
+				f[var] = data2
 			else:
 				f[var] = data
 			for k, v in ds.attrs(d, var).items():
