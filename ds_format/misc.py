@@ -71,7 +71,7 @@ def unescape(name):
 		if name is not None and name.startswith(('\\.', '\\\\')) \
 		else name
 
-def dtype_to_type(dtype):
+def dtype_to_type(dtype, data=None):
 	type_ = None
 	if dtype is bytes:
 		return 'str'
@@ -79,7 +79,7 @@ def dtype_to_type(dtype):
 		return 'unicode'
 	elif dtype.kind in KIND_TO_TYPE:
 		type_ = KIND_TO_TYPE[dtype.kind]
-	elif dtype.kind == 'O':
+	elif dtype.kind == 'O' and data is not None:
 		if all([type(x) is bytes for x in data.flatten()]):
 			type_ = 'str'
 		elif all([type(x) is str for x in data.flatten()]):

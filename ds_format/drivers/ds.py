@@ -141,7 +141,7 @@ def write(filename, d):
 		var['.offset'] = offset
 		var['.len'] = 0
 		var['.type'] = var.get('.type') if dtype is None else \
-			misc.dtype_to_type(dtype)
+			misc.dtype_to_type(dtype, data)
 		var['.missing'] = bool(isinstance(data, np.ma.MaskedArray) and \
 			np.ma.is_masked(data))
 		if var['.missing']:
