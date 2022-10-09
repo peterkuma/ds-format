@@ -48,12 +48,14 @@ def main():
 		`type`: "Print variable type."
 	}}
 	"Supported input formats": {{
+		CSV: `.csv`
 		DS: `.ds`
 		HDF5: "`.h5`, `.hdf5`, `.hdf`"
 		JSON: `.json`
 		NetCDF4: "`.nc`, `.nc4`, `.nc3`, `.netcdf`"
 	}}
 	"Supported output formats": {{
+		CSV: `.csv`
 		DS: `.ds`
 		HDF5: "`.h5`, `.hdf5`, `.hdf`"
 		JSON: `.json`

@@ -37,9 +37,11 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 		*jd*: "Convert time variables to Julian dates (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)) (`bool`)."
 	}}
 	"Supported formats": {{
+		CSV: `.csv`
 		DS: `.ds`
+		HDF5: "`.h5`, `.hdf5`, `.hdf`"
 		JSON: `.json`
-		NetCDF4: "`.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`"
+		NetCDF4: "`.nc`, `.nc4`, `.nc3`, `.netcdf`"
 	}}
 	returns: "Dataset (`dict`)."
 	'''
@@ -72,6 +74,13 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 		*merge*: "Dimension name to merge datasets by (`str`) or `None`."
 		*warnings*: "A list to be populated with warnings (`list`)."
 		...: "Optional keyword arguments passed to **[read](#read)**."
+	}}
+	"Supported formats": {{
+		CSV: `.csv`
+		DS: `.ds`
+		HDF5: "`.h5`, `.hdf5`, `.hdf`"
+		JSON: `.json`
+		NetCDF4: "`.nc`, `.nc4`, `.nc3`, `.netcdf`"
 	}}
 	returns: "A list of datasets (`list` of `dict`) if *merge* is `None` or a merged dataset (`dict`) if *merge* is a dimension name."
 	'''
@@ -118,9 +127,11 @@ def write(filename, d):
 		*d*: "Dataset (`dict`)."
 	}}
 	"Supported formats": {{
-		NetCDF4: "`.nc`, `.nc4`, `.netcdf`"
-		JSON: `.json`
+		CSV: `.csv`
 		DS: `.ds`
+		HDF5: "`.h5`, `.hdf5`, `.hdf`"
+		JSON: `.json`
+		NetCDF4: "`.nc`, `.nc4`, `.netcdf`"
 	}}
 	returns: `None`
 	'''
