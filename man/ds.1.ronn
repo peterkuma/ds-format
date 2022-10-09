@@ -70,6 +70,8 @@ Print variable type.
 
 ## SUPPORTED INPUT FORMATS
 
+- CSV:
+`.csv`
 - DS:
 `.ds`
 - HDF5:
@@ -81,6 +83,8 @@ Print variable type.
 
 ## SUPPORTED OUTPUT FORMATS
 
+- CSV:
+`.csv`
 - DS:
 `.ds`
 - HDF5:

@@ -234,9 +234,11 @@ Dataset (`dict`).
 
 Supported formats:
 
+- CSV: `.csv`
 - DS: `.ds`
+- HDF5: `.h5`, `.hdf5`, `.hdf`
 - JSON: `.json`
-- NetCDF4: `.nc`, `.nc4`, `.nc3`, `.netcdf`, `.hdf`, `.h5`
+- NetCDF4: `.nc`, `.nc4`, `.nc3`, `.netcdf`
 
 #### readdir
 
@@ -258,6 +260,14 @@ Options:
 Return value:
 
 A list of datasets (`list` of `dict`) if *merge* is `None` or a merged dataset (`dict`) if *merge* is a dimension name.
+
+Supported formats:
+
+- CSV: `.csv`
+- DS: `.ds`
+- HDF5: `.h5`, `.hdf5`, `.hdf`
+- JSON: `.json`
+- NetCDF4: `.nc`, `.nc4`, `.nc3`, `.netcdf`
 
 #### rename
 
@@ -491,8 +501,10 @@ Return value:
 
 Supported formats:
 
-- NetCDF4: `.nc`, `.nc4`, `.netcdf`
-- JSON: `.json`
+- CSV: `.csv`
 - DS: `.ds`
+- HDF5: `.h5`, `.hdf5`, `.hdf`
+- JSON: `.json`
+- NetCDF4: `.nc`, `.nc4`, `.netcdf`
 
 {% endraw %}

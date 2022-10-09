@@ -46,6 +46,7 @@ Available commands:
 
 Supported input formats:
 
+- CSV: `.csv`
 - DS: `.ds`
 - HDF5: `.h5`, `.hdf5`, `.hdf`
 - JSON: `.json`
@@ -53,6 +54,7 @@ Supported input formats:
 
 Supported output formats:
 
+- CSV: `.csv`
 - DS: `.ds`
 - HDF5: `.h5`, `.hdf5`, `.hdf`
 - JSON: `.json`
