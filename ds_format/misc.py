@@ -195,7 +195,9 @@ class JSONEncoder(json.JSONEncoder):
 			return obj.item()
 		if isinstance(obj, np.ndarray):
 			return list(obj)
-		return json.JSONEncoder(self, obj)
+		if isinstance(obj, bytes):
+			return obj.decode('utf-8', 'surrogateencoding')
+		return super().default(obj)
 
 def encode(x):
 	if ds.output == 'json':

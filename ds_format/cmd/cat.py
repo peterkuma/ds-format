@@ -4,7 +4,6 @@ from ds_format.misc import UsageError, check
 import ds_format as ds
 from ds_format import misc
 import aquarius_time as aq
-import pst
 
 def cat(*args, **opts):
 	'''
@@ -62,7 +61,8 @@ time temperature
 	if not all([dim == dims[0] for dim in dims]):
 		raise ValueError('incompatible dimensions')
 
-	sys.stdout.buffer.write(pst.encode(vars_, encoder=misc.encoder) + b'\n')
+	vars1 = vars_[0] if len(vars_) == 1 else vars_
+	sys.stdout.buffer.write(misc.encode(vars1) + b'\n')
 
 	xx = []
 	for var in vars_:
@@ -80,4 +80,5 @@ time temperature
 	n = len(xx[0])
 	for i in range(n):
 		y = [x[i] for x in xx]
-		sys.stdout.buffer.write(pst.encode(y, encoder=misc.encoder) + b'\n')
+		if len(y) == 1: y = y[0]
+		sys.stdout.buffer.write(misc.encode(y) + b'\n')
