@@ -27,6 +27,12 @@ pages.
 
 ### Release notes
 
+#### 3.2.0 (2022-10-09)
+
+- Support for HDF5.
+- Fixes in ds cat JSON output.
+- Fixes in the NetCDF driver.
+
 #### 3.1.0 (2022-10-05)
 
 - Support for JSON output in commands.
