@@ -83,8 +83,11 @@ def write(filename, d):
 	with h5py.File(filename, 'w') as f:
 		for var in ds.vars(d):
 			data = ds.var(d, var)
-			if data is not None and data.dtype.kind == 'U':
-				data2 = [x.encode('utf-8') for x in data.flatten()]
+			if data is not None and data.dtype.kind in ('U', 'O'):
+				data2 = [
+					x.encode('utf-8') if isinstance(x, str) else x
+					for x in data.flatten()
+				]
 				data2 = np.array(data2).reshape(data.shape)
 				f[var] = data2
 			else:
