@@ -24,10 +24,13 @@ def read_var(f, var, name, sel=None, data=True):
 	v = f[name]
 	x = None
 	attrs = read_attrs(v)
-	dims = [
-		var + ('_%d' % (i + 1)) if dim.label == '' else dim.label
-		for i, dim in enumerate(v.dims)
-	]
+	if v.shape is None:
+		dims = []
+	else:
+		dims = [
+			var + ('_%d' % (i + 1)) if dim.label == '' else dim.label
+			for i, dim in enumerate(v.dims)
+		]
 	size = v.shape
 	type_ = misc.dtype_to_type(v.dtype)
 	if data:
@@ -37,6 +40,8 @@ def read_var(f, var, name, sel=None, data=True):
 			dims = ds.misc.sel_dims(sel, dims)
 		else:
 			x = v[()] if v.ndim == 0 else v[::]
+	if isinstance(x, h5py.Empty):
+		x = None
 	attrs.update({
 		'.dims': dims,
 		'.size': size,
@@ -83,7 +88,10 @@ def write(filename, d):
 	with h5py.File(filename, 'w') as f:
 		for var in ds.vars(d):
 			data = ds.var(d, var)
-			if data is not None and data.dtype.kind in ('U', 'O'):
+			if data is None:
+				dtype = misc.type_to_dtype(ds.type(d, var))
+				f[var] = h5py.Empty(dtype)
+			elif data.dtype.kind in ('U', 'O'):
 				data2 = [
 					x.encode('utf-8') if isinstance(x, str) else x
 					for x in data.flatten()
