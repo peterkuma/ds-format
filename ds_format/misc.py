@@ -194,7 +194,7 @@ class JSONEncoder(json.JSONEncoder):
 		if isinstance(obj, np.generic):
 			return obj.item()
 		if isinstance(obj, np.ndarray):
-			return list(obj)
+			return obj.tolist()
 		if isinstance(obj, bytes):
 			return obj.decode('utf-8', 'surrogateencoding')
 		return super().default(obj)
