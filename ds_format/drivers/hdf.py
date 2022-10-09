@@ -89,6 +89,8 @@ def write(filename, d):
 				f[var] = data2
 			else:
 				f[var] = data
+			for i, dim in enumerate(ds.dims(d, var)):
+				f[var].dims[i].label = dim
 			for k, v in ds.attrs(d, var).items():
 				f[var].attrs[k] = v
 		for k, v in ds.attrs(d).items():
