@@ -60,9 +60,10 @@ variable metadata and `d['.']['.']` contains dataset metadata.
 
 The structure can be manipulated either directly or through the
 [Python API](../Python_API/), which provides convenience functions over direct
-manipulation. The data and metadata can be saved as NetCDF, HDF5 and other
-formats with **[ds.write](../Python_API/#write)**, and loaded from NetCDF, HDF5
-and other formats with **[ds.read](../Python_API/#read)**.
+manipulation. The data and metadata can be saved as NetCDF, HDF5,
+[DS](../Storage_format), JSON and CSV with
+**[ds.write](../Python_API/#write)**, and loaded from NetCDF, HDF5,
+[DS](../Storage_format), JSON and CSV with **[ds.read](../Python_API/#read)**.
 
 ### Definition
 
