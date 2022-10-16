@@ -419,6 +419,22 @@ def group_by(d, dim, group, func):
 		*func*: "Group function (`function`). *func*(*y*, axis=*i*) is called for each subset *y*, where *i* is the index of the dimension."
 	}}
 	returns: `None`
+	examples: {{
+		"Calculate mean along a dimension `time` for a group where time <= 2 and a group where time > 2.":
+"$ d = {
+	'time': np.array([1., 2., 3., 4.]),
+	'temperature': np.array([1., 3., 4., 6.]),
+	'.': {
+		'time': { '.dims': ['time'] },
+		'temperature': { '.dims': ['time'] },
+	}
+}
+$ ds.group_by(d, 'time', d['time'] > 2,  np.mean)
+$ print(d['time'])
+[1.5 3.5]
+$ print(d['temperature'])
+[1.5 3.5]"
+	}}
 	'''
 	check(d, 'd', dict)
 	check(dim, 'dim', str)
