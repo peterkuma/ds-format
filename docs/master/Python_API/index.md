@@ -17,7 +17,7 @@ import ds_format as ds
 | Function | Description |
 | --- | --- |
 | [attr](#attr) | Get or set a dataset or variable attribute. |
-| [attrs](#attrs) | Get variable or dataset attributes. |
+| [attrs](#attrs) | Get or set variable or dataset attributes. |
 | [dim](#dim) | Get a dimension size. |
 | [dims](#dims) | Get dataset or variable dimensions or set variable dimensions. |
 | [find](#find) | Find a variable, dimension or attribute matching a glob pattern in a dataset. |

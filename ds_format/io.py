@@ -44,6 +44,28 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 		NetCDF4: "`.nc`, `.nc4`, `.nc3`, `.netcdf`"
 	}}
 	returns: "Dataset (`dict`)."
+	examples: {{
+		"Read a file `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ print(d.keys())
+dict_keys(['.', 'temperature', 'time'])
+$ print(d['temperature'])
+[16. 18. 21.]
+$ d['.']['temperature']
+{'long_name': 'temperature', 'units': 'celsius', '.dims': ('time',), '.size': (3,), '.type': 'float64'}"
+		"Read a variable `temperature` at an index 0 of the dimension `time` from `dataset.nc`.":
+"$ d = ds.read('dataset.nc', 'temperature', sel={'time': 0})
+$ d.keys()
+dict_keys(['.', 'temperature'])
+$ print(d['temperature'])
+16.0"
+		"Read only the metadata of `dataset.nc`.":
+"$ d = ds.read('dataset.nc', [], full=True)
+$ d.keys()
+dict_keys(['.'])
+$ print(d['.'])
+{'.': {'title': 'Temperature data'}, 'temperature': {'long_name': 'temperature', 'units': 'celsius', '.dims': ('time',), '.size': (3,), '.type': 'float64'}, 'time': {'long_name': 'time', 'units': 's', '.dims': ('time',), '.size': (3,), '.type': 'int64'}}"
+	}}
 	'''
 	check(filename, 'filename', [str, bytes, os.PathLike])
 	check(variables, 'variables', [str, [list, str], [tuple, str], None])
@@ -134,6 +156,28 @@ def write(filename, d):
 		NetCDF4: "`.nc`, `.nc4`, `.netcdf`"
 	}}
 	returns: `None`
+	examples: {{
+		"Write a dataset to a file `dataset.nc`.":
+"$ ds.write('dataset.nc', {
+	'time': [1, 2, 3],
+	'temperature': [16. 18. 21.],
+})"
+		"Write a dataset with metadata to a file `dataset.nc`.":
+"$ ds.write('dataset.nc', {
+	'time': [1, 2, 3],
+	'temperature': [16. 18. 21.],
+	'.': {
+		'.': { 'title': 'Temperature data' },
+		'time': {
+			'.dims': ['time'],
+		},
+		'temperature': {
+			'.dims': ['time'],
+			'units': 'degree_celsius',
+		},
+	}
+})"
+	}}
 	'''
 	check(filename, 'filename', [str, bytes, os.PathLike])
 	check(d, 'd', dict)

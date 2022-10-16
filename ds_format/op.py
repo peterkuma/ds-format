@@ -140,6 +140,19 @@ def attr(d, attr, *value, var=None):
 		*var*: "Variable name (`str`) to get or set a variable attribute, or `None` to get or set a dataset attribute."
 	}}
 	returns: "Attribute value if *value* is not set, otherwise `None`."
+	examples: {{
+		"Get an attribute `long_name` of a variable `temperature` in `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+ds.attr(d, 'long_name', var='temperature')
+'temperature'"
+		"Get a dataset attribute `title` of `dataset.nc`.":
+"$ ds.attr(d, 'title')
+'Temperature data'"
+		"Set an attribute `units` of a variable `temperature` to `K`.":
+"$ ds.attr(d, 'units', 'K', var='temperature')
+$ ds.attr(d, 'units', var='temperature')
+'K'"
+	}}
 	'''
 	check(d, 'd', dict)
 	check(attr, 'attr', str)
@@ -157,7 +170,7 @@ def attr(d, attr, *value, var=None):
 def attrs(d, var=None, *value):
 	'''
 	title: attrs
-	caption: "Get variable or dataset attributes."
+	caption: "Get or set variable or dataset attributes."
 	usage: "`attrs`(*d*, *var*=`None`, \**value*)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
@@ -167,6 +180,19 @@ def attrs(d, var=None, *value):
 		*var*: "Variable name (`str`) or `None` to get dataset attributes."
 	}}
 	returns: "Attributes (`dict`)."
+	examples: {{
+		"Get attributes of a variable `temperature` in a dataset `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ ds.attrs(d, 'temperature')
+{'long_name': 'temperature', 'units': 'celsius'}"
+		"Get dataset attributes.":
+"$ ds.attrs(d)
+{'title': 'Temperature data'}"
+		"Set attributes of a variable `temperature`.":
+"$ ds.attrs(d, 'temperature', {'long_name': 'new temperature', 'units': 'K'})
+$ ds.attrs(d, 'temperature')
+{'long_name': 'new temperature', 'units': 'K'}"
+	}}
 	'''
 	check(d, 'd', dict)
 	check(var, 'var', [str, None])
@@ -195,6 +221,16 @@ def dim(d, dim, full=False):
 		*full*: "Return dimension size also for a dimension for which no variable data are defined, i.e. it is only defined in dataset metadata."
 	}}
 	returns: "Dimension size or 0 if the dimension does not exist (`int`)."
+	examples: {{
+		"Get the size of a dimension `time` in `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ ds.dim(d, 'time')
+3"
+		"Get the size of a dimension `time` in `dataset.nc` without reading data.":
+"$ d = ds.read('dataset.nc', full=True)
+$ ds.dim(d, 'time', full=True)
+3"
+	}}
 	'''
 	check(d, 'd', dict)
 	check(dim, 'dim', str)
@@ -438,9 +474,18 @@ def meta(d, var=None, meta=None, create=False):
 	options: {{
 		*var*: "Variable name (`str`), or `None` to get dataset metadata, or an empty string to get dataset attributes."
 		*meta*: "Metadata to set (`dict`) or `None` to get metadata."
-		*create*: "Create (modifyable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if not present in the dataset."
+		*create*: "Create (modifyable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if it is not already present in the dataset."
 	}}
 	returns: "Metadata (`dict`)."
+	examples: {{
+		"Get metadata of a dataset `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ print(ds.meta(d))
+{'.': {'title': 'Temperature data'}, 'temperature': {'long_name': 'temperature', 'units': 'celsius', '.dims': ('time',), '.size': (3,), '.type': 'float64'}, 'time': {'long_name': 'time', 'units': 's', '.dims': ('time',), '.size': (3,), '.type': 'int64'}}"
+		"Get metadata of a variable `temperature`.":
+"$ ds.meta(d, 'temperature')
+{'long_name': 'temperature', 'units': 'celsius', '.dims': ('time',), '.size': (3,), '.type': 'float64'}"
+	}}
 	'''
 	check(d, 'd', dict)
 	check(var, 'var', [str, None])
@@ -496,6 +541,15 @@ def rename(d, old, new):
 		*new*: "New variable name (`str`) or `None` to remove the variable."
 	}}
 	returns: `None`
+	examples: {{
+		"Rename a variable `temperature` to `new_temperature` in a dataset read from `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ ds.vars(d)
+['temperature', 'time']
+$ ds.rename(d, 'temperature', 'new_temperature')
+$ ds.vars(d)
+['new_temperature', 'time']"
+	}}
 	'''
 	check(d, 'd', dict)
 	check(old, 'old', str)
@@ -526,6 +580,21 @@ def rename_attr(d, old, new, var=None):
 		*var*: "Variable name (`str`) to rename a variable attribute or `None` to rename a dataset attribute."
 	}}
 	returns: `None`
+	examples: {{
+		"Rename an attribute `units` of a variable `temperature` to `new_units` in a dataset read from `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ ds.attrs(d, 'temperature')
+{'long_name': 'temperature', 'units': 'celsius'}
+$ ds.rename_attr(d, 'units', 'new_units', var='temperature')
+$ ds.attrs(d, 'temperature')
+{'long_name': 'temperature', 'new_units': 'celsius'}"
+		"Rename a dataset attribute `title` to `new_title`.":
+"$ ds.attrs(d)
+{'title': 'Temperature data'}
+$ ds.rename_attr(d, 'title', 'new_title')
+$ ds.attrs(d)
+{'new_title': 'Temperature data'}"
+	}}
 	'''
 	check(d, 'd', dict)
 	check(old, 'old', str)
@@ -541,7 +610,7 @@ def rename_attr(d, old, new, var=None):
 
 def rename_dim(d, old, new):
 	'''
-	title: rename
+	title: rename_dim
 	caption: "Rename a dimension."
 	usage: "`rename_dim`(*d*, *old*, *new*)"
 	arguments: {{
@@ -550,6 +619,15 @@ def rename_dim(d, old, new):
 		*new*: "New dimension name (`str`)."
 	}}
 	returns: `None`
+	examples: {{
+		"Rename a dimension `time` to `new_time` in a dataset read from `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ ds.dims(d)
+['time']
+$ ds.rename_dim(d, 'time', 'new_time')
+$ ds.dims(d)
+['new_time']"
+	}}
 	'''
 	check(d, 'd', dict)
 	check(old, 'old', str)
@@ -622,6 +700,15 @@ def rm(d, var):
 		*var*: "Variable name (`str`)."
 	}}
 	returns: `None`
+	examples: {{
+		"Remove a variable `temperature` in a dataset read from `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ ds.vars(d)
+['temperature', 'time']
+$ ds.rm(d, 'temperature')
+$ ds.vars(d)
+['time']"
+	}}
 	'''
 	check(d, 'd', dict)
 	check(var, 'var', str)
@@ -641,6 +728,21 @@ def rm_attr(d, attr, var=None):
 		*var*: "Variable name (`str`) to remove a variable attribute or `None` to remove a dataset attribute."
 	}}
 	returns: `None`
+	examples: {{
+		"Remove an attribute `long_name` of a variable `temperature` in a dataset read from `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ ds.attrs(d, 'temperature')
+{'long_name': 'temperature', 'units': 'celsius'}
+$ ds.rm_attr(d, 'long_name', var='temperature')
+$ ds.attrs(d)
+{'title': 'Temperature data'}"
+		"Remove a dataset attribute `title` in a dataset read from `dataset.nc`.":
+"$ ds.attrs(d)
+{'title': 'Temperature data'}
+$ ds.rm(d, 'title')
+$ ds.attrs(d)
+{}"
+	}}
 	'''
 	check(d, 'd', dict)
 	check(attr, 'attr', str)
@@ -676,16 +778,22 @@ def size(d, var):
 		*var*: "Variable name (`str`)."
 	}}
 	returns: "Variable size (`list`) or `None` if not defined."
+	examples: {{
+		"Get the size of a variable `temperature` in `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ ds.size(d, 'temperature')
+[3]"
+	}}
 	'''
 	check(d, 'd', dict)
 	check(var, 'var', str)
 	if require(d, 'var', var, full=True):
 		if var in ds.vars(d):
 			data = ds.var(d, var)
-			return None if data is None else data.shape
+			return None if data is None else list(data.shape)
 		else:
 			meta = ds.meta(d, var)
-			return meta.get('.size')
+			return list(meta.get('.size'))
 	else:
 		return None
 
@@ -701,6 +809,18 @@ def type_(d, var, *value):
 		*value*: "Variable type (`str`). One of: `float32` and `float64` (32-bit and 64-bit floating-point number, resp.), `int8` `int16`, `int32` and `int64` (8-bit, 16-bit, 32-bit and 64-bit integer, resp.), `uint8`, `uint16`, `uint32` and `uint64` (8-bit, 16-bit, 32-bit and 64-bit unsigned integer, resp.), `bool` (boolean), `str` (string) and `unicode` (Unicode)."
 	}}
 	returns: "Variable type (`str`) or `None` if not defined."
+	examples: {{
+		"Get the type of a variable `temperature` in `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ ds.type(d, 'temperature')
+'float64'"
+		"Set the type of a variable `temperature` to `int64`.":
+"$ ds.type(d, 'temperature', 'int64')
+$ ds.type(d, 'temperature')
+'int64'
+$ print(ds.var(d, 'temperature'))
+[16 18 21]"
+	}}
 	'''
 	check(d, 'd', dict)
 	check(var, 'var', str)
@@ -739,6 +859,16 @@ def var(d, var, *value):
 		*value*: "Variable data. If supplied, set variable data, otherwise get variable data."
 	}}
 	returns: "Variable data (`np.ndarray` or `np.generic`) or `None` if the variable data are not defined or `value` is supplied. If the variable data are a `list` or `tuple`, they are converted to `np.ndarray`, or to `np.ma.MaskedArray` if they contain `None`, which is masked. If the variable data are `int`, `float`, `bool`, `str` or `bytes`, they are converted to `np.generic`. Raises `ValueError` if the output dtype is not one of `float32`, `float64`, `int8`, `int16`, `int32`, `int64`, `uint8`, `uint16`, `uint32`, `uint64`, `bool`, `bytes<n>`, `str<n>`, or `object` for which all items are an instance of `str` or `bytes`."
+	examples: {{
+		"Get data of a variable `temperature` in a dataset `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ print(ds.var(d, 'temperature'))
+[16. 18. 21.]"
+		"Set data of a variable `temperature`.":
+"$ ds.var(d, 'temperature', [17, 18, 22])
+$ ds.var(d, 'temperature')
+array([17, 18, 22])"
+	}}
 	'''
 	check(d, 'd', dict)
 	check(var, 'var', str)
@@ -783,6 +913,16 @@ def vars_(d, full=False):
 		*full*: "Also return variable names which are only defined in the metadata."
 	}}
 	returns: "Variable names (`list` of `str`)."
+	examples: {{
+		"List variables in a dataset `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ ds.vars(d)
+['temperature', 'time']"
+		"List variables in a dataset `dataset.nc` without reading the data.":
+"$ d = ds.read('dataset.nc', [], full=True)
+$ ds.vars(d, full=True)
+['temperature', 'time']"
+	}}
 	'''
 	check(d, 'd', dict)
 	meta = ds.meta(d)

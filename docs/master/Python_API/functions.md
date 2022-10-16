@@ -18,9 +18,34 @@ Return value:
 
 Attribute value if *value* is not set, otherwise `None`.
 
+Examples:
+
+Get an attribute `long_name` of a variable `temperature` in `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+ds.attr(d, 'long_name', var='temperature')
+'temperature'
+```
+
+Get a dataset attribute `title` of `dataset.nc`.
+
+```
+$ ds.attr(d, 'title')
+'Temperature data'
+```
+
+Set an attribute `units` of a variable `temperature` to `K`.
+
+```
+$ ds.attr(d, 'units', 'K', var='temperature')
+$ ds.attr(d, 'units', var='temperature')
+'K'
+```
+
 #### attrs
 
-Get variable or dataset attributes.
+Get or set variable or dataset attributes.
 
 Usage: `attrs`(*d*, *var*=`None`, **value*)
 
@@ -36,6 +61,31 @@ Options:
 Return value:
 
 Attributes (`dict`).
+
+Examples:
+
+Get attributes of a variable `temperature` in a dataset `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.attrs(d, 'temperature')
+{'long_name': 'temperature', 'units': 'celsius'}
+```
+
+Get dataset attributes.
+
+```
+$ ds.attrs(d)
+{'title': 'Temperature data'}
+```
+
+Set attributes of a variable `temperature`.
+
+```
+$ ds.attrs(d, 'temperature', {'long_name': 'new temperature', 'units': 'K'})
+$ ds.attrs(d, 'temperature')
+{'long_name': 'new temperature', 'units': 'K'}
+```
 
 #### dim
 
@@ -55,6 +105,24 @@ Options:
 Return value:
 
 Dimension size or 0 if the dimension does not exist (`int`).
+
+Examples:
+
+Get the size of a dimension `time` in `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.dim(d, 'time')
+3
+```
+
+Get the size of a dimension `time` in `dataset.nc` without reading data.
+
+```
+$ d = ds.read('dataset.nc', full=True)
+$ ds.dim(d, 'time', full=True)
+3
+```
 
 #### dims
 
@@ -130,7 +198,7 @@ A list of variables, dimensions or attributes matching the pattern, or [*name*] 
 
 #### attrs
 
-Get variable or dataset attributes.
+Get or set variable or dataset attributes.
 
 Usage: `attrs`(*d*, *var*=`None`, **value*)
 
@@ -146,6 +214,31 @@ Options:
 Return value:
 
 Attributes (`dict`).
+
+Examples:
+
+Get attributes of a variable `temperature` in a dataset `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.attrs(d, 'temperature')
+{'long_name': 'temperature', 'units': 'celsius'}
+```
+
+Get dataset attributes.
+
+```
+$ ds.attrs(d)
+{'title': 'Temperature data'}
+```
+
+Set attributes of a variable `temperature`.
+
+```
+$ ds.attrs(d, 'temperature', {'long_name': 'new temperature', 'units': 'K'})
+$ ds.attrs(d, 'temperature')
+{'long_name': 'new temperature', 'units': 'K'}
+```
 
 #### group_by
 
@@ -205,11 +298,28 @@ Options:
 
 - *var*: Variable name (`str`), or `None` to get dataset metadata, or an empty string to get dataset attributes.
 - *meta*: Metadata to set (`dict`) or `None` to get metadata.
-- *create*: Create (modifyable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if not present in the dataset.
+- *create*: Create (modifyable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if it is not already present in the dataset.
 
 Return value:
 
 Metadata (`dict`).
+
+Examples:
+
+Get metadata of a dataset `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ print(ds.meta(d))
+{'.': {'title': 'Temperature data'}, 'temperature': {'long_name': 'temperature', 'units': 'celsius', '.dims': ('time',), '.size': (3,), '.type': 'float64'}, 'time': {'long_name': 'time', 'units': 's', '.dims': ('time',), '.size': (3,), '.type': 'int64'}}
+```
+
+Get metadata of a variable `temperature`.
+
+```
+$ ds.meta(d, 'temperature')
+{'long_name': 'temperature', 'units': 'celsius', '.dims': ('time',), '.size': (3,), '.type': 'float64'}
+```
 
 #### read
 
@@ -239,6 +349,40 @@ Supported formats:
 - HDF5: `.h5`, `.hdf5`, `.hdf`
 - JSON: `.json`
 - NetCDF4: `.nc`, `.nc4`, `.nc3`, `.netcdf`
+
+Examples:
+
+Read a file `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ print(d.keys())
+dict_keys(['.', 'temperature', 'time'])
+$ print(d['temperature'])
+[16. 18. 21.]
+$ d['.']['temperature']
+{'long_name': 'temperature', 'units': 'celsius', '.dims': ('time',), '.size': (3,), '.type': 'float64'}
+```
+
+Read a variable `temperature` at an index 0 of the dimension `time` from `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc', 'temperature', sel={'time': 0})
+$ d.keys()
+dict_keys(['.', 'temperature'])
+$ print(d['temperature'])
+16.0
+```
+
+Read only the metadata of `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc', [], full=True)
+$ d.keys()
+dict_keys(['.'])
+$ print(d['.'])
+{'.': {'title': 'Temperature data'}, 'temperature': {'long_name': 'temperature', 'units': 'celsius', '.dims': ('time',), '.size': (3,), '.type': 'float64'}, 'time': {'long_name': 'time', 'units': 's', '.dims': ('time',), '.size': (3,), '.type': 'int64'}}
+```
 
 #### readdir
 
@@ -287,6 +431,19 @@ Return value:
 
 `None`
 
+Examples:
+
+Rename a variable `temperature` to `new_temperature` in a dataset read from `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.vars(d)
+['temperature', 'time']
+$ ds.rename(d, 'temperature', 'new_temperature')
+$ ds.vars(d)
+['new_temperature', 'time']
+```
+
 #### rename_attr
 
 Rename a dataset or variable attribute.
@@ -305,7 +462,30 @@ Return value:
 
 `None`
 
-#### rename
+Examples:
+
+Rename an attribute `units` of a variable `temperature` to `new_units` in a dataset read from `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.attrs(d, 'temperature')
+{'long_name': 'temperature', 'units': 'celsius'}
+$ ds.rename_attr(d, 'units', 'new_units', var='temperature')
+$ ds.attrs(d, 'temperature')
+{'long_name': 'temperature', 'new_units': 'celsius'}
+```
+
+Rename a dataset attribute `title` to `new_title`.
+
+```
+$ ds.attrs(d)
+{'title': 'Temperature data'}
+$ ds.rename_attr(d, 'title', 'new_title')
+$ ds.attrs(d)
+{'new_title': 'Temperature data'}
+```
+
+#### rename_dim
 
 Rename a dimension.
 
@@ -320,6 +500,19 @@ Arguments:
 Return value:
 
 `None`
+
+Examples:
+
+Rename a dimension `time` to `new_time` in a dataset read from `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.dims(d)
+['time']
+$ ds.rename_dim(d, 'time', 'new_time')
+$ ds.dims(d)
+['new_time']
+```
 
 #### require
 
@@ -359,6 +552,19 @@ Return value:
 
 `None`
 
+Examples:
+
+Remove a variable `temperature` in a dataset read from `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.vars(d)
+['temperature', 'time']
+$ ds.rm(d, 'temperature')
+$ ds.vars(d)
+['time']
+```
+
 #### rm_attr
 
 Remove a dataset or variable attribute.
@@ -377,6 +583,29 @@ Options:
 Return value:
 
 `None`
+
+Examples:
+
+Remove an attribute `long_name` of a variable `temperature` in a dataset read from `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.attrs(d, 'temperature')
+{'long_name': 'temperature', 'units': 'celsius'}
+$ ds.rm_attr(d, 'long_name', var='temperature')
+$ ds.attrs(d)
+{'title': 'Temperature data'}
+```
+
+Remove a dataset attribute `title` in a dataset read from `dataset.nc`.
+
+```
+$ ds.attrs(d)
+{'title': 'Temperature data'}
+$ ds.rm(d, 'title')
+$ ds.attrs(d)
+{}
+```
 
 #### select
 
@@ -410,6 +639,16 @@ Return value:
 
 Variable size (`list`) or `None` if not defined.
 
+Examples:
+
+Get the size of a variable `temperature` in `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.size(d, 'temperature')
+[3]
+```
+
 #### type
 
 Get or set variable type.
@@ -428,6 +667,26 @@ Return value:
 
 Variable type (`str`) or `None` if not defined.
 
+Examples:
+
+Get the type of a variable `temperature` in `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.type(d, 'temperature')
+'float64'
+```
+
+Set the type of a variable `temperature` to `int64`.
+
+```
+$ ds.type(d, 'temperature', 'int64')
+$ ds.type(d, 'temperature')
+'int64'
+$ print(ds.var(d, 'temperature'))
+[16 18 21]
+```
+
 #### var
 
 Get or set variable data.
@@ -443,6 +702,24 @@ Arguments:
 Return value:
 
 Variable data (`np.ndarray` or `np.generic`) or `None` if the variable data are not defined or `value` is supplied. If the variable data are a `list` or `tuple`, they are converted to `np.ndarray`, or to `np.ma.MaskedArray` if they contain `None`, which is masked. If the variable data are `int`, `float`, `bool`, `str` or `bytes`, they are converted to `np.generic`. Raises `ValueError` if the output dtype is not one of `float32`, `float64`, `int8`, `int16`, `int32`, `int64`, `uint8`, `uint16`, `uint32`, `uint64`, `bool`, `bytes<n>`, `str<n>`, or `object` for which all items are an instance of `str` or `bytes`.
+
+Examples:
+
+Get data of a variable `temperature` in a dataset `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ print(ds.var(d, 'temperature'))
+[16. 18. 21.]
+```
+
+Set data of a variable `temperature`.
+
+```
+$ ds.var(d, 'temperature', [17, 18, 22])
+$ ds.var(d, 'temperature')
+array([17, 18, 22])
+```
 
 #### vars
 
@@ -464,6 +741,24 @@ Options:
 Return value:
 
 Variable names (`list` of `str`).
+
+Examples:
+
+List variables in a dataset `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.vars(d)
+['temperature', 'time']
+```
+
+List variables in a dataset `dataset.nc` without reading the data.
+
+```
+$ d = ds.read('dataset.nc', [], full=True)
+$ ds.vars(d, full=True)
+['temperature', 'time']
+```
 
 #### with_mode
 
@@ -506,5 +801,35 @@ Supported formats:
 - HDF5: `.h5`, `.hdf5`, `.hdf`
 - JSON: `.json`
 - NetCDF4: `.nc`, `.nc4`, `.netcdf`
+
+Examples:
+
+Write a dataset to a file `dataset.nc`.
+
+```
+$ ds.write('dataset.nc', {
+	'time': [1, 2, 3],
+	'temperature': [16. 18. 21.],
+})
+```
+
+Write a dataset with metadata to a file `dataset.nc`.
+
+```
+$ ds.write('dataset.nc', {
+	'time': [1, 2, 3],
+	'temperature': [16. 18. 21.],
+	'.': {
+		'.': { 'title': 'Temperature data' },
+		'time': {
+			'.dims': ['time'],
+		},
+		'temperature': {
+			'.dims': ['time'],
+			'units': 'degree_celsius',
+		},
+	}
+})
+```
 
 {% endraw %}
