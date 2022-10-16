@@ -44,6 +44,7 @@ html {
 	font-family: "Source Sans Pro", "Open Sans", Helvetica, Arial, sans-serif;
 	font-size: 12pt;
 	line-height: 140%;
+	tab-size: 4;
 }
 
 body {
