@@ -1,12 +1,13 @@
+import types
+import fnmatch
+import numpy as np
+import copy as copy_
+import datetime as dt
+from warnings import warn
+from collections import Mapping, Iterable
 import ds_format as ds
 from ds_format.misc import check
-from collections import Mapping, Iterable
-import copy as copy_
-import numpy as np
-import datetime as dt
-import fnmatch
 from . import misc
-from warnings import warn
 
 #
 # Private variables.
@@ -422,7 +423,7 @@ def group_by(d, dim, group, func):
 	check(d, 'd', dict)
 	check(dim, 'dim', str)
 	check(group, 'group', [np.ndarray, list, tuple])
-	check(func, 'func', function)
+	check(func, 'func', types.FunctionType)
 	groups = sorted(list(set(group)))
 	vars_ = ds.vars(d)
 	n = len(groups)
