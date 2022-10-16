@@ -372,7 +372,7 @@ Aliases:  get_meta
 
 Get or set dataset or variable metadata.
 
-Usage: `meta`(*d*, *var*=`None`, *meta*=`None`, *create*=`False`)
+Usage: `meta`(*d*, *var*=`None`, **value*, *create*=`False`)
 
 Arguments:
 
@@ -381,7 +381,7 @@ Arguments:
 Options:
 
 - *var*: Variable name (`str`), or `None` to get dataset metadata, or an empty string to get dataset attributes.
-- *meta*: Metadata to set (`dict`) or `None` to get metadata.
+- *value*: Metadata to set (`dict`) or `None` to get metadata.
 - *create*: Create (modifyable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if it is not already present in the dataset.
 
 Return value:
@@ -403,6 +403,14 @@ Get metadata of a variable `temperature`.
 ```
 $ ds.meta(d, 'temperature')
 {'long_name': 'temperature', 'units': 'celsius', '.dims': ('time',), '.size': (3,), '.type': 'float64'}
+```
+
+Set metadata of a variable `temperature`.
+
+```
+$ ds.meta(d, 'temperature', { '.dims': ['new_time'], 'long_name': 'new temperature', 'units': 'K'})
+$ ds.meta(d, 'temperature')
+ds.meta(d, 'temperature', { '.dims': ['new_time'], 'long_name': 'new temperature', 'units': 'K'})
 ```
 
 #### read

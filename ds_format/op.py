@@ -519,18 +519,18 @@ $ print(d['temperature'])
 			dx['.']['.'].update(d['.']['.'])
 	return dx
 
-def meta(d, var=None, meta=None, create=False):
+def meta(d, var=None, *value, create=False):
 	'''
 	title: meta
 	aliases: { get_meta }
 	caption: "Get or set dataset or variable metadata."
-	usage: "`meta`(*d*, *var*=`None`, *meta*=`None`, *create*=`False`)"
+	usage: "`meta`(*d*, *var*=`None`, \**value*, *create*=`False`)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
 	}}
 	options: {{
 		*var*: "Variable name (`str`), or `None` to get dataset metadata, or an empty string to get dataset attributes."
-		*meta*: "Metadata to set (`dict`) or `None` to get metadata."
+		*value*: "Metadata to set (`dict`) or `None` to get metadata."
 		*create*: "Create (modifyable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if it is not already present in the dataset."
 	}}
 	returns: "Metadata (`dict`)."
@@ -542,46 +542,50 @@ $ print(ds.meta(d))
 		"Get metadata of a variable `temperature`.":
 "$ ds.meta(d, 'temperature')
 {'long_name': 'temperature', 'units': 'celsius', '.dims': ('time',), '.size': (3,), '.type': 'float64'}"
+		"Set metadata of a variable `temperature`.":
+"$ ds.meta(d, 'temperature', { '.dims': ['new_time'], 'long_name': 'new temperature', 'units': 'K'})
+$ ds.meta(d, 'temperature')
+ds.meta(d, 'temperature', { '.dims': ['new_time'], 'long_name': 'new temperature', 'units': 'K'})"
 	}}
 	'''
 	check(d, 'd', dict)
 	check(var, 'var', [str, None])
-	check(meta, 'meta', [[dict, str], None])
 	var_e = ds.escape(var)
 
-	if meta is not None:
+	if len(value) == 0:
 		if var is None:
-			d['.'] = meta
+			if '.' in d:
+				return d['.']
+			if create:
+				d['.'] = {}
+				return d['.']
+			return {}
+		elif var == '':
+			meta = ds.meta(d, create=create)
+			if '.' in meta:
+				return meta['.']
+			if create:
+				meta['.'] = {}
+				return meta['.']
+			return {}
+		else:
+			meta = ds.meta(d, create=create)
+			if var_e in meta:
+				return meta[var_e]
+			if create:
+				meta[var_e] = {}
+				return meta[var_e]
+			require(d, 'var', var, full=True)
+			return {}
+	elif len(value) == 1:
+		check(value[0], 'value', [dict, str])
+		if var is None:
+			d['.'] = value[0]
 		else:
 			ds_meta = ds.meta(d, create=True)
-			ds_meta[var_e] = meta
-		return meta
-
-	if var is None:
-		if '.' in d:
-			return d['.']
-		if create:
-			d['.'] = {}
-			return d['.']
-		return {}
-
-	if var == '':
-		meta = ds.meta(d, create=create)
-		if '.' in meta:
-			return meta['.']
-		if create:
-			meta['.'] = {}
-			return meta['.']
-		return {}
-
-	meta = ds.meta(d, create=create)
-	if var_e in meta:
-		return meta[var_e]
-	if create:
-		meta[var_e] = {}
-		return meta[var_e]
-	require(d, 'var', var, full=True)
-	return {}
+			ds_meta[var_e] = value[0]
+	else:
+		raise TypeError('only one value argument is expected')
 
 meta.aliases = ['get_meta']
 get_meta = meta
