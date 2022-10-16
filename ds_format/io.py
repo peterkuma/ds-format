@@ -105,6 +105,27 @@ def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
 		NetCDF4: "`.nc`, `.nc4`, `.nc3`, `.netcdf`"
 	}}
 	returns: "A list of datasets (`list` of `dict`) if *merge* is `None` or a merged dataset (`dict`) if *merge* is a dimension name."
+	examples: {{
+		"Read datasets `dataset1.nc` and `dataset2.nc` in the current directory (`.`).":
+"$ ds.write('dataset1.nc', { 'time': [1, 2, 3], 'temperature': [16., 18., 21.], '.': {
+	'time': { '.dims': ['time'] },
+	'temperature': { '.dims': ['time'] },
+}})
+$ ds.write('dataset2.nc', { 'time': [4, 5, 6], 'temperature': [23., 25., 28.], '.': {
+	'time': { '.dims': ['time'] },
+	'temperature': { '.dims': ['time'] },
+}})
+$ dd = ds.readdir('.')
+$ for d in dd: print(d['time'])
+[1 2 3]
+[4 5 6]"
+		"Read datasets in the current directory and merge them by a dimension `time`.":
+"$ d = ds.readdir('.', merge='time')
+$ print(d['time'])
+[1 2 3 4 5 6]
+$ print(d['temperature'])
+[16. 18. 21. 23. 25. 28.]"
+	}}
 	'''
 	check(dirname, 'dirname', [str, bytes, os.PathLike])
 	check(variables, 'variables', [str, [list, str], [tuple, str], None])
@@ -168,13 +189,8 @@ def write(filename, d):
 	'temperature': [16. 18. 21.],
 	'.': {
 		'.': { 'title': 'Temperature data' },
-		'time': {
-			'.dims': ['time'],
-		},
-		'temperature': {
-			'.dims': ['time'],
-			'units': 'degree_celsius',
-		},
+		'time': { '.dims': ['time'] },
+		'temperature': { '.dims': ['time'], 'units': 'degree_celsius' },
 	}
 })"
 	}}

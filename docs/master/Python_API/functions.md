@@ -154,6 +154,30 @@ Return value:
 
 If *size* is False, a list of dataset or variable dimension names (`list` of `str`). If *size* is True, a dictionary of dataset or variable dimension names and sizes (`dict`), where a key is a dimension name (`str`) and the value is the dimension size (`int`). The order of keys in the dictionary is not guaranteed. Dataset dimensions are the dimensions of all variables together.
 
+Examples:
+
+Get dimensions of a dataset `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.dims(d)
+['time']
+```
+
+Get dimension sizes.
+
+```
+$ ds.dims(d, size=True)
+{'time': 3}
+```
+
+Get dimensions of a variable `temperature`.
+
+```
+$ ds.dims(d, 'temperature')
+['time']
+```
+
 #### find
 
 Find a variable, dimension or attribute matching a glob pattern in a dataset.
@@ -176,6 +200,16 @@ Return value:
 
 A variable, dimension or attribute name matching the pattern, or *name* if no matching name is found (`str`).
 
+Examples:
+
+Find a variable matching the glob pattern `temp*` in a dataset `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.find(d, 'var', 'temp*')
+'temperature'
+```
+
 #### findall
 
 Find variables, dimensions or attributes matching a glob pattern in a dataset.
@@ -195,6 +229,16 @@ Options:
 Return value:
 
 A list of variables, dimensions or attributes matching the pattern, or [*name*] if no matching names are found (`list` of `str`).
+
+Examples:
+
+Find all variables matching the glob pattern `t*` in a dataset `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.findall(d, 'var', 't*')
+['temperature', 'time']
+```
 
 #### attrs
 
@@ -259,6 +303,26 @@ Return value:
 
 `None`
 
+Examples:
+
+Calculate mean along a dimension `time` for a group where time <= 2 and a group where time > 2.
+
+```
+$ d = {
+	'time': np.array([1., 2., 3., 4.]),
+	'temperature': np.array([1., 3., 4., 6.]),
+	'.': {
+		'time': { '.dims': ['time'] },
+		'temperature': { '.dims': ['time'] },
+	}
+}
+$ ds.group_by(d, 'time', d['time'] > 2,  np.mean)
+$ print(d['time'])
+[1.5 3.5]
+$ print(d['temperature'])
+[1.5 3.5]
+```
+
 #### merge
 
 Merge datasets along a dimension.
@@ -280,6 +344,26 @@ Options:
 Return value:
 
 A dataset (`dict`).
+
+Examples:
+
+Merge datasets `d1` and `d2` along a dimension `time`.
+
+```
+$ d1 = {'time': [1, 2, 3], 'temperature': [16., 18., 21.], '.': {
+	'time': { '.dims': ['time'] },
+	'temperature': { '.dims': ['time'] },
+}}
+$ d2 = { 'time': [4, 5, 6], 'temperature': [23., 25., 28.], '.': {
+	'time': { '.dims': ['time'] },
+	'temperature': { '.dims': ['time'] },
+}}
+$ d = ds.merge([d1, d2], 'time')
+$ print(d['time'])
+[1 2 3 4 5 6]
+$ print(d['temperature'])
+[16. 18. 21. 23. 25. 28.]
+```
 
 #### meta
 
@@ -413,6 +497,35 @@ Supported formats:
 - JSON: `.json`
 - NetCDF4: `.nc`, `.nc4`, `.nc3`, `.netcdf`
 
+Examples:
+
+Read datasets `dataset1.nc` and `dataset2.nc` in the current directory (`.`).
+
+```
+$ ds.write('dataset1.nc', { 'time': [1, 2, 3], 'temperature': [16., 18., 21.], '.': {
+	'time': { '.dims': ['time'] },
+	'temperature': { '.dims': ['time'] },
+}})
+$ ds.write('dataset2.nc', { 'time': [4, 5, 6], 'temperature': [23., 25., 28.], '.': {
+	'time': { '.dims': ['time'] },
+	'temperature': { '.dims': ['time'] },
+}})
+$ dd = ds.readdir('.')
+$ for d in dd: print(d['time'])
+[1 2 3]
+[4 5 6]
+```
+
+Read datasets in the current directory and merge them by a dimension `time`.
+
+```
+$ d = ds.readdir('.', merge='time')
+$ print(d['time'])
+[1 2 3 4 5 6]
+$ print(d['temperature'])
+[16. 18. 21. 23. 25. 28.]
+```
+
 #### rename
 
 Rename a variable.
@@ -537,6 +650,16 @@ Return value:
 
 `true` if the required item is defined in the dataset, otherwise `false` or raises an exception depending on the mode.
 
+Examples:
+
+Require that a variable `temperature` is defined in a dataset read from `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.require(d, 'var', 'temperature')
+True
+```
+
 #### rm
 
 Remove a variable.
@@ -613,14 +736,38 @@ Filter dataset by a selector.
 
 Usage: `select`(*d*, *sel*)
 
+The function subsets data of all variables in a dataset *d* by a selector *sel*. Data can be subset by a mask or a list of indexes along one or more dimensions.
+
 Arguments:
 
 - *d*: Dataset (`dict`).
-- *sel*: Selector (`dict`). Selector is a dictionary where each key is a dimension name and value is a mask to apply along the dimension or a list of indexes.
+- *sel*: Selector (`dict`). Selector is a dictionary where the key is a dimension name (`str`) and the value is a mask, a list of indexes (`list` or `np.array`) or an index (`int`) to subset by along the dimension.
 
 Return value:
 
 `None`
+
+Examples:
+
+Subset index 0 a along dimension `time` in a dataset read from `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.var(d, 'temperature')
+print(ds.var(d, 'temperature'))
+$ ds.select(d, {'time': 0})
+$ ds.var(d, 'temperature')
+16
+```
+
+Subset by a mask along a dimension `time` in a dataset read from `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.select(d, {'time': [False, True, True]})
+$ ds.var(d, 'temperature')
+[18. 21.]
+```
 
 #### size
 
@@ -821,13 +968,8 @@ $ ds.write('dataset.nc', {
 	'temperature': [16. 18. 21.],
 	'.': {
 		'.': { 'title': 'Temperature data' },
-		'time': {
-			'.dims': ['time'],
-		},
-		'temperature': {
-			'.dims': ['time'],
-			'units': 'degree_celsius',
-		},
+		'time': { '.dims': ['time'] },
+		'temperature': { '.dims': ['time'], 'units': 'degree_celsius' },
 	}
 })
 ```
