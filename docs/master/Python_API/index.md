@@ -38,6 +38,7 @@ import ds_format as ds
 | [type](#type) | Get or set variable type. |
 | [var](#var) | Get or set variable data. |
 | [vars](#vars) | Get all variable names in a dataset. |
+| [with_mode](#with_mode) | Context manager which temporarily changes ds.mode. |
 | [write](#write) | Write dataset to a file. |
 
 ### Constants
