@@ -6,7 +6,7 @@ own optional data file format. The data format and interface are a
 simpler alternative to other more complex interfaces and formats, while
 supporting most of the same essential functions.
 
-Please see [peterkuma.net/ds-format/](https://peterkuma.net/ds-format/)
+Please see [ds-format.peterkuma.net](https://ds-format.peterkuma.net)
 for more information.
 
 The documentation is also available in the [docs](docs/) directory as a
