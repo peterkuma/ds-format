@@ -12,7 +12,7 @@ setup(
 	author='Peter Kuma',
 	author_email='peter@peterkuma.net',
 	keywords=['dataset', 'netcdf', 'hdf', 'json', 'numpy'],
-	url='https://github.com/peterkuma/ds-format',
+	url='https://ds-format.peterkuma.net',
 	platforms=['any'],
 	python_requires='>=3.0',
 	data_files=[
