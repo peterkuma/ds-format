@@ -76,7 +76,7 @@ $ print(d['.'])
 	for name, driver in DRIVERS.items():
 		for ext in driver.READ_EXT:
 			end = '.' + ext
-			if type(filename) is bytes:
+			if isinstance(filename, bytes):
 				end = end.encode('utf-8')
 			if filename.endswith(end):
 				d = driver.read(filename, variables, sel, full, jd)
@@ -198,10 +198,10 @@ def write(filename, d):
 	check(filename, 'filename', [str, bytes, os.PathLike])
 	check(d, 'd', dict)
 	if isinstance(filename, os.PathLike): filename = filename.__fspath__()
-	for name, driver in DRIVERS.items():
+	for driver in DRIVERS.values():
 		for ext in driver.WRITE_EXT:
 			end = '.' + ext
-			if type(filename) is bytes:
+			if isinstance(filename, bytes):
 				end = end.encode('utf-8')
 			if filename.endswith(end):
 				driver.write(filename, d)
