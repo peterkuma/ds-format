@@ -55,7 +55,7 @@ def select_var(d, var, sel):
 			d['.'][var_e]['.dims'].append(newdim)
 		else:
 			dim, idxs = k, v
-			idxs = np.array(idxs) if type(idxs) in (list, tuple) else idxs
+			idxs = np.array(idxs) if isinstance(idxs, (list, tuple)) else idxs
 			if isinstance(idxs, np.ndarray) and idxs.dtype == np.bool:
 				idxs = np.nonzero(idxs)[0]
 			if dim in var_dims:
@@ -309,9 +309,9 @@ $ ds.dims(d)
 						dims[dim] = None
 				return dims
 			else:
-				if type(var_dims) is list:
+				if isinstance(var_dims, list):
 					return var_dims
-				elif type(var_dims) is tuple:
+				elif isinstance(var_dims, tuple):
 					return list(var_dims)
 				else:
 					return [var_dims]
@@ -918,7 +918,7 @@ $ print(ds.var(d, 'temperature'))
 	elif len(value) == 1:
 		check(value[0], 'value', str)
 		meta = ds.meta(d, var, create=True)
-		if type(value[0]) is not str or \
+		if not isinstance(value[0], str) or \
 		   value[0] not in ALLOWED_TYPES:
 			raise ValueError('invalid type')
 		meta['.type'] = value[0]
@@ -960,7 +960,7 @@ array([17, 18, 22])"
 			data = d[var_e]
 			if isinstance(data, (list, tuple)):
 				data = np.array(data)
-				mask = data == None
+				mask = data is None
 				if np.any(mask):
 					data[mask] = 0
 					dtype = np.array(data.flatten().tolist()).dtype
