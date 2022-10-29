@@ -1,6 +1,4 @@
 import sys
-import json
-import numpy as np
 import ds_format as ds
 from ds_format import misc
 from ds_format.misc import UsageError, check

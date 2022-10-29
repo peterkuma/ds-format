@@ -48,7 +48,6 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 
 def write(filename, d):
 	ds.validate(d)
-	dims = None
 	header = []
 	x = []
 	for var in ds.vars(d):

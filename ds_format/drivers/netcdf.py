@@ -49,7 +49,7 @@ def read_var(f, name, sel=None, data=True):
 	return [x, attrs]
 
 def read(filename, variables=None, sel=None, full=False, jd=False):
-	if type(filename) is bytes:
+	if isinstance(filename, bytes):
 		filename = os.fsdecode(filename)
 	with Dataset(filename, 'r') as f:
 		d = {}
@@ -70,7 +70,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 
 def write(filename, d):
 	ds.validate(d)
-	if type(filename) is bytes:
+	if isinstance(filename, bytes):
 		filename = os.fsdecode(filename)
 	with Dataset(filename, 'w') as f:
 		dims = ds.dims(d, size=True)
@@ -82,7 +82,7 @@ def write(filename, d):
 				data = np.array([])
 			if data.dtype == 'O' and \
 				len(data.flatten()) > 0 and \
-				type(data.flatten()[0]) is str:
+				isinstance(data.flatten()[0], str):
 				dtype = str
 			else:
 				dtype = data.dtype
