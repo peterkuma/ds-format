@@ -6,7 +6,8 @@ title: Installation
 ## Installation
 
 Installation on Linux is recommended, but it is also known to work on Windows
-and macOS.
+and macOS. On macOS the command line interface should be used with bash, not
+the default zsh, which is not compatible with the syntax.
 
 Requirements:
 
