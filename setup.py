@@ -25,6 +25,7 @@ setup(
 		'aquarius-time>=0.1.0',
 		'beautifulsoup4>=4.9.3',
 		'Markdown>=3.3.4',
+		'h5py>=2.10.0',
 	],
 	license='MIT',
 	classifiers=[
