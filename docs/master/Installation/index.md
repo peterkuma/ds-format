@@ -28,6 +28,12 @@ pages.
 
 ### Release notes
 
+#### 3.3.1 (2022-11-10)
+
+- Fixed package imports in new Python.
+- Fixed missing required package.
+- Minor improvements in the documentation.
+
 #### 3.3.0 (2022-10-16)
 
 - Basic support for CSV.
