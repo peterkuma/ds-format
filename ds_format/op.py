@@ -4,7 +4,7 @@ import numpy as np
 import copy as copy_
 import datetime as dt
 from warnings import warn
-from collections import Mapping, Iterable
+from collections.abc import Mapping, Iterable
 import ds_format as ds
 from ds_format.misc import check
 from . import misc
