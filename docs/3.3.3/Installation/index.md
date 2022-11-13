@@ -28,6 +28,10 @@ pages.
 
 ### Release notes
 
+#### 3.3.3 (2022-11-13)
+
+- Fixed storing of missing values.
+
 #### 3.3.2 (2022-11-13)
 
 - Fixed setting of dataset attributes in the ds storage format.
