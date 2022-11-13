@@ -1,6 +1,6 @@
 .\" generated with Ronn-NG/v0.9.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.9.1
-.TH "DS\-SET" "1" "October 2022" ""
+.TH "DS\-SET" "1" "November 2022" ""
 .SH "NAME"
 \fBds\-set\fR \- Set variable data, dimensions and attributes in an existing or new dataset\.
 .SH "SYNOPSIS"
@@ -16,7 +16,7 @@
 Variable name\.
 .TP
 \fItype\fR
-Variable type (\fBstr\fR), or \fBnone\fR to keep the original type if \fIdata\fR is not supplied or autodetect based on \fIdata\fR if \fIdata\fR is supplied\.
+Variable type (\fBstr\fR), or \fBnone\fR to keep the original type if \fIdata\fR is not supplied or autodetect based on \fIdata\fR if \fIdata\fR is supplied\. One of: \fBfloat32\fR and \fBfloat64\fR (32\-bit and 64\-bit floating\-point number, resp\.), \fBint8\fR, \fBint16\fR, \fBint32\fR and \fBint64\fR (8\-bit, 16\-bit, 32\-bit and 64\-bit integer, resp\.), \fBuint8\fR, \fBuint16\fR, \fBuint32\fR and \fBuint64\fR (8\-bit, 16\-bit, 32\-bit and 64\-bit unsigned integer, resp\.), \fBbool\fR (boolean), \fBstr\fR (string) and \fBunicode\fR (Unicode)\.
 .TP
 \fIdims\fR
 Variable dimension name (if single), an array of variable dimensions (if multiple), \fBnone\fR to keep original dimension or autogenerate if a new variable, or \fB{ }\fR to autogenerate new dimension names\.

@@ -12,7 +12,7 @@ def set_(*args, **opts):
 	}
 	arguments: {{
 		*var*: "Variable name."
-		*type*: "Variable type (`str`), or `none` to keep the original type if *data* is not supplied or autodetect based on *data* if *data* is supplied."
+		*type*: "Variable type (`str`), or `none` to keep the original type if *data* is not supplied or autodetect based on *data* if *data* is supplied. One of: `float32` and `float64` (32-bit and 64-bit floating-point number, resp.), `int8`, `int16`, `int32` and `int64` (8-bit, 16-bit, 32-bit and 64-bit integer, resp.), `uint8`, `uint16`, `uint32` and `uint64` (8-bit, 16-bit, 32-bit and 64-bit unsigned integer, resp.), `bool` (boolean), `str` (string) and `unicode` (Unicode)."
 		*dims*: "Variable dimension name (if single), an array of variable dimensions (if multiple), `none` to keep original dimension or autogenerate if a new variable, or `{ }` to autogenerate new dimension names."
 		*data*: "Variable data. This can be a [PST](https://github.com/peterkuma/pst)-formatted scalar or an array. `none` values are interpreted as missing values."
 		*attrs*: "Variable attributes or dataset attributes if *var* is `none` as *attr*`:` *value* pairs."
