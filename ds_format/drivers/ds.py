@@ -168,7 +168,7 @@ def write(filename, d):
 			}[dtype.byteorder]
 		offset += var['.len']
 		meta[ds.escape(name)] = var
-	meta['.'] = ds.meta(d, '.')
+	meta['.'] = ds.meta(d, '')
 	meta_s = json.dumps(meta, cls=JSONEncoder)
 	with open(filename, 'wb') as f:
 		header = \
