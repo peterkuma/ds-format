@@ -960,7 +960,7 @@ array([17, 18, 22])"
 			data = d[var_e]
 			if isinstance(data, (list, tuple)):
 				data = np.array(data)
-				mask = data is None
+				mask = data == None
 				if np.any(mask):
 					data[mask] = 0
 					dtype = np.array(data.flatten().tolist()).dtype
