@@ -120,6 +120,12 @@ Variable type is a string specifying the data type.  It is populated by
 Variable type is stored in a key `.type` in the variable metadata. Variable
 data type takes precedence over `.type` if variable data are defined.
 
+Supported variable types are: `float32` and `float64` (32-bit and 64-bit
+floating-point number, resp.), `int8`, `int16`, `int32` and `int64` (8-bit,
+16-bit, 32-bit and 64-bit integer, resp.), `uint8`, `uint16`, `uint32` and
+`uint64` (8-bit, 16-bit, 32-bit and 64-bit unsigned integer, resp.), `bool`
+(boolean), `str` (string) and `unicode` (Unicode).
+
 #### Variable and dataset attributes
 
 Attributes are objects defining variable or dataset metadata, and can be
