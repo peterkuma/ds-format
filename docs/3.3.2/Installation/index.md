@@ -28,6 +28,10 @@ pages.
 
 ### Release notes
 
+#### 3.3.2 (2022-11-13)
+
+- Fixed setting of dataset attributes in the ds storage format.
+
 #### 3.3.1 (2022-11-10)
 
 - Fixed package imports in new Python.
