@@ -478,9 +478,11 @@ $ print(d['.'])
 
 #### readdir
 
-Read multiple files in a directory.
+Read all data files in a directory.
 
 Usage: `readdir`(*dirname*, *variables*=`None`, *merge*=`None`, *warnings*=[], ...)
+
+Only files with known extensions are read. Files are read in an alphabetical order.
 
 Arguments:
 
@@ -488,6 +490,7 @@ Arguments:
 
 Options:
 
+- *recursive*: If true, read the directory recursively (`bool`). Otherwise only files in the top-level directory are read.
 - *variables*: Variable names to read (`str` or `list` of `str`) or `None` to read all variables.
 - *merge*: Dimension name to merge datasets by (`str`) or `None`.
 - *warnings*: A list to be populated with warnings (`list`).
