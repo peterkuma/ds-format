@@ -1,4 +1,5 @@
 import os
+import glob
 import traceback as tb
 from .drivers import DRIVERS
 import ds_format as ds
@@ -83,15 +84,18 @@ $ print(d['.'])
 				return d
 	raise IOError('%s: Unknown file format' % filename)
 
-def readdir(dirname, variables=None, merge=None, warnings=[], **kwargs):
+def readdir(dirname, variables=None, merge=None, warnings=[], recursive=False,
+	**kwargs):
 	'''
 	title: readdir
-	caption: "Read multiple files in a directory."
+	caption: "Read all data files in a directory."
 	usage: "`readdir`(*dirname*, *variables*=`None`, *merge*=`None`, *warnings*=[], ...)"
 	arguments: {{
 		*dirname*: "Directory name (`str`, `bytes` or `os.PathLike`)."
 	}}
+	desc: "Only files with known extensions are read. Files are read in an alphabetical order."
 	options: {{
+		*recursive*: "If true, read the directory recursively (`bool`). Otherwise only files in the top-level directory are read."
 		*variables*: "Variable names to read (`str` or `list` of `str`) or `None` to read all variables."
 		*merge*: "Dimension name to merge datasets by (`str`) or `None`."
 		*warnings*: "A list to be populated with warnings (`list`)."
@@ -132,10 +136,18 @@ $ print(d['temperature'])
 	check(merge, 'merge', [str, None])
 	check(warnings, 'warnings', list)
 	if isinstance(dirname, os.PathLike): dirname = dirname.__fspath__()
-	l = sorted(os.listdir(dirname))
+
+	pattern = '**' if recursive else '*'
+	files = sorted(glob.glob(os.path.join(glob.escape(dirname), pattern),
+		recursive=recursive))
 	dd = []
-	for name in l:
-		filename = os.path.join(dirname, name)
+	extensions = tuple(['.' + ext
+		for driver in DRIVERS.values()
+		for ext in driver.READ_EXT
+	])
+	for filename in files:
+		if not os.path.isfile(filename) or not filename.endswith(extensions):
+			continue
 		try: d = ds.read(filename, variables=variables, **kwargs)
 		except Exception as e:
 			warnings.append((
