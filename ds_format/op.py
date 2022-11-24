@@ -534,11 +534,15 @@ $ print(d['temperature'])
 	check(new, 'new', [str, None])
 	check(variables, 'variables', [[list, str], [tuple, str], None])
 	dx = {'.': {'.': {}}}
-	vars_ = list(set([x for d in dd for x in ds.vars(d)]))
+	vars_ = sorted(list(set([x for d in dd for x in ds.vars(d)])))
 	dims = [k for d in dd for k in ds.dims(d)]
 	is_new = dim not in dims
 	for var in vars_:
-		var_dims = ds.dims(dd[0], var)
+		var_dims = None
+		for d in dd:
+			if var in ds.vars(d):
+				var_dims = ds.dims(d, var)
+				break
 		if is_new and (variables is None or var in variables) or \
 		   dim in var_dims:
 			x, meta = merge_var(dd, var, dim)
