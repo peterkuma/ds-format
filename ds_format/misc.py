@@ -29,8 +29,8 @@ TYPE_TO_DTYPE = {
 	'uint32': np.dtype('uint32'),
 	'uint64': np.dtype('uint64'),
 	'bool': np.dtype('bool'),
-	'str': np.dtype('str'),
-	'unicode': np.dtype('unicode'),
+	'str': np.dtype('object'),
+	'unicode': np.dtype('object'),
 }
 
 def sel_slice(sel, dims):
@@ -80,9 +80,11 @@ def dtype_to_type(dtype, data=None):
 	elif dtype.kind in KIND_TO_TYPE:
 		type_ = KIND_TO_TYPE[dtype.kind]
 	elif dtype.kind == 'O' and data is not None:
-		if all([type(x) is bytes for x in data.flatten()]):
+		if isinstance(data, bytes) or \
+		   isinstance(data, np.ndarray) and \
+		   all([isinstance(x, bytes) for x in data.flatten()]):
 			type_ = 'str'
-		elif all([type(x) is str for x in data.flatten()]):
+		else:
 			type_ = 'unicode'
 	else:
 		return None

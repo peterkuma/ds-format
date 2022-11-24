@@ -97,22 +97,54 @@ def time_dt(time):
 	return [parse_time(t) for t in time]
 
 def merge_var(dd, var, dim):
-	if len(dd) == 0:
-		return None, None
-	x0 = ds.var(dd[0], var)
-	var_meta0 = ds.meta(dd[0], var)
-	dims0 = ds.dims(dd[0], var)
-	var_meta = copy_.deepcopy(var_meta0)
-	if dim in dims0:
-		i = dims0.index(dim)
-		x = np.concatenate(
-			[ds.var(d, var) for d in dd if ds.dims(d, var) == dims0],
-			axis=i
-		)
+	for d in dd:
+		x = ds.var(d, var)
+		if x is None:
+			continue
+		dims0 = ds.dims(d, var)
+		size0 = ds.size(d, var)
+		type_ = ds.type(d, var)
+		dt = misc.type_to_dtype(type_)
+		try: k = dims0.index(dim)
+		except ValueError: k = None
+		break
 	else:
-		var_meta['.dims'] = [dim] + dims0
-		x = np.stack([ds.var(d, var) for d in dd if ds.dims(d, var) == dims0])
-	return x, var_meta
+		return None, None
+	if k is None: # New dimension.
+		n = len(dd)
+		dims = [dim] + dims0
+		size = [n] + size0
+	else: # Existing dimension.
+		n = np.sum([ds.dim(d, dim) for d in dd])
+		dims = dims0
+		size = copy_.deepcopy(size0)
+		size[k] = n
+	x = np.ma.array(np.zeros(size, dt), mask=np.ones(size, bool))
+	i = 0
+	meta = {}
+	for d in dd:
+		x1 = ds.var(d, var)
+		n1 = 1 if k is None else ds.dim(d, dim)
+		if x1 is None:
+			i += n1
+			continue
+		dims1 = ds.dims(d, var)
+		size1 = ds.size(d, var)
+		if dims1 != dims0:
+			raise ValueError('merge: incompatible dimensions in variable "%s"' % var)
+		if len(size0) != len(size1) or \
+		   not all(i == k or size1[i] == size0[i] for i in range(len(size0))):
+			raise ValueError('merge: incompatible size in variable "%s"' % var)
+		if k is None:
+			sel = [i] + [slice(None) for j in range(len(size0))]
+		else:
+			sel = [slice(i, i + n1) if j == k else slice(None) \
+				for j in range(len(size))]
+		x[tuple(sel)] = x1
+		meta.update(ds.meta(d, var))
+		i += n1
+	meta['.dims'] = dims
+	return x, meta
 
 def copy(d):
 	d2 = {}
@@ -468,7 +500,9 @@ def merge(dd, dim, new=None, variables=None):
 	title: merge
 	caption: "Merge datasets along a dimension."
 	usage: "`merge`(*dd*, *dim*, *new*=`None`, *variables*=`None`)"
-	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension and other variables are set to the first occurrence of the variable."
+	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension and other variables are set to the first occurrence of the variable.
+
+Dataset and variable metadata are merged sequentially from all datasets, with matadata from later datasets overriding metadata from the former ones."
 	arguments: {{
 		*dd*: "Datasets (`list`)."
 		*dim*: "Name of a dimension to merge along (`str`)."
@@ -515,8 +549,8 @@ $ print(d['temperature'])
 		ds.var(dx, var, x)
 		ds.meta(dx, var, meta)
 	for d in dd:
-		if '.' in d['.']:
-			dx['.']['.'].update(d['.']['.'])
+		meta = ds.meta(d, '')
+		dx['.']['.'].update(meta)
 	return dx
 
 def meta(d, var=None, *value, create=False):
@@ -926,6 +960,11 @@ $ print(ds.var(d, 'temperature'))
 		if data is not None:
 			dt = misc.type_to_dtype(value[0])
 			data = data.astype(dt)
+			if value[0] in ('str', 'unicode'):
+				f = lambda x: str(x).encode('utf-8') if value[0] == 'str' \
+					else str
+				with np.nditer(data, op_flags=['readwrite']) as it:
+				   for x in it: x[...] = f(x)
 			ds.var(d, var, data)
 	else:
 		raise TypeError('only one value argument is expected')

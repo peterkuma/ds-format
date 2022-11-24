@@ -31,7 +31,7 @@ def read_var(f, var, name, sel=None, data=True):
 			for i, dim in enumerate(v.dims)
 		]
 	size = v.shape
-	type_ = misc.dtype_to_type(v.dtype)
+	data = True
 	if data:
 		if sel:
 			s = ds.misc.sel_slice(sel, dims)
@@ -41,6 +41,7 @@ def read_var(f, var, name, sel=None, data=True):
 			x = v[()] if v.ndim == 0 else v[::]
 	if isinstance(x, h5py.Empty):
 		x = None
+	type_ = misc.dtype_to_type(v.dtype, x)
 	attrs.update({
 		'.dims': dims,
 		'.size': size,
