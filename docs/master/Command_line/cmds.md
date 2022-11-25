@@ -160,7 +160,6 @@ $ ds ls -l dataset.nc
 time: 3
 temperature float64 { time }
 time int64 { time }
-
 ```
 
 Print a list of variables with an attribute `units`.
