@@ -329,7 +329,7 @@ Merge datasets along a dimension.
 
 Usage: `merge`(*dd*, *dim*, *new*=`None`, *variables*=`None`)
 
-Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension and other variables are set to the first occurrence of the variable.
+Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with matadata from later datasets overriding metadata from the former ones.
 
 Arguments:
 

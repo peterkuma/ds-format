@@ -6,7 +6,7 @@ def merge(dim, *args, **opts):
 	title: merge
 	caption: "Merge datasets along a dimension."
 	usage: "`ds merge` *dim* *input*... *output* [*options*]"
-	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is `none` and *dim* is not new, variables without the dimension are set with the first occurrence of the variable. If *new* is not `none` and *dim* is not new, variables without the dimension dim are merged along a new dimension *new*. If variables is not `none`, only those variables are merged along a new dimension and other variables are set to the first occurrence of the variable."
+	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is `none` and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not `none` and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not `none`, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with matadata from later datasets overriding metadata from the former ones."
 	arguments: {{
 		*dim*: "Name of a dimension to merge along."
 		*input*: "Input file."
@@ -14,8 +14,8 @@ def merge(dim, *args, **opts):
 		*options*: "See help for ds for global options."
 	}}
 	options: {{
-		"`new:` *value*": "Name of a new dimension."
-		"`variables:` `{` *value*... `}`": "Variables to merge along a new dimension or none for all variables."
+		"`new:` *value*": "Name of a new dimension or `none`."
+		"`variables:` `{` *value*... `}` | none": "Variables to merge along a new dimension or `none` for all variables."
 	}}
 	examples: {{
 "Write example data to dataset1.nc.":
@@ -40,10 +40,14 @@ time temperature
 	'''
 	input_ = args[:-1]
 	output = args[-1]
+	new = opts.get('new')
+	variables = opts.get('variables')
 
 	check(dim, 'dim', str)
 	check(input_, 'input', list, str)
 	check(output, 'output', str)
+	check(new, 'new', [str, None])
+	check(variables, 'variabes', [[list, str], None])
 
 	dd = []
 	for filename in input_:
@@ -52,7 +56,5 @@ time temperature
 	if not opts.get('F'):
 		if len(dd) > 0:
 			dim = ds.find(dd[0], 'dim', dim)
-	d = ds.op.merge(dd, dim,
-		variables=opts.get('variables')
-	)
+	d = ds.op.merge(dd, dim, new=new, variables=variables)
 	ds.write(output, d)

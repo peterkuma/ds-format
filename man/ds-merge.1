@@ -6,7 +6,7 @@
 .SH "SYNOPSIS"
 \fBds merge\fR \fIdim\fR \fIinput\fR\|\.\|\.\|\. \fIoutput\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-Merge datasets along a dimension \fIdim\fR\. If the dimension is not defined in the dataset, merge along a new dimension \fIdim\fR\. If \fInew\fR is \fBnone\fR and \fIdim\fR is not new, variables without the dimension are set with the first occurrence of the variable\. If \fInew\fR is not \fBnone\fR and \fIdim\fR is not new, variables without the dimension dim are merged along a new dimension \fInew\fR\. If variables is not \fBnone\fR, only those variables are merged along a new dimension and other variables are set to the first occurrence of the variable\.
+Merge datasets along a dimension \fIdim\fR\. If the dimension is not defined in the dataset, merge along a new dimension \fIdim\fR\. If \fInew\fR is \fBnone\fR and \fIdim\fR is not new, variables without the dimension \fIdim\fR are set with the first occurrence of the variable\. If \fInew\fR is not \fBnone\fR and \fIdim\fR is not new, variables without the dimension \fIdim\fR are merged along a new dimension \fInew\fR\. If \fIvariables\fR is not \fBnone\fR, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable\. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values\. Dataset and variable metadata are merged sequentially from all datasets, with matadata from later datasets overriding metadata from the former ones\.
 .SH "ARGUMENTS"
 .TP
 \fIdim\fR
@@ -23,10 +23,10 @@ See help for ds for global options\.
 .SH "OPTIONS"
 .TP
 \fBnew:\fR \fIvalue\fR
-Name of a new dimension\.
+Name of a new dimension or \fBnone\fR\.
 .TP
-\fBvariables:\fR \fB{\fR \fIvalue\fR\|\.\|\.\|\. \fB}\fR
-Variables to merge along a new dimension or none for all variables\.
+\fBvariables:\fR \fB{\fR \fIvalue\fR\|\.\|\.\|\. \fB}\fR | none
+Variables to merge along a new dimension or \fBnone\fR for all variables\.
 .SH "EXAMPLES"
 Write example data to dataset1\.nc\.
 .IP "" 4
