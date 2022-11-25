@@ -24,7 +24,7 @@ See help for ds for global options.
 
 - `new:` *value*:
 Name of a new dimension or `none`.
-- `variables:` `{` *value*... `}` | none:
+- `variables:` `{` *value*... `}` \| `none`:
 Variables to merge along a new dimension or `none` for all variables.
 
 ## EXAMPLES

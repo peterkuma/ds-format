@@ -15,7 +15,7 @@ def merge(dim, *args, **opts):
 	}}
 	options: {{
 		"`new:` *value*": "Name of a new dimension or `none`."
-		"`variables:` `{` *value*... `}` | none": "Variables to merge along a new dimension or `none` for all variables."
+		"`variables:` `{` *value*... `}` \\\\| `none`": "Variables to merge along a new dimension or `none` for all variables."
 	}}
 	examples: {{
 "Write example data to dataset1.nc.":

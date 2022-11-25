@@ -204,7 +204,7 @@ Arguments:
 Options:
 
 - `new:` *value*: Name of a new dimension or `none`.
-- `variables:` `{` *value*... `}` | none: Variables to merge along a new dimension or `none` for all variables.
+- `variables:` `{` *value*... `}` \| `none`: Variables to merge along a new dimension or `none` for all variables.
 
 Examples:
 
