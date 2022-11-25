@@ -950,7 +950,7 @@ $ print(ds.var(d, 'temperature'))
 		if data is None:
 			meta = ds.meta(d, var)
 			return meta.get('.type', None)
-		return misc.dtype_to_type(data.dtype)
+		return misc.dtype_to_type(data.dtype, data)
 	elif len(value) == 1:
 		check(value[0], 'value', str)
 		meta = ds.meta(d, var, create=True)
