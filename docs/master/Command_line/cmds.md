@@ -2,18 +2,18 @@
 
 Print attributes in a dataset.
 
-Usage: `ds attrs` [*var*] [*attr*] *input* [*options*]
+**Usage:** `ds attrs` [*var*] [*attr*] *input* [*options*]
 
 The output is formatted as [PST](https://github.com/peterkuma/pst).
 
-Arguments:
+**Arguments:**
 
 - *var*: Variable name or `none` to print a dataset attribute *attr*. If omitted, print all dataset attributes.
 - *attr*: Attribute name.
 - *input*: Input file.
 - *options*: See help for ds for global options.
 
-Examples:
+**Examples:**
 
 Print dataset attributes in `dataset.nc`.
 
@@ -47,7 +47,7 @@ celsius
 
 Print variable data.
 
-Usage: 
+**Usage:** 
 
 `ds cat` *var* *input* [*options*]<br />
 `ds cat` *var*... *input* [*options*]<br />
@@ -55,18 +55,18 @@ Usage:
 
 Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array. The first line is a header containing a list of variables. Missing values are printed as empty rows (if printing one single dimensional variable) or as `none`.
 
-Arguments:
+**Arguments:**
 
 - *var*: Variable name.
 - *input*: Input file.
 - *options*: See help for ds for global options.
 
-Options:
+**Options:**
 
 - `-h`: Print human-readable values (time as ISO 8601).
 - `--jd`: Convert time variables to Julian date (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)).
 
-Examples:
+**Examples:**
 
 Print temperature values in dataset.nc.
 
@@ -92,19 +92,19 @@ time temperature
 
 Print dimensions of a dataset or a variable.
 
-Usage: `ds dims` [*var*] *input* [*options*]
+**Usage:** `ds dims` [*var*] *input* [*options*]
 
-Arguments:
+**Arguments:**
 
 - *var*: Variable to print dimensions of.
 - *input*: Input file.
 - *options*: See help for ds for global options.
 
-Options:
+**Options:**
 
 - `-s`, `--size`: If *var* is defined, print the size of dimensions as an object instead of an array of dimensions. The order is not guaranteed.
 
-Examples:
+**Examples:**
 
 Print dimensions of a dataset.
 
@@ -124,7 +124,7 @@ time
 
 List variables.
 
-Usage: 
+**Usage:** 
 
 `ds` [*var*]... *input* [*options*]<br />
 `ds ls` [*var*]... *input* [*options*]<br />
@@ -132,18 +132,18 @@ Usage:
 
 Lines in the output are formatted as [PST](https://github.com/peterkuma/pst).
 
-Arguments:
+**Arguments:**
 
 - *var*: Variable name to list.
 - *input*: Input file.
 - *options*: See help for ds for global options.
 
-Options:
+**Options:**
 
 - `-l`: Print a detailed list of variables (name, type and an array of dimensions), preceded with a line with dataset dimensions.
 - `a:` *attrs*: Print variable attributes after the variable name and dimensions. *attrs* can be a string or an array.
 
-Examples:
+**Examples:**
 
 Print a list of variables in `dataset.nc`.
 
@@ -190,23 +190,23 @@ temperature
 
 Merge datasets along a dimension.
 
-Usage: `ds merge` *dim* *input*... *output* [*options*]
+**Usage:** `ds merge` *dim* *input*... *output* [*options*]
 
 Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is `none` and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not `none` and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not `none`, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with matadata from later datasets overriding metadata from the former ones.
 
-Arguments:
+**Arguments:**
 
 - *dim*: Name of a dimension to merge along.
 - *input*: Input file.
 - *output*: Output file.
 - *options*: See help for ds for global options.
 
-Options:
+**Options:**
 
 - `new:` *value*: Name of a new dimension or `none`.
 - `variables:` `{` *value*... `}` \| `none`: Variables to merge along a new dimension or `none` for all variables.
 
-Examples:
+**Examples:**
 
 Write example data to dataset1.nc.
 
@@ -243,17 +243,17 @@ time temperature
 
 Print dataset metadata.
 
-Usage: `ds meta` [*var*] *input* [*options*]
+**Usage:** `ds meta` [*var*] *input* [*options*]
 
 The output is formatted as [PST](https://github.com/peterkuma/pst).
 
-Arguments:
+**Arguments:**
 
 - *input*: Input file.
 - *var*: Variable name to print metadata for or "." to print dataset metadata. If not specified, print metadata for the whole file.
 - *options*: See help for ds for global options.
 
-Examples:
+**Examples:**
 
 Print metadata of `dataset.nc`.
 
@@ -280,14 +280,14 @@ temperature: {{
 
 Rename variables and attributes.
 
-Usage: 
+**Usage:** 
 
 `ds rename` *vars* *input* *output* [*options*]<br />
 `ds rename` *var* *attrs* *input* *output* [*options*]<br />
 `ds rename` `{` *var* *attrs* `}`... *input* *output* [*options*]<br />
 
 
-Arguments:
+**Arguments:**
 
 - *var*: Variable name, or an array of variable names whose attributes to rename, or `none` to rename dataset attributes.
 - *vars*: Pairs of old and new variable names as *oldvar*`:` *newvar*. If *newattr* is `none`, remove the attribute.
@@ -296,7 +296,7 @@ Arguments:
 - *output*: Output file.
 - *options*: See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line.
 
-Examples:
+**Examples:**
 
 Rename variables `time` to `newtime` and `temperature` to `newtemperature` in `dataset.nc` and save the output in `output.nc`.
 
@@ -320,19 +320,19 @@ $ ds rename temperature units: newunits dataset.nc output.nc
 
 Rename a dimension.
 
-Usage: 
+**Usage:** 
 
 `ds rename_dim` *dims* *input* *output* [*options*]<br />
 
 
-Arguments:
+**Arguments:**
 
 - *dims*: Pairs of old and new dimension names as *olddim*`:` *newdim*.
 - *input*: Input file.
 - *output*: Output file.
 - *options*: See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line.
 
-Examples:
+**Examples:**
 
 Rename dimension `time` to `newtime` in `dataset.nc` and save the output in `output.nc`.
 
@@ -352,13 +352,13 @@ time
 
 Remove variables or attributes.
 
-Usage: 
+**Usage:** 
 
 `ds rm` *var* *input* *output* [*options*]<br />
 `ds rm` *var* *attr* *input* *output* [*options*]<br />
 
 
-Arguments:
+**Arguments:**
 
 - *var*: Variable name, an array of variable names or `none` to remove a dataset attribute.
 - *attr*: Attribute name or an array of attribute names.
@@ -366,7 +366,7 @@ Arguments:
 - *output*: Output file.
 - *options*: See help for ds for global options.
 
-Examples:
+**Examples:**
 
 Remove a variable `temperature` in `dataset.nc` and save the output in `output.nc`.
 
@@ -396,11 +396,11 @@ $ ds rm temperature units dataset.nc output.nc
 
 Select and subset variables.
 
-Usage: `ds select` [*var*...] [*sel*] *input* *output* [*options*]
+**Usage:** `ds select` [*var*...] [*sel*] *input* *output* [*options*]
 
 select can also be used to convert between different file formats (`ds select` *input* *output*).
 
-Arguments:
+**Arguments:**
 
 - *var*: Variable name.
 - *sel*: Selector as *dim*`:` *idx* pairs, where *dim* is a dimension name and *idx* is an index or a list of indexes as `{` *i*... `}`.
@@ -408,7 +408,7 @@ Arguments:
 - *output*: Output file.
 - *options*: See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line.
 
-Examples:
+**Examples:**
 
 Write data to dataset.nc.
 
@@ -463,14 +463,14 @@ $ cat dataset.json
 
 Set variable data, dimensions and attributes in an existing or new dataset.
 
-Usage: 
+**Usage:** 
 
 `ds set` *ds_attrs* *input* *output* [*options*]<br />
 `ds set` *var* [*type* [*dims* [*data*]]] [*attrs*]... *input* *output* [*options*]<br />
 `ds set` `{` *var* [*type* [*dims* [*data*]]] [*attrs*]... `}`... *ds_attrs* *input* *output* [*options*]<br />
 
 
-Arguments:
+**Arguments:**
 
 - *var*: Variable name.
 - *type*: Variable type (`str`), or `none` to keep the original type if *data* is not supplied or autodetect based on *data* if *data* is supplied. One of: `float32` and `float64` (32-bit and 64-bit floating-point number, resp.), `int8`, `int16`, `int32` and `int64` (8-bit, 16-bit, 32-bit and 64-bit integer, resp.), `uint8`, `uint16`, `uint32` and `uint64` (8-bit, 16-bit, 32-bit and 64-bit unsigned integer, resp.), `bool` (boolean), `str` (string) and `unicode` (Unicode).
@@ -482,7 +482,7 @@ Arguments:
 - *output*: Output file.
 - *options*: See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line.
 
-Examples:
+**Examples:**
 
 Write variables `time` and `temperature` to `dataset.nc`.
 
@@ -524,15 +524,15 @@ $ ds set temperature newunits: K dataset.nc output.nc
 
 Print a variable size.
 
-Usage: `ds size` *var* *input* [*options*]
+**Usage:** `ds size` *var* *input* [*options*]
 
-Arguments:
+**Arguments:**
 
 - *var*: Variable to print the size of.
 - *input*: Input file.
 - *options*: See help for ds for global options.
 
-Examples:
+**Examples:**
 
 Print the size of a variable `temperature` in a dataset `dataset.nc`.
 
@@ -545,17 +545,17 @@ $ ds size temperature dataset.nc
 
 Print variable statistics.
 
-Usage: `ds stats` *var* *input* [*options*]
+**Usage:** `ds stats` *var* *input* [*options*]
 
 The output is formatted as [PST](https://github.com/peterkuma/pst).
 
-Arguments:
+**Arguments:**
 
 - *var*: Variable name.
 - *input*: Input file.
 - *options*: See help for ds for global options.
 
-Output description:
+**Output description:**
 
 - `count`: Number of array elements.
 - `max`: Maximum value.
@@ -563,7 +563,7 @@ Output description:
 - `median`: Sample median.
 - `min`: Minimum value.
 
-Examples:
+**Examples:**
 
 Print statistics of variable temperature in dataset.nc.
 
@@ -576,15 +576,15 @@ count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000
 
 Print a variable type.
 
-Usage: `ds type` *var* *input* [*options*]
+**Usage:** `ds type` *var* *input* [*options*]
 
-Arguments:
+**Arguments:**
 
 - *var*: Variable to print the type of.
 - *input*: Input file.
 - *options*: See help for ds for global options.
 
-Examples:
+**Examples:**
 
 Print the type of a variable `temperature` in a dataset `dataset.nc`.
 

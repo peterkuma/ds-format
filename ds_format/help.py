@@ -73,7 +73,7 @@ def help_to_text(x):
 def help_to_md(x):
 	def to_list(label, items, code=False):
 		s = ''
-		s += '\n%s:\n\n' % label
+		s += '\n**%s:**\n\n' % label
 		n = max([len(k) for k in items.keys()])
 		for k, v in items.items():
 			s += ('- %s: %s') % (k, v) + '\n'
@@ -83,14 +83,14 @@ def help_to_md(x):
 	if 'title' in d:
 		s += '#### %s\n' % d['title']
 	if 'aliases' in d:
-		s += '\nAliases: '
+		s += '\n**Aliases:** '
 		for alias in d['aliases']:
 			s += ' %s' % alias
 		s += '\n\n'
 	if 'caption' in d:
 		s += '\n%s\n' % d['caption']
 	if 'usage' in d:
-		s += '\nUsage: '
+		s += '\n**Usage:** '
 		if type(d['usage']) is list:
 			s += '\n\n'
 			for i, line in enumerate(d['usage']):
@@ -105,7 +105,7 @@ def help_to_md(x):
 	if 'options' in d:
 		s += to_list('Options', d['options'], True)
 	if 'returns' in d:
-		s += '\nReturn value:\n\n%s\n' % d['returns']
+		s += '\n**Return value:**\n\n%s\n' % d['returns']
 	for k, v in d.items():
 		if k in ['title', 'usage', 'desc', 'arguments', 'options', 'examples', 'environment', 'footer']:
 			continue
@@ -115,7 +115,7 @@ def help_to_md(x):
 	if 'environment' in d:
 		s += to_list('Environment variables', d['environment'], True)
 	if 'examples' in d:
-		s += '\nExamples:\n'
+		s += '\n**Examples:**\n'
 		for k, v in d['examples'].items():
 			s += '\n%s\n' % k
 			s += '\n```\n%s\n```\n' % v
