@@ -77,7 +77,7 @@ have to be escaped with a backslash (prepended with a backslash).
 
 #### Variable data
 
-Variable data are a multi-dimentional array (NumPy ndarray or MaskedArray, or
+Variable data are a multi-dimensional array (NumPy ndarray or MaskedArray, or
 a Python `list`), or a scalar (`int`, `float`, `str`, `bytes` and `bool`). They
 are stored in the dataset under arbitrary string keys, but names beginning with
 a dot (`.`) or a backslash (`\`) have to be escaped (see above).

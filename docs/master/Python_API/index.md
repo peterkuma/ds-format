@@ -6,7 +6,7 @@ title: Python API
 ## Python API
 
 The ds-format Python package provides API for reading, writing and manipulating
-data fies. The library can be imported with:
+data files. The library can be imported with:
 
 ```python
 import ds_format as ds

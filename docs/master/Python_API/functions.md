@@ -147,7 +147,7 @@ The function `get_dims` (deprecated) is the same as `dims`, but assumes that *si
 **Options:**
 
 - *var*: Variable name (`str`) or `None` to get dimensions for.
-- *full*: Get variable dimensions even if the variable is only defined in the matadata (`bool`).
+- *full*: Get variable dimensions even if the variable is only defined in the metadata (`bool`).
 - *size*: Return a dictionary containing dimension sizes instead of a list.
 
 **Return value:**
@@ -329,7 +329,7 @@ Merge datasets along a dimension.
 
 **Usage:** `merge`(*dd*, *dim*, *new*=`None`, *variables*=`None`)
 
-Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with matadata from later datasets overriding metadata from the former ones.
+Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with metadata from later datasets overriding metadata from the former ones.
 
 **Arguments:**
 
@@ -382,7 +382,7 @@ Get or set dataset or variable metadata.
 
 - *var*: Variable name (`str`), or `None` to get dataset metadata, or an empty string to get dataset attributes.
 - *value*: Metadata to set (`dict`) or `None` to get metadata.
-- *create*: Create (modifyable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if it is not already present in the dataset.
+- *create*: Create (modifiable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if it is not already present in the dataset.
 
 **Return value:**
 

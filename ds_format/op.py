@@ -287,7 +287,7 @@ def dims(d, var=None, *value, full=False, size=False):
 	}}
 	options: {{
 		*var*: "Variable name (`str`) or `None` to get dimensions for."
-		*full*: "Get variable dimensions even if the variable is only defined in the matadata (`bool`)."
+		*full*: "Get variable dimensions even if the variable is only defined in the metadata (`bool`)."
 		*size*: "Return a dictionary containing dimension sizes instead of a list."
 	}}
 	returns: "If *size* is False, a list of dataset or variable dimension names (`list` of `str`). If *size* is True, a dictionary of dataset or variable dimension names and sizes (`dict`), where a key is a dimension name (`str`) and the value is the dimension size (`int`). The order of keys in the dictionary is not guaranteed. Dataset dimensions are the dimensions of all variables together."
@@ -500,7 +500,7 @@ def merge(dd, dim, new=None, variables=None):
 	title: merge
 	caption: "Merge datasets along a dimension."
 	usage: "`merge`(*dd*, *dim*, *new*=`None`, *variables*=`None`)"
-	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with matadata from later datasets overriding metadata from the former ones."
+	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with metadata from later datasets overriding metadata from the former ones."
 	arguments: {{
 		*dd*: "Datasets (`list`)."
 		*dim*: "Name of a dimension to merge along (`str`)."
@@ -567,7 +567,7 @@ def meta(d, var=None, *value, create=False):
 	options: {{
 		*var*: "Variable name (`str`), or `None` to get dataset metadata, or an empty string to get dataset attributes."
 		*value*: "Metadata to set (`dict`) or `None` to get metadata."
-		*create*: "Create (modifyable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if it is not already present in the dataset."
+		*create*: "Create (modifiable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if it is not already present in the dataset."
 	}}
 	returns: "Metadata (`dict`)."
 	examples: {{
