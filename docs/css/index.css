@@ -176,11 +176,7 @@ pre.highlight code {
 }
 
 code {
-	background: rgba(0, 0, 0, 0.05);
-	padding: 0 0.2em;
 	font-family: "Space Mono", "Bitstream Vera Sans Mono", monospace;
-	font-size: 95%;
-	line-height: 100%;
 }
 
 table {
