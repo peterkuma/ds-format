@@ -31,7 +31,6 @@ def read_var(f, var, name, sel=None, data=True):
 			for i, dim in enumerate(v.dims)
 		]
 	size = v.shape
-	data = True
 	if data:
 		if sel:
 			s = ds.misc.sel_slice(sel, dims)
@@ -42,6 +41,7 @@ def read_var(f, var, name, sel=None, data=True):
 	if isinstance(x, h5py.Empty):
 		x = None
 	type_ = misc.dtype_to_type(v.dtype, x)
+	if type_ is None: type_ = 'str'
 	attrs.update({
 		'.dims': dims,
 		'.size': size,
@@ -67,10 +67,10 @@ def read_group(f, variables, sel, full):
 			var = name if prefix == '' else prefix + '/' + name
 			if variables is not None and var not in variables:
 				if full:
-					_, var_meta = read_var(f, var, name, sel, False)
+					_, var_meta = read_var(f, var, namex, sel=sel, data=False)
 					ds.meta(d, var, var_meta)
 			else:
-				data, var_meta = read_var(f, var, name, sel)
+				data, var_meta = read_var(f, var, namex, sel=sel, data=True)
 				ds.var(d, var, data)
 				ds.meta(d, var, var_meta)
 	return d
