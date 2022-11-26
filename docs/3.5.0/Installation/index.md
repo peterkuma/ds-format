@@ -17,7 +17,7 @@ as [Anaconda](https://www.anaconda.com/distribution/)
 To install ds-format and dependencies:
 
 ```
-pip3 install ds-format==3.4.0
+pip3 install ds-format
 ```
 
 If installing as a non-root user on Linux, you might have to add
@@ -27,6 +27,13 @@ and `$HOME/.local/share/man` to MANPATH in order to have access to the manual
 pages.
 
 ### Release notes
+
+#### 3.5.0 (2022-11-26)
+
+- merge: Fixed handling of missing variables.
+- type: Fixed handling of string variables.
+- hdf: Fixed handling of type of string variables.
+- Minor fixes and improvements in documentation.
 
 #### 3.4.0 (2022-11-22)
 

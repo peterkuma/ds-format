@@ -28,6 +28,13 @@ pages.
 
 ### Release notes
 
+#### 3.5.0 (2022-11-26)
+
+- merge: Fixed handling of missing variables.
+- type: Fixed handling of string variables.
+- hdf: Fixed handling of type of string variables.
+- Minor fixes and improvements in documentation.
+
 #### 3.4.0 (2022-11-22)
 
 - readdir: Added recursive option.
