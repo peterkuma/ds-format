@@ -15,7 +15,7 @@ brackets are escaped with a backslash character (`\`).
 
 On Unix-like operating systems, manual pages are available for the commands
 with `man ds` and `man ds` *cmd*. Note that you might have to add the manual
-page path (usually `$HOME/.local/man/`) to the `MANPATH` environment
+page path (usually `$HOME/.local/share/man/`) to the `MANPATH` environment
 variable in order to access the manual pages.
 
 ### Synopsis

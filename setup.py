@@ -16,7 +16,7 @@ setup(
 	platforms=['any'],
 	python_requires='>=3.0',
 	data_files=[
-		('man/man1', glob('man/*.1')),
+		('share/man/man1', glob('man/*.1')),
 	],
 	install_requires=[
 		'netCDF4',
