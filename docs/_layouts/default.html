@@ -17,6 +17,11 @@
 {% for v in site.versions %}
 <a href="{{ v | relative_url }}" {% if v == version %}class="selected"{% endif %}>{{v}}</a>
 {% endfor %}
+{% if version != site.latest %}
+<div class="warning">
+You are viewing documentation for version <strong>{{ version }}</strong>. The latest release is <strong><a href="{{ site.latest | relative_url }}">{{ site.latest }}</a></strong>.
+</div>
+{% endif %}
 </div>
 <nav>
 <a href="{{ version | relative_url }}" {% if page.title == "About" %}class="selected"{% endif %}>About</a>

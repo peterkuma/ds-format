@@ -221,6 +221,18 @@ tr:last-child td {
 	font-weight: normal;
 }
 
+.warning {
+	inline-size: max-content;
+	margin: 0.2rem auto;
+	background-color: #fff00fff;
+	padding: 0 0.5rem;
+}
+
+.warning a {
+	color: inherit;
+	text-decoration: underline;
+}
+
 @media (max-width: 800px) {
 	html {
 		font-size: 11pt;
