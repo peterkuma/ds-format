@@ -28,6 +28,10 @@ pages.
 
 ### Release notes
 
+#### 3.5.1 (2022-11-30)
+
+- Fixed installation location for manual pages.
+
 #### 3.5.0 (2022-11-26)
 
 - merge: Fixed handling of missing variables.
