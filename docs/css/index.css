@@ -223,9 +223,11 @@ tr:last-child td {
 
 .warning {
 	inline-size: max-content;
+	max-width: calc(100% - 1rem);
+	line-height: 140%;
 	margin: 0.2rem auto;
 	background-color: #fff00fff;
-	padding: 0 0.5rem;
+	padding: 0.25rem 0.5rem;
 }
 
 .warning a {
