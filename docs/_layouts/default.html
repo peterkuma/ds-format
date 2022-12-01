@@ -15,11 +15,15 @@
 <strong>Documentation version:</strong>
 {% assign version = page.path | split: "/" | first %}
 {% for v in site.versions %}
-<a href="{{ v | relative_url }}" {% if v == version %}class="selected"{% endif %}>{{v}}</a>
+{% if v == site.latest %}
+<a href="{{ "latest" | relative_url }}/" {% if version == "latest" %}class="selected"{% endif %}>{{v}} (latest)</a>
+{% else %}
+<a href="{{ v | relative_url }}/" {% if v == version %}class="selected"{% endif %}>{{v}}</a>
+{% endif %}
 {% endfor %}
-{% if version != site.latest %}
+{% if version != "latest" %}
 <div class="warning">
-You are viewing documentation for version <strong>{{ version }}</strong>. The latest release is <strong><a href="{{ site.latest | relative_url }}">{{ site.latest }}</a></strong>.
+You are viewing documentation for version <strong>{{ version }}</strong>. The latest release is <strong><a href="{{ "/latest/" | relative_url }}">{{ site.latest }}</a></strong>.
 </div>
 {% endif %}
 </div>
