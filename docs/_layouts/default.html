@@ -16,12 +16,12 @@
 {% assign version = page.path | split: "/" | first %}
 {% for v in site.versions %}
 {% if v == site.latest %}
-<a href="{{ "latest" | relative_url }}/" {% if version == "latest" %}class="selected"{% endif %}>{{v}} (latest)</a>
+<a href="{{ "latest" | relative_url }}/" {% if version == "latest" or version == site.latest %}class="selected"{% endif %}>{{v}} (latest)</a>
 {% else %}
 <a href="{{ v | relative_url }}/" {% if v == version %}class="selected"{% endif %}>{{v}}</a>
 {% endif %}
 {% endfor %}
-{% if version != "latest" %}
+{% if version != "latest" and version != site.latest %}
 <div class="warning">
 You are viewing documentation for version <strong>{{ version }}</strong>. The latest release is <strong><a href="{{ "/latest/" | relative_url }}">{{ site.latest }}</a></strong>.
 </div>
