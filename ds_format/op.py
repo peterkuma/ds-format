@@ -56,7 +56,7 @@ def select_var(d, var, sel):
 		else:
 			dim, idxs = k, v
 			idxs = np.array(idxs) if isinstance(idxs, (list, tuple)) else idxs
-			if isinstance(idxs, np.ndarray) and idxs.dtype == np.bool:
+			if isinstance(idxs, np.ndarray) and idxs.dtype == np.bool_:
 				idxs = np.nonzero(idxs)[0]
 			if dim in var_dims:
 				i = var_dims.index(dim)
