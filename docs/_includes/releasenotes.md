@@ -1,3 +1,7 @@
+#### 3.5.2 (2023-03-06)
+
+- Fixed an issue with a new version of NumPy.
+
 #### 3.5.1 (2022-11-30)
 
 - Fixed installation location for manual pages.
