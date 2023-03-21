@@ -107,7 +107,7 @@ def readdir(dirname, variables=None, merge=None, warnings=[], recursive=False,
 	'''
 	title: readdir
 	caption: "Read all data files in a directory."
-	usage: "`readdir`(*dirname*, *variables*=`None`, *merge*=`None`, *warnings*=[], ...)"
+	usage: "`readdir`(*dirname*, *variables*=`None`, *merge*=`None`, *warnings*=[], *recursive*=`False`, *parallel*=`False`, *executor*=`None`, *njobs*=`None`, ...)"
 	arguments: {{
 		*dirname*: "Directory name (`str`, `bytes` or `os.PathLike`)."
 	}}

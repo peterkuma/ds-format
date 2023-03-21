@@ -480,7 +480,7 @@ $ print(d['.'])
 
 Read all data files in a directory.
 
-**Usage:** `readdir`(*dirname*, *variables*=`None`, *merge*=`None`, *warnings*=[], ...)
+**Usage:** `readdir`(*dirname*, *variables*=`None`, *merge*=`None`, *warnings*=[], *recursive*=`False`, *parallel*=`False`, *executor*=`None`, *njobs*=`None`, ...)
 
 Only files with known extensions are read. Files are read in an alphabetical order.
 
