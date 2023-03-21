@@ -5,6 +5,7 @@ from .drivers import DRIVERS
 import ds_format as ds
 from ds_format.misc import check
 import numpy as np
+from concurrent.futures import ProcessPoolExecutor
 
 def index(dirname, variables=None, warnings=[], **kwargs):
 	l = sorted(os.listdir(dirname))
@@ -84,8 +85,25 @@ $ print(d['.'])
 				return d
 	raise IOError('%s: Unknown file format' % filename)
 
+def readdir_worker(args):
+	filename, extensions, variables, kwargs = args
+	warnings = []
+	if not os.path.isfile(filename) or not filename.endswith(extensions):
+		return
+	print('<- %s' % filename)
+	try: d = ds.read(filename, variables=variables, **kwargs)
+	except Exception as e:
+		warnings += [(
+			'%s: %s' % (filename, e),
+			tb.format_exc()
+		)]
+		return
+	ds.var(d, 'filename', filename)
+	ds.dims(d, 'filename', [])
+	return d, warnings
+
 def readdir(dirname, variables=None, merge=None, warnings=[], recursive=False,
-	**kwargs):
+	parallel=False, executor=None, njobs=None, **kwargs):
 	'''
 	title: readdir
 	caption: "Read all data files in a directory."
@@ -99,6 +117,9 @@ def readdir(dirname, variables=None, merge=None, warnings=[], recursive=False,
 		*variables*: "Variable names to read (`str` or `list` of `str`) or `None` to read all variables."
 		*merge*: "Dimension name to merge datasets by (`str`) or `None`."
 		*warnings*: "A list to be populated with warnings (`list`)."
+		*parallel*: "Enable parallel execution."
+		*executor*: "concurrent.futures.Executor instance or `None` to use a new executor."
+		*njobs*: "Number of parallel jobs or `None` to use the number of CPU cores."
 		...: "Optional keyword arguments passed to **[read](#read)**."
 	}}
 	"Supported formats": {{
@@ -145,19 +166,25 @@ $ print(d['temperature'])
 		for driver in DRIVERS.values()
 		for ext in driver.READ_EXT
 	])
-	for filename in files:
-		if not os.path.isfile(filename) or not filename.endswith(extensions):
-			continue
-		try: d = ds.read(filename, variables=variables, **kwargs)
-		except Exception as e:
-			warnings.append((
-				'%s: %s' % (filename, e),
-				tb.format_exc()
-			))
-			continue
-		ds.var(d, 'filename', filename)
-		ds.dims(d, 'filename', [])
-		dd.append(d)
+	mapfn = map
+	ex = None
+	try:
+		if parallel:
+			if njobs is None: njobs = os.cpu_count()
+			ex = ProcessPoolExecutor(njobs) if executor is None else executor
+			mapfn = ex.map
+		if ex is not None: ex.__enter__()
+		res = mapfn(readdir_process, [
+			(filename, extensions, variables, kwargs)
+			for filename in files
+		])
+	except Exception:
+		if ex is not None: ex.__exit__()
+		raise
+	dd = []
+	for d, w in res:
+		dd += [d]
+		warnings += w
 	if merge is None:
 		return dd
 	else:
