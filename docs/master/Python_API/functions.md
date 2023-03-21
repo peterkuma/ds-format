@@ -495,7 +495,7 @@ Only files with known extensions are read. Files are read in an alphabetical ord
 - *merge*: Dimension name to merge datasets by (`str`) or `None`.
 - *warnings*: A list to be populated with warnings (`list`).
 - *parallel*: Enable parallel execution.
-- *executor*: concurrent.futures.Executor instance or `None` to use a new executor.
+- *executor*: `concurrent.futures.Executor` instance or `None` to use a new executor.
 - *njobs*: Number of parallel jobs or `None` to use the number of CPU cores.
 - ...: Optional keyword arguments passed to **[read](#read)**.
 
