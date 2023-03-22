@@ -174,7 +174,7 @@ $ print(d['temperature'])
 			ex = ProcessPoolExecutor(njobs) if executor is None else executor
 			mapfn = ex.map
 		if ex is not None: ex.__enter__()
-		res = mapfn(readdir_process, [
+		res = mapfn(readdir_worker, [
 			(filename, extensions, variables, kwargs)
 			for filename in files
 		])
