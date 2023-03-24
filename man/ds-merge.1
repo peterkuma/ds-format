@@ -1,6 +1,6 @@
 .\" generated with Ronn-NG/v0.9.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.9.1
-.TH "DS\-MERGE" "1" "November 2022" ""
+.TH "DS\-MERGE" "1" "March 2023" ""
 .SH "NAME"
 \fBds\-merge\fR \- Merge datasets along a dimension\.
 .SH "SYNOPSIS"
@@ -27,6 +27,9 @@ Name of a new dimension or \fBnone\fR\.
 .TP
 \fBvariables:\fR \fB{\fR \fIvalue\fR\|\.\|\.\|\. \fB}\fR | \fBnone\fR
 Variables to merge along a new dimension or \fBnone\fR for all variables\.
+.TP
+\fBjd:\fR \fIvalue\fR
+If \fBtrue\fR, convert time to Julian date when merging time variables with unequal units\. If \fBfalse\fR, merge time variables as is\. Default: \fBtrue\fR\.
 .SH "EXAMPLES"
 Write example data to dataset1\.nc\.
 .IP "" 4

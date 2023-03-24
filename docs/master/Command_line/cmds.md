@@ -204,6 +204,7 @@ Merge datasets along a dimension *dim*. If the dimension is not defined in the d
 
 - `new:` *value*: Name of a new dimension or `none`.
 - `variables:` `{` *value*... `}` \| `none`: Variables to merge along a new dimension or `none` for all variables.
+- `jd:` *value*: If `true`, convert time to Julian date when merging time variables with unequal units. If `false`, merge time variables as is. Default: `true`.
 
 **Examples:**
 

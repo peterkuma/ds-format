@@ -26,6 +26,8 @@ See help for ds for global options.
 Name of a new dimension or `none`.
 - `variables:` `{` *value*... `}` \| `none`:
 Variables to merge along a new dimension or `none` for all variables.
+- `jd:` *value*:
+If `true`, convert time to Julian date when merging time variables with unequal units. If `false`, merge time variables as is. Default: `true`.
 
 ## EXAMPLES
 
