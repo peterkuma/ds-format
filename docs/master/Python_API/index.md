@@ -24,7 +24,7 @@ import ds_format as ds
 | [findall](#findall) | Find variables, dimensions or attributes matching a glob pattern in a dataset. |
 | [group_by](#group_by) | Group values along a dimension. |
 | [merge](#merge) | Merge datasets along a dimension. |
-| [meta](#meta) | Get dataset or variable metadata. |
+| [meta](#meta) | Get or set dataset or variable metadata. |
 | [read](#read) | Read dataset from a file. |
 | [readdir](#readdir) | Read multiple files in a directory. |
 | [rename](#rename) | Rename a variable. |
