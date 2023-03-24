@@ -96,7 +96,7 @@ def parse_time(t):
 def time_dt(time):
 	return [parse_time(t) for t in time]
 
-def merge_var(dd, var, dim):
+def merge_var(dd, var, dim, jd=True):
 	for d in dd:
 		x = ds.var(d, var)
 		if x is None:
@@ -110,6 +110,18 @@ def merge_var(dd, var, dim):
 		break
 	else:
 		return None, None
+
+	convert_time = False
+	if jd:
+		units = None
+		for d in dd:
+			attrs = ds.attrs(d, var)
+			u = attrs.get('units')
+			if units is None: units = u
+			if u != units:
+				convert_time = True
+				break
+
 	if k is None: # New dimension.
 		n = len(dd)
 		dims = [dim] + dims0
@@ -119,10 +131,17 @@ def merge_var(dd, var, dim):
 		dims = dims0
 		size = copy_.deepcopy(size0)
 		size[k] = n
+
 	x = np.ma.array(np.zeros(size, dt), mask=np.ones(size, bool))
 	i = 0
 	meta = {}
 	for d in dd:
+		if convert_time:
+			d2 = {}
+			ds.var(d2, var, ds.var(d, var))
+			ds.meta(d2, var, ds.meta(d, var))
+			misc.process_time_var(d2, var)
+			d = d2
 		x1 = ds.var(d, var)
 		n1 = 1 if k is None else ds.dim(d, dim)
 		if x1 is None:
@@ -495,12 +514,12 @@ $ print(d['temperature'])
 			x[slice_x] = func(y, axis=i)
 		ds.var(d, var, x)
 
-def merge(dd, dim, new=None, variables=None):
+def merge(dd, dim, new=None, variables=None, jd=True):
 	'''
 	title: merge
 	caption: "Merge datasets along a dimension."
-	usage: "`merge`(*dd*, *dim*, *new*=`None`, *variables*=`None`)"
-	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with metadata from later datasets overriding metadata from the former ones."
+	usage: "`merge`(*dd*, *dim*, *new*=`None`, *variables*=`None`, *jd*=`True`)"
+	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with metadata from later datasets overriding metadata from the former ones. When merging time variables whose units are not equal, they are first converted to Julian date and then merged."
 	arguments: {{
 		*dd*: "Datasets (`list`)."
 		*dim*: "Name of a dimension to merge along (`str`)."
@@ -508,6 +527,7 @@ def merge(dd, dim, new=None, variables=None):
 	options: {{
 		*new*: "Name of a new dimension (`str`) or `None`."
 		*variables*: "Variables to merge along a new dimension (`list`) or `None` for all variables."
+		*jd*: "Convert time to Julian date when merging time variables with unequal units (`bool`)."
 	}}
 	returns: "A dataset (`dict`)."
 	examples: {{
@@ -531,6 +551,7 @@ $ print(d['temperature'])
 	check(dim, 'dim', str)
 	check(new, 'new', [str, None])
 	check(variables, 'variables', [[list, str], [tuple, str], None])
+	check(jd, 'jd', bool)
 	dx = {'.': {'.': {}}}
 	vars_ = sorted(list(set([x for d in dd for x in ds.vars(d)])))
 	dims = [k for d in dd for k in ds.dims(d)]
@@ -543,9 +564,9 @@ $ print(d['temperature'])
 				break
 		if is_new and (variables is None or var in variables) or \
 		   dim in var_dims:
-			x, meta = merge_var(dd, var, dim)
+			x, meta = merge_var(dd, var, dim, jd=jd)
 		elif new is not None and (variables is None or var in variables):
-			x, meta = merge_var(dd, var, new)
+			x, meta = merge_var(dd, var, new, jd=jd)
 		else:
 			x, meta = ds.var(dd[0], var), ds.meta(dd[0], var)
 		ds.var(dx, var, x)

@@ -16,6 +16,7 @@ def merge(dim, *args, **opts):
 	options: {{
 		"`new:` *value*": "Name of a new dimension or `none`."
 		"`variables:` `{` *value*... `}` \\\\| `none`": "Variables to merge along a new dimension or `none` for all variables."
+		"`jd:` *value*": "If `true`, convert time to Julian date when merging time variables with unequal units. If `false`, merge time variables as is. Default: `true`."
 	}}
 	examples: {{
 "Write example data to dataset1.nc.":
@@ -42,12 +43,14 @@ time temperature
 	output = args[-1]
 	new = opts.get('new')
 	variables = opts.get('variables')
+	jd = opts.get('jd', True)
 
 	check(dim, 'dim', str)
 	check(input_, 'input', list, str)
 	check(output, 'output', str)
 	check(new, 'new', [str, None])
 	check(variables, 'variabes', [[list, str], None])
+	check(jd, 'jd', bool)
 
 	dd = []
 	for filename in input_:
@@ -56,5 +59,5 @@ time temperature
 	if not opts.get('F'):
 		if len(dd) > 0:
 			dim = ds.find(dd[0], 'dim', dim)
-	d = ds.op.merge(dd, dim, new=new, variables=variables)
+	d = ds.op.merge(dd, dim, new=new, variables=variables, jd=jd)
 	ds.write(output, d)
