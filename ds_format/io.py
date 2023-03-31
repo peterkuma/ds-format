@@ -90,7 +90,6 @@ def readdir_worker(args):
 	warnings = []
 	if not os.path.isfile(filename) or not filename.endswith(extensions):
 		return
-	print('<- %s' % filename)
 	try: d = ds.read(filename, variables=variables, **kwargs)
 	except Exception as e:
 		warnings += [(
