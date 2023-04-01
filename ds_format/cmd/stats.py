@@ -45,10 +45,10 @@ count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000"
 		return
 	x = x.flatten()
 	count = len(x)
-	min_ = np.min(x)
-	max_ = np.max(x)
-	mean = np.mean(x)
-	median = np.median(x)
+	min_ = np.nanmin(x)
+	max_ = np.nanmax(x)
+	mean = np.nanmean(x)
+	median = np.nanmedian(x)
 	sys.stdout.buffer.write(misc.encode({
 		'count': count,
 		'min': min_,
