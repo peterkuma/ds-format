@@ -562,6 +562,9 @@ NaNs are ignored in all statistics except for `count`. The output is formatted a
 - `mean`: Sample mean.
 - `median`: Sample median.
 - `min`: Minimum value.
+- `p68`: 68% confidence interval calculated using percentiles.
+- `p95`: 95% confidence interval calculated using percentiles.
+- `p99`: 99% confidence interval calculated using percentiles.
 
 **Examples:**
 
@@ -569,7 +572,7 @@ Print statistics of variable temperature in dataset.nc.
 
 ```
 $ ds stats temperature dataset.nc
-count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000
+count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000 std: 2.054805 p68: { 16.640000 20.040000 } p95: { 16.100000 20.850000 } p99: { 16.020000 20.970000 }
 ```
 
 #### type

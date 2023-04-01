@@ -33,12 +33,21 @@ Sample median\.
 .TP
 \fBmin\fR
 Minimum value\.
+.TP
+\fBp68\fR
+68% confidence interval calculated using percentiles\.
+.TP
+\fBp95\fR
+95% confidence interval calculated using percentiles\.
+.TP
+\fBp99\fR
+99% confidence interval calculated using percentiles\.
 .SH "EXAMPLES"
 Print statistics of variable temperature in dataset\.nc\.
 .IP "" 4
 .nf
 $ ds stats temperature dataset\.nc
-count: 3 min: 16\.000000 max: 21\.000000 mean: 18\.333333 median: 18\.000000
+count: 3 min: 16\.000000 max: 21\.000000 mean: 18\.333333 median: 18\.000000 std: 2\.054805 p68: { 16\.640000 20\.040000 } p95: { 16\.100000 20\.850000 } p99: { 16\.020000 20\.970000 }
 .fi
 .IP "" 0
 
