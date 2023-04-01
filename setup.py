@@ -19,6 +19,8 @@ setup(
 		('share/man/man1', glob('man/*.1')),
 	],
 	install_requires=[
+		'numpy>=1.9.1',
+		'scipy',
 		'netCDF4',
 		'cftime>=1.5.1',
 		'pst-format>=1.2.0',
