@@ -21,7 +21,7 @@ def stats(*args, **opts):
 		`median`: "Sample median."
 		`min`: "Minimum value."
 	}}
-	desc: "The output is formatted as [PST](https://github.com/peterkuma/pst)."
+	desc: "NaNs are ignored in all statistics except for `count`. The output is formatted as [PST](https://github.com/peterkuma/pst)."
 	examples: {{
 "Print statistics of variable temperature in dataset.nc.":
 "$ ds stats temperature dataset.nc

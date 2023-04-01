@@ -547,7 +547,7 @@ Print variable statistics.
 
 **Usage:** `ds stats` *var* *input* [*options*]
 
-The output is formatted as [PST](https://github.com/peterkuma/pst).
+NaNs are ignored in all statistics except for `count`. The output is formatted as [PST](https://github.com/peterkuma/pst).
 
 **Arguments:**
 

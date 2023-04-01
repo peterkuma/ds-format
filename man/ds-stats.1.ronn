@@ -7,7 +7,7 @@ ds-stats(1) -- Print variable statistics.
 
 ## DESCRIPTION
 
-The output is formatted as [PST](https://github.com/peterkuma/pst).
+NaNs are ignored in all statistics except for `count`. The output is formatted as [PST](https://github.com/peterkuma/pst).
 
 ## ARGUMENTS
 
