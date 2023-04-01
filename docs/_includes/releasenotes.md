@@ -1,3 +1,12 @@
+#### 3.6.0 (2023-04-01)
+
+- Support for parallel processing in readdir.
+- Fixed merging of time variables by ds merge.
+- Do not show SIGPIPE error message when sending output to another command.
+- ds stats: NaNs are now ignored in the calculation of statistics.
+- ds stats: Output standard deviation and confidence intervals.
+- Improved documentation.
+
 #### 3.5.2 (2023-03-06)
 
 - Fixed an issue with a new version of NumPy.
