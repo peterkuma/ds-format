@@ -483,7 +483,7 @@ Read all data files in a directory.
 
 **Usage:** `readdir`(*dirname*, *variables*=`None`, *merge*=`None`, *warnings*=[], *recursive*=`False`, *parallel*=`False`, *executor*=`None`, *njobs*=`None`, ...)
 
-Only files with known extensions are read. Files are read in an alphabetical order.
+Only files with known extensions are read. Files are read in an alphabetical order. Variable `filename` is added to the output datasets, containing the name of the file. If *merge* is not `None`, variables `i` and `n` are added to the resulting dataset, containing the index within the input dataset and a file index referring to the `filename` variable, respectively. They are defined along the dimension *merge* and are zero-indexed.
 
 **Arguments:**
 
