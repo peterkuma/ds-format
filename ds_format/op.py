@@ -213,7 +213,9 @@ $ ds.attr(d, 'units', var='temperature')
 		if require(d, 'attr', attr, var):
 			attrs = ds.attrs(d, var)
 			return attrs[attr]
-	if len(value) == 1:
+		else:
+			return None
+	elif len(value) == 1:
 		meta = ds.meta(d, '' if var is None else var, create=True)
 		meta[ds.escape(attr)] = value[0]
 	else:
