@@ -89,14 +89,14 @@ def readdir_worker(args):
 	filename, extensions, variables, kwargs = args
 	warnings = []
 	if not os.path.isfile(filename) or not filename.endswith(extensions):
-		return
+		return None, warnings
 	try: d = ds.read(filename, variables=variables, **kwargs)
 	except Exception as e:
 		warnings += [(
 			'%s: %s' % (filename, e),
 			tb.format_exc()
 		)]
-		return
+		return None, warnings
 	ds.var(d, 'filename', filename)
 	ds.dims(d, 'filename', [])
 	return d, warnings
