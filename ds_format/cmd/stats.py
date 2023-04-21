@@ -20,6 +20,7 @@ def stats(*args, **opts):
 		`mean`: "Sample mean."
 		`median`: "Sample median."
 		`min`: "Minimum value."
+		`std`: "Standard deviation."
 		`p68`: "68% confidence interval calculated using percentiles."
 		`p95`: "95% confidence interval calculated using percentiles."
 		`p99`: "99% confidence interval calculated using percentiles."

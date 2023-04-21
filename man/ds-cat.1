@@ -27,6 +27,9 @@ Print human\-readable values (time as ISO 8601)\.
 .TP
 \fB\-\-jd\fR
 Convert time variables to Julian date (see Aquarius Time \fIhttps://github\.com/peterkuma/aquarius\-time\fR)\.
+.TP
+\fBsel: {\fR [\fIdim\fR: \fIindex\fR|\fImask\fR]\|\.\|\.\|\. \fB}\fR
+Select data by an index or a mask\. \fIdim\fR is a dimension name to subset along\. \fIindex\fR is an index or a list of indexes to select\. \fImask\fR is \fBtrue\fR or \fBfalse\fR or a list thereof, specifying which indexes to select\.
 .SH "EXAMPLES"
 Print temperature values in dataset\.nc\.
 .IP "" 4

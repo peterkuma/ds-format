@@ -25,6 +25,8 @@ See help for ds for global options.
 Print human-readable values (time as ISO 8601).
 - `--jd`:
 Convert time variables to Julian date (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)).
+- `sel: {` [*dim*: *index*|*mask*]... `}`:
+Select data by an index or a mask. *dim* is a dimension name to subset along. *index* is an index or a list of indexes to select. *mask* is `true` or `false` or a list thereof, specifying which indexes to select.
 
 ## EXAMPLES
 

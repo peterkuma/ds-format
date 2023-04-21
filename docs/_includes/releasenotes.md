@@ -1,3 +1,9 @@
+#### 3.6.1 (2023-04-21)
+
+- ds.readdir: Fixed handling of unreadable files.
+- ds.attr: Fixed getting attr when var does not exist.
+- Fixes in the documentation.
+
 #### 3.6.0 (2023-04-01)
 
 - Support for parallel processing in readdir.
