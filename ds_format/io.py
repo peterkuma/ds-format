@@ -182,6 +182,8 @@ $ print(d['temperature'])
 		raise
 	dd = []
 	for d, w in res:
+		if d is None:
+			continue
 		dd += [d]
 		warnings += w
 	if merge is None:
