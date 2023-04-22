@@ -182,10 +182,10 @@ $ print(d['temperature'])
 		raise
 	dd = []
 	for d, w in res:
+		warnings += w
 		if d is None:
 			continue
 		dd += [d]
-		warnings += w
 	if merge is None:
 		return dd
 	else:
