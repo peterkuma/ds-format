@@ -1,3 +1,11 @@
+#### 3.7.0 (2023-04-24)
+
+- ds rename, ds rename\_dim: Fix renaming  multiple vars, attrs or dims at a time.
+- ds.rename\_m, ds.rename\_attr\_m, ds.rename\_dim\_m: New function.
+- ds.rename: Also remove variable metadata.
+- ds.readdir: Fix warnings.
+- Fixes in the documentation.
+
 #### 3.6.1 (2023-04-21)
 
 - ds.readdir: Fixed handling of unreadable files.
