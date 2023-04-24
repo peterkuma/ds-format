@@ -932,8 +932,12 @@ $ ds.vars(d)
 	'''
 	check(d, 'd', dict)
 	check(var, 'var', str)
-	if require(d, 'var', var):
-		del d[ds.escape(var)]
+	var_e = ds.escape(var)
+	meta = ds.meta(d)
+	if var_e in d:
+		del d[var_e]
+	if var_e in meta:
+		del meta[var_e]
 
 def rm_attr(d, attr, var=None):
 	'''
