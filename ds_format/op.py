@@ -680,6 +680,7 @@ def rename_attr(d, old, new, var=None):
 	'''
 	title: rename_attr
 	caption: "Rename a dataset or variable attribute."
+	usage: "`rename_attr`(*d*, *old*, *new*, *var*=`None`)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
 		*old*: "Old attribute name (`str`)."

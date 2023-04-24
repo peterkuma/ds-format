@@ -576,6 +576,8 @@ $ ds.vars(d)
 
 Rename a dataset or variable attribute.
 
+**Usage:** `rename_attr`(*d*, *old*, *new*, *var*=`None`)
+
 **Arguments:**
 
 - *d*: Dataset (`dict`).
