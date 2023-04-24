@@ -38,10 +38,12 @@ time"
 	check(output, 'output', str)
 
 	d = ds.read(input_)
+	mapping = {}
 	for olddim, newdim in dims.items():
 		if not opts.get('F'):
 			olddim = ds.find(d, 'dim', olddim)
-		ds.rename_dim(d, olddim, newdim)
+		mapping[olddim] = newdim
+	ds.rename_dim_m(d, mapping)
 	ds.write(output, d)
 
 rename_dim.disable_cmd_opts = True

@@ -674,18 +674,7 @@ $ ds.vars(d)
 	check(d, 'd', dict)
 	check(old, 'old', str)
 	check(new, 'new', [str, None])
-	new_e = ds.escape(new)
-	old_e = ds.escape(old)
-	if require(d, 'var', old):
-		if old == new:
-			return
-		if new is not None:
-			d[new_e] = d[old_e]
-			d['.'][new_e] = d['.'][old_e]
-		del d[old_e]
-		del d['.'][old_e]
-		if new is not None:
-			rename_dim(d, old, new)
+	return rename_m(d, {old: new})
 
 def rename_attr(d, old, new, var=None):
 	'''
@@ -718,15 +707,51 @@ $ ds.attrs(d)
 	'''
 	check(d, 'd', dict)
 	check(old, 'old', str)
-	check(new, 'new', str)
+	check(new, 'new', [str, None])
 	check(var, 'var', [str, None])
-	old_e = ds.escape(old)
-	new_e = ds.escape(new)
-	if require(d, 'attr', old, var):
-		meta = ds.meta(d, '' if var is None else var)
-		if new is not None:
-			meta[new_e] = meta[old_e]
-		del meta[old_e]
+	return rename_attr_m(d, {old: new}, var)
+
+def rename_attr_m(d, mapping, var=None):
+	'''
+	title: rename_attr_m
+	caption: "Rename one or more dataset or variable attributes."
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*mapping*: "A dictionary where the key is an old attribute name (`str`) and the value is a new attribute name (`str`) or `None` to remove the attribute. Swapping of atrributes is also supported."
+	}}
+	options: {{
+		*var*: "Variable name (`str`) to rename a variable attribute or `None` to rename a dataset attribute."
+	}}
+	returns: `None`
+	examples: {{
+		"Rename an attribute `long_name` to `new_long_name` and `units` to `new_units` of a variable `temperature` in a dataset read from `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ ds.attrs(d, 'temperature')
+{'long_name': 'temperature', 'units': 'celsius'}
+$ ds.rename_attr_m(d, {'long_name': 'new_long_name', 'units': 'new_units'}, var='temperature')
+$ ds.attrs(d, 'temperature')
+{'new_long_name': 'temperature', 'new_units': 'celsius'}"
+		"Rename a dataset attribute `title` to `new_title`.":
+"$ ds.attrs(d)
+{'title': 'Temperature data'}
+$ ds.rename_attr_m(d, {'title': 'new_title'})
+$ ds.attrs(d)
+{'new_title': 'Temperature data'}"
+	}}
+	'''
+	check(d, 'd', dict)
+	check(mapping, 'mapping', dict, str, [str, None])
+	tmp = {}
+	for old in mapping.keys():
+		if not require(d, 'attr', old, var):
+			continue
+		tmp[old] = ds.attr(d, old, var=var)
+		ds.rm_attr(d, old, var)
+	for old in tmp.keys():
+		new = mapping[old]
+		if new is None:
+			continue
+		ds.attr(d, new, tmp[old], var=var)
 
 def rename_dim(d, old, new):
 	'''
@@ -752,17 +777,86 @@ $ ds.dims(d)
 	check(d, 'd', dict)
 	check(old, 'old', str)
 	check(new, 'new', str)
-	if old == new:
-		return
-	for var in ds.vars(d, full=True):
-		dims = ds.dims(d, var)
-		dirty = False
-		for i, dim in enumerate(dims):
-			if dim == old:
-				dims[i] = new
-				dirty = True
-		if dirty:
+	return rename_dim_m(d, {old: new})
+
+def rename_dim_m(d, mapping):
+	'''
+	title: rename_dim_m
+	caption: "Rename one or more dimensions."
+	usage: "`rename_dim_m`(*d*, *mapping*)"
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*mapping*: "A dictionary where the key is an old dimension name (`str`) and the value is a new dimension name (`str`). Swapping of dimensions is also supported."
+	}}
+	returns: `None`
+	examples: {{
+		"Rename a dimension `time` to `new_time` in a dataset read from `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ ds.dims(d)
+['time']
+$ ds.rename_dim_m(d, {'time': 'new_time'})
+$ ds.dims(d)
+['new_time']"
+	}}
+	'''
+	check(d, 'd', dict)
+	check(mapping, 'mapping', dict, str, str)
+	tmp = {}
+	for old in mapping.keys():
+		for var in ds.vars(d, full=True):
+			dims = ds.dims(d, var)
+			if old not in dims:
+				continue
+			tmp[var] = dims
+	for old, new in mapping.items():
+		for var in ds.vars(d, full=True):
+			if var not in tmp:
+				continue
+			dims = ds.dims(d, var)
+			for i, dim in enumerate(tmp[var]):
+				if dim == old:
+					dims[i] = new
 			ds.dims(d, var, dims)
+
+def rename_m(d, mapping):
+	'''
+	title: rename_m
+	caption: "Rename one or more variables."
+	usage: "`rename_m`(*d*, *mapping*)"
+	desc: "Any dimension with the same name is also renamed."
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*mapping*: "A dictionary where the key is an old variable name (`str`) and the value is a new variable name (`str`) or `None` to remove the variable. Swapping of variables is also supported."
+	}}
+	returns: `None`
+	examples: {{
+		"Rename a variable `time` to `new_time` and `temperature` to `new_temperature` in a dataset read from `dataset.nc`.":
+"$ d = ds.read('dataset.nc')
+$ ds.vars(d)
+['temperature', 'time']
+$ ds.rename(d, {'time': 'new_time', 'temperature': 'new_temperature'})
+$ ds.vars(d)
+['new_temperature', 'new_time']"
+	}}
+	'''
+	check(d, 'd', dict)
+	check(mapping, 'mapping', dict, str, [str, None])
+	tmp = {}
+	for old in mapping.keys():
+		if not require(d, 'var', old):
+			continue
+		var = ds.var(d, old)
+		meta = ds.meta(d, old)
+		tmp[old] = [var, meta]
+		ds.rm(d, old)
+	for old in tmp.keys():
+		new = mapping[old]
+		if new is None:
+			continue
+		var, meta = tmp[old]
+		ds.var(d, new, var)
+		ds.meta(d, new, meta)
+	ds.rename_dim_m(d, {k: v for k, v in mapping.items() if v is not None})
 
 def require(d, what, name, var=None, full=False):
 	'''

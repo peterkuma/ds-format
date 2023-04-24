@@ -25,8 +25,11 @@ from .op import \
 	merge, \
 	meta, \
 	rename, \
-	rename_dim, \
 	rename_attr, \
+	rename_attr_m, \
+	rename_dim, \
+	rename_dim_m, \
+	rename_m, \
 	require, \
 	rm, \
 	rm_attr, \

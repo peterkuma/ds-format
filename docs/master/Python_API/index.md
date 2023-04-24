@@ -29,7 +29,10 @@ import ds_format as ds
 | [readdir](#readdir) | Read multiple files in a directory. |
 | [rename](#rename) | Rename a variable. |
 | [rename_attr](#rename_attr) | Rename a dataset or variable attribute. |
+| [rename_attr_m](#rename_attr_m) | Rename one or more dataset or variable attributes. |
 | [rename_dim](#rename_dim) | Rename a dimension. |
+| [rename_dim_m](#rename_dim_m) | Rename one or more dimensions. |
+| [rename_m](#rename_m) | Rename one or more variables. |
 | [require](#require) | Require that a variable, dimension or attribute is defined in a dataset. |
 | [rm](#rm) | Remove a variable. |
 | [rm_attr](#rm_attr) | Remove a dataset or variable attribute. |

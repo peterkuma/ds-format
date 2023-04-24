@@ -613,6 +613,46 @@ $ ds.attrs(d)
 {'new_title': 'Temperature data'}
 ```
 
+#### rename_attr_m
+
+Rename one or more dataset or variable attributes.
+
+**Arguments:**
+
+- *d*: Dataset (`dict`).
+- *mapping*: A dictionary where the key is an old attribute name (`str`) and the value is a new attribute name (`str`) or `None` to remove the attribute. Swapping of atrributes is also supported.
+
+**Options:**
+
+- *var*: Variable name (`str`) to rename a variable attribute or `None` to rename a dataset attribute.
+
+**Return value:**
+
+`None`
+
+**Examples:**
+
+Rename an attribute `long_name` to `new_long_name` and `units` to `new_units` of a variable `temperature` in a dataset read from `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.attrs(d, 'temperature')
+{'long_name': 'temperature', 'units': 'celsius'}
+$ ds.rename_attr_m(d, {'long_name': 'new_long_name', 'units': 'new_units'}, var='temperature')
+$ ds.attrs(d, 'temperature')
+{'new_long_name': 'temperature', 'new_units': 'celsius'}
+```
+
+Rename a dataset attribute `title` to `new_title`.
+
+```
+$ ds.attrs(d)
+{'title': 'Temperature data'}
+$ ds.rename_attr_m(d, {'title': 'new_title'})
+$ ds.attrs(d)
+{'new_title': 'Temperature data'}
+```
+
 #### rename_dim
 
 Rename a dimension.
@@ -640,6 +680,64 @@ $ ds.dims(d)
 $ ds.rename_dim(d, 'time', 'new_time')
 $ ds.dims(d)
 ['new_time']
+```
+
+#### rename_dim_m
+
+Rename one or more dimensions.
+
+**Usage:** `rename_dim_m`(*d*, *mapping*)
+
+**Arguments:**
+
+- *d*: Dataset (`dict`).
+- *mapping*: A dictionary where the key is an old dimension name (`str`) and the value is a new dimension name (`str`). Swapping of dimensions is also supported.
+
+**Return value:**
+
+`None`
+
+**Examples:**
+
+Rename a dimension `time` to `new_time` in a dataset read from `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.dims(d)
+['time']
+$ ds.rename_dim_m(d, {'time': 'new_time'})
+$ ds.dims(d)
+['new_time']
+```
+
+#### rename_m
+
+Rename one or more variables.
+
+**Usage:** `rename_m`(*d*, *mapping*)
+
+Any dimension with the same name is also renamed.
+
+**Arguments:**
+
+- *d*: Dataset (`dict`).
+- *mapping*: A dictionary where the key is an old variable name (`str`) and the value is a new variable name (`str`) or `None` to remove the variable. Swapping of variables is also supported.
+
+**Return value:**
+
+`None`
+
+**Examples:**
+
+Rename a variable `time` to `new_time` and `temperature` to `new_temperature` in a dataset read from `dataset.nc`.
+
+```
+$ d = ds.read('dataset.nc')
+$ ds.vars(d)
+['temperature', 'time']
+$ ds.rename(d, {'time': 'new_time', 'temperature': 'new_temperature'})
+$ ds.vars(d)
+['new_temperature', 'new_time']
 ```
 
 #### require

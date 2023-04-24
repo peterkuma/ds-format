@@ -12,7 +12,7 @@ def rename(*args, **opts):
 	}
 	arguments: {{
 		*var*: "Variable name, or an array of variable names whose attributes to rename, or `none` to rename dataset attributes."
-		*vars*: "Pairs of old and new variable names as *oldvar*`:` *newvar*. If *newattr* is `none`, remove the attribute."
+		*vars*: "Pairs of old and new variable names as *oldvar*`:` *newvar*. If *newvar* is `none`, remove the variable."
 		*attrs*: "Pairs of old and new attribute names as *oldattr*`:` *newattr*. If *newattr* is `none`, remove the attribute."
 		*input*: "Input file."
 		*output*: "Output file."
@@ -70,8 +70,7 @@ def rename(*args, **opts):
 				for x in (
 					ds.findall(d, 'var', var1) if var1 is not None else [None]
 				)]
-		for oldvar, newvar in vars_.items():
-			ds.rename(d, oldvar, newvar)
+		ds.rename_m(d, vars_)
 		for var1 in var:
 			if not opts.get('F'):
 				attrs1 = {
@@ -79,8 +78,7 @@ def rename(*args, **opts):
 					for var1 in var
 					for k, v in attrs.items()
 				}
-			for oldattr, newattr in attrs1.items():
-				ds.rename_attr(d, oldattr, newattr, var=var1)
+			ds.rename_attr_m(d, attrs1, var1)
 	ds.write(output, d)
 
 rename.disable_cmd_opts = True

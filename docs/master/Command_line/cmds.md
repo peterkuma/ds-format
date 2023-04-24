@@ -290,7 +290,7 @@ Rename variables and attributes.
 **Arguments:**
 
 - *var*: Variable name, or an array of variable names whose attributes to rename, or `none` to rename dataset attributes.
-- *vars*: Pairs of old and new variable names as *oldvar*`:` *newvar*. If *newattr* is `none`, remove the attribute.
+- *vars*: Pairs of old and new variable names as *oldvar*`:` *newvar*. If *newvar* is `none`, remove the variable.
 - *attrs*: Pairs of old and new attribute names as *oldattr*`:` *newattr*. If *newattr* is `none`, remove the attribute.
 - *input*: Input file.
 - *output*: Output file.
