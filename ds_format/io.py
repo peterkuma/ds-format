@@ -39,7 +39,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 		*jd*: "Convert time variables to Julian dates (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)) (`bool`)."
 	}}
 	"Supported formats": {{
-		CSV: `.csv`
+		CSV/TSV: "`.csv`, `.tsv`, `.tab`"
 		DS: `.ds`
 		HDF5: "`.h5`, `.hdf5`, `.hdf`"
 		JSON: `.json`
@@ -122,7 +122,7 @@ def readdir(dirname, variables=None, merge=None, warnings=[], recursive=False,
 		...: "Optional keyword arguments passed to **[read](#read)**."
 	}}
 	"Supported formats": {{
-		CSV: `.csv`
+		CSV/TSV: "`.csv`, `.tsv`, `.tab`"
 		DS: `.ds`
 		HDF5: "`.h5`, `.hdf5`, `.hdf`"
 		JSON: `.json`
@@ -210,7 +210,7 @@ def write(filename, d):
 		*d*: "Dataset (`dict`)."
 	}}
 	"Supported formats": {{
-		CSV: `.csv`
+		CSV/TSV: "`.csv`, `.tsv`, `.tab`"
 		DS: `.ds`
 		HDF5: "`.h5`, `.hdf5`, `.hdf`"
 		JSON: `.json`
