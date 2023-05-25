@@ -55,7 +55,7 @@ def main():
 		NetCDF4: "`.nc`, `.nc4`, `.nc3`, `.netcdf`"
 	}}
 	"Supported output formats": {{
-		CSV: `.csv`
+		CSV/TSV: "`.csv`, `.tsv`, `.tab`"
 		DS: `.ds`
 		HDF5: "`.h5`, `.hdf5`, `.hdf`"
 		JSON: `.json`

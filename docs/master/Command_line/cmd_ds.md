@@ -54,7 +54,7 @@ The command line interface is based on the [PST format](https://github.com/peter
 
 **Supported output formats:**
 
-- CSV: `.csv`
+- CSV/TSV: `.csv`, `.tsv`, `.tab`
 - DS: `.ds`
 - HDF5: `.h5`, `.hdf5`, `.hdf`
 - JSON: `.json`
