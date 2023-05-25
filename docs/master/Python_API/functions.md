@@ -437,7 +437,7 @@ Dataset (`dict`).
 
 **Supported formats:**
 
-- CSV: `.csv`
+- CSV/TSV: `.csv`, `.tsv`, `.tab`
 - DS: `.ds`
 - HDF5: `.h5`, `.hdf5`, `.hdf`
 - JSON: `.json`
@@ -506,7 +506,7 @@ A list of datasets (`list` of `dict`) if *merge* is `None` or a merged dataset (
 
 **Supported formats:**
 
-- CSV: `.csv`
+- CSV/TSV: `.csv`, `.tsv`, `.tab`
 - DS: `.ds`
 - HDF5: `.h5`, `.hdf5`, `.hdf`
 - JSON: `.json`
@@ -1058,7 +1058,7 @@ The file type is determined from the file extension.
 
 **Supported formats:**
 
-- CSV: `.csv`
+- CSV/TSV: `.csv`, `.tsv`, `.tab`
 - DS: `.ds`
 - HDF5: `.h5`, `.hdf5`, `.hdf`
 - JSON: `.json`
