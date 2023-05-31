@@ -1103,7 +1103,7 @@ def var(d, var, *value):
 		*var*: "Variable name (`str`)."
 		*value*: "Variable data. If supplied, set variable data, otherwise get variable data."
 	}}
-	returns: "Variable data (`np.ndarray` or `np.generic`) or `None` if the variable data are not defined or `value` is supplied. If the variable data are a `list` or `tuple`, they are converted to `np.ndarray`, or to `np.ma.MaskedArray` if they contain `None`, which is masked. If the variable data are `int`, `float`, `bool`, `str` or `bytes`, they are converted to `np.generic`. Raises `ValueError` if the output dtype is not one of `float32`, `float64`, `int8`, `int16`, `int32`, `int64`, `uint8`, `uint16`, `uint32`, `uint64`, `bool`, `bytes<n>`, `str<n>`, or `object` for which all items are an instance of `str` or `bytes`."
+	returns: "Variable data (`np.ndarray` or `np.generic`) or `None` if the variable data are not defined or `value` is supplied. If the variable data are a `list` or `tuple`, they are converted to `np.ndarray`, or to `np.ma.MaskedArray` if they contain `None`, which is masked. If the variable data are `int`, `float`, `bool`, `str`, `bytes` or `np.array` with zero dimensions, they are converted to `np.generic`. Raises `ValueError` if the output dtype is not one of the types `np.float32`, `np.float64`, `np.int8`, `np.int16`, `np.int32`, `np.int64`, `np.uint8`, `np.uint16`, `np.uint32`, `np.uint64`, `np.bool`, `np.bytes<n>`, `np.str<n>`, or `np.object` for which all items are an instance of `str` or `bytes`."
 	examples: {{
 		"Get data of a variable `temperature` in a dataset `dataset.nc`.":
 "$ d = ds.read('dataset.nc')
@@ -1136,7 +1136,10 @@ array([17, 18, 22])"
 				data.dtype.name.startswith(('str', 'bytes')) or \
 				(data.dtype.name == 'object' and \
 				all([isinstance(x, (str, bytes)) for x in data.flatten()]))):
-				return data
+				if isinstance(data, np.ndarray) and data.ndim == 0:
+					return data[()]
+				else:
+					return data
 			else:
 				raise ValueError('invalid data type')
 		return None
