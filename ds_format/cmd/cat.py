@@ -21,6 +21,7 @@ def cat(*args, **opts):
 	options: {{
 		`-h`: "Print human-readable values (time as ISO 8601)."
 		`--jd`: "Convert time variables to Julian date (see [Aquarius Time](https://github.com/peterkuma/aquarius-time))."
+		`-n`:  "Do not print header."
 	}}
 	desc: "Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array. The first line is a header containing a list of variables. Missing values are printed as empty rows (if printing one single dimensional variable) or as `none`."
 	examples: {{
@@ -43,9 +44,11 @@ time temperature
 		raise UsageError('Invalid number of arguments')
 	vars_ = args[:-1]
 	input_ = args[-1]
+	noheader = opts.get('n', False)
 
 	check(vars_, 'var', list, str, elemental=True)
 	check(input_, 'input', str)
+	check(noheader, 'n', bool)
 
 	if not opts.get('F'):
 		d = ds.read(input_, [], full=True)
@@ -61,8 +64,9 @@ time temperature
 	if not all([dim == dims[0] for dim in dims]):
 		raise ValueError('incompatible dimensions')
 
-	vars1 = vars_[0] if len(vars_) == 1 else vars_
-	sys.stdout.buffer.write(misc.encode(vars1) + b'\n')
+	if not noheader:
+		vars1 = vars_[0] if len(vars_) == 1 else vars_
+		sys.stdout.buffer.write(misc.encode(vars1) + b'\n')
 
 	xx = []
 	for var in vars_:
