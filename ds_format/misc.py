@@ -118,7 +118,7 @@ def with_mode(mode):
 
 def process_time_var(d, var):
 	data = ds.var(d, var)
-	if not isinstance(data, np.ndarray):
+	if not isinstance(data, (np.ndarray, np.generic)):
 		return
 	x = data.flatten()
 	if len(x) == 0:
