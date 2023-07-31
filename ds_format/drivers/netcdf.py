@@ -7,6 +7,9 @@ from ds_format import misc
 READ_EXT = ['nc', 'nc4', 'nc3', 'netcdf']
 WRITE_EXT = ['nc', 'nc4', 'netcdf']
 
+JD_UNITS = 'days since -4713-11-24 12:00 UTC'
+JD_CALENDAR = 'proleptic_greogorian'
+
 def detect(filename):
 	try:
 		with Dataset(filename) as f:
