@@ -8,7 +8,7 @@ READ_EXT = ['nc', 'nc4', 'nc3', 'netcdf']
 WRITE_EXT = ['nc', 'nc4', 'netcdf']
 
 JD_UNITS = 'days since -4713-11-24 12:00 UTC'
-JD_CALENDAR = 'proleptic_greogorian'
+JD_CALENDAR = 'proleptic_gregorian'
 
 def detect(filename):
 	try:
