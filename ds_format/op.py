@@ -1037,6 +1037,56 @@ $ ds.size(d, 'temperature')
 	else:
 		return None
 
+def split(d, dims):
+	'''
+	title: split
+	caption: "Split a dataset along one or more dimensions."
+	usage: "`split`(*d*, *dim*)"
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*dims*: "Dimension name (`str`) or a list of dimension names (`list` of `str`)."
+	}}
+	returns: "List of datasets."
+	'''
+	check(d, 'd', dict)
+	check(dims, 'dims', [str, [list, str]])
+	nn = [ds.dim(d, dim) for dim in dims]
+	n = max(np.prod(nn), 1)
+	dd = [{} for i in range(n)]
+	for var in ds.vars(d):
+		data = ds.var(d, var)
+		var_meta = copy_.deepcopy(ds.meta(d, var, create=True))
+		var_dims = ds.dims(d, var)
+		var_size = ds.size(d, var)
+		j = 0
+		kk = np.ones(len(var_dims), bool)
+		for dim in dims:
+			try: i = var_dims.index(dim)
+			except ValueError: continue
+			data = np.moveaxis(data, i, j)
+			j += 1
+			kk[i] = False
+		if j > 0:
+			var_dims = (np.array(var_dims)[kk]).tolist()
+			var_size = (np.array(var_size)[kk]).tolist()
+			var_meta['.dims'] = var_dims
+			var_meta['.size'] = var_size
+			shape = data.shape
+			shape = [n] + list(shape[j:])
+			data = data.reshape(shape)
+			aa = np.split(data, n)
+			for i, a in enumerate(aa):
+				ds.var(dd[i], var, a[0].copy())
+				ds.meta(dd[i], var, var_meta)
+		else:
+			for i in range(n):
+				ds.var(dd[i], var, data.copy())
+				ds.meta(dd[i], var, var_meta)
+	meta = copy_.deepcopy(ds.meta(d, '', create=True))
+	for d1 in dd:
+		ds.meta(d1, '', meta)
+	return dd
+
 def type_(d, var, *value):
 	'''
 	title: type

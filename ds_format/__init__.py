@@ -35,6 +35,7 @@ from .op import \
 	rm_attr, \
 	select, \
 	size, \
+	split, \
 	type_ as type, \
 	var, \
 	vars_ as vars, \
