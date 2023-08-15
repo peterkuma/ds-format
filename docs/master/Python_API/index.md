@@ -38,6 +38,7 @@ import ds_format as ds
 | [rm_attr](#rm_attr) | Remove a dataset or variable attribute. |
 | [select](#select) | Filter dataset by a selector. |
 | [size](#size) | Get variable size. |
+| [split](#split) | Split a dataset along one or more dimensions. |
 | [type](#type) | Get or set variable type. |
 | [var](#var) | Get or set variable data. |
 | [vars](#vars) | Get all variable names in a dataset. |
