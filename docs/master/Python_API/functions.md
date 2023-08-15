@@ -911,6 +911,21 @@ $ ds.size(d, 'temperature')
 [3]
 ```
 
+#### split
+
+Split a dataset along one or more dimensions.
+
+**Usage:** `split`(*d*, *dim*)
+
+**Arguments:**
+
+- *d*: Dataset (`dict`).
+- *dims*: Dimension name (`str`) or a list of dimension names (`list` of `str`).
+
+**Return value:**
+
+List of datasets.
+
 #### type
 
 Get or set variable type.
