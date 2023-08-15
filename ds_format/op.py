@@ -1050,6 +1050,8 @@ def split(d, dims):
 	'''
 	check(d, 'd', dict)
 	check(dims, 'dims', [str, [list, str]])
+	if isinstance(dims, str):
+		dims = [dims]
 	nn = [ds.dim(d, dim) for dim in dims]
 	n = max(np.prod(nn), 1)
 	dd = [{} for i in range(n)]
