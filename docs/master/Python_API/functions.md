@@ -924,7 +924,7 @@ Split a dataset along one or more dimensions.
 
 **Return value:**
 
-List of datasets.
+List of datasets (`list` of `dict`).
 
 #### type
 

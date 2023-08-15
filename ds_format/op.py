@@ -1046,7 +1046,7 @@ def split(d, dims):
 		*d*: "Dataset (`dict`)."
 		*dims*: "Dimension name (`str`) or a list of dimension names (`list` of `str`)."
 	}}
-	returns: "List of datasets."
+	returns: "List of datasets (`list` of `dict`)."
 	'''
 	check(d, 'd', dict)
 	check(dims, 'dims', [str, [list, str]])
