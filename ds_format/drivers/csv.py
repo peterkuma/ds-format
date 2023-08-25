@@ -9,7 +9,9 @@ WRITE_EXT = ['csv', 'tsv', 'tab']
 def convert(x):
 	for f in [int, float]:
 		try: return f(x)
-		except ValueError: pass
+		except (ValueError, TypeError): pass
+	if x == '':
+		return None
 	return x
 
 def read(filename, variables=None, sel=None, full=False, jd=False, opts={}):
@@ -27,22 +29,22 @@ def read(filename, variables=None, sel=None, full=False, jd=False, opts={}):
 				x = [[] for i in range(ncols)]
 				continue
 			for j in range(ncols):
-				x[j].append(row[j])
+				x[j].append(convert(row[j]) if len(row) > j else None)
 	d = {}
 	for j in range(ncols):
 		var = header[j]
-		data = np.array([convert(y) for y in x[j]])
+		ds.var(d, var, x[j])
 		meta = {
 			'.dims': ['i'],
-			'.type':  misc.dtype_to_type(data.dtype),
-			'.size': [len(data)],
+			'.type': ds.type(d, var),
+			'.size': ds.size(d, var),
 		}
 		if variables is not None and var not in variables:
+			del d[var]
 			if full:
 				ds.meta(d, var, meta)
 			continue
 		ds.meta(d, var, meta)
-		ds.var(d, var, data)
 	ds.validate(d)
 	if sel is not None:
 		ds.select(d, sel)
