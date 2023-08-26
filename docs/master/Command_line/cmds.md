@@ -65,6 +65,7 @@ Data are printed by the first index, one item per line, formatted as [PST](https
 
 - `-h`: Print human-readable values (time as ISO 8601).
 - `--jd`: Convert time variables to Julian date (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)).
+- `-n`: Do not print header.
 
 **Examples:**
 
