@@ -67,7 +67,8 @@ as [Anaconda](https://www.anaconda.com/distribution/)
 
 1. Install [Anaconda](https://www.anaconda.com/download).
 
-2. Install ds format:
+2. Install ds format in the terminal (Linux and macOS) or Anaconda Prompt
+   (Windows):
 
    ```
    pip install {{ pkg }}
