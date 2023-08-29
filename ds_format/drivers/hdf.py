@@ -67,10 +67,10 @@ def read_group(f, variables, sel, full):
 			var = name if prefix == '' else prefix + '/' + name
 			if variables is not None and var not in variables:
 				if full:
-					_, var_meta = read_var(f, var, namex, sel=sel, data=False)
+					_, var_meta = read_var(f, var, name, sel=sel, data=False)
 					ds.meta(d, var, var_meta)
 			else:
-				data, var_meta = read_var(f, var, namex, sel=sel, data=True)
+				data, var_meta = read_var(f, var, name, sel=sel, data=True)
 				ds.var(d, var, data)
 				ds.meta(d, var, var_meta)
 	return d
