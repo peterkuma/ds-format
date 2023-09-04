@@ -3,7 +3,7 @@ import signal
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 import warnings
-warnings.simplefilter("ignore")
+warnings.simplefilter('ignore')
 from ds_format.cmd.main import main
 if __name__ == '__main__':
 	main()

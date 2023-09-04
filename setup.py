@@ -6,7 +6,9 @@ from glob import glob
 setup(
 	name='ds-format',
 	version='3.7.0',
-	scripts=['bin/ds'],
+	entry_points={
+		'console_scripts': ['ds = ds_format.bin.ds:main'],
+	},
 	packages=find_packages(),
 	description='ds-format is an open source program, a Python package and a storage format which provides an interface for reading and writing NetCDF files, as well as its own data file format.',
 	author='Peter Kuma',
