@@ -149,7 +149,7 @@ def process_time_var(d, var):
 		for i in range(len(x)):
 			x[i] = dt.datetime(x[i].year, 1, 1) + \
 			(x[i] - type(x[i])(x[i].year, 1, 1))
-	ds.var(d, var, aq.from_datetime(list(x)).reshape(shape))
+	ds.var(d, var, np.array(aq.from_datetime(list(x))).reshape(shape))
 	ds.attr(d, 'units', 'days since -4713-11-24 12:00 UTC', var=var)
 	ds.attr(d, 'calendar', 'proleptic_gregorian', var=var)
 
