@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import signal
-signal.signal(signal.SIGINT, signal.SIG_DFL)
-signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+if hasattr(signal, 'SIGINT'):
+	signal.signal(signal.SIGINT, signal.SIG_DFL)
+if hasattr(signal, 'SIGPIPE'):
+	signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 import warnings
 warnings.simplefilter('ignore')
 from ds_format.cmd.main import main
