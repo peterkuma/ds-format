@@ -65,7 +65,7 @@ def main():
 		DS_MODE: "Error handling mode. If \\"strict\\", handle missing variables, dimensions and attributes as errors. If \\"moderate\\", report a warning. If \\"soft\\", ignore missing items."
 	}}
 	author: "Written by Peter Kuma."
-	copyright: "Copyright (c) 2019-2022 Peter Kuma. This software is distributed under an MIT license."
+	copyright: "Copyright (c) 2019-2023 Peter Kuma. This software is distributed under an MIT license."
 	'''
 	a = pst.decode([os.fsencode(y) for y in sys.argv[1:]], as_unicode=True)
 	args = []
