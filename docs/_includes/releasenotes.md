@@ -1,3 +1,15 @@
+#### 4.0.0 (2023-09-06)
+
+- The ds command is now installed using setuptools entry_points, which also
+  works on Windows.
+- ds.var: Normalize variable data when setting the variable.
+- Imporved documentation.
+- CSV: Fixes in file reading when some columns are not defined.
+- ds.split: New function for splitting datasets.
+- netcdf: Fixed missing JD_UNITS and JD_CALENDAR.
+- ds cat: New -n option for disabling header.
+- Support for .tab/.tsv format.
+
 #### 3.7.0 (2023-04-24)
 
 - ds rename, ds rename\_dim: Fix renaming  multiple vars, attrs or dims at a time.
