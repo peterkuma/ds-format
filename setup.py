@@ -22,14 +22,15 @@ setup(
 	],
 	install_requires=[
 		'numpy>=1.9.1',
-		'scipy',
-		'netCDF4',
+		'scipy>=1.10.1',
+		'netCDF4>=1.6.4',
 		'cftime>=1.5.1',
 		'pst-format>=1.2.0',
 		'aquarius-time>=0.1.0',
 		'beautifulsoup4>=4.9.3',
 		'Markdown>=3.3.4',
 		'h5py>=2.10.0',
+		'lxml>=4.9.2',
 	],
 	license='MIT',
 	classifiers=[
