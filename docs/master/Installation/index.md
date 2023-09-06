@@ -8,17 +8,16 @@ title: Installation
 ## Installation
 
 Installation on Linux is recommended, but it is also known to work on Windows
-and macOS. On macOS the command line interface should be used with bash, not
-the default zsh, which is not compatible with the syntax.
+and macOS.
 
-Requirements:
+**Important:** On macOS the ds command should be used with the command line
+shell bash, not the default zsh, which is not compatible with the argument
+syntax.
 
-- Python 3, or a Python distribution such
-as [Anaconda](https://www.anaconda.com/distribution/)
+### Linux
 
-### Default Python distribution on Linux
-
-1. Install the required system packages. On Debian-derived distributions (Ubuntu, Devuan, ...):
+1. Install the required system packages. On Debian-derived distributions
+   (Ubuntu, Devuan, ...):
 
    ```
    apt install python3-full python3-pip pipx
@@ -39,7 +38,8 @@ as [Anaconda](https://www.anaconda.com/distribution/)
    ```
 
    You might have to add `$HOME/.local/bin` to the PATH environment variable
-   if not present already in order to access the ds command.
+   if not present already in order to access the ds command. This can be done
+   with `pipx ensurepath`.
 
    If you indend to use the Python interface, you can install in the home
    directory with pip3:
@@ -49,8 +49,8 @@ as [Anaconda](https://www.anaconda.com/distribution/)
    ```
 
    Replace pip3 with pip if pip3 is not available. Add `--break-system-packages`
-   if your distribution does not allow installing into home directory but you
-   want to anyway.
+   if your distribution does not allow installing into the home directory but
+   you want to anyway.
 
    Alternatively, install into a Python virtual environment with:
 
@@ -63,16 +63,24 @@ as [Anaconda](https://www.anaconda.com/distribution/)
    You can then use the ds format Python interface from within the virtual
    environment. Deactivate the environment with `deactivate`.
 
-### Anaconda on Linux, Windows or macOS
+### Windows
 
-1. Install [Anaconda](https://www.anaconda.com/download).
+1. Install [Python](https://www.python.org/). In the installer, tick `Add
+python.exe to PATH`.
 
-2. Install ds format in the terminal (Linux and macOS) or Anaconda Prompt
-   (Windows):
+2. Open the Command Prompt from the Start menu. Install ds format with:
 
-   ```
-   pip install {{ pkg }}
-   ```
+    ```
+	pip3 install {{ pkg }}
+	```
+
+### macOS
+
+Open the Terminal. Install ds format with:
+
+```
+python3 -m pip install {{ pkg }}
+```
 
 ### Uninstallation
 
