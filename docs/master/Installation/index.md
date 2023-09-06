@@ -63,6 +63,9 @@ syntax.
    You can then use the ds format Python interface from within the virtual
    environment. Deactivate the environment with `deactivate`.
 
+You should now be able to run the command `ds` and view the manual page with
+`man ds`.
+
 ### Windows
 
 1. Install [Python](https://www.python.org/). In the installer, tick `Add
@@ -74,6 +77,8 @@ python.exe to PATH`.
 	pip3 install {{ pkg }}
 	```
 
+You should now be able to run the command `ds`.
+
 ### macOS
 
 Open the Terminal. Install ds format with:
@@ -81,6 +86,19 @@ Open the Terminal. Install ds format with:
 ```
 python3 -m pip install {{ pkg }}
 ```
+
+Make sure that `/Users/<user>/Library/Python/<version>/bin` is included in the
+`PATH` environment variable if not already, where `<user>` is your system
+user name and `<version>` is the Python version. This path should be printed
+by the above command. This can be done by adding this line to the file
+`.zprofile` in your home directory and restart the Terminal:
+
+```
+PATH="$PATH:/Users/<user>/Library/Python/<version>/bin"
+```
+
+You should now be able to run the command `ds` and view the manual page with
+`man ds`.
 
 ### Uninstallation
 
