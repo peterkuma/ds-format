@@ -1,3 +1,7 @@
+#### 4.0.1 (2023-09-06)
+
+- Fix support for Windows and macOS.
+
 #### 4.0.0 (2023-09-06)
 
 - The ds command is now installed using setuptools entry_points, which also
