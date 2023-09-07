@@ -34,6 +34,7 @@ syntax.
 
    ```
    pipx install {{ pkg }}
+   mkdir -p ~/.local/share/man/man1
    ln -s ~/.local/pipx/venvs/ds-format/share/man/man1/ds*.1 ~/.local/share/man/man1/
    ```
 
