@@ -20,7 +20,7 @@ syntax.
    (Ubuntu, Devuan, ...):
 
    ```
-   apt install python3-full python3-pip pipx
+   apt install python3-full python3-pip python3-venv pipx
    ```
 
    On Fedora:
