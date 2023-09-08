@@ -10,10 +10,6 @@ title: Installation
 Installation on Linux is recommended, but it is also known to work on Windows
 and macOS.
 
-**Important:** On macOS the ds command should be used with the command line
-shell bash, not the default zsh, which is not compatible with the argument
-syntax.
-
 ### Linux
 
 1. Install the required system packages. On Debian-derived distributions
@@ -81,6 +77,10 @@ python.exe to PATH`.
 You should now be able to run the command `ds`.
 
 ### macOS
+
+**Important:** On macOS the ds command should be used with the command line
+shell bash, not the default zsh, which is not compatible with the argument
+syntax.
 
 Open the Terminal. Install ds format with:
 
