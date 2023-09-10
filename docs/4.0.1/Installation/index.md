@@ -10,10 +10,6 @@ title: Installation
 Installation on Linux is recommended, but it is also known to work on Windows
 and macOS.
 
-**Important:** On macOS the ds command should be used with the command line
-shell bash, not the default zsh, which is not compatible with the argument
-syntax.
-
 ### Linux
 
 1. Install the required system packages. On Debian-derived distributions
@@ -67,6 +63,21 @@ syntax.
 You should now be able to run the command `ds` and view the manual page with
 `man ds`.
 
+To uninstall if installed with pipx:
+
+```
+pipx uninstall ds-format
+rm ~/.local/pipx/venvs/ds-format/share/man/man1/ds*.1
+```
+
+To uninstall if installed with pip3 or pip:
+
+```
+pip3 uninstall ds-format
+```
+
+Replace pip3 with pip if pip3 is not available.
+
 ### Windows
 
 1. Install [Python](https://www.python.org/). In the installer, tick `Add
@@ -75,12 +86,22 @@ python.exe to PATH`.
 2. Open the Command Prompt from the Start menu. Install ds format with:
 
     ```
-	pip3 install {{ pkg }}
+	pip install {{ pkg }}
 	```
 
 You should now be able to run the command `ds`.
 
+To uninstall:
+
+```
+pip uninstall ds-format
+```
+
 ### macOS
+
+**Important:** On macOS the ds command should be used with the command line
+shell bash, not the default zsh, which is not compatible with the argument
+syntax.
 
 Open the Terminal. Install ds format with:
 
@@ -101,22 +122,11 @@ PATH="$PATH:/Users/<user>/Library/Python/<version>/bin"
 You should now be able to run the command `ds` and view the manual page with
 `man ds`.
 
-### Uninstallation
-
-To uninstall if installed with pipx:
+To uninstall:
 
 ```
-pipx uninstall ds-format
-rm ~/.local/pipx/venvs/ds-format/share/man/man1/ds*.1
+python3 -m pip uninstall ds-format
 ```
-
-To uninstall if installed with pip3 or pip:
-
-```
-pip3 uninstall ds-format
-```
-
-Replace pip3 with pip if pip3 is not available.
 
 ### Release notes
 
