@@ -3,8 +3,8 @@ import numpy as np
 import ds_format as ds
 from ds_format import misc
 
-READ_EXT = ['h5', 'hdf5', 'hdf']
-WRITE_EXT = ['h5', 'hdf5', 'hdf']
+READ_EXT = ['h5', 'hdf5', 'he5', 'hdf']
+WRITE_EXT = ['h5', 'hdf5', 'he5', 'hdf']
 
 def detect(filename):
 	try:
