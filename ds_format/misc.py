@@ -147,6 +147,8 @@ def process_time_var(d, var):
 	if isinstance(x[0], cftime.real_datetime) or \
 	   isinstance(x[0], cftime.datetime):
 		for i in range(len(x)):
+			if x[i] is np.ma.masked:
+				continue
 			x[i] = dt.datetime(x[i].year, 1, 1) + \
 			(x[i] - type(x[i])(x[i].year, 1, 1))
 	ds.var(d, var, np.array(aq.from_datetime(list(x))).reshape(shape))
