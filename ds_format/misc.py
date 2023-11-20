@@ -135,8 +135,6 @@ def process_time_var(d, var):
 	mask = ~np.ma.getmaskarray(x)
 	try: mask &= np.isfinite(x)
 	except: pass
-	ds.attr(d, 'units', 'days since -4713-11-24 12:00 UTC', var=var)
-	ds.attr(d, 'calendar', 'proleptic_gregorian', var=var)
 	if np.sum(mask) == 0:
 		return
 	try:
@@ -147,6 +145,8 @@ def process_time_var(d, var):
 		x = x.astype(np.object_)
 		x[mask] = y
 	except: return
+	ds.attr(d, 'units', 'days since -4713-11-24 12:00 UTC', var=var)
+	ds.attr(d, 'calendar', 'proleptic_gregorian', var=var)
 	x0 = x[mask][0]
 	if not (
 		isinstance(x0, cftime.real_datetime) or
