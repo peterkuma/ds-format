@@ -132,28 +132,37 @@ def process_time_var(d, var):
 	   calendar in (None, 'standard'):
 		units = 'days since -4713-11-24 12:00 UTC'
 		calendar = 'proleptic_gregorian'
+	mask = ~np.ma.getmaskarray(x)
+	try: mask &= np.isfinite(x)
+	except: pass
+	ds.attr(d, 'units', 'days since -4713-11-24 12:00 UTC', var=var)
+	ds.attr(d, 'calendar', 'proleptic_gregorian', var=var)
+	if np.sum(mask) == 0:
+		return
 	try:
-		x = cftime.num2date(x, units,
+		y = cftime.num2date(x[mask], units,
 			calendar=calendar,
 			only_use_cftime_datetimes=False,
 		)
+		x = x.astype(np.object_)
+		x[mask] = y
 	except: return
+	x0 = x[mask][0]
 	if not (
-		isinstance(x[0], cftime.real_datetime) or
-		isinstance(x[0], cftime.datetime) or
-		isinstance(x[0], dt.datetime)
+		isinstance(x0, cftime.real_datetime) or
+		isinstance(x0, cftime.datetime) or
+		isinstance(x0, dt.datetime)
 	):
 		return
-	if isinstance(x[0], cftime.real_datetime) or \
-	   isinstance(x[0], cftime.datetime):
+	if isinstance(x0, cftime.real_datetime) or \
+	   isinstance(x0, cftime.datetime):
 		for i in range(len(x)):
-			if x[i] is np.ma.masked:
+			if not mask[i]:
 				continue
 			x[i] = dt.datetime(x[i].year, 1, 1) + \
 			(x[i] - type(x[i])(x[i].year, 1, 1))
-	ds.var(d, var, np.array(aq.from_datetime(list(x))).reshape(shape))
-	ds.attr(d, 'units', 'days since -4713-11-24 12:00 UTC', var=var)
-	ds.attr(d, 'calendar', 'proleptic_gregorian', var=var)
+	x = [aq.from_datetime(x[i]) if mask[i] else x[i] for i in range(len(x))]
+	ds.var(d, var, np.array(x).reshape(shape))
 
 def check(x, name, arg, *args, elemental=False, fail=True):
 	if type(x) is tuple:
