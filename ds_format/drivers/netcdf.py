@@ -87,6 +87,7 @@ def write(filename, d):
 				len(data.flatten()) > 0 and \
 				isinstance(data.flatten()[0], str):
 				dtype = str
+				data[data == None] = ''
 			else:
 				dtype = data.dtype
 			v = f.createVariable(var, dtype, ds.dims(d, var))
