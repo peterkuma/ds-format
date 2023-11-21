@@ -83,6 +83,6 @@ time temperature
 		xx += [x]
 	n = len(xx[0])
 	for i in range(n):
-		y = [x[i] for x in xx]
+		y = [x[i] if len(x) > i else None for x in xx]
 		if len(y) == 1: y = y[0]
 		sys.stdout.buffer.write(misc.encode(y) + b'\n')
