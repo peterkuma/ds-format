@@ -176,12 +176,15 @@ def copy(d):
 
 def normalize_var(data):
 	if isinstance(data, (list, tuple)):
-		data = np.array(data)
-		mask = data == None
-		if np.any(mask):
+		data = np.ma.asarray(data)
+		data = np.ma.masked_equal(data, None)
+		mask = data.mask.copy()
+		if np.ma.is_masked(data):
 			data[mask] = 0
-			dtype = np.array(data.flatten().tolist()).dtype
-			data = np.ma.array(data, dtype, mask=mask)
+			tmp = data.flatten().tolist()
+			data = np.ma.array(tmp, mask=mask)
+		else:
+			data = np.asarray(data)
 	if isinstance(data, (int, float, bool, str, bytes)):
 		data = np.array(data)[()]
 	if data is None or \
@@ -1179,7 +1182,7 @@ def var(d, var, *value):
 		*var*: "Variable name (`str`)."
 		*value*: "Variable data. If supplied, set variable data, otherwise get variable data."
 	}}
-	returns: "Variable data (`np.ndarray` or `np.generic`) or `None` if the variable data are not defined or `value` is supplied.  Raises `ValueError` if the output dtype is not one of the types `np.float32`, `np.float64`, `np.int8`, `np.int16`, `np.int32`, `np.int64`, `np.uint8`, `np.uint16`, `np.uint32`, `np.uint64`, `np.bool`, `np.bytes<n>`, `np.str<n>`, or `np.object` for which all items are an instance of `str` or `bytes`."
+	returns: "Variable data (`np.ndarray`, `np.ma.MaskedArray`, `np.generic` or `np.ma.core.MaskedConstant`) or `None` if the variable data are not defined or `value` is supplied.  Raises `ValueError` if the output dtype is not one of the types `np.float32`, `np.float64`, `np.int8`, `np.int16`, `np.int32`, `np.int64`, `np.uint8`, `np.uint16`, `np.uint32`, `np.uint64`, `np.bool`, `np.bytes<n>`, `np.str<n>`, or `np.object` for which all items are an instance of `str` or `bytes`."
 	examples: {{
 		"Get data of a variable `temperature` in a dataset `dataset.nc`.":
 "$ d = ds.read('dataset.nc')
