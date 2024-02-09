@@ -3,7 +3,7 @@ import fnmatch
 import numpy as np
 import copy as copy_
 import datetime as dt
-from warnings import warn
+from warnings import warn, catch_warnings
 from collections.abc import Mapping, Iterable
 import ds_format as ds
 from ds_format.misc import check
@@ -176,7 +176,8 @@ def copy(d):
 
 def normalize_var(data):
 	if isinstance(data, (list, tuple)):
-		data = np.ma.asarray(data)
+		with catch_warnings(action='ignore'):
+			data = np.ma.asarray(data)
 		data = np.ma.masked_equal(data, None)
 		mask = data.mask.copy()
 		if np.ma.is_masked(data):
