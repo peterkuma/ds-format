@@ -6,12 +6,17 @@ from ds_format import misc
 READ_EXT = ['csv', 'tsv', 'tab']
 WRITE_EXT = ['csv', 'tsv', 'tab']
 
-def convert(x):
+def convert_read(x):
 	for f in [int, float]:
 		try: return f(x)
 		except (ValueError, TypeError): pass
 	if x == '':
 		return None
+	return x
+
+def convert_write(x):
+	if x is np.ma.masked:
+		return ''
 	return x
 
 def read(filename, variables=None, sel=None, full=False, jd=False, opts={}):
@@ -29,7 +34,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False, opts={}):
 				x = [[] for i in range(ncols)]
 				continue
 			for j in range(ncols):
-				x[j].append(convert(row[j]) if len(row) > j else None)
+				x[j].append(convert_read(row[j]) if len(row) > j else None)
 	d = {}
 	for j in range(ncols):
 		var = header[j]
@@ -75,4 +80,4 @@ def write(filename, d, opts={}):
 		if ncols > 0:
 			writer.writerow(header)
 		for j in range(nrows):
-			writer.writerow([x[i][j] for i in range(ncols)])
+			writer.writerow([convert_write(x[i][j]) for i in range(ncols)])
