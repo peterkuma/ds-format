@@ -1,3 +1,12 @@
+#### 4.1.0 (2024-02-16)
+
+- ds.var: Fixed handling of missing values.
+- csv: Missing values are not written as empty strings.
+- ds cat: Fixed showing scalar vars along empty vars.
+- Fixed handling of missing values in time variables.
+- Support for .he5 file extension of HDF5 files.
+- Improvements in the documentation.
+
 #### 4.0.1 (2023-09-06)
 
 - Fix support for Windows and macOS.

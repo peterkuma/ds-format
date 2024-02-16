@@ -3,3 +3,6 @@
 *.egg-info/
 /build/
 /dist/
+/man/*.html
+/docs/_site/
+/docs/dist/
