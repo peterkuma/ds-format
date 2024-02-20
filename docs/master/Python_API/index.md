@@ -55,7 +55,7 @@ NetCDF units for storing Julian date time variables.
 
 #### ds.drivers.netcdf.JD_CALENDAR
 
-`proleptic_greogorian`
+`proleptic_gregorian`
 
 NetCDF calendar for storing Julian date time variables.
 
