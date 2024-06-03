@@ -3,7 +3,7 @@ layout: default
 title: Installation
 ---
 
-{% assign pkg = 'ds-format==4.1.0' %}
+{% assign pkg = ds-format %}
 
 ## Installation
 

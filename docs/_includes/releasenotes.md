@@ -1,3 +1,8 @@
+#### 4.1.1 (2024-06-03)
+
+- Fixed compatibility with older Python versions.
+- Fixed JD_CALENDAR constant in the documentation.
+
 #### 4.1.0 (2024-02-16)
 
 - ds.var: Fixed handling of missing values.
