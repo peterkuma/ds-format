@@ -1,4 +1,3 @@
-import csv
 import numpy as np
 import ds_format as ds
 from ds_format import misc
@@ -20,6 +19,7 @@ def convert_write(x):
 	return x
 
 def read(filename, variables=None, sel=None, full=False, jd=False, opts={}):
+	import csv
 	header = None
 	ncols = 0
 	x = []
@@ -56,6 +56,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False, opts={}):
 	return d
 
 def write(filename, d, opts={}):
+	import csv
 	ds.validate(d)
 	header = []
 	x = []

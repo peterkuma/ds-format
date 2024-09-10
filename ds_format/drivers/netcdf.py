@@ -1,5 +1,4 @@
 import os
-from netCDF4 import Dataset
 import numpy as np
 import ds_format as ds
 from ds_format import misc
@@ -11,6 +10,7 @@ JD_UNITS = 'days since -4713-11-24 12:00 UTC'
 JD_CALENDAR = 'proleptic_gregorian'
 
 def detect(filename):
+	from netCDF4 import Dataset
 	try:
 		with Dataset(filename) as f:
 			return True
@@ -52,6 +52,7 @@ def read_var(f, name, sel=None, data=True):
 	return [x, attrs]
 
 def read(filename, variables=None, sel=None, full=False, jd=False):
+	from netCDF4 import Dataset
 	if isinstance(filename, bytes):
 		filename = os.fsdecode(filename)
 	with Dataset(filename, 'r') as f:
@@ -72,6 +73,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 	return d
 
 def write(filename, d):
+	from netCDF4 import Dataset
 	ds.validate(d)
 	if isinstance(filename, bytes):
 		filename = os.fsdecode(filename)

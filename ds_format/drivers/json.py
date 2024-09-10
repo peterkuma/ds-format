@@ -1,4 +1,3 @@
-import json
 import numpy as np
 import ds_format as ds
 
@@ -6,6 +5,7 @@ READ_EXT = ['json']
 WRITE_EXT = ['json']
 
 def read(filename, variables=None, sel=None, full=False, jd=False):
+	import json
 	with open(filename) as f:
 		d = json.load(f)
 		for var in ds.vars(d):
@@ -15,6 +15,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 	return d
 
 def write(filename, d):
+	import json
 	d2 = ds.copy(d)
 	for var in ds.vars(d2):
 		var_e = ds.escape(var)

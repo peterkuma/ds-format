@@ -1,4 +1,3 @@
-import h5py
 import numpy as np
 import ds_format as ds
 from ds_format import misc
@@ -7,6 +6,7 @@ READ_EXT = ['h5', 'hdf5', 'he5', 'hdf']
 WRITE_EXT = ['h5', 'hdf5', 'he5', 'hdf']
 
 def detect(filename):
+	import h5py
 	try:
 		with h5py.File(filename, 'r') as f:
 			return True
@@ -20,6 +20,7 @@ def read_attrs(v, name=''):
 	}
 
 def read_var(f, var, name, sel=None, data=True):
+	import h5py
 	v = f[name]
 	x = None
 	attrs = read_attrs(v)
@@ -50,6 +51,7 @@ def read_var(f, var, name, sel=None, data=True):
 	return [x, attrs]
 
 def read_group(f, variables, sel, full):
+	import h5py
 	d = {}
 	ds.attrs(d, None, read_attrs(f, f.name[1:]))
 	for name in f.keys():
@@ -76,6 +78,7 @@ def read_group(f, variables, sel, full):
 	return d
 
 def read(filename, variables=None, sel=None, full=False, jd=False):
+	import h5py
 	with h5py.File(filename, 'r') as f:
 		d = read_group(f, variables, sel, full)
 	if jd:
@@ -84,6 +87,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 	return d
 
 def write(filename, d):
+	import h5py
 	ds.validate(d)
 	with h5py.File(filename, 'w') as f:
 		for var in ds.vars(d):
