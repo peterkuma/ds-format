@@ -1,3 +1,8 @@
+#### 4.1.2 (2024-09-10)
+
+- Only import IO modules in drivers as needed. This is a workaround for
+  conflicting shared libraries lined by the netCDF4 and h5py packages.
+
 #### 4.1.1 (2024-06-03)
 
 - Fixed compatibility with older Python versions.
