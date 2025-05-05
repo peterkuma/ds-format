@@ -317,7 +317,7 @@ $ ds.dim(d, 'time', full=True)
 	'''
 	check(d, 'd', dict)
 	check(dim, 'dim', str)
-	if require(d, 'dim', dim):
+	if require(d, 'dim', dim, full=full):
 		return dims(d, full=full, size=True)[dim]
 	return 0
 
@@ -919,7 +919,7 @@ True"
 		if name in ds.vars(d, full=full):
 			return True
 	elif what == 'dim':
-		dims = ds.dims(d, var)
+		dims = ds.dims(d, var, full=full)
 		if name in dims:
 			return True
 	elif what == 'attr':

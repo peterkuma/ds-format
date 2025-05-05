@@ -1,5 +1,6 @@
 from .attrs import attrs
 from .cat import cat
+from .dim import dim
 from .dims import dims
 from .ls import ls
 from .merge import merge
@@ -16,6 +17,7 @@ from .type_ import type_
 CMDS = {
 	'attrs': attrs,
 	'cat': cat,
+	'dim': dim,
 	'dims': dims,
 	'ls': ls,
 	'merge': merge,

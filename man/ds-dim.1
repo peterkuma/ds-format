@@ -1,0 +1,26 @@
+.\" generated with Ronn-NG/v0.9.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
+.TH "DS\-DIM" "1" "May 2025" ""
+.SH "NAME"
+\fBds\-dim\fR \- Print dimension size\.
+.SH "SYNOPSIS"
+\fBds dim\fR \fIdim\fR \fIinput\fR [\fIoptions\fR]
+.SH "ARGUMENTS"
+.TP
+\fIdim\fR
+Dimension name\.
+.TP
+\fIinput\fR
+Input file\.
+.TP
+\fIoptions\fR
+See help for ds for global options\.
+.SH "EXAMPLES"
+Print size of the dimension \fBtime\fR in dataset \fBdataset\.nc\fR\.
+.IP "" 4
+.nf
+$ ds dim time dataset\.nc
+3
+.fi
+.IP "" 0
+

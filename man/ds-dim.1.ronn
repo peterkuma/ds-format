@@ -1,0 +1,23 @@
+ds-dim(1) -- Print dimension size.
+==================================
+
+## SYNOPSIS
+
+`ds dim` *dim* *input* [*options*]
+
+## ARGUMENTS
+
+- *dim*:
+Dimension name.
+- *input*:
+Input file.
+- *options*:
+See help for ds for global options.
+
+## EXAMPLES
+
+Print size of the dimension `time` in dataset `dataset.nc`.
+
+    $ ds dim time dataset.nc
+    3
+

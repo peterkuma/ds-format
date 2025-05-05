@@ -89,6 +89,27 @@ time temperature
 3 21.000000
 ```
 
+#### dim
+
+Print dimension size.
+
+**Usage:** `ds dim` *dim* *input* [*options*]
+
+**Arguments:**
+
+- *dim*: Dimension name.
+- *input*: Input file.
+- *options*: See help for ds for global options.
+
+**Examples:**
+
+Print size of the dimension `time` in dataset `dataset.nc`.
+
+```
+$ ds dim time dataset.nc
+3
+```
+
 #### dims
 
 Print dimensions of a dataset or a variable.

@@ -28,6 +28,7 @@ variable in order to access the manual pages.
 | --- | --- |
 | [attrs](#attrs) | Print attributes in a dataset. |
 | [cat](#cat) | Print variable data. |
+| [dim](#dim) | Print dimension size. |
 | [dims](#dims) | Print dimensions of a dataset or a variable. |
 | [ls](#ls) | List variables. |
 | [merge](#merge) | Merge files along a dimension. |
