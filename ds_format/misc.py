@@ -127,7 +127,7 @@ def process_time_var(d, var):
 	attrs = ds.attrs(d, var)
 	units = attrs.get('units')
 	calendar = attrs.get('calendar', 'standard')
-	if units is not None and \
+	if units is not None and isinstance(units, str) and \
 	   re.match(r'^days since -4712-01-01[T ]12:00(:00)?( UTC)?$', units) and \
 	   calendar in (None, 'standard'):
 		units = 'days since -4713-11-24 12:00 UTC'
