@@ -43,6 +43,8 @@ Print the version number and exit.
 Print attributes in a dataset.
 - `cat`:
 Print variable data.
+- `dim`:
+Print dimension size.
 - `dims`:
 Print dimensions of a dataset or a variable.
 - `ls`:

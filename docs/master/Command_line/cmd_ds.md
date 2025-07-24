@@ -31,6 +31,7 @@ The command line interface is based on the [PST format](https://github.com/peter
 
 - `attrs`: Print attributes in a dataset.
 - `cat`: Print variable data.
+- `dim`: Print dimension size.
 - `dims`: Print dimensions of a dataset or a variable.
 - `ls`: List variables.
 - `merge`: Merge files along a dimension.
