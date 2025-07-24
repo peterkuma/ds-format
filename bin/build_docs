@@ -1,17 +1,43 @@
-#!/bin/sh
+#!/usr/bin/env python3
 
-versions=$(python3 -c "import yaml; print(' '.join(yaml.safe_load(open('docs/_config.yml'))['versions_all'][:-1]))")
+from inspect import getmembers, isfunction
+import sys
+sys.path = ['.'] + sys.path
+import ds_format as ds
+from ds_format.cmd import CMDS
+from ds_format.cmd.main import main
+from ds_format import help
 
-latest=$(python3 -c "import yaml; print(yaml.safe_load(open('docs/_config.yml'))['latest'])")
+if __name__ == '__main__':
+	with open('docs/master/Command_line/cmd_ds.md', 'w') as f:
+		f.write('{% raw %}')
+		f.write(help.help_to_md(main.__doc__))
+		f.write('\n')
+		f.write('{% endraw %}')
 
-bin/build_docs_py
+	with open('docs/master/Command_line/cmds.md', 'w') as f:
+		f.write('{% raw %}')
+		for cmd, func in sorted(CMDS.items()):
+			f.write(help.help_to_md(func.__doc__))
+			f.write('\n')
+		f.write('{% endraw %}')
 
-for v in $versions; do
-	mkdir -p "docs/$v"
-	git archive "v$v" docs/master | \
-		tar xf - -C "docs/$v" --strip-components=2
-	f=docs/$v/Installation/index.md
-	sed -i "s/https:\/\/github\.com\/peterkuma\/ds-format\/archive\/refs\/heads\/master.zip/ds-format==$v/g" $f
-done
+	with open('docs/master/Python_API/functions.md', 'w') as f:
+		f.write('{% raw %}')
+		for name, func in sorted(getmembers(ds)):
+			if not isfunction(func) or \
+			   name.startswith('_') or \
+			   name in getattr(func, 'aliases', []) or \
+			   func.__doc__ is None:
+				continue
+			f.write(help.help_to_md(func.__doc__))
+			f.write('\n')
+		f.write('{% endraw %}')
 
-ln -sf "$latest" docs/latest
+	with open('man/ds.1.ronn', 'w') as f:
+		f.write(help.help_to_ronn(main.__doc__))
+
+	for cmd, func in sorted(CMDS.items()):
+		cmd_s = cmd.replace('/', '')
+		with open('man/ds-%s.1.ronn' % cmd_s, 'w') as f:
+			f.write(help.help_to_ronn(func.__doc__))
