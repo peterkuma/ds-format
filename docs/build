@@ -1,0 +1,21 @@
+#!/bin/sh
+set -e -x
+
+versions=$(python3 -c "import yaml; print(' '.join(yaml.safe_load(open('_config.yml'))['versions_all']))")
+
+latest=$(python3 -c "import yaml; print(yaml.safe_load(open('_config.yml'))['latest'])")
+
+mkdir -p dist
+git archive HEAD | tar xf - -C dist
+
+for v in $versions; do
+	dir="dist/$v"
+	mkdir -p "$dir"
+	git archive "v$v" master | \
+		tar xf - -C "$dir" --strip-components=1
+	f=dist/$v/Installation/index.md
+	sed -i "s/https:\/\/github\.com\/peterkuma\/ds-format\/archive\/refs\/heads\/master.zip/ds-format==$v/g" $f
+done
+
+rm -f dist/latest
+ln -s "$latest" dist/latest

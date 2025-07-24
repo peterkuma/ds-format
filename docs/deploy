@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e -x
+
+cd dist
+jekyll build
+cd _site
+tar cf - . | ssh hetzner 'tar xf - -C /data/www/ds-format.peterkuma.net/'
+cd ../../
