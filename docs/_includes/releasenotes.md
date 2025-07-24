@@ -1,3 +1,9 @@
+#### 4.2.0 (2025-07-24)
+
+- ds dim: New command.
+- Fixed a bug in parsing of the units attribute.
+- Improved documentation.
+
 #### 4.1.2 (2024-09-10)
 
 - Only import IO modules in drivers as needed. This is a workaround for
