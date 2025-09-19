@@ -10,6 +10,7 @@ from .misc import \
 	with_mode
 from .drivers.netcdf import from_netcdf, to_netcdf
 from .op import \
+	apply, \
 	attr, \
 	attrs, \
 	copy, \

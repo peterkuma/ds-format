@@ -207,6 +207,57 @@ def normalize_var(data):
 # Public functions.
 #
 
+def apply(d, func, dim=None, with_sel=False):
+	'''
+	title: apply
+	caption: "Apply a function on a dataset."
+	usage: "`apply(*d*, *func*, *dim*=`None`, *with_sel*=`False`)"
+	desc: "Apply a function *func* on all variables in a dataset *d*. If *dim* is not `None`, the function is applied along a dimension *dim*. The function result can be either a scalar or a vector. If it is a scalar, the variable dimension is dropped."
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*func*: "Function to apply (`function`). The function signature is *f*(*x*) if *with_sel* is false or *f*(*x*, *sel*) if *with_sel* is true. *x* is a subset of the array. *sel* is a `dict` containing indexes of the subset, where the key is the dimension name and the value is the index.
+	}}
+	options: {{
+		*dim*: "Dimension name (`str`)."
+		*with_sel*: "Pass a *sel* argument to *func* (`bool`)."
+	}}
+	returns: `None`
+	'''
+	check(d, 'd', dict)
+	if not callable(func):
+		raise TypeError('func must be callable')
+	check(dim, 'dim', [str, [list, str]])
+	for var in ds.vars(d):
+		dims = ds.dims(d, var)
+		data = ds.var(d, var)
+		if dim is None:
+			data = func(x)
+			ds.var(d, var, data)
+		elif dim in dims:
+			i = dims.index(dim)
+			ndim = data.ndim
+			if with_sel:
+				data_new = None
+				ni = data.shape[:i]
+				nj = data.shape[i+1:]
+				for ii in np.ndindex(ni):
+					for jj in np.ndindex(nj):
+						sel = dict(zip(dims[:i] + dims[i+1:], ii + jj))
+						x = func(data[ii + np.s_[:,] + jj], sel)
+						if data_new is None:
+							n = len(x)
+							nk = [n] if n > 0 else []
+							shape_new = list(ni) + list(nk) + list(nj)
+							data_new = np.zeros(shape_new, data.dtype)
+						data_new[ii + np.s_[...,] + jj] = x
+				data = data_new
+			else:
+				data = np.apply_along_axis(func, i, data)
+			if data.ndim != ndim:
+				del dims[i]
+				ds.dims(d, var, dims)
+			ds.var(d, var, data)
+
 def attr(d, attr, *value, var=None):
 	'''
 	title: attr
