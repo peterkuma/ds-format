@@ -203,9 +203,109 @@ def normalize_var(data):
 	else:
 		raise ValueError('invalid data type')
 
+def apply_var(d, var, func, dims=None, newdims=None, with_sel=False):
+	var_dims = ds.dims(d, var)
+	data = ds.var(d, var)
+	if dims is None:
+		data = func(x)
+		ds.var(d, var, data)
+		if newdims is not None:
+			ds.dims(d, var, newdims)
+		return
+	if any([x not in var_dims for x in dims]):
+		return
+	ii = [var_dims.index(x) for x in dims]
+	if newdims is None:
+		newdims = [var_dims[i] for i in ii]
+	newdata = None
+	newdimsx = []
+	newshape = []
+	shape1 = [n for i, n in enumerate(data.shape) if i not in ii]
+	dims1 = [dim1 for i, dim1 in enumerate(var_dims) if i not in ii]
+	for idx1 in np.ndindex(tuple(shape1)):
+		sel = dict(zip(dims1, idx1))
+		oldidx = []
+		k = 0
+		for i in range(data.ndim):
+			if i in ii:
+				oldidx += np.s_[:,]
+			else:
+				oldidx += [idx1[k]]
+				k += 1
+		x = func(data[tuple(oldidx)], sel) \
+			if with_sel \
+			else func(data[tuple(oldidx)])
+		if newdata is None:
+			j1, j2 = 0, 0
+			for i in range(len(shape1) + x.ndim):
+				if (i in ii or i > max(ii)) and j2 < x.ndim:
+					newshape += [x.shape[j2]]
+					newdimsx += [newdims[j2]]
+					j2 += 1
+				else:
+					newshape += [shape1[j1]]
+					newdimsx += [dims1[j1]]
+					j1 += 1
+			newdata = np.zeros(newshape, data.dtype)
+		j1, j2 = 0, 0
+		newidx = []
+		for i in range(len(shape1) + x.ndim):
+			if (i in ii or i > max(ii)) and j2 < x.ndim:
+				newidx += np.s_[:,]
+				j2 += 1
+			else:
+				newidx += [idx1[j1]]
+				j1 += 1
+		newdata[tuple(newidx)] = x
+	ds.var(d, var, newdata)
+	ds.dims(d, var, newdimsx)
+
 #
 # Public functions.
 #
+
+def apply(d, func, dims=None, newdims=None, vars=None, with_sel=False):
+	'''
+	title: apply
+	caption: "Apply a function variables in on a dataset."
+	usage: "`apply(*d*, *func*, *dims*=`None`, *newdims*=`None`, *with_sel*=`False`)"
+	desc: "Apply a function *func* on variables *vars*, or all variables if *var* is `None`, in a dataset *d*. If *dim* is not `None`, the function is applied along dimensions *dims*. The function must return a scalar or an array of any number of dimensions. If the number of dimensions of the function result is smaller than the number of dimensions in *dims*, the surplus dimensions are removed. If the number is greater, additional dimensions are added adjacent to the last dimension of *dims*. *newdims* are the new dimensions to replace *dims*."
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*func*: "Function to apply (`function`). The function signature is *f*(*x*) if *with_sel* is `False` or *f*(*x*, *sel*) if *with_sel* is `True`. *x* is a subset of the array along the dimensions *dim*. *sel* is a `dict` containing indexes of the subset, where the key is the dimension name and the value is the index.
+	}}
+	options: {{
+		*dims*: "Dimension name(s) (`str` or `list` of `str`)."
+		*newdims*: "New dimension name(s) (`str` or `list` of `str`)."
+		*vars*: "Variables to apply the function to, or all variables if `None`."
+		*with_sel*: "Pass a *sel* argument to *func* (`bool`)."
+	}}
+	examples: {{
+		"Calculate mean of variables in a dataset *d*.":
+"ds.apply(d, np.mean)"
+		"Calculate mean of variables along dimensions `x` and `y`.":
+"ds.apply(d, np.mean, dims=['x', 'y'])"
+		"Interpolate variables in dataset *d* defined as 1D arrays with dimension 'n' on irregular x- and y-coordinates given in variables *xg* (1D array) and *yg* (1D array) onto a regular grid defined by x- and y-coordinates *x* and *y*, and call the resulting dimensions `x` and `y`.":
+"xm, ym = np.meshgrid(x, y)
+ds.appply(d,
+	lambda data: scipy.interpolate.griddata((xg, yg), data, (xm, ym),
+	dims='n',
+	newdims=['x', 'y']
+)"
+	}}
+	returns: `None`
+	'''
+	check(d, 'd', dict)
+	if not callable(func):
+		raise TypeError('func must be callable')
+	check(dims, 'dims', [str, [list, str]])
+	if type(dims) is str:
+		dims = [dims]
+	if type(newdims) is str:
+		newdims = [newdims]
+	for var in (vars if vars is not None else ds.vars(d)):
+		if require(d, 'var', var):
+			apply_var(d, var, func, dims, newdims, with_sel)
 
 def attr(d, attr, *value, var=None):
 	'''
