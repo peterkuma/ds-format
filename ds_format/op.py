@@ -203,60 +203,109 @@ def normalize_var(data):
 	else:
 		raise ValueError('invalid data type')
 
+def apply_var(d, var, func, dims=None, newdims=None, with_sel=False):
+	var_dims = ds.dims(d, var)
+	data = ds.var(d, var)
+	if dims is None:
+		data = func(x)
+		ds.var(d, var, data)
+		if newdims is not None:
+			ds.dims(d, var, newdims)
+		return
+	if any([x not in var_dims for x in dims]):
+		return
+	ii = [var_dims.index(x) for x in dims]
+	if newdims is None:
+		newdims = [var_dims[i] for i in ii]
+	newdata = None
+	newdimsx = []
+	newshape = []
+	shape1 = [n for i, n in enumerate(data.shape) if i not in ii]
+	dims1 = [dim1 for i, dim1 in enumerate(var_dims) if i not in ii]
+	for idx1 in np.ndindex(tuple(shape1)):
+		sel = dict(zip(dims1, idx1))
+		oldidx = []
+		k = 0
+		for i in range(data.ndim):
+			if i in ii:
+				oldidx += np.s_[:,]
+			else:
+				oldidx += [idx1[k]]
+				k += 1
+		x = func(data[tuple(oldidx)], sel) \
+			if with_sel \
+			else func(data[tuple(oldidx)])
+		if newdata is None:
+			j1, j2 = 0, 0
+			for i in range(len(shape1) + x.ndim):
+				if (i in ii or i > max(ii)) and j2 < x.ndim:
+					newshape += [x.shape[j2]]
+					newdimsx += [newdims[j2]]
+					j2 += 1
+				else:
+					newshape += [shape1[j1]]
+					newdimsx += [dims1[j1]]
+					j1 += 1
+			newdata = np.zeros(newshape, data.dtype)
+		j1, j2 = 0, 0
+		newidx = []
+		for i in range(len(shape1) + x.ndim):
+			if (i in ii or i > max(ii)) and j2 < x.ndim:
+				newidx += np.s_[:,]
+				j2 += 1
+			else:
+				newidx += [idx1[j1]]
+				j1 += 1
+		newdata[tuple(newidx)] = x
+	ds.var(d, var, newdata)
+	ds.dims(d, var, newdimsx)
+
 #
 # Public functions.
 #
 
-def apply(d, func, dim=None, with_sel=False):
+def apply(d, func, dims=None, newdims=None, vars=None, with_sel=False):
 	'''
 	title: apply
-	caption: "Apply a function on a dataset."
-	usage: "`apply(*d*, *func*, *dim*=`None`, *with_sel*=`False`)"
-	desc: "Apply a function *func* on all variables in a dataset *d*. If *dim* is not `None`, the function is applied along a dimension *dim*. The function result can be either a scalar or a vector. If it is a scalar, the variable dimension is dropped."
+	caption: "Apply a function variables in on a dataset."
+	usage: "`apply(*d*, *func*, *dims*=`None`, *newdims*=`None`, *with_sel*=`False`)"
+	desc: "Apply a function *func* on variables *vars*, or all variables if *var* is `None`, in a dataset *d*. If *dim* is not `None`, the function is applied along dimensions *dims*. The function must return a scalar or an array of any number of dimensions. If the number of dimensions of the function result is smaller than the number of dimensions in *dims*, the surplus dimensions are removed. If the number is greater, additional dimensions are added adjacent to the last dimension of *dims*. *newdims* are the new dimensions to replace *dims*."
 	arguments: {{
 		*d*: "Dataset (`dict`)."
-		*func*: "Function to apply (`function`). The function signature is *f*(*x*) if *with_sel* is false or *f*(*x*, *sel*) if *with_sel* is true. *x* is a subset of the array. *sel* is a `dict` containing indexes of the subset, where the key is the dimension name and the value is the index.
+		*func*: "Function to apply (`function`). The function signature is *f*(*x*) if *with_sel* is `False` or *f*(*x*, *sel*) if *with_sel* is `True`. *x* is a subset of the array along the dimensions *dim*. *sel* is a `dict` containing indexes of the subset, where the key is the dimension name and the value is the index.
 	}}
 	options: {{
-		*dim*: "Dimension name (`str`)."
+		*dims*: "Dimension name(s) (`str` or `list` of `str`)."
+		*newdims*: "New dimension name(s) (`str` or `list` of `str`)."
+		*vars*: "Variables to apply the function to, or all variables if `None`."
 		*with_sel*: "Pass a *sel* argument to *func* (`bool`)."
+	}}
+	examples: {{
+		"Calculate mean of variables in a dataset *d*.":
+"ds.apply(d, np.mean)"
+		"Calculate mean of variables along dimensions `x` and `y`.":
+"ds.apply(d, np.mean, dims=['x', 'y'])"
+		"Interpolate variables in dataset *d* defined as 1D arrays with dimension 'n' on irregular x- and y-coordinates given in variables *xg* (1D array) and *yg* (1D array) onto a regular grid defined by x- and y-coordinates *x* and *y*, and call the resulting dimensions `x` and `y`.":
+"xm, ym = np.meshgrid(x, y)
+ds.appply(d,
+	lambda data: scipy.interpolate.griddata((xg, yg), data, (xm, ym),
+	dims='n',
+	newdims=['x', 'y']
+)"
 	}}
 	returns: `None`
 	'''
 	check(d, 'd', dict)
 	if not callable(func):
 		raise TypeError('func must be callable')
-	check(dim, 'dim', [str, [list, str]])
-	for var in ds.vars(d):
-		dims = ds.dims(d, var)
-		data = ds.var(d, var)
-		if dim is None:
-			data = func(x)
-			ds.var(d, var, data)
-		elif dim in dims:
-			i = dims.index(dim)
-			ndim = data.ndim
-			if with_sel:
-				data_new = None
-				ni = data.shape[:i]
-				nj = data.shape[i+1:]
-				for ii in np.ndindex(ni):
-					for jj in np.ndindex(nj):
-						sel = dict(zip(dims[:i] + dims[i+1:], ii + jj))
-						x = func(data[ii + np.s_[:,] + jj], sel)
-						if data_new is None:
-							n = len(x)
-							nk = [n] if n > 0 else []
-							shape_new = list(ni) + list(nk) + list(nj)
-							data_new = np.zeros(shape_new, data.dtype)
-						data_new[ii + np.s_[...,] + jj] = x
-				data = data_new
-			else:
-				data = np.apply_along_axis(func, i, data)
-			if data.ndim != ndim:
-				del dims[i]
-				ds.dims(d, var, dims)
-			ds.var(d, var, data)
+	check(dims, 'dims', [str, [list, str]])
+	if type(dims) is str:
+		dims = [dims]
+	if type(newdims) is str:
+		newdims = [newdims]
+	for var in (vars if vars is not None else ds.vars(d)):
+		if require(d, 'var', var):
+			apply_var(d, var, func, dims, newdims, with_sel)
 
 def attr(d, attr, *value, var=None):
 	'''
@@ -381,7 +430,7 @@ def dims(d, var=None, *value, full=False, size=False):
 		"`get_dims`(*d*, *var*=`None`, *full*=`False`, *size*=`False`)"
 	}
 	caption: "Get dataset or variable dimensions or set variable dimensions."
-	desc: "The function `get_dims` (deprecated) is the same as `dims`, but assumes that *size* is True if *var* is None and does not allow setting of dimensions."
+	desc: "The function `get_dims` (deprecated) is the same as `dims`, but assumes that *size* is `True` if *var* is `None` and does not allow setting of dimensions."
 	arguments: {{
 		*d*: "Dataset (`dict`)."
 		*value*: "A list of dimensions (`list` of `str`) or `None`. If supplied, set variable dimensions, otherwise get dataset or variable dimensions. If `None`, remove variable dimensions (will be set to autogenerated names on write). If supplied, *var* must not be None."
@@ -391,7 +440,7 @@ def dims(d, var=None, *value, full=False, size=False):
 		*full*: "Get variable dimensions even if the variable is only defined in the metadata (`bool`)."
 		*size*: "Return a dictionary containing dimension sizes instead of a list."
 	}}
-	returns: "If *size* is False, a list of dataset or variable dimension names (`list` of `str`). If *size* is True, a dictionary of dataset or variable dimension names and sizes (`dict`), where a key is a dimension name (`str`) and the value is the dimension size (`int`). The order of keys in the dictionary is not guaranteed. Dataset dimensions are the dimensions of all variables together."
+	returns: "If *size* is `False`, a list of dataset or variable dimension names (`list` of `str`). If *size* is `True`, a dictionary of dataset or variable dimension names and sizes (`dict`), where a key is a dimension name (`str`) and the value is the dimension size (`int`). The order of keys in the dictionary is not guaranteed. Dataset dimensions are the dimensions of all variables together."
 	examples: {{
 		"Get dimensions of a dataset `dataset.nc`.":
 "$ d = ds.read('dataset.nc')
@@ -480,7 +529,7 @@ def find(d, what, name, var=None):
 		*name*: "[Glob pattern](https://docs.python.org/3/library/fnmatch.html) matching a variable, dimension or attribute name (`str`)."
 	}}
 	options: {{
-		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
+		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `None`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
 	}}
 	returns: "A variable, dimension or attribute name matching the pattern, or *name* if no matching name is found (`str`)."
 	examples: {{
@@ -514,7 +563,7 @@ def findall(d, what, name, var=None):
 		*name*: "[Glob pattern](https://docs.python.org/3/library/fnmatch.html) matching a variable, dimension or attribute name (`str`)."
 	}}
 	options: {{
-		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
+		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `None`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
 	}}
 	returns: "A list of variables, dimensions or attributes matching the pattern, or [*name*] if no matching names are found (`list` of `str`)."
 	examples: {{
@@ -602,7 +651,7 @@ def merge(dd, dim, new=None, variables=None, jd=True):
 	title: merge
 	caption: "Merge datasets along a dimension."
 	usage: "`merge`(*dd*, *dim*, *new*=`None`, *variables*=`None`, *jd*=`True`)"
-	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with metadata from later datasets overriding metadata from the former ones. When merging time variables whose units are not equal and *jd* is `True`, they are first converted to Julian date and then merged."
+	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is `None` and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not `None` and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not `None`, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with metadata from later datasets overriding metadata from the former ones. When merging time variables whose units are not equal and *jd* is `True`, they are first converted to Julian date and then merged."
 	arguments: {{
 		*dd*: "Datasets (`list`)."
 		*dim*: "Name of a dimension to merge along (`str`)."
@@ -955,7 +1004,7 @@ def require(d, what, name, var=None, full=False):
 		*var*: "Variable name (`str`) or `None`. Applies only if *what* is \\"attr\\". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name."
 		*full*: "Also look for items which are defined only in dataset metadata (`bool`)."
 	}}
-	returns: "`true` if the required item is defined in the dataset, otherwise `false` or raises an exception depending on the mode."
+	returns: "`True` if the required item is defined in the dataset, otherwise `False` or raises an exception depending on the mode."
 	examples: {{
 		"Require that a variable `temperature` is defined in a dataset read from `dataset.nc`.":
 "$ d = ds.read('dataset.nc')
@@ -1122,7 +1171,7 @@ def split(d, dims):
 	'''
 	title: split
 	caption: "Split a dataset along one or more dimensions."
-	usage: "`split`(*d*, *dim*)"
+	usage: "`split`(*d*, *dims*)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
 		*dims*: "Dimension name (`str`) or a list of dimension names (`list` of `str`)."

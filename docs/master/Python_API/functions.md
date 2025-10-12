@@ -1,4 +1,21 @@
-{% raw %}#### attr
+{% raw %}#### apply
+
+Apply a function variables in on a dataset.
+
+**Usage:** `apply(*d*, *func*, *dims*=`None`, *newdims*=`None`, *with_sel*=`False`)
+
+Apply a function *func* on variables *vars*, or all variables if *var* is `None`, in a dataset *d*. If *dim* is not `None`, the function is applied along dimensions *dims*. The function must return a scalar or an array of any number of dimensions. If the number of dimensions of the function result is smaller than the number of dimensions in *dims*, the surplus dimensions are removed. If the number is greater, additional dimensions are added adjacent to the last dimension of *dims*. *newdims* are the new dimensions to replace *dims*.
+
+**Arguments:**
+
+- *d*: Dataset (`dict`).
+- *func*: Function to apply (`function`). The function signature is *f*(*x*) if *with_sel* is `False` or *f*(*x*, *sel*) if *with_sel* is `True`. *x* is a subset of the array along the dimensions *dim*. *sel* is a `dict` containing indexes of the subset, where the key is the dimension name and the value is the index.
+	}}
+	options: {{
+		*dims*: Dimension
+- data: scipy.interpolate.griddata((xg,
+
+#### attr
 
 Get or set a dataset or variable attribute.
 
@@ -137,7 +154,7 @@ Get dataset or variable dimensions or set variable dimensions.
 `get_dims`(*d*, *var*=`None`, *full*=`False`, *size*=`False`)<br />
 
 
-The function `get_dims` (deprecated) is the same as `dims`, but assumes that *size* is True if *var* is None and does not allow setting of dimensions.
+The function `get_dims` (deprecated) is the same as `dims`, but assumes that *size* is `True` if *var* is `None` and does not allow setting of dimensions.
 
 **Arguments:**
 
@@ -152,7 +169,7 @@ The function `get_dims` (deprecated) is the same as `dims`, but assumes that *si
 
 **Return value:**
 
-If *size* is False, a list of dataset or variable dimension names (`list` of `str`). If *size* is True, a dictionary of dataset or variable dimension names and sizes (`dict`), where a key is a dimension name (`str`) and the value is the dimension size (`int`). The order of keys in the dictionary is not guaranteed. Dataset dimensions are the dimensions of all variables together.
+If *size* is `False`, a list of dataset or variable dimension names (`list` of `str`). If *size* is `True`, a dictionary of dataset or variable dimension names and sizes (`dict`), where a key is a dimension name (`str`) and the value is the dimension size (`int`). The order of keys in the dictionary is not guaranteed. Dataset dimensions are the dimensions of all variables together.
 
 **Examples:**
 
@@ -194,7 +211,7 @@ If more than one name matches the pattern, raises `ValueError`.
 
 **Options:**
 
-- *var*: Variable name (`str`) or `None`. Applies only if *what* is "attr". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name.
+- *var*: Variable name (`str`) or `None`. Applies only if *what* is "attr". If not `None`, *name* is a variable attribute name, otherwise it is a dataset attribute name.
 
 **Return value:**
 
@@ -224,7 +241,7 @@ Find variables, dimensions or attributes matching a glob pattern in a dataset.
 
 **Options:**
 
-- *var*: Variable name (`str`) or `None`. Applies only if *what* is "attr". If not `none`, *name* is a variable attribute name, otherwise it is a dataset attribute name.
+- *var*: Variable name (`str`) or `None`. Applies only if *what* is "attr". If not `None`, *name* is a variable attribute name, otherwise it is a dataset attribute name.
 
 **Return value:**
 
@@ -329,7 +346,7 @@ Merge datasets along a dimension.
 
 **Usage:** `merge`(*dd*, *dim*, *new*=`None`, *variables*=`None`, *jd*=`True`)
 
-Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is None and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not None and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not None, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with metadata from later datasets overriding metadata from the former ones. When merging time variables whose units are not equal and *jd* is `True`, they are first converted to Julian date and then merged.
+Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is `None` and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not `None` and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not `None`, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with metadata from later datasets overriding metadata from the former ones. When merging time variables whose units are not equal and *jd* is `True`, they are first converted to Julian date and then merged.
 
 **Arguments:**
 
@@ -491,7 +508,7 @@ Only files with known extensions are read. Files are read in an alphabetical ord
 
 **Options:**
 
-- *recursive*: If true, read the directory recursively (`bool`). Otherwise only files in the top-level directory are read.
+- *recursive*: If `True`, read the directory recursively (`bool`). Otherwise only files in the top-level directory are read.
 - *variables*: Variable names to read (`str` or `list` of `str`) or `None` to read all variables.
 - *merge*: Dimension name to merge datasets by (`str`) or `None`.
 - *warnings*: A list to be populated with warnings (`list`).
@@ -763,7 +780,7 @@ If the item is not found and the mode is "soft", returns `False`. If the mode is
 
 **Return value:**
 
-`true` if the required item is defined in the dataset, otherwise `false` or raises an exception depending on the mode.
+`True` if the required item is defined in the dataset, otherwise `False` or raises an exception depending on the mode.
 
 **Examples:**
 
@@ -915,7 +932,7 @@ $ ds.size(d, 'temperature')
 
 Split a dataset along one or more dimensions.
 
-**Usage:** `split`(*d*, *dim*)
+**Usage:** `split`(*d*, *dims*)
 
 **Arguments:**
 
