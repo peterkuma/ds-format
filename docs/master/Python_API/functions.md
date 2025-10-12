@@ -1,19 +1,51 @@
 {% raw %}#### apply
 
-Apply a function variables in on a dataset.
+Apply a function on variables in a dataset.
 
-**Usage:** `apply(*d*, *func*, *dims*=`None`, *newdims*=`None`, *with_sel*=`False`)
+**Usage:** `apply`(*d*, *func*, *dims*=`None`, *newdims*=`None`, *with_sel*=`False`)
 
-Apply a function *func* on variables *vars*, or all variables if *var* is `None`, in a dataset *d*. If *dim* is not `None`, the function is applied along dimensions *dims*. The function must return a scalar or an array of any number of dimensions. If the number of dimensions of the function result is smaller than the number of dimensions in *dims*, the surplus dimensions are removed. If the number is greater, additional dimensions are added adjacent to the last dimension of *dims*. *newdims* are the new dimensions to replace *dims*.
+Apply a function *func* on variables *vars*, or all variables if *vars* is `None`, in a dataset *d*. If *dims* is not `None`, the function is applied along dimensions *dims*. The function must return a scalar or an array of any number of dimensions. If the number of dimensions of the function result is smaller than the number of dimensions in *dims*, the surplus dimensions are removed. If the number is greater, additional dimensions are added adjacent to the last dimension of *dims*. *newdims* are the new dimensions to replace *dims*.
 
 **Arguments:**
 
 - *d*: Dataset (`dict`).
-- *func*: Function to apply (`function`). The function signature is *f*(*x*) if *with_sel* is `False` or *f*(*x*, *sel*) if *with_sel* is `True`. *x* is a subset of the array along the dimensions *dim*. *sel* is a `dict` containing indexes of the subset, where the key is the dimension name and the value is the index.
-	}}
-	options: {{
-		*dims*: Dimension
-- data: scipy.interpolate.griddata((xg,
+- *func*: Function to apply (`function`). The function signature is *f*(*x*) if *with_sel* is `False` or *f*(*x*, *sel*) if *with_sel* is `True`. *x* is a subset of the array along the dimensions *dims*. *sel* is a `dict` containing indexes of the subset, where the key is the dimension name and the value is the index.
+
+**Options:**
+
+- *dims*: Dimension name(s) (`str` or `list` of `str`).
+- *newdims*: New dimension name(s) (`str` or `list` of `str`).
+- *vars*: Variables to apply the function to, or all variables if `None`.
+- *with_sel*: Pass a *sel* argument to *func* (`bool`).
+
+**Return value:**
+
+`None`
+
+**Examples:**
+
+Calculate mean of variables in a dataset *d*.
+
+```
+ds.apply(d, np.mean)
+```
+
+Calculate mean of variables along dimensions `x` and `y`.
+
+```
+ds.apply(d, np.mean, dims=['x', 'y'])
+```
+
+Interpolate variables in dataset *d* defined as 1D arrays with dimension `n` on irregular x- and y-coordinates given in variables *xg* (1D array) and *yg* (1D array) onto a regular grid defined by x- and y-coordinates *x* and *y*, and call the resulting dimensions `x` and `y`.
+
+```
+xm, ym = np.meshgrid(x, y)
+ds.appply(d,
+	lambda data: scipy.interpolate.griddata((xg, yg), data, (xm, ym),
+	dims='n',
+	newdims=['x', 'y']
+)
+```
 
 #### attr
 
