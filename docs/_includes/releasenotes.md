@@ -1,3 +1,9 @@
+#### 4.3.0 (2025-10-15)
+
+- ds.apply: New function.
+- ds.group_by: Improved check if func is callable.
+- Fixes in the documentation.
+
 #### 4.2.0 (2025-07-24)
 
 - ds dim: New command.
