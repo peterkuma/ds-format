@@ -16,6 +16,7 @@ import ds_format as ds
 
 | Function | Description |
 | --- | --- |
+| [apply](#apply) | Apply a function on variables in a dataset. |
 | [attr](#attr) | Get or set a dataset or variable attribute. |
 | [attrs](#attrs) | Get or set variable or dataset attributes. |
 | [dim](#dim) | Get a dimension size. |
