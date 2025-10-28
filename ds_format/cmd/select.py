@@ -14,6 +14,11 @@ def select(*args, **opts):
 		*output*: "Output file."
 		*options*: "See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line."
 	}}
+	options: {{
+		"`at:` *value*": "At selector as *var*`:` *value* or *var*`:` `{` *value*... `}`, where *value* is the value of the variable *var* to select. The dimension indexes corresponding the variable are constrained so that a variable value closest to the value is selected."
+		"`between:` *value*": "Between selector as *var*`: {` *start* *end* `}`, where *start* is the start value of the variable *var*, and *end* is the end value. The dimension indexes corresponding to the variable are constrained so that variable values in the range are selected. If the value is `none`, the range start or end is unlimited. The range start is inclusive (closed), and the end is exclusive (open)."
+		"`range:` *value*": "Range selector as *dim*`: {` *start* *end* `}`, where *start* is the start index of the dimension *dim*, and *end* is the end index. If the index is `none`, the range is from the start or to the end of the dimension, respectively. Negative index values are counted from the end of the dimension. The range start is inclusive (closed), and the end is exclusive (open)."
+	}}
 	examples: {{
 "Write data to dataset.nc.":
 "$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: \\"Temperature data\\" none dataset.nc"
@@ -52,11 +57,20 @@ $ cat dataset.json
 	check(output, 'output', str)
 	check(sel, 'sel', dict, str, [int, [list, int]])
 
+	sel_opts = {
+		k: opts[k][0] if type(opts[k]) is list else opts[k]
+		for k in ['range', 'at', 'between']
+		if k in opts
+	}
+
+	if 'range' in sel_opts:
+		sel_opts['range_'] = sel_opts.pop('range')
+
 	if not opts.get('F'):
-		d = ds.read(input_, [], full=True)
+		d = ds.read(input_, [], full=True, **sel_opts)
 		vars_ = [x for var in vars_ for x in ds.findall(d, 'var', var)]
 		sel = {ds.find(d, 'dim', k): v for k, v in sel.items()}
-	d = ds.read(input_, vars_ if len(vars_) > 0 else None, sel)
+	d = ds.read(input_, vars_ if len(vars_) > 0 else None, sel, **sel_opts)
 	ds.write(output, d)
 
 select.disable_cmd_opts = True

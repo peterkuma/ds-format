@@ -63,9 +63,13 @@ Data are printed by the first index, one item per line, formatted as [PST](https
 
 **Options:**
 
+- `at:` *value*: Select based on variable values (see **[select](#select)**).
+- `between:` *value*: Select based on a range between two variable values (see **[select](#select)**).
 - `-h`: Print human-readable values (time as ISO 8601).
 - `--jd`: Convert time variables to Julian date (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)).
 - `-n`: Do not print header.
+- `range:` *value*: Select a dimension index range (see **[select](#select)**).
+- `sel:` *value*: Selector (see **[select](#select)**).
 
 **Examples:**
 
@@ -429,6 +433,12 @@ select can also be used to convert between different file formats (`ds select` *
 - *input*: Input file.
 - *output*: Output file.
 - *options*: See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line.
+
+**Options:**
+
+- `at:` *value*: At selector as *var*`:` *value* or *var*`:` `{` *value*... `}`, where *value* is the value of the variable *var* to select. The dimension indexes corresponding the variable are constrained so that a variable value closest to the value is selected.
+- `between:` *value*: Between selector as *var*`: {` *start* *end* `}`, where *start* is the start value of the variable *var*, and *end* is the end value. The dimension indexes corresponding to the variable are constrained so that variable values in the range are selected. If the value is `none`, the range start or end is unlimited. The range start is inclusive (closed), and the end is exclusive (open).
+- `range:` *value*: Range selector as *dim*`: {` *start* *end* `}`, where *start* is the start index of the dimension *dim*, and *end* is the end index. If the index is `none`, the range is from the start or to the end of the dimension, respectively. Negative index values are counted from the end of the dimension. The range start is inclusive (closed), and the end is exclusive (open).
 
 **Examples:**
 

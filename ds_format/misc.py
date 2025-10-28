@@ -48,6 +48,82 @@ def sel_dims(sel, dims):
 			type(sel[dim]) in (list, tuple)
 	]
 
+def sel_from_range(d, range_):
+	def norm(side, x, dim):
+		if x is None:
+			return 0 if side == 1 else ds.dim(d, dim)
+		elif x >= 0:
+			return x
+		else:
+			return ds.dim(d, dim) + x
+	return {
+		dim: np.arange(norm(1, r[0], dim), norm(2, r[1], dim), dtype=int)
+		for dim, r in range_.items()
+	}
+
+def sel_from_at(d, at):
+	sel = {}
+	for var, v in at.items():
+		sel_var = {}
+		dims = ds.dims(d, var)
+		def process(x):
+			if isinstance(x, str):
+				x = aq.from_iso(x)
+				res = get_time_var(d, var)
+				if res is not None:
+					data = res[0]
+			else:
+				data = ds.var(d, var)
+			ii = np.argmin(np.abs(data - x))
+			if len(dims) <= 1:
+				ii = [ii]
+			for dim, i in zip(dims, ii):
+				sel_var[dim] = np.union1d(sel_var[dim], i) \
+					if dim in sel_var else i
+		if isinstance(v, np.ndarray) or type(v) in (list, tuple):
+			[process(v1) for v1 in v]
+		else:
+			process(v)
+		for dim, v in sel_var.items():
+			sel[dim] = np.intersect1d(sel[dim], v) \
+				if dim in sel else v
+	return sel
+
+def sel_from_between(d, between):
+	sel = {}
+	for var, b in between.items():
+		for i, b1 in enumerate([b[0], b[1]]):
+			if isinstance(b1, str):
+				b1 = aq.from_iso(b1)
+				res = get_time_var(d, var)
+				if res is not None:
+					data = res[0]
+			else:
+				data = ds.var(d, var)
+			if i == 0:
+				mask = data >= b1 \
+					if b1 is not None else np.ones(data.shape, bool)
+			else:
+				mask &= data < b1 \
+					if b1 is not None else np.ones(data.shape, bool)
+		ii = np.where(mask)[0]
+		sel[var] = ii
+	return sel
+
+def sel_merge(sels):
+	sel = {}
+	for sel1 in sels:
+		if sel1 is None: continue
+		for dim, ii in sel1.items():
+			sel[dim] = np.intersect1d(sel[dim], ii) if dim in sel else ii
+	return sel
+
+def sel_from_any(d, sel, range_, at, between):
+	sel_range = sel_from_range(d, range_) if range_ is not None else None
+	sel_at = sel_from_at(d, at) if at is not None else None
+	sel_between = sel_from_between(d, between) if between is not None else None
+	return sel_merge([sel, sel_range, sel_at, sel_between])
+
 def encoder(x):
 	if isinstance(x, np.generic):
 		return x.item()
@@ -116,7 +192,7 @@ def with_mode(mode):
 	yield
 	ds.mode = tmp
 
-def process_time_var(d, var):
+def get_time_var(d, var):
 	data = ds.var(d, var)
 	if not isinstance(data, (np.ndarray, np.generic)):
 		return
@@ -145,8 +221,6 @@ def process_time_var(d, var):
 		x = x.astype(np.object_)
 		x[mask] = y
 	except: return
-	ds.attr(d, 'units', 'days since -4713-11-24 12:00 UTC', var=var)
-	ds.attr(d, 'calendar', 'proleptic_gregorian', var=var)
 	x0 = x[mask][0]
 	if not (
 		isinstance(x0, cftime.real_datetime) or
@@ -162,7 +236,17 @@ def process_time_var(d, var):
 			x[i] = dt.datetime(x[i].year, 1, 1) + \
 			(x[i] - type(x[i])(x[i].year, 1, 1))
 	x = [aq.from_datetime(x[i]) if mask[i] else x[i] for i in range(len(x))]
-	ds.var(d, var, np.array(x).reshape(shape))
+	return np.array(x).reshape(shape), {
+		'units': 'days since -4713-11-24 12:00 UTC',
+		'calendar': 'proleptic_gregorian',
+	}
+
+def process_time_var(d, var):
+	res = get_time_var(d, var)
+	if res is None: return
+	data, attrs = res
+	ds.var(d, var, data)
+	ds.attrs(d, var, attrs)
 
 def check(x, name, arg, *args, elemental=False, fail=True):
 	if type(x) is tuple:

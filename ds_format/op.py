@@ -1106,15 +1106,20 @@ $ ds.attrs(d)
 		meta = ds.meta(d, '' if var is None else var)
 		del meta[ds.escape(attr)]
 
-def select(d, sel):
+def select(d, sel=None, range_=None, at=None, between=None):
 	'''
 	title: select
 	caption: "Filter dataset by a selector."
-	usage: "`select`(*d*, *sel*)"
-	desc: "The function subsets data of all variables in a dataset *d* by a selector *sel*. Data can be subset by a mask or a list of indexes along one or more dimensions."
+	usage: "`select`(*d*, *sel*=`None`, *range_*=`None`, *at*=`None`, *between*=`None`)"
+	desc: "The function subsets data of all variables in a dataset *d* by a selectors *sel*, *range_*, *at*, and *between*. If multiple of the selectors are used, the resulting selector is an intersection of all of them."
 	arguments: {{
 		*d*: "Dataset (`dict`)."
-		*sel*: "Selector (`dict`). Selector is a dictionary where the key is a dimension name (`str`) and the value is a mask, a list of indexes (`list` or `np.array`) or an index (`int`) to subset by along the dimension."
+	}}
+	options: {{
+		*sel*: "Selector (`dict`). The selector is a dictionary where the key is a dimension name (`str`) and the value is a mask, a list of indexes (`list` or `np.array`) or an index (`int`) to subset by along the dimension."
+		*range_*: "Range selector (`dict`). The range selector is a dictionary where the key is a dimension name (`str`) and the value is a pair (`list`, `tuple`, or `np.ndarray`) of indexes (`int`) for the start and the end of the range. If the index is `None`, the range is from the start or to the end of the dimension, respectively. Negative index values are counted from the end of the dimension. The range start is inclusive (closed), and the end is exclusive (open)."
+		*at*: "At selector (`dict`). The at selector is a dictionary where the key is a variable name (`str`) and the value is value or a list (`list`, `tuple`, or `np.ndarray`) of values. The dimension indexes corresponding the variable are constrained so that a variable value closest to the value is selected."
+		*between*: "Between selector (`dict`). The between selector is a dictionary where the key is a variable name (`str`) and the value a pair of values for the start and the end of a range. The dimension indexes corresponding to the variable are constrained so that variable values in the range are selected. If the value is `None`, the range start or end is unlimited. The range start is inclusive (closed), and the end is exclusive (open)."
 	}}
 	returns: `None`
 	examples: {{
@@ -1134,8 +1139,13 @@ $ ds.var(d, 'temperature')
 	'''
 	check(d, 'd', dict)
 	check(sel, 'sel', [[dict, str]])
+	check(range_, 'range_', [[dict, str], None])
+	check(at, 'at', [[dict, str], None])
+	check(between, 'between', [[dict, str], None])
+
+	sel_all = ds.misc.sel_from_any(d, sel, range_, at, between)
 	for var in ds.vars(d):
-		select_var(d, var, sel)
+		select_var(d, var, sel_all)
 
 def size(d, var):
 	'''
