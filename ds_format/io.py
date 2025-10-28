@@ -24,7 +24,7 @@ def index(dirname, variables=None, warnings=[], **kwargs):
 		dd.append(d)
 	return dd
 
-def read(filename, variables=None, sel=None, full=False, jd=False):
+def read(filename, variables=None, sel=None, range_=None, at=None, between=None, full=False, jd=False):
 	'''
 	title: read
 	caption: "Read dataset from a file."
@@ -35,6 +35,9 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 	}}
 	options: {{
 		*sel*: "Selector (see **[select](#select)**)."
+		*range_*: "Select a dimension index range (see **[select](#select)**)."
+		*at*: "Select based on variable values (see **[select](#select)**)."
+		*between*: "Select based on a range between two variable values (see **[select](#select)**)."
 		*full*: "Read all metadata (`bool`)."
 		*jd*: "Convert time variables to Julian dates (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)) (`bool`)."
 	}}
@@ -72,9 +75,29 @@ $ print(d['.'])
 	check(filename, 'filename', [str, bytes, os.PathLike])
 	check(variables, 'variables', [str, [list, str], [tuple, str], None])
 	check(sel, 'sel', [[dict, str], None])
+	check(range_, 'range_', [[dict, str], None])
+	check(at, 'at', [[dict, str], None])
+	check(between, 'between', [[dict, str], None])
+
 	if isinstance(filename, os.PathLike): filename = filename.__fspath__()
 	if not os.path.exists(filename):
 		raise IOError('%s: File does not exist' % filename)
+
+	if sel is not None or \
+		range_ is not None or \
+		at is not None or \
+		between is not None:
+
+		sel_vars = []
+		if range_ is not None:
+			sel_vars += list(range_.keys())
+		if at is not None:
+			sel_vars += list(at.keys())
+		if between is not None:
+			sel_vars += list(between.keys())
+		d_tmp = read(filename, sel_vars) if len(sel_vars) > 0 else None
+		sel = ds.misc.sel_from_any(d_tmp, sel, range_, at, between)
+
 	for name, driver in DRIVERS.items():
 		for ext in driver.READ_EXT:
 			end = '.' + ext
@@ -83,6 +106,7 @@ $ print(d['.'])
 			if filename.endswith(end):
 				d = driver.read(filename, variables, sel, full, jd)
 				return d
+
 	raise IOError('%s: Unknown file format' % filename)
 
 def readdir_worker(args):

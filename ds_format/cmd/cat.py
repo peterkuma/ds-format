@@ -19,9 +19,13 @@ def cat(*args, **opts):
 		*options*: "See help for ds for global options."
 	}}
 	options: {{
+		"`at:` *value*": "Select based on variable values (see **[select](#select)**)."
+		"`between:` *value*": "Select based on a range between two variable values (see **[select](#select)**)."
 		`-h`: "Print human-readable values (time as ISO 8601)."
 		`--jd`: "Convert time variables to Julian date (see [Aquarius Time](https://github.com/peterkuma/aquarius-time))."
 		`-n`:  "Do not print header."
+		"`range:` *value*": "Select a dimension index range (see **[select](#select)**)."
+		"`sel:` *value*": "Selector (see **[select](#select)**)."
 	}}
 	desc: "Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array. The first line is a header containing a list of variables. Missing values are printed as empty rows (if printing one single dimensional variable) or as `none`."
 	examples: {{
@@ -50,13 +54,28 @@ time temperature
 	check(input_, 'input', str)
 	check(noheader, 'n', bool)
 
+	sel_opts = {
+		k: opts[k][0] if type(opts[k]) is list else opts[k]
+		for k in ['sel', 'range', 'at', 'between']
+		if k in opts
+	}
+
+	check(sel_opts.get('sel'), 'sel', [[dict, str], None])
+	check(sel_opts.get('range'), 'range', [[dict, str], None])
+	check(sel_opts.get('at'), 'at', [[dict, str], None])
+	check(sel_opts.get('between'), 'between', [[dict, str], None])
+
+	if 'range' in sel_opts:
+		sel_opts['range_'] = sel_opts.pop('range')
+
 	if not opts.get('F'):
-		d = ds.read(input_, [], full=True)
+		d = ds.read(input_, [], full=True, **sel_opts)
 		vars_ = [x for var in vars_ for x in ds.findall(d, 'var', var)]
 
 	d = ds.read(input_, vars_,
 		full=False,
 		jd=(opts.get('jd') or opts.get('h')),
+		**sel_opts,
 	)
 	if len(vars_) == 0:
 		return

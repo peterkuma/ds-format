@@ -21,12 +21,20 @@ See help for ds for global options.
 
 ## OPTIONS
 
+- `at:` *value*:
+Select based on variable values (see **[select](#select)**).
+- `between:` *value*:
+Select based on a range between two variable values (see **[select](#select)**).
 - `-h`:
 Print human-readable values (time as ISO 8601).
 - `--jd`:
 Convert time variables to Julian date (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)).
 - `-n`:
 Do not print header.
+- `range:` *value*:
+Select a dimension index range (see **[select](#select)**).
+- `sel:` *value*:
+Selector (see **[select](#select)**).
 
 ## EXAMPLES
 

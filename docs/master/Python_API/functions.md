@@ -477,6 +477,9 @@ Read dataset from a file.
 **Options:**
 
 - *sel*: Selector (see **[select](#select)**).
+- *range_*: Select a dimension index range (see **[select](#select)**).
+- *at*: Select based on variable values (see **[select](#select)**).
+- *between*: Select based on a range between two variable values (see **[select](#select)**).
 - *full*: Read all metadata (`bool`).
 - *jd*: Convert time variables to Julian dates (see [Aquarius Time](https://github.com/peterkuma/aquarius-time)) (`bool`).
 
@@ -898,14 +901,20 @@ $ ds.attrs(d)
 
 Filter dataset by a selector.
 
-**Usage:** `select`(*d*, *sel*)
+**Usage:** `select`(*d*, *sel*=`None`, *range_*=`None`, *at*=`None`, *between*=`None`)
 
-The function subsets data of all variables in a dataset *d* by a selector *sel*. Data can be subset by a mask or a list of indexes along one or more dimensions.
+The function subsets data of all variables in a dataset *d* by a selectors *sel*, *range_*, *at*, and *between*. If multiple of the selectors are used, the resulting selector is an intersection of all of them.
 
 **Arguments:**
 
 - *d*: Dataset (`dict`).
-- *sel*: Selector (`dict`). Selector is a dictionary where the key is a dimension name (`str`) and the value is a mask, a list of indexes (`list` or `np.array`) or an index (`int`) to subset by along the dimension.
+
+**Options:**
+
+- *sel*: Selector (`dict`). The selector is a dictionary where the key is a dimension name (`str`) and the value is a mask, a list of indexes (`list` or `np.array`) or an index (`int`) to subset by along the dimension.
+- *range_*: Range selector (`dict`). The range selector is a dictionary where the key is a dimension name (`str`) and the value is a pair (`list`, `tuple`, or `np.ndarray`) of indexes (`int`) for the start and the end of the range. If the index is `None`, the range is from the start or to the end of the dimension, respectively. Negative index values are counted from the end of the dimension. The range start is inclusive (closed), and the end is exclusive (open).
+- *at*: At selector (`dict`). The at selector is a dictionary where the key is a variable name (`str`) and the value is value or a list (`list`, `tuple`, or `np.ndarray`) of values. The dimension indexes corresponding the variable are constrained so that a variable value closest to the value is selected.
+- *between*: Between selector (`dict`). The between selector is a dictionary where the key is a variable name (`str`) and the value a pair of values for the start and the end of a range. The dimension indexes corresponding to the variable are constrained so that variable values in the range are selected. If the value is `None`, the range start or end is unlimited. The range start is inclusive (closed), and the end is exclusive (open).
 
 **Return value:**
 
