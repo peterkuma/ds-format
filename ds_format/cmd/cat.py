@@ -19,13 +19,13 @@ def cat(*args, **opts):
 		*options*: "See help for ds for global options."
 	}}
 	options: {{
-		"`at:` *value*": "Select based on variable values (see **[select](#select)**)."
-		"`between:` *value*": "Select based on a range between two variable values (see **[select](#select)**)."
+		"`at:` *selector*": "Select based on variable values (see **[select](#select)**)."
+		"`between:` *selector*": "Select based on a range between two variable values (see **[select](#select)**)."
 		`-h`: "Print human-readable values (time as ISO 8601)."
 		`--jd`: "Convert time variables to Julian date (see [Aquarius Time](https://github.com/peterkuma/aquarius-time))."
 		`-n`:  "Do not print header."
-		"`range:` *value*": "Select a dimension index range (see **[select](#select)**)."
-		"`sel:` *value*": "Selector (see **[select](#select)**)."
+		"`range:` *selector*": "Select a dimension index range (see **[select](#select)**)."
+		"`sel:` *selector*": "Selector (see **[select](#select)**)."
 	}}
 	desc: "Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array. The first line is a header containing a list of variables. Missing values are printed as empty rows (if printing one single dimensional variable) or as `none`."
 	examples: {{
