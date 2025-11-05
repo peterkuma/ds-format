@@ -37,6 +37,7 @@ from .op import \
 	select, \
 	size, \
 	split, \
+	time, \
 	type_ as type, \
 	var, \
 	vars_ as vars, \

@@ -984,6 +984,24 @@ Split a dataset along one or more dimensions.
 
 List of datasets (`list` of `dict`).
 
+#### time
+
+Get or set a time variable.
+
+**Usage:** `time`(*d*, *var*, **value*)
+
+If *value* is defined, the variable attribute `.time` is set to True if *value* is `True` or removed if *value* is `False`.
+
+**Arguments:**
+
+- *d*: Dataset (`dict`).
+- *var*: Variable name (`str`).
+- *value*: Set/unset switch (`bool`) or undefined to find if the variable *var* is a time variable. `True` to set make the variable a time variable, or `False` to make it an ordinary variable.
+
+**Return value:**
+
+If *value* is undefined, `True` if the variable *var* is a time variable or `False` if it is not. `None` if *value* is defined.
+
 #### type
 
 Get or set variable type.
@@ -1118,7 +1136,7 @@ with ds.with_mode('soft'):
 
 Write dataset to a file.
 
-**Usage:** `write`(*filename*, *d*)
+**Usage:** `write`(*filename*, *d*, *cf_time_units*=`None`, *cf_time_calendar*=`None`)
 
 The file type is determined from the file extension.
 
@@ -1126,6 +1144,11 @@ The file type is determined from the file extension.
 
 - *filename*: Filename (`str`, `bytes` or `os.PathLike`).
 - *d*: Dataset (`dict`).
+
+**Options:**
+
+- *cf_time_units*: Time units to use (`str`) or `None` for no conversion. The units should comply with the CF Conventions. NetCDF4 and HDF5 only.
+- *cf_time_calendar*: Time calendar to use (`str`) or `None` for no conversion. The calendar should comply with the CF Conventions. NetCDF4 and HDF5 only.
 
 **Return value:**
 

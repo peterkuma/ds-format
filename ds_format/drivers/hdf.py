@@ -83,15 +83,23 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 		d = read_group(f, variables, sel, full)
 	if jd:
 		for var in ds.vars(d):
-			misc.process_time_var(d, var)
+			misc.process_cf_time_var(d, var)
 	return d
 
-def write(filename, d):
+def write(filename, d, cf_time_units=None, cf_time_calendar=None):
 	import h5py
 	ds.validate(d)
 	with h5py.File(filename, 'w') as f:
 		for var in ds.vars(d):
 			data = ds.var(d, var)
+			meta = ds.meta(d, var)
+			attrs = ds.attrs(d, var)
+			if ds.time(d, var):
+				res = misc.cf_time(data, meta, cf_time_units, cf_time_calendar)
+				if res:
+					data, units, calendar = res
+					attrs['units'] = units
+					attrs['calendar'] = calendar
 			if data is None:
 				dtype = misc.type_to_dtype(ds.type(d, var))
 				f[var] = h5py.Empty(dtype)

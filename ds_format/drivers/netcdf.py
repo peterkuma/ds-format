@@ -69,10 +69,10 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 				ds.meta(d, var, var_meta)
 	if jd:
 		for var in ds.vars(d):
-			misc.process_time_var(d, var)
+			misc.process_cf_time_var(d, var)
 	return d
 
-def write(filename, d):
+def write(filename, d, cf_time_units=None, cf_time_calendar=None):
 	from netCDF4 import Dataset
 	ds.validate(d)
 	if isinstance(filename, bytes):
@@ -83,6 +83,14 @@ def write(filename, d):
 			f.createDimension(k, v)
 		for var in ds.vars(d):
 			data = ds.var(d, var)
+			meta = ds.meta(d, var)
+			attrs = ds.attrs(d, var)
+			if ds.time(d, var):
+				res = misc.cf_time(data, meta, cf_time_units, cf_time_calendar)
+				if res:
+					data, units, calendar = res
+					attrs['units'] = units
+					attrs['calendar'] = calendar
 			if data is None:
 				data = np.array([])
 			if data.dtype == 'O' and \
@@ -93,7 +101,7 @@ def write(filename, d):
 			else:
 				dtype = data.dtype
 			v = f.createVariable(var, dtype, ds.dims(d, var))
-			v.setncatts(ds.attrs(d, var))
+			v.setncatts(attrs)
 			if isinstance(data, np.ma.MaskedArray) and \
 				data.dtype.kind in ['S', 'U']:
 				data = data.filled('')

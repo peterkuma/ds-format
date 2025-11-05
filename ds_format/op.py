@@ -1,5 +1,6 @@
 import types
 import fnmatch
+import numbers
 import numpy as np
 import copy as copy_
 import datetime as dt
@@ -141,7 +142,7 @@ def merge_var(dd, var, dim, jd=True):
 			d2 = {}
 			ds.var(d2, var, ds.var(d, var))
 			ds.meta(d2, var, ds.meta(d, var))
-			misc.process_time_var(d2, var)
+			misc.process_cf_time_var(d2, var)
 			d = d2
 		x1 = ds.var(d, var)
 		n1 = 1 if k is None else ds.dim(d, dim)
@@ -1228,6 +1229,32 @@ def split(d, dims):
 	for d1 in dd:
 		ds.meta(d1, '', meta)
 	return dd
+
+def time(d, var, *value):
+	'''
+	title: time
+	caption: "Get or set a time variable."
+	usage: "`time`(*d*, *var*, *\*value*)"
+	desc: "If *value* is defined, the variable attribute `.time` is set to True if *value* is `True` or removed if *value* is `False`."
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*var*: "Variable name (`str`)."
+		*value*: "Set/unset switch (`bool`) or undefined to find if the variable *var* is a time variable. `True` to set make the variable a time variable, or `False` to make it an ordinary variable."
+	}}
+	returns: "If *value* is undefined, `True` if the variable *var* is a time variable or `False` if it is not. `None` if *value* is defined."
+	'''
+	check(d, 'd', dict)
+	check(var, 'var', str)
+	if len(value) == 0:
+		meta = ds.meta(d, var)
+		return meta.get('.time') is True
+	else:
+		check(value[0], 'value', bool)
+		meta = ds.meta(d, var, create=True)
+		if value[0]:
+			meta['.time'] = True
+		elif '.time' in meta:
+			del meta['.time']
 
 def type_(d, var, *value):
 	'''

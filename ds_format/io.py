@@ -223,15 +223,19 @@ $ print(d['temperature'])
 		d = ds.op.merge(dd, merge, new='n')
 		return d
 
-def write(filename, d):
+def write(filename, d, **kwargs):
 	'''
 	title: write
-	usage: "`write`(*filename*, *d*)"
+	usage: "`write`(*filename*, *d*, *cf_time_units*=`None`, *cf_time_calendar*=`None`)"
 	caption: "Write dataset to a file."
 	desc: "The file type is determined from the file extension."
 	arguments: {{
 		*filename*: "Filename (`str`, `bytes` or `os.PathLike`)."
 		*d*: "Dataset (`dict`)."
+	}}
+	options: {{
+		*cf_time_units*: "Time units to use (`str`) or `None` for no conversion. The units should comply with the CF Conventions. NetCDF4 and HDF5 only."
+		*cf_time_calendar*: "Time calendar to use (`str`) or `None` for no conversion. The calendar should comply with the CF Conventions. NetCDF4 and HDF5 only."
 	}}
 	"Supported formats": {{
 		CSV/TSV: "`.csv`, `.tsv`, `.tab`"
@@ -268,6 +272,6 @@ def write(filename, d):
 			if isinstance(filename, bytes):
 				end = end.encode('utf-8')
 			if filename.endswith(end):
-				driver.write(filename, d)
+				driver.write(filename, d, **kwargs)
 				return
 	raise ValueError('%s: Unknown file extension' % filename)
