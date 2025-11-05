@@ -40,6 +40,7 @@ import ds_format as ds
 | [select](#select) | Filter dataset by a selector. |
 | [size](#size) | Get variable size. |
 | [split](#split) | Split a dataset along one or more dimensions. |
+| [time](#time) | Get or set a time variable. |
 | [type](#type) | Get or set variable type. |
 | [var](#var) | Get or set variable data. |
 | [vars](#vars) | Get all variable names in a dataset. |
