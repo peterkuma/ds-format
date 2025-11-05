@@ -1,5 +1,6 @@
 import types
 import fnmatch
+import numbers
 import numpy as np
 import copy as copy_
 import datetime as dt
@@ -99,9 +100,9 @@ def time_dt(time):
 
 def merge_var(dd, var, dim, jd=True):
 	for d in dd:
-		x = ds.var(d, var)
-		if x is None:
+		if var not in ds.vars(d):
 			continue
+		x = ds.var(d, var)
 		dims0 = ds.dims(d, var)
 		size0 = ds.size(d, var)
 		type_ = ds.type(d, var)
@@ -141,11 +142,11 @@ def merge_var(dd, var, dim, jd=True):
 			d2 = {}
 			ds.var(d2, var, ds.var(d, var))
 			ds.meta(d2, var, ds.meta(d, var))
-			misc.process_time_var(d2, var)
+			misc.process_cf_time_var(d2, var)
 			d = d2
 		x1 = ds.var(d, var)
 		n1 = 1 if k is None else ds.dim(d, dim)
-		if x1 is None:
+		if var not in ds.vars(d):
 			i += n1
 			continue
 		dims1 = ds.dims(d, var)
@@ -160,7 +161,7 @@ def merge_var(dd, var, dim, jd=True):
 		else:
 			sel = [slice(i, i + n1) if j == k else slice(None) \
 				for j in range(len(size))]
-		x[tuple(sel)] = x1
+		x[tuple(sel)] = x1 if x1 is not None else np.ma.masked
 		meta.update(ds.meta(d, var))
 		i += n1
 	meta['.dims'] = dims
@@ -719,7 +720,7 @@ def meta(d, var=None, *value, create=False):
 	}}
 	options: {{
 		*var*: "Variable name (`str`), or `None` to get dataset metadata, or an empty string to get dataset attributes."
-		*value*: "Metadata to set (`dict`) or `None` to get metadata."
+		*value*: "Metadata to set (`dict`), `None` to remove metadata, or omitted to get metadata."
 		*create*: "Create (modifiable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if it is not already present in the dataset."
 	}}
 	returns: "Metadata (`dict`)."
@@ -767,12 +768,19 @@ ds.meta(d, 'temperature', { '.dims': ['new_time'], 'long_name': 'new temperature
 			require(d, 'var', var, full=True)
 			return {}
 	elif len(value) == 1:
-		check(value[0], 'value', [dict, str])
+		check(value[0], 'value', [[dict, str], None])
 		if var is None:
-			d['.'] = value[0]
+			if value[0] is None:
+				del d['.']
+			else:
+				d['.'] = value[0]
 		else:
 			ds_meta = ds.meta(d, create=True)
-			ds_meta[var_e] = value[0]
+			if value[0] is None:
+				if var_e in ds_meta:
+					del ds_meta[var_e]
+			else:
+				ds_meta[var_e] = value[0]
 	else:
 		raise TypeError('only one value argument is expected')
 
@@ -1170,7 +1178,7 @@ $ ds.size(d, 'temperature')
 	if require(d, 'var', var, full=True):
 		if var in ds.vars(d):
 			data = ds.var(d, var)
-			return None if data is None else list(data.shape)
+			return [] if data is None else list(data.shape)
 		else:
 			meta = ds.meta(d, var)
 			return list(meta.get('.size'))
@@ -1228,6 +1236,32 @@ def split(d, dims):
 	for d1 in dd:
 		ds.meta(d1, '', meta)
 	return dd
+
+def time(d, var, *value):
+	'''
+	title: time
+	caption: "Get or set a time variable."
+	usage: "`time`(*d*, *var*, *\*value*)"
+	desc: "If *value* is defined, the variable attribute `.time` is set to True if *value* is `True` or removed if *value* is `False`."
+	arguments: {{
+		*d*: "Dataset (`dict`)."
+		*var*: "Variable name (`str`)."
+		*value*: "Set/unset switch (`bool`) or undefined to find if the variable *var* is a time variable. `True` to set make the variable a time variable, or `False` to make it an ordinary variable."
+	}}
+	returns: "If *value* is undefined, `True` if the variable *var* is a time variable or `False` if it is not. `None` if *value* is defined."
+	'''
+	check(d, 'd', dict)
+	check(var, 'var', str)
+	if len(value) == 0:
+		meta = ds.meta(d, var)
+		return meta.get('.time') is True
+	else:
+		check(value[0], 'value', bool)
+		meta = ds.meta(d, var, create=True)
+		if value[0]:
+			meta['.time'] = True
+		elif '.time' in meta:
+			del meta['.time']
 
 def type_(d, var, *value):
 	'''

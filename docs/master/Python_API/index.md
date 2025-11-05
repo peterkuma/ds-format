@@ -66,7 +66,7 @@ NetCDF calendar for storing Julian date time variables.
 
 Error handling mode. If "strict", handle missing variables, dimensions and
 attributes as errors. If "moderate", report a warning. If "soft", ignore
-missing items. Overrides the environment variable `DS_MODE`.
+missing items. Overrides the environment variable `DS_MODE`. Default: "soft".
 
 Examples:
 

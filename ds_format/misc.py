@@ -192,17 +192,15 @@ def with_mode(mode):
 	yield
 	ds.mode = tmp
 
-def get_time_var(d, var):
-	data = ds.var(d, var)
+def cf_time_raw(data, meta):
 	if not isinstance(data, (np.ndarray, np.generic)):
 		return
 	x = data.flatten()
 	if len(x) == 0:
 		return
 	shape = data.shape
-	attrs = ds.attrs(d, var)
-	units = attrs.get('units')
-	calendar = attrs.get('calendar', 'standard')
+	units = meta.get('units')
+	calendar = meta.get('calendar', 'standard')
 	if units is not None and isinstance(units, str) and \
 	   re.match(r'^days since -4712-01-01[T ]12:00(:00)?( UTC)?$', units) and \
 	   calendar in (None, 'standard'):
@@ -236,17 +234,38 @@ def get_time_var(d, var):
 			x[i] = dt.datetime(x[i].year, 1, 1) + \
 			(x[i] - type(x[i])(x[i].year, 1, 1))
 	x = [aq.from_datetime(x[i]) if mask[i] else x[i] for i in range(len(x))]
-	return np.array(x).reshape(shape), {
-		'units': 'days since -4713-11-24 12:00 UTC',
-		'calendar': 'proleptic_gregorian',
-	}
+	return np.array(x).reshape(shape), \
+		'days since -4713-11-24 12:00 UTC', \
+		'proleptic_gregorian'
 
-def process_time_var(d, var):
-	res = get_time_var(d, var)
-	if res is None: return
-	data, attrs = res
-	ds.var(d, var, data)
-	ds.attrs(d, var, attrs)
+def cf_time(data, meta, units=None, calendar=None):
+	if not meta.get('.time'):
+		return
+	var_units = meta.get('units', 'days since -4713-11-24 12:00 UTC')
+	var_calendar = meta.get('calendar', 'proleptic_gregorian')
+	if (
+		(units is None or var_units == units) and \
+		(calendar is None or var_calendar == calendar)
+	):
+		return data, var_units, var_calendar
+	x = data.flatten()
+	shape = data.shape
+	mask = ~np.ma.getmaskarray(x)
+	y = cftime.num2date(x[mask], var_units, var_calendar)
+	x = cftime.date2num(y, units, calendar)
+	x = x.astype(float)
+	return np.array(x).reshape(shape), units, calendar
+
+def process_cf_time_var(d, var):
+	data = ds.var(d, var)
+	meta = ds.meta(d, var)
+	res = cf_time_raw(data, meta)
+	if res:
+		data, units, calendar = res
+		ds.var(d, var, data)
+		ds.attr(d, 'units', units, var=var)
+		ds.attr(d, 'calendar', calendar, var=var)
+		ds.time(d, var, True)
 
 def check(x, name, arg, *args, elemental=False, fail=True):
 	if type(x) is tuple:
