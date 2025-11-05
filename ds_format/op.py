@@ -100,9 +100,9 @@ def time_dt(time):
 
 def merge_var(dd, var, dim, jd=True):
 	for d in dd:
-		x = ds.var(d, var)
-		if x is None:
+		if var not in ds.vars(d):
 			continue
+		x = ds.var(d, var)
 		dims0 = ds.dims(d, var)
 		size0 = ds.size(d, var)
 		type_ = ds.type(d, var)
@@ -146,7 +146,7 @@ def merge_var(dd, var, dim, jd=True):
 			d = d2
 		x1 = ds.var(d, var)
 		n1 = 1 if k is None else ds.dim(d, dim)
-		if x1 is None:
+		if var not in ds.vars(d):
 			i += n1
 			continue
 		dims1 = ds.dims(d, var)
@@ -161,7 +161,7 @@ def merge_var(dd, var, dim, jd=True):
 		else:
 			sel = [slice(i, i + n1) if j == k else slice(None) \
 				for j in range(len(size))]
-		x[tuple(sel)] = x1
+		x[tuple(sel)] = x1 if x1 is not None else np.ma.masked
 		meta.update(ds.meta(d, var))
 		i += n1
 	meta['.dims'] = dims
@@ -1178,7 +1178,7 @@ $ ds.size(d, 'temperature')
 	if require(d, 'var', var, full=True):
 		if var in ds.vars(d):
 			data = ds.var(d, var)
-			return None if data is None else list(data.shape)
+			return [] if data is None else list(data.shape)
 		else:
 			meta = ds.meta(d, var)
 			return list(meta.get('.size'))

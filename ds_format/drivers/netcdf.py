@@ -27,8 +27,8 @@ def read_var(f, name, sel=None, data=True):
 	var = f[name]
 	x = None
 	attrs = read_attrs(var)
-	dims = var.dimensions
-	size = var.shape
+	dims = list(var.dimensions)
+	size = list(var.shape)
 	type_ = misc.dtype_to_type(var.dtype)
 	if data:
 		if sel:
@@ -43,7 +43,7 @@ def read_var(f, name, sel=None, data=True):
 				x = var[::] if data else None
 	if len(size) == 0 and var[()] is np.ma.masked:
 		x = None
-		size = None
+		size = []
 	attrs.update({
 		'.dims': dims,
 		'.size': size,
