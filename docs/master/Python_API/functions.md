@@ -431,7 +431,7 @@ Get or set dataset or variable metadata.
 **Options:**
 
 - *var*: Variable name (`str`), or `None` to get dataset metadata, or an empty string to get dataset attributes.
-- *value*: Metadata to set (`dict`) or `None` to get metadata.
+- *value*: Metadata to set (`dict`), `None` to remove metadata, or omitted to get metadata.
 - *create*: Create (modifiable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if it is not already present in the dataset.
 
 **Return value:**

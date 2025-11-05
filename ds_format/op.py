@@ -720,7 +720,7 @@ def meta(d, var=None, *value, create=False):
 	}}
 	options: {{
 		*var*: "Variable name (`str`), or `None` to get dataset metadata, or an empty string to get dataset attributes."
-		*value*: "Metadata to set (`dict`) or `None` to get metadata."
+		*value*: "Metadata to set (`dict`), `None` to remove metadata, or omitted to get metadata."
 		*create*: "Create (modifiable/bound) metadata dictionary in the dataset if not defined (`bool`). If `False`, the returned dictionary is an empty unbound dictionary if it is not already present in the dataset."
 	}}
 	returns: "Metadata (`dict`)."
@@ -768,12 +768,19 @@ ds.meta(d, 'temperature', { '.dims': ['new_time'], 'long_name': 'new temperature
 			require(d, 'var', var, full=True)
 			return {}
 	elif len(value) == 1:
-		check(value[0], 'value', [dict, str])
+		check(value[0], 'value', [[dict, str], None])
 		if var is None:
-			d['.'] = value[0]
+			if value[0] is None:
+				del d['.']
+			else:
+				d['.'] = value[0]
 		else:
 			ds_meta = ds.meta(d, create=True)
-			ds_meta[var_e] = value[0]
+			if value[0] is None:
+				if var_e in ds_meta:
+					del ds_meta[var_e]
+			else:
+				ds_meta[var_e] = value[0]
 	else:
 		raise TypeError('only one value argument is expected')
 
