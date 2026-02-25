@@ -233,9 +233,8 @@ def apply_var(d, var, func, dims=None, newdims=None, with_sel=False):
 			else:
 				oldidx += [idx1[k]]
 				k += 1
-		x = func(data[tuple(oldidx)], sel) \
-			if with_sel \
-			else func(data[tuple(oldidx)])
+		data_slice = data[tuple(oldidx)]
+		x = func(data_slice, sel) if with_sel else func(data_slice)
 		if newdata is None:
 			j1, j2 = 0, 0
 			for i in range(len(shape1) + x.ndim):
