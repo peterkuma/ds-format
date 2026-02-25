@@ -125,7 +125,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 			d[name] = data
 	if jd:
 		for var in ds.vars(d):
-			misc.process_time_var(d, var)
+			misc.process_cf_time_var(d, var)
 	return d
 
 def write(filename, d):
