@@ -269,7 +269,7 @@ def apply(d, func, dims=None, newdims=None, vars=None, with_sel=False):
 	'''
 	title: apply
 	caption: "Apply a function on variables in a dataset."
-	usage: "`apply`(*d*, *func*, *dims*=`None`, *newdims*=`None`, *with_sel*=`False`)"
+	usage: "`apply`(*d*, *func*, *dims*=`None`, *newdims*=`None`, *vars*=`None`, *with_sel*=`False`)"
 	desc: "Apply a function *func* on variables *vars*, or all variables if *vars* is `None`, in a dataset *d*. If *dims* is not `None`, the function is applied along dimensions *dims*. The function must return a scalar or an array of any number of dimensions. If the number of dimensions of the function result is smaller than the number of dimensions in *dims*, the surplus dimensions are removed. If the number is greater, additional dimensions are added adjacent to the last dimension of *dims*. *newdims* are the new dimensions to replace *dims*."
 	arguments: {{
 		*d*: "Dataset (`dict`)."
