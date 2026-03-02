@@ -56,27 +56,27 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 			   variables is not None and name not in variables:
 				continue
 			var = meta[name]
-			if not ('.offset' in var and \
-			   		'.type' in var and \
-			   		'.len' in var and \
-			   		'.size' in var and \
-					'.endian' in var):
-				continue
-			dt = misc.type_to_dtype(var['.type'])
+			offset = var.get('.offset', 0)
+			type_ = var.get('.type', 'float64')
+			len_ = var.get('.len', 0)
+			size = var.get('.size', [])
+			endian = var.get('.endian', 'b')
+			missing = var.get('.missing', False)
+			dt = misc.type_to_dtype(type_)
 			if dt is None:
 				continue
 			byteorder = {
 				'l': '<',
 				'b': '>',
-			}[var['.endian']]
-			count = 0 if var['.size'] is None else int(np.prod(var['.size']))
-			mask_len = int(np.ceil(count/8)) if var['.missing'] else 0
+			}[endian]
+			count = 0 if size is None else int(np.prod(size))
+			mask_len = int(np.ceil(count/8)) if missing else 0
 
-			if var['.missing'] and count > 0:
-				f.seek(data_offset + var['.offset'])
+			if missing and count > 0:
+				f.seek(data_offset + offset)
 				mask = np.fromfile(f, 'uint8', count=mask_len)
 				mask = np.unpackbits(mask)[:count].astype(bool)
-				mask = mask.reshape(var['.size'])
+				mask = mask.reshape(size)
 				count2 = np.sum(~mask)
 			else:
 				count2 = count
@@ -84,18 +84,18 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 			if count == 0:
 				data = None
 			else:
-				var_len = int(count2*TYPE_SIZE[var['.type']]/8)
-				f.seek(data_offset + var['.offset'] + mask_len)
-				if var['.type'] == 'bool':
+				var_len = int(count2*TYPE_SIZE[type_]/8)
+				f.seek(data_offset + offset + mask_len)
+				if type_ == 'bool':
 					data = np.fromfile(f, 'uint8', count=var_len)
 					data = np.unpackbits(data)[:count2]
 					data = data.astype(bool)
-				elif var['.type'] in ('str', 'unicode'):
+				elif type_ in ('str', 'unicode'):
 					dt_slen = np.dtype('uint64').newbyteorder(byteorder)
 					slen = np.fromfile(f, dt_slen, count=count2)
 					data = []
 					for slen1 in slen:
-						if var['.type'] == 'str':
+						if type_ == 'str':
 							data += [f.read(slen1)]
 						else:
 							data += [f.read(slen1).decode('utf-8')]
@@ -104,14 +104,14 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 					dt = dt.newbyteorder(byteorder)
 					data = np.fromfile(f, dt, count=count2)
 
-				if var['.missing']:
-					data2 = np.zeros(var['.size'], dtype=dt)
+				if missing:
+					data2 = np.zeros(size, dtype=dt)
 					data2[~mask] = data
 					data = np.ma.array(data2, mask=mask)
 				else:
-					data = data.reshape(var['.size'])
+					data = data.reshape(size)
 
-				if var['.size'] == []:
+				if size == []:
 					data = data[()]
 
 			if sel is not None:
