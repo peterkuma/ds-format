@@ -28,7 +28,7 @@ def read(filename, variables=None, sel=None, range_=None, at=None, between=None,
 	'''
 	title: read
 	caption: "Read dataset from a file."
-	usage: "`read`(*filename*, *variables*=`None`, *sel*=`None`, *full*=`False`, *jd*=`False`)"
+	usage: "`read`(*filename*, *variables*=`None`, *sel*=`None`, *range_*=`None`, *at*=`None`, *between*=`None`, *full*=`False`, *jd*=`False`)"
 	arguments: {{
 		*filename*: "Filename (`str`, `bytes` or `os.PathLike`)."
 		*variables*: "Variable names to read (`str` or `list` of `str`) or `None` to read all variables."
