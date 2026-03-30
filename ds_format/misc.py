@@ -214,29 +214,33 @@ def cf_time_raw(data, meta):
 	try:
 		y = cftime.num2date(x[mask], units,
 			calendar=calendar,
-			only_use_cftime_datetimes=False,
+			only_use_cftime_datetimes=True,
 		)
 		x = x.astype(np.object_)
 		x[mask] = y
 	except: return
 	x0 = x[mask][0]
-	if not (
-		isinstance(x0, cftime.real_datetime) or
-		isinstance(x0, cftime.datetime) or
-		isinstance(x0, dt.datetime)
-	):
+	if not isinstance(x0, cftime.datetime):
 		return
-	if isinstance(x0, cftime.real_datetime) or \
-	   isinstance(x0, cftime.datetime):
-		for i in range(len(x)):
-			if not mask[i]:
-				continue
-			x[i] = dt.datetime(x[i].year, 1, 1) + \
-			(x[i] - type(x[i])(x[i].year, 1, 1))
-	x = [aq.from_datetime(x[i]) if mask[i] else x[i] for i in range(len(x))]
-	return np.array(x).reshape(shape), \
-		'days since -4713-11-24 12:00 UTC', \
-		'proleptic_gregorian'
+	if calendar in ['standard', 'julian', 'gregorian', 'proleptic_gregorian']:
+		x = [
+			float(x[i].toordinal(fractional=True)) if mask[i] else x[i]
+			for i in range(len(x))
+		]
+	elif calendar in ['no_leap', '365_day', '360_day', 'tai', 'utc']:
+		x = [
+			aq.from_date([
+				1, x[i].year, x[i].month, x[i].day, x[i].hour, x[i].minute,
+				x[i].second, x[i].microsecond*1e-6
+			])
+			if mask[i] else x[i]
+			for i in range(len(x))
+		]
+	else:
+		return
+	units = 'days since -4713-11-24 12:00 UTC'
+	calendar = 'proleptic_gregorian'
+	return np.array(x).reshape(shape), units, calendar
 
 def cf_time(data, meta, units=None, calendar=None):
 	if not meta.get('.time'):
