@@ -311,7 +311,7 @@ def attr(d, attr, *value, var=None):
 	'''
 	title: attr
 	caption: "Get or set a dataset or variable attribute."
-	usage: "`attr`(*d*, *attr*, \**value*, *var*=`None`)"
+	usage: "`attr`(*d*, *attr*, \\**value*, *var*=`None`)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
 		*attr*: "Attribute name (`str`)."
@@ -354,7 +354,7 @@ def attrs(d, var=None, *value):
 	'''
 	title: attrs
 	caption: "Get or set variable or dataset attributes."
-	usage: "`attrs`(*d*, *var*=`None`, \**value*)"
+	usage: "`attrs`(*d*, *var*=`None`, \\**value*)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
 		*value*: "Attributes to set (`dict`). If supplied, set attributes to *value*, otherwise get attributes."
@@ -426,7 +426,7 @@ def dims(d, var=None, *value, full=False, size=False):
 	title: dims
 	aliases: { get_dims }
 	usage: {
-		"`dims`(*d*, *var*=`None`, \**value*, *full*=`False`, *size*=`False`)"
+		"`dims`(*d*, *var*=`None`, \\**value*, *full*=`False`, *size*=`False`)"
 		"`get_dims`(*d*, *var*=`None`, *full*=`False`, *size*=`False`)"
 	}
 	caption: "Get dataset or variable dimensions or set variable dimensions."
@@ -713,7 +713,7 @@ def meta(d, var=None, *value, create=False):
 	title: meta
 	aliases: { get_meta }
 	caption: "Get or set dataset or variable metadata."
-	usage: "`meta`(*d*, *var*=`None`, \**value*, *create*=`False`)"
+	usage: "`meta`(*d*, *var*=`None`, \\**value*, *create*=`False`)"
 	arguments: {{
 		*d*: "Dataset (`dict`)."
 	}}
@@ -1240,7 +1240,7 @@ def time(d, var, *value):
 	'''
 	title: time
 	caption: "Get or set a time variable."
-	usage: "`time`(*d*, *var*, *\*value*)"
+	usage: "`time`(*d*, *var*, *\\*value*)"
 	desc: "If *value* is defined, the variable attribute `.time` is set to True if *value* is `True` or removed if *value* is `False`."
 	arguments: {{
 		*d*: "Dataset (`dict`)."
@@ -1266,7 +1266,7 @@ def type_(d, var, *value):
 	'''
 	title: type
 	caption: "Get or set variable type."
-	usage: "`type`(*d*, *var*, \**value*)"
+	usage: "`type`(*d*, *var*, \\**value*)"
 	desc: "Variable type is determined based on the type of the variable data if defined, or by variable metadata attribute `.type`."
 	arguments: {{
 		*d*: "Dataset (`dict`)."
@@ -1322,7 +1322,7 @@ def var(d, var, *value):
 	'''
 	title: var
 	caption: "Get or set variable data."
-	usage: "`var`(*d*, *var*, \**value*)"
+	usage: "`var`(*d*, *var*, \\**value*)"
 	desc: "Variable to get or set is normalized in the following way. If the variable data are a `list` or `tuple`, they are converted to `np.ndarray`, or to `np.ma.MaskedArray` if they contain `None`, which is masked. If the variable data are `int`, `float`, `bool`, `str`, `bytes` or `np.array` with zero dimensions, they are converted to `np.generic`."
 	arguments: {{
 		*d*: "Dataset (`dict`)."
