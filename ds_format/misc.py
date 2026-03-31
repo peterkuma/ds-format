@@ -227,7 +227,7 @@ def cf_time_raw(data, meta):
 			float(x[i].toordinal(fractional=True)) if mask[i] else x[i]
 			for i in range(len(x))
 		]
-	elif calendar in ['no_leap', '365_day', '360_day', 'tai', 'utc']:
+	elif calendar in ['noleap', '365_day', '360_day', 'tai', 'utc']:
 		x = [
 			aq.from_date([
 				1, x[i].year, x[i].month, x[i].day, x[i].hour, x[i].minute,
