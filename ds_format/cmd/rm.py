@@ -1,5 +1,6 @@
 from ds_format.misc import UsageError, check
 import ds_format as ds
+from ds_format import misc
 
 def rm(*args, **opts):
 	'''
@@ -44,7 +45,7 @@ def rm(*args, **opts):
 	check(input_, 'input', str)
 	check(output, 'output', str)
 
-	d = ds.read(input_)
+	d = ds.read(input_, **ds.misc.read_opts(opts))
 
 	if not opts.get('F'):
 		if vars_ is not None:
@@ -72,4 +73,4 @@ def rm(*args, **opts):
 			for attr in attrs:
 				ds.rm_attr(d, attr, var=var)
 
-	ds.write(output, d)
+	ds.write(output, d, **ds.misc.write_opts(opts))

@@ -1,5 +1,6 @@
 from ds_format.misc import UsageError, check
 import ds_format as ds
+from ds_format import misc
 
 def set_(*args, **opts):
 	'''
@@ -77,7 +78,9 @@ def set_(*args, **opts):
 
 	check(ds_attrs, 'ds_attrs', dict, str)
 
-	d = ds.read(input_) if input_ is not None else {'.': {'.': {}}}
+	d = ds.read(input_, **misc.read_opts(opts)) \
+		if input_ is not None \
+		else {'.': {'.': {}}}
 	for var, type_, dims, data, set_data, attrs in items:
 		check(var, 'var', str)
 		check(dims, 'dims', [None, [list, str]])
@@ -109,6 +112,6 @@ def set_(*args, **opts):
 				ds.attr(d, k1, v)
 		else:
 			ds.attr(d, k, v)
-	ds.write(output, d)
+	ds.write(output, d, **misc.write_opts(opts))
 
 set_.disable_cmd_opts = True

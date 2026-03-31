@@ -242,23 +242,25 @@ def cf_time_raw(data, meta):
 	calendar = 'proleptic_gregorian'
 	return np.array(x).reshape(shape), units, calendar
 
-def cf_time(data, meta, units=None, calendar=None):
-	if not meta.get('.time'):
+def cf_time(
+	data,
+	units='days since -4713-11-24 12:00 UTC',
+	calendar='proleptic_gregorian',
+):
+	if units == 'days since -4713-11-24 12:00 UTC' and \
+		calendar == 'proleptic_gregorian':
 		return
-	var_units = meta.get('units', 'days since -4713-11-24 12:00 UTC')
-	var_calendar = meta.get('calendar', 'proleptic_gregorian')
-	if (
-		(units is None or var_units == units) and \
-		(calendar is None or var_calendar == calendar)
-	):
-		return data, var_units, var_calendar
 	x = data.flatten()
 	shape = data.shape
 	mask = ~np.ma.getmaskarray(x)
-	y = cftime.num2date(x[mask], var_units, var_calendar)
+	y = cftime.num2date(
+		x[mask],
+		'days since -4713-11-24 12:00 UTC',
+		'proleptic_gregorian',
+	)
 	x = cftime.date2num(y, units, calendar)
 	x = x.astype(float)
-	return np.array(x).reshape(shape), units, calendar
+	return np.array(x).reshape(shape)
 
 def process_cf_time_var(d, var):
 	data = ds.var(d, var)
@@ -325,3 +327,31 @@ def encode(x):
 		return json.dumps(x, cls=JSONEncoder, indent=indent).encode('utf-8')
 	else:
 		return pst.encode(x, encoder=encoder, indent=ds.indent)
+
+def read_opts(opts, sel=False):
+	out = {}
+	if sel:
+		sel_opts = {
+			k: opts[k][0] if type(opts[k]) is list else opts[k]
+			for k in ds.cmd.SEL_OPTS
+			if k in opts
+		}
+
+		check(sel_opts.get('sel'), 'sel', [[dict, str], None])
+		check(sel_opts.get('range'), 'range', [[dict, str], None])
+		check(sel_opts.get('at'), 'at', [[dict, str], None])
+		check(sel_opts.get('between'), 'between', [[dict, str], None])
+
+		if 'range' in sel_opts:
+			sel_opts['range_'] = sel_opts.pop('range')
+
+		out.update(sel_opts)
+
+	if 'w' in opts:
+		if 'time_units' in opts['w'] or 'calendar' in opts['w']:
+			out['jd'] = True
+
+	return out
+
+def write_opts(opts):
+	return opts.get('w', {})

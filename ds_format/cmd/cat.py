@@ -54,28 +54,14 @@ time temperature
 	check(input_, 'input', str)
 	check(noheader, 'n', bool)
 
-	sel_opts = {
-		k: opts[k][0] if type(opts[k]) is list else opts[k]
-		for k in ['sel', 'range', 'at', 'between']
-		if k in opts
-	}
-
-	check(sel_opts.get('sel'), 'sel', [[dict, str], None])
-	check(sel_opts.get('range'), 'range', [[dict, str], None])
-	check(sel_opts.get('at'), 'at', [[dict, str], None])
-	check(sel_opts.get('between'), 'between', [[dict, str], None])
-
-	if 'range' in sel_opts:
-		sel_opts['range_'] = sel_opts.pop('range')
-
 	if not opts.get('F'):
-		d = ds.read(input_, [], full=True, **sel_opts)
+		d = ds.read(input_, [], full=True, **misc.read_opts(opts, sel=True))
 		vars_ = [x for var in vars_ for x in ds.findall(d, 'var', var)]
 
 	d = ds.read(input_, vars_,
 		full=False,
 		jd=(opts.get('jd') or opts.get('h')),
-		**sel_opts,
+		**misc.read_opts(opts, sel=True),
 	)
 	if len(vars_) == 0:
 		return

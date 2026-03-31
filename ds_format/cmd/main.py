@@ -26,6 +26,7 @@ def main():
 		`-j`: "Print command output as JSON instead of [PST](https://github.com/peterkuma/pst)."
 		`-m`: "Moderate error handling mode. Report a warning on missing variables, dimensions and attributes. Overrides the DS_MODE environment variable."
 		`--noindent`: "Disable output indentation."
+		"`w: {` *write_options* `}`": "Write options (see below)."
 		`-s`: "Strict error handling mode. Handle missing variables, dimensions and attributes as errors. Overrides the DS_MODE environment variable."
 		`-t`: "Soft error handling mode. Ignore missing variables, dimensions and attributes. Overrides the DS_MODE environment variable."
 		`-v`: "Be verbose. Print more detailed information and error messages."
@@ -62,6 +63,10 @@ def main():
 		HDF5: "`.h5`, `.hdf5`, `.hdf`"
 		JSON: `.json`
 		NetCDF4: "`.nc`, `.nc4`, `.netcdf`"
+	}}
+	"Write options": {{
+		"`calendar:` *value*": "CF-Conventions calendar to use for time variables when writing NetCDF4 and HDF5 files."
+		"`time_units:` *value*": "CF-Conventions units to use for time variables when writing NetCDF4 and HDF5 files."
 	}}
 	environment: {{
 		DS_MODE: "Error handling mode. If \\"strict\\", handle missing variables, dimensions and attributes as errors. If \\"moderate\\", report a warning. If \\"soft\\", ignore missing items."

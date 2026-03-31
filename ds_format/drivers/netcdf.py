@@ -72,7 +72,10 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 			misc.process_cf_time_var(d, var)
 	return d
 
-def write(filename, d, cf_time_units=None, cf_time_calendar=None):
+def write(filename, d,
+	time_units='days since -4713-11-24 12:00 UTC',
+	calendar='proleptic_gregorian',
+):
 	from netCDF4 import Dataset
 	ds.validate(d)
 	if isinstance(filename, bytes):
@@ -86,11 +89,9 @@ def write(filename, d, cf_time_units=None, cf_time_calendar=None):
 			meta = ds.meta(d, var)
 			attrs = ds.attrs(d, var)
 			if ds.time(d, var):
-				res = misc.cf_time(data, meta, cf_time_units, cf_time_calendar)
-				if res:
-					data, units, calendar = res
-					attrs['units'] = units
-					attrs['calendar'] = calendar
+				data = misc.cf_time(data, time_units, calendar)
+				attrs['units'] = time_units
+				attrs['calendar'] = calendar
 			if data is None:
 				data = np.array([])
 			if data.dtype == 'O' and \

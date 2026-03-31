@@ -1,5 +1,6 @@
 import ds_format as ds
 from ds_format.misc import UsageError, check
+from ds_format import misc
 
 def select(*args, **opts):
 	'''
@@ -57,20 +58,12 @@ $ cat dataset.json
 	check(output, 'output', str)
 	check(sel, 'sel', dict, str, [int, [list, int]])
 
-	sel_opts = {
-		k: opts[k][0] if type(opts[k]) is list else opts[k]
-		for k in ['range', 'at', 'between']
-		if k in opts
-	}
-
-	if 'range' in sel_opts:
-		sel_opts['range_'] = sel_opts.pop('range')
-
 	if not opts.get('F'):
-		d = ds.read(input_, [], full=True, **sel_opts)
+		d = ds.read(input_, [], full=True, **misc.read_opts(opts, sel=True))
 		vars_ = [x for var in vars_ for x in ds.findall(d, 'var', var)]
 		sel = {ds.find(d, 'dim', k): v for k, v in sel.items()}
-	d = ds.read(input_, vars_ if len(vars_) > 0 else None, sel, **sel_opts)
-	ds.write(output, d)
+	d = ds.read(input_, vars_ if len(vars_) > 0 else None, sel,
+		**misc.read_opts(opts, sel=True))
+	ds.write(output, d, **misc.write_opts(opts))
 
 select.disable_cmd_opts = True

@@ -86,7 +86,7 @@ def read(filename, variables=None, sel=None, full=False, jd=False):
 			misc.process_cf_time_var(d, var)
 	return d
 
-def write(filename, d, cf_time_units=None, cf_time_calendar=None):
+def write(filename, d, time_units=None, calendar=None):
 	import h5py
 	ds.validate(d)
 	with h5py.File(filename, 'w') as f:
@@ -95,7 +95,7 @@ def write(filename, d, cf_time_units=None, cf_time_calendar=None):
 			meta = ds.meta(d, var)
 			attrs = ds.attrs(d, var)
 			if ds.time(d, var):
-				res = misc.cf_time(data, meta, cf_time_units, cf_time_calendar)
+				res = misc.cf_time(data, meta, time_units, calendar)
 				if res:
 					data, units, calendar = res
 					attrs['units'] = units

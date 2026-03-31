@@ -1,5 +1,6 @@
 from ds_format.misc import UsageError, check
 import ds_format as ds
+from ds_format import misc
 
 def rename_dim(*args, **opts):
 	'''
@@ -37,13 +38,13 @@ time"
 	check(input_, 'input', str)
 	check(output, 'output', str)
 
-	d = ds.read(input_)
+	d = ds.read(input_, ds.misc.read_opts(opts))
 	mapping = {}
 	for olddim, newdim in dims.items():
 		if not opts.get('F'):
 			olddim = ds.find(d, 'dim', olddim)
 		mapping[olddim] = newdim
 	ds.rename_dim_m(d, mapping)
-	ds.write(output, d)
+	ds.write(output, d, **ds.misc.write_opts(opts))
 
 rename_dim.disable_cmd_opts = True

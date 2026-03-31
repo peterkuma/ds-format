@@ -234,8 +234,8 @@ def write(filename, d, **kwargs):
 		*d*: "Dataset (`dict`)."
 	}}
 	options: {{
-		*cf_time_units*: "Time units to use (`str`) or `None` for no conversion. The units should comply with the CF Conventions. NetCDF4 and HDF5 only."
-		*cf_time_calendar*: "Time calendar to use (`str`) or `None` for no conversion. The calendar should comply with the CF Conventions. NetCDF4 and HDF5 only."
+		*time_units*: "Time units to use (`str`) or `None` for no conversion. The units should comply with the CF Conventions. NetCDF4 and HDF5 only."
+		*calendar*: "Time calendar to use (`str`) or `None` for no conversion. The calendar should comply with the CF Conventions. NetCDF4 and HDF5 only."
 	}}
 	"Supported formats": {{
 		CSV/TSV: "`.csv`, `.tsv`, `.tab`"

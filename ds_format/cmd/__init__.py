@@ -31,3 +31,5 @@ CMDS = {
 	'size': size,
 	'type': type_,
 }
+
+SEL_OPTS = ['range', 'at', 'between']

@@ -1,5 +1,6 @@
 from ds_format.misc import UsageError, check
 import ds_format as ds
+from ds_format import misc
 
 def rename(*args, **opts):
 	'''
@@ -57,7 +58,7 @@ def rename(*args, **opts):
 	else:
 		raise UsageError('Invalid arguments')
 
-	d = ds.read(input_)
+	d = ds.read(input_, ds.misc.read_opts(opts))
 
 	for vars_, var, attrs in items:
 		check(vars_, 'vars', dict, str, [str, None])
@@ -79,6 +80,6 @@ def rename(*args, **opts):
 					for k, v in attrs.items()
 				}
 			ds.rename_attr_m(d, attrs1, var1)
-	ds.write(output, d)
+	ds.write(output, d, **misc.write_opts(opts))
 
 rename.disable_cmd_opts = True

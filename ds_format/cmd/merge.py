@@ -1,5 +1,6 @@
 import ds_format as ds
 from ds_format.misc import check
+from ds_format import misc
 
 def merge(dim, *args, **opts):
 	'''
@@ -54,10 +55,10 @@ time temperature
 
 	dd = []
 	for filename in input_:
-		d = ds.read(filename)
+		d = ds.read(filename, **ds.misc.read_opts(opts))
 		dd.append(d)
 	if not opts.get('F'):
 		if len(dd) > 0:
 			dim = ds.find(dd[0], 'dim', dim)
 	d = ds.op.merge(dd, dim, new=new, variables=variables, jd=jd)
-	ds.write(output, d)
+	ds.write(output, d, **ds.misc.write_opts(opts))
