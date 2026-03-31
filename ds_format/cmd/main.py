@@ -25,7 +25,7 @@ def main():
 		`--help`: "Show this help message or help for a command if *cmd* is supplied."
 		`-j`: "Print command output as JSON instead of [PST](https://github.com/peterkuma/pst)."
 		`-m`: "Moderate error handling mode. Report a warning on missing variables, dimensions and attributes. Overrides the DS_MODE environment variable."
-		`-n`: "Disable output indentation."
+		`--noindent`: "Disable output indentation."
 		`-s`: "Strict error handling mode. Handle missing variables, dimensions and attributes as errors. Overrides the DS_MODE environment variable."
 		`-t`: "Soft error handling mode. Ignore missing variables, dimensions and attributes. Overrides the DS_MODE environment variable."
 		`-v`: "Be verbose. Print more detailed information and error messages."
@@ -106,8 +106,7 @@ def main():
 		ds.mode = 'strict'
 	if opts.get('j'):
 		ds.output = 'json'
-	if opts.get('n'):
-		ds.indent = False
+	ds.indent = not opts.get('noindent')
 	if len(args) == 0:
 		sys.stderr.write('Usage: ds [CMD] [OPTIONS]\n')
 		sys.stderr.write('       ds --help\n')
