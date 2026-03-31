@@ -3,6 +3,7 @@ __version__ = '4.3.0'
 import os
 mode = os.environ.get('DS_MODE', 'soft')
 output = 'pst'
+indent = True
 
 from .misc import \
 	escape, \

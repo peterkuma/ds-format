@@ -321,6 +321,7 @@ class JSONEncoder(json.JSONEncoder):
 
 def encode(x):
 	if ds.output == 'json':
-		return json.dumps(x, cls=JSONEncoder, indent=4).encode('utf-8')
+		indent = 4 if ds.indent else None
+		return json.dumps(x, cls=JSONEncoder, indent=indent).encode('utf-8')
 	else:
 		return pst.encode(x, encoder=encoder, indent=True)
