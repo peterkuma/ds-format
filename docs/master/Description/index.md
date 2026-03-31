@@ -131,6 +131,14 @@ floating-point number, resp.), `int8`, `int16`, `int32` and `int64` (8-bit,
 Attributes are objects defining variable or dataset metadata, and can be
 arbitrary key–value pairs, where key is a string.
 
+#### Time variables
+
+Time variables have a boolean key `.time` equal `true` in the variable metadata.
+The variable data of time variables is Julian date, i.e., the fractional number
+of days since -4713-11-24 12:00 UTC in the proleptic Gregorian calendar or
+-4712-01-01 12:00 UTC in the Julian calendar. The variable type of time
+variables can be any except for `bool`, `str`, and `unicode`.
+
 ### Example
 
 #### Using the ds interface
