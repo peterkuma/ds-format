@@ -1,4 +1,4 @@
-__version__ = '4.3.0'
+__version__ = '5.0.0'
 
 import os
 mode = os.environ.get('DS_MODE', 'soft')

@@ -1,3 +1,16 @@
+#### 5.0.0 (2026-06-08)
+
+- ds dims: Change -s option to -z, as -s is conflicting with a global option.
+- Support for time variables marked with .time.
+- Added at, between, and range selectors.
+- Support for setting output time units and calendar.
+- New --noindent option to disable output indentation.
+- Improved handling of command-line arguments.
+- Change CF no_leap calendar name to noleap.
+- Fixed errors emerging in recent versions of Python.
+- Fixed merging of none scalar variables.
+- Improved documentation.
+
 #### 4.3.0 (2025-10-15)
 
 - ds.apply: New function.
