@@ -32,4 +32,18 @@ CMDS = {
 	'type': type_,
 }
 
-SEL_OPTS = ['range', 'at', 'between']
+READ_OPTS = [
+	'at',
+	'between',
+	'range',
+	'sel',
+]
+
+WRITE_OPTS = [
+	'calendar',
+	'time_units',
+]
+
+GLOBAL_OPTS = [
+	'F',
+]

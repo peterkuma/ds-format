@@ -2,13 +2,14 @@ import sys
 import numpy as np
 import ds_format as ds
 from ds_format import misc
-from ds_format.misc import UsageError, check
+from ds_format.misc import cmd, check
 
-def stats(*args, **opts):
+@cmd()
+def stats(var, input_, *, F=False, r={}, w={}):
 	'''
 	title: stats
 	caption: "Print variable statistics."
-	usage: "`ds stats` *var* *input* [*options*]"
+	usage: "`ds stats` [*options*] *var* [--] *input*"
 	arguments: {{
 		*var*: "Variable name."
 		*input*: "Input file."
@@ -32,18 +33,13 @@ def stats(*args, **opts):
 count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000 std: 2.054805 p68: { 16.640000 20.040000 } p95: { 16.100000 20.850000 } p99: { 16.020000 20.970000 }"
 	}}
 	'''
-	if len(args) != 2:
-		raise UsageError('Invalid number of arguments')
-	var = args[0]
-	input_ = args[1]
-
 	check(var, 'var', str)
 	check(input_, 'input', str)
 
-	if not opts.get('F'):
-		d = ds.read(input_, [], full=True)
+	if not F:
+		d = ds.read(input_, [], full=True, **r)
 		var = ds.find(d, 'var', var)
-	d = ds.read(input_, [var])
+	d = ds.read(input_, [var], **r)
 	x = ds.var(d, var)
 	if x is None:
 		return

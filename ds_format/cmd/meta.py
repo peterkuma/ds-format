@@ -1,13 +1,14 @@
 import sys
 import ds_format as ds
 from ds_format import misc
-from ds_format.misc import UsageError, check
+from ds_format.misc import cmd, UsageError, check
 
-def meta(*args, **opts):
+@cmd()
+def meta(*args, F=False, r={}, w={}):
 	'''
 	title: meta
 	caption: "Print dataset metadata."
-	usage: "`ds meta` [*var*] *input* [*options*]"
+	usage: "`ds meta` [*options*] [*var*] [--] *input*"
 	arguments: {{
 		*input*: "Input file."
 		*var*: "Variable name to print metadata for or \\".\\" to print dataset metadata. If not specified, print metadata for the whole file."
@@ -41,13 +42,13 @@ temperature: {{
 		var = args[0]
 		filename = args[1]
 	else:
-		raise UsageError('Invalid number of arguments')
+		raise UsageError('invalid number of arguments')
 
 	check(var, 'var', (str, None))
 	check(filename, 'input', str)
 
-	d = ds.read(filename, [], full=True)
-	if not opts.get('F'):
+	d = ds.read(filename, [], full=True, **r)
+	if not F:
 		if var is not None:
 			var = ds.find(d, 'var', var)
 	meta = ds.meta(d, var) if var != '.' else ds.meta(d, '')

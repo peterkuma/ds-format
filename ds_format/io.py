@@ -24,7 +24,15 @@ def index(dirname, variables=None, warnings=[], **kwargs):
 		dd.append(d)
 	return dd
 
-def read(filename, variables=None, sel=None, range_=None, at=None, between=None, full=False, jd=False):
+def read(filename,
+    variables=None,
+    sel=None,
+    range_=None,
+    at=None,
+    between=None,
+    full=False,
+    jd=False,
+):
 	'''
 	title: read
 	caption: "Read dataset from a file."
@@ -226,7 +234,7 @@ $ print(d['temperature'])
 def write(filename, d, **kwargs):
 	'''
 	title: write
-	usage: "`write`(*filename*, *d*, *cf_time_units*=`None`, *cf_time_calendar*=`None`)"
+	usage: "`write`(*filename*, *d*, *time_units*=`None`, *calendar*=`None`)"
 	caption: "Write dataset to a file."
 	desc: "The file type is determined from the file extension."
 	arguments: {{

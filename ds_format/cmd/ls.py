@@ -1,16 +1,14 @@
 import sys
 import ds_format as ds
 from ds_format import misc
-from ds_format.misc import check
+from ds_format.misc import cmd, check, UsageError
 
-def ls(*args, **opts):
+@cmd()
+def ls(*args, a=None, F=False, l=False, r={}, w={}):
 	'''
 	title: ls
 	caption: "List variables."
-	usage: {
-		"`ds` [*var*]... *input* [*options*]"
-		"`ds ls` [*var*]... *input* [*options*]"
-	}
+	usage: "`ds` [`ls`] [*options*] [*var*]... [--] *input*"
 	arguments: {{
 		*var*: "Variable name to list."
 		*input*: "Input file."
@@ -48,27 +46,28 @@ time time s"
 temperature"
 	}}
 	'''
+	if len(args) < 1:
+	    raise UsageError('invalid number of arguments')
 	vars_ = args[:-1]
 	input_ = args[-1]
-	attrs = opts.get('a')
 
 	check(vars_, 'var', list, str, elemental=True)
 	check(input_, 'input', str)
-	check(attrs, 'attrs', [None, str, [list, str]])
+	check(a, 'a', [None, str, [list, str]])
 
-	d = ds.read(input_, [], full=True)
+	d = ds.read(input_, [], full=True, **r)
 	available_vars = ds.vars(d, full=True)
 
 	if len(vars_) == 0:
 		vars1 = available_vars
-	elif opts.get('F'):
+	elif F:
 		vars1 = list(set(vars_) & set(available_vars))
 	else:
 		vars1 = []
 		for var in vars_:
 			vars1 += ds.findall(d, 'var', var)
 
-	if opts.get('l'):
+	if l:
 		listed_dims = set()
 		for var in vars1:
 			var_dims = ds.dims(d, var)
@@ -80,15 +79,15 @@ temperature"
 		if not ds.require(d, 'var', x, full=True):
 			continue
 		y = [x]
-		if opts.get('l'):
+		if l:
 			type_ = ds.type(d, x)
 			dims = ds.dims(d, x)
 			y += [type_, dims]
-		if attrs is not None:
+		if a is not None:
 			var_attrs = ds.attrs(d, x)
-			if type(attrs) is list:
-				y += [var_attrs.get(a) for a in opts['a']]
-			elif type(attrs) is str:
-				y += [var_attrs.get(attrs)]
+			if type(a) is list:
+				y += [var_attrs.get(attr) for attr in a]
+			elif type(a) is str:
+				y += [var_attrs.get(a)]
 		s = misc.encode(y[0] if len(y) == 1 else y)
 		sys.stdout.buffer.write(s + b'\n')

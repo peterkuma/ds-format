@@ -1,12 +1,13 @@
 import ds_format as ds
-from ds_format.misc import check
+from ds_format.misc import cmd, check
 from ds_format import misc
 
-def merge(dim, *args, **opts):
+@cmd()
+def merge(dim, *args, new=None, variables=None, jd=True, F=False, r={}, w={}):
 	'''
 	title: merge
 	caption: "Merge datasets along a dimension."
-	usage: "`ds merge` *dim* *input*... *output* [*options*]"
+	usage: "`ds merge` [*options*] *dim* [--] *input*... *output*"
 	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is `none` and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not `none` and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not `none`, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with metadata from later datasets overriding metadata from the former ones."
 	arguments: {{
 		*dim*: "Name of a dimension to merge along."
@@ -40,11 +41,10 @@ time temperature
 6 28.000000"
 	}}
 	'''
+	if len(args) < 1:
+	    raise UsageError('invalid number of arguments')
 	input_ = args[:-1]
 	output = args[-1]
-	new = opts.get('new')
-	variables = opts.get('variables')
-	jd = opts.get('jd', True)
 
 	check(dim, 'dim', str)
 	check(input_, 'input', list, str)
@@ -55,10 +55,10 @@ time temperature
 
 	dd = []
 	for filename in input_:
-		d = ds.read(filename, **ds.misc.read_opts(opts))
+		d = ds.read(filename, **r)
 		dd.append(d)
-	if not opts.get('F'):
+	if not F:
 		if len(dd) > 0:
 			dim = ds.find(dd[0], 'dim', dim)
 	d = ds.op.merge(dd, dim, new=new, variables=variables, jd=jd)
-	ds.write(output, d, **ds.misc.write_opts(opts))
+	ds.write(output, d, **w)

@@ -7,6 +7,7 @@ import re
 import cftime
 import aquarius_time as aq
 import pst
+import inspect
 
 KIND_TO_TYPE = {
 	'f': 'float',
@@ -310,6 +311,36 @@ def check(x, name, arg, *args, elemental=False, fail=True):
 
 class UsageError(TypeError):
 	pass
+
+def cmd(cmd_opts=True):
+	def decorator(func):
+		sig = inspect.signature(func)
+		params = list(sig.parameters.values())
+		nargs = len([
+			p for p in params
+			if p.kind in [p.POSITIONAL_OR_KEYWORD, p.POSITIONAL_ONLY]
+		])
+		has_varargs = any(p.kind == p.VAR_POSITIONAL for p in params)
+		cmd = func.__name__
+		def wrapper(*args, **opts):
+			extra_opts = ds.cmd.GLOBAL_OPTS + \
+				ds.cmd.READ_OPTS + \
+				ds.cmd.WRITE_OPTS
+			if not has_varargs and len(args) != nargs:
+				raise UsageError('invalid number of arguments')
+			for k in opts.keys():
+				if k not in sig.parameters and k not in extra_opts:
+					raise UsageError('unrecognized option "%s"' % k)
+			filtered_opts = {
+				k: v for k, v
+				in opts.items()
+				if k in sig.parameters
+			}
+			return func(*args, **filtered_opts)
+		wrapper.__doc__ = func.__doc__
+		wrapper.cmd_opts = cmd_opts
+		return wrapper
+	return decorator
 
 class JSONEncoder(json.JSONEncoder):
 	def default(self, obj):

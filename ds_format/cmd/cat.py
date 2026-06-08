@@ -1,31 +1,25 @@
 import sys
 import numpy as np
-from ds_format.misc import UsageError, check
+from ds_format.misc import cmd, UsageError, check
 import ds_format as ds
 from ds_format import misc
 import aquarius_time as aq
 
-def cat(*args, **opts):
+@cmd()
+def cat(*args, n=False, F=False, jd=False, h=False, r={}, w={}):
 	'''
 	title: cat
 	caption: "Print variable data."
-	usage: {
-		"`ds cat` *var* *input* [*options*]"
-		"`ds cat` *var*... *input* [*options*]"
-	}
+	usage: "`ds cat` [*options*] *var*... [--] *input*"
 	arguments: {{
 		*var*: "Variable name."
 		*input*: "Input file."
 		*options*: "See help for ds for global options."
 	}}
 	options: {{
-		"`at:` *selector*": "Select based on variable values (see **[select](#select)**)."
-		"`between:` *selector*": "Select based on a range between two variable values (see **[select](#select)**)."
 		`-h`: "Print human-readable values (time as ISO 8601)."
 		`--jd`: "Convert time variables to Julian date (see [Aquarius Time](https://github.com/peterkuma/aquarius-time))."
 		`-n`:  "Do not print header."
-		"`range:` *selector*": "Select a dimension index range (see **[select](#select)**)."
-		"`sel:` *selector*": "Selector (see **[select](#select)**)."
 	}}
 	desc: "Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array. The first line is a header containing a list of variables. Missing values are printed as empty rows (if printing one single dimensional variable) or as `none`."
 	examples: {{
@@ -45,31 +39,26 @@ time temperature
 	}}
 	'''
 	if len(args) < 1:
-		raise UsageError('Invalid number of arguments')
+		raise UsageError('invalid number of arguments')
 	vars_ = args[:-1]
 	input_ = args[-1]
-	noheader = opts.get('n', False)
 
 	check(vars_, 'var', list, str, elemental=True)
 	check(input_, 'input', str)
-	check(noheader, 'n', bool)
+	check(n, 'n', bool)
 
-	if not opts.get('F'):
-		d = ds.read(input_, [], full=True, **misc.read_opts(opts, sel=True))
+	if not F:
+		d = ds.read(input_, [], full=True, **r)
 		vars_ = [x for var in vars_ for x in ds.findall(d, 'var', var)]
 
-	d = ds.read(input_, vars_,
-		full=False,
-		jd=(opts.get('jd') or opts.get('h')),
-		**misc.read_opts(opts, sel=True),
-	)
+	d = ds.read(input_, vars_, full=False, jd=(jd or h), **r)
 	if len(vars_) == 0:
 		return
 	dims = [ds.dims(d, var) for var in vars_]
 	if not all([dim == dims[0] for dim in dims]):
 		raise ValueError('incompatible dimensions')
 
-	if not noheader:
+	if not n:
 		vars1 = vars_[0] if len(vars_) == 1 else vars_
 		sys.stdout.buffer.write(misc.encode(vars1) + b'\n')
 
@@ -77,7 +66,7 @@ time temperature
 	for var in vars_:
 		attrs = ds.attrs(d, var)
 		x = ds.var(d, var)
-		if opts.get('h') and \
+		if h and \
 		   attrs.get('units') == 'days since -4713-11-24 12:00 UTC' and \
 		   attrs.get('calendar') == 'proleptic_gregorian':
 			x = aq.to_iso(x)
@@ -86,8 +75,7 @@ time temperature
 		if not isinstance(x, np.ndarray) or x.ndim == 0:
 			x = [x]
 		xx += [x]
-	n = len(xx[0])
-	for i in range(n):
+	for i in range(len(xx[0])):
 		y = [x[i] if len(x) > i else None for x in xx]
 		if len(y) == 1: y = y[0]
 		sys.stdout.buffer.write(misc.encode(y) + b'\n')

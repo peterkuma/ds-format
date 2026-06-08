@@ -1,14 +1,15 @@
-from ds_format.misc import UsageError, check
+from ds_format.misc import cmd, UsageError, check
 import ds_format as ds
 from ds_format import misc
 
-def rm(*args, **opts):
+@cmd()
+def rm(*args, F=False, r={}, w={}):
 	'''
 	title: rm
 	caption: "Remove variables or attributes."
 	usage: {
-		"`ds rm` *var* *input* *output* [*options*]"
-		"`ds rm` *var* *attr* *input* *output* [*options*]"
+		"`ds rm` [*options*] *var* [--] *input* *output*"
+		"`ds rm` [*options*] *var* *attr* [--] *input* *output*"
 	}
 	arguments: {{
 		*var*: "Variable name, an array of variable names or `none` to remove a dataset attribute."
@@ -29,7 +30,7 @@ def rm(*args, **opts):
 	}}
 	'''
 	if len(args) not in (3, 4):
-		raise UsageError('Invalid number of arguments')
+		raise UsageError('invalid number of arguments')
 	vars_ = args[0]
 	attrs = args[1] if len(args) == 4 else None
 	input_ = args[-2]
@@ -45,9 +46,9 @@ def rm(*args, **opts):
 	check(input_, 'input', str)
 	check(output, 'output', str)
 
-	d = ds.read(input_, **ds.misc.read_opts(opts))
+	d = ds.read(input_, **r)
 
-	if not opts.get('F'):
+	if not F:
 		if vars_ is not None:
 			vars_ = [x for var in vars_ for x in ds.findall(d, 'var', var)]
 		if attrs is not None:
@@ -73,4 +74,4 @@ def rm(*args, **opts):
 			for attr in attrs:
 				ds.rm_attr(d, attr, var=var)
 
-	ds.write(output, d, **ds.misc.write_opts(opts))
+	ds.write(output, d, **w)

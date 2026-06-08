@@ -1,15 +1,16 @@
-from ds_format.misc import UsageError, check
+from ds_format.misc import cmd, UsageError, check
 import ds_format as ds
 from ds_format import misc
 
-def rename(*args, **opts):
+@cmd(cmd_opts=False)
+def rename(*args, F=False, r={}, w={}):
 	'''
 	title: "rename"
 	caption: "Rename variables and attributes."
 	usage: {
-		"`ds rename` *vars* *input* *output* [*options*]"
-		"`ds rename` *var* *attrs* *input* *output* [*options*]"
-		"`ds rename` `{` *var* *attrs* `}`... *input* *output* [*options*]"
+		"`ds` [*options*] `rename` *vars* [--] *input* *output*"
+		"`ds` [*options*] `rename` *var* *attrs* [--] *input* *output*"
+		"`ds` [*options*] `rename` `{` *var* *attrs* `}`... [--] *input* *output*"
 	}
 	arguments: {{
 		*var*: "Variable name, or an array of variable names whose attributes to rename, or `none` to rename dataset attributes."
@@ -29,7 +30,7 @@ def rename(*args, **opts):
 	}}
 	'''
 	if len(args) < 2:
-		raise UsageError('Invalid number of arguments')
+		raise UsageError('invalid number of arguments')
 	args1 = list(args[:-2])
 	input_ = args[-2]
 	output = args[-1]
@@ -44,7 +45,7 @@ def rename(*args, **opts):
 		items = []
 		for arg in args1:
 			if len(arg) != 2:
-				raise UsageError('Invalid arguments')
+				raise UsageError('invalid number of arguments')
 			var = arg[0]
 			if var is not None and type(var) is not list:
 				var = [var]
@@ -56,15 +57,15 @@ def rename(*args, **opts):
 		attrs = args1[1]
 		items = [[{}, var, attrs]]
 	else:
-		raise UsageError('Invalid arguments')
+		raise UsageError('invalid number of arguments')
 
-	d = ds.read(input_, ds.misc.read_opts(opts))
+	d = ds.read(input_, **r)
 
 	for vars_, var, attrs in items:
 		check(vars_, 'vars', dict, str, [str, None])
 		check(var, 'var', list, [str, None], elemental=True)
 		check(attrs, 'attrs', dict, str, [str, None])
-		if not opts.get('F'):
+		if not F:
 			vars_ = {ds.find(d, 'var', k): v for k, v in vars_.items()}
 			var = [x \
 				for var1 in var \
@@ -73,13 +74,11 @@ def rename(*args, **opts):
 				)]
 		ds.rename_m(d, vars_)
 		for var1 in var:
-			if not opts.get('F'):
+			if not F:
 				attrs1 = {
 					ds.find(d, 'attr', k, var1): v
 					for var1 in var
 					for k, v in attrs.items()
 				}
 			ds.rename_attr_m(d, attrs1, var1)
-	ds.write(output, d, **misc.write_opts(opts))
-
-rename.disable_cmd_opts = True
+	ds.write(output, d, **w)

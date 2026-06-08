@@ -1,24 +1,20 @@
 import ds_format as ds
-from ds_format.misc import UsageError, check
+from ds_format.misc import cmd, UsageError, check
 from ds_format import misc
 
-def select(*args, **opts):
+@cmd(cmd_opts=False)
+def select(*args, F=False, r={}, w={}):
 	'''
 	title: select
 	caption: "Select and subset variables."
-	usage: "`ds select` [*var*...] [*sel*] *input* *output* [*options*]"
+	usage: "`ds` [*options*] `select` [*var*...] [*sel*] [--] *input* *output*"
 	desc: "select can also be used to convert between different file formats (`ds select` *input* *output*)."
 	arguments: {{
 		*var*: "Variable name."
-		*sel*: "Selector as *dim*`:` *idx* pairs, where *dim* is a dimension name and *idx* is an index or a list of indexes as `{` *i*... `}`."
+		*sel*: "The same as the `sel` read option (see help for ds)."
 		*input*: "Input file."
 		*output*: "Output file."
 		*options*: "See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line."
-	}}
-	options: {{
-		"`at:` *selector*": "At selector as `{` *var*`:` *value* ... `}` or `{` *var*`:` `{` *value*... `}` ... `}`, where *value* is the value of the variable *var* to select. The dimension indexes corresponding the variable are constrained so that a variable value closest to the value is selected."
-		"`between:` *selector*": "Between selector as `{` *var*`: {` *start* *end* `}` ... `}`, where *start* is the start value of the variable *var*, and *end* is the end value. The dimension indexes corresponding to the variable are constrained so that variable values in the range are selected. If the value is `none`, the range start or end is unlimited. The range start is inclusive (closed), and the end is exclusive (open)."
-		"`range:` *selector*": "Range selector as `{` *dim*`: {` *start* *end* `}` ... `}`, where *start* is the start index of the dimension *dim*, and *end* is the end index. If the index is `none`, the range is from the start or to the end of the dimension, respectively. Negative index values are counted from the end of the dimension. The range start is inclusive (closed), and the end is exclusive (open)."
 	}}
 	examples: {{
 "Write data to dataset.nc.":
@@ -58,12 +54,9 @@ $ cat dataset.json
 	check(output, 'output', str)
 	check(sel, 'sel', dict, str, [int, [list, int]])
 
-	if not opts.get('F'):
-		d = ds.read(input_, [], full=True, **misc.read_opts(opts, sel=True))
+	if not F:
+		d = ds.read(input_, [], full=True, **r)
 		vars_ = [x for var in vars_ for x in ds.findall(d, 'var', var)]
 		sel = {ds.find(d, 'dim', k): v for k, v in sel.items()}
-	d = ds.read(input_, vars_ if len(vars_) > 0 else None, sel,
-		**misc.read_opts(opts, sel=True))
-	ds.write(output, d, **misc.write_opts(opts))
-
-select.disable_cmd_opts = True
+	d = ds.read(input_, vars_ if len(vars_) > 0 else None, sel, **r)
+	ds.write(output, d, **w)

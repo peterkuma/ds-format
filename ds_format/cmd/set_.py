@@ -1,15 +1,16 @@
-from ds_format.misc import UsageError, check
+from ds_format.misc import cmd, UsageError, check
 import ds_format as ds
 from ds_format import misc
 
-def set_(*args, **opts):
+@cmd(cmd_opts=False)
+def set_(*args, F=False, r={}, w={}):
 	'''
 	title: set
 	caption: "Set variable data, dimensions and attributes in an existing or new dataset."
 	usage: {
-		"`ds set` *ds_attrs* *input* *output* [*options*]"
-		"`ds set` *var* [*type* [*dims* [*data*]]] [*attrs*]... *input* *output* [*options*]"
-		"`ds set` `{` *var* [*type* [*dims* [*data*]]] [*attrs*]... `}`... *ds_attrs* *input* *output* [*options*]"
+		"`ds` [*options*] `set` *ds_attrs* [--] *input* *output*"
+		"`ds` [*options*] `set` *var* [*type* [*dims* [*data*]]] [*attrs*]... [--] *input* *output*"
+		"`ds` [*options*] `set` `{` *var* [*type* [*dims* [*data*]]] [*attrs*]... `}`... *ds_attrs* [--] *input* *output*"
 	}
 	arguments: {{
 		*var*: "Variable name."
@@ -38,7 +39,7 @@ def set_(*args, **opts):
 	}}
 	'''
 	if len(args) < 2:
-		raise UsageError('Invalid number of arguments')
+		raise UsageError('invalid number of arguments')
 	args1 = args[:-2]
 	input_ = args[-2]
 	output = args[-1]
@@ -78,14 +79,14 @@ def set_(*args, **opts):
 
 	check(ds_attrs, 'ds_attrs', dict, str)
 
-	d = ds.read(input_, **misc.read_opts(opts)) \
+	d = ds.read(input_, **r) \
 		if input_ is not None \
 		else {'.': {'.': {}}}
 	for var, type_, dims, data, set_data, attrs in items:
 		check(var, 'var', str)
 		check(dims, 'dims', [None, [list, str]])
 		check(attrs, 'attrs', dict, str)
-		if not opts.get('F'):
+		if not F:
 			vars_ = ds.findall(d, 'var', var)
 			if dims is not None:
 				dims = [ds.find(d, 'dim', dim) for dim in dims]
@@ -99,19 +100,17 @@ def set_(*args, **opts):
 			elif dims is not None:
 				ds.dims(d, var, dims)
 			for k, v in attrs.items():
-				if not opts.get('F'):
+				if not F:
 					kk = ds.findall(d, 'attr', k, var)
 					for k1 in kk:
 						ds.attr(d, k1, v, var=var)
 				else:
 					ds.attr(d, k, v, var=var)
 	for k, v in ds_attrs.items():
-		if not opts.get('F'):
+		if not F:
 			kk = ds.findall(d, 'attr', k)
 			for k1 in kk:
 				ds.attr(d, k1, v)
 		else:
 			ds.attr(d, k, v)
-	ds.write(output, d, **misc.write_opts(opts))
-
-set_.disable_cmd_opts = True
+	ds.write(output, d, **w)

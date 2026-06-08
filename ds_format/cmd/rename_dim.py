@@ -1,13 +1,14 @@
-from ds_format.misc import UsageError, check
+from ds_format.misc import cmd, check
 import ds_format as ds
 from ds_format import misc
 
-def rename_dim(*args, **opts):
+@cmd(cmd_opts=False)
+def rename_dim(dims, input_, output, *, F=False, r={}, w={}):
 	'''
 	title: rename_dim
 	caption: "Rename a dimension."
 	usage: {
-		"`ds rename_dim` *dims* *input* *output* [*options*]"
+		"`ds` [*options*] `rename_dim` *dims* [--] *input* *output*"
 	}
 	arguments: {{
 		*dims*: "Pairs of old and new dimension names as *olddim*`:` *newdim*."
@@ -28,23 +29,15 @@ temperature
 time"
 	}}
 	'''
-	if len(args) != 3:
-		raise UsageError('Invalid number of arguments')
-	dims = args[0]
-	input_ = args[1]
-	output = args[2]
-
 	check(dims, 'dims', dict, str, str)
 	check(input_, 'input', str)
 	check(output, 'output', str)
 
-	d = ds.read(input_, ds.misc.read_opts(opts))
+	d = ds.read(input_, **r)
 	mapping = {}
 	for olddim, newdim in dims.items():
-		if not opts.get('F'):
+		if not F:
 			olddim = ds.find(d, 'dim', olddim)
 		mapping[olddim] = newdim
 	ds.rename_dim_m(d, mapping)
-	ds.write(output, d, **ds.misc.write_opts(opts))
-
-rename_dim.disable_cmd_opts = True
+	ds.write(output, d, **w)

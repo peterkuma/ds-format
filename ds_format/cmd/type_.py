@@ -1,13 +1,14 @@
 import sys
-from ds_format.misc import UsageError, check
+from ds_format.misc import cmd, check
 import ds_format as ds
 from ds_format import misc
 
-def type_(*args, **opts):
+@cmd()
+def type_(var, input_, *, F=False, r={}, w={}):
 	'''
 	title: type
 	caption: "Print a variable type."
-	usage: "`ds type` *var* *input* [*options*]"
+	usage: "`ds type` [*options*] *var* [--] *input*"
 	arguments: {{
 		*var*: "Variable to print the type of."
 		*input*: "Input file."
@@ -19,16 +20,11 @@ def type_(*args, **opts):
 float64"
 	}}
 	'''
-	if len(args) != 2:
-		raise UsageError('Invalid number of arguments')
-	var = args[0]
-	input_ = args[1]
-
 	check(var, 'var', str)
 	check(input_, 'input', str)
 
-	d = ds.read(input_, [], full=True)
-	if not opts.get('F'):
+	d = ds.read(input_, [], full=True, **r)
+	if not F:
 		if var is not None:
 			var = ds.find(d, 'var', var)
 	type_ = ds.type(d, var)

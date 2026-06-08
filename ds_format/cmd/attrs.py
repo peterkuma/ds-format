@@ -1,13 +1,14 @@
 import sys
 import ds_format as ds
-from ds_format.misc import UsageError, check
+from ds_format.misc import cmd, UsageError, check
 from ds_format import misc
 
-def attrs(*args, **opts):
+@cmd()
+def attrs(*args, F=False, r={}, w={}):
 	'''
 	title: attrs
 	caption: "Print attributes in a dataset."
-	usage: "`ds attrs` [*var*] [*attr*] *input* [*options*]"
+	usage: "`ds` `attrs` [*options*] [*var*] [*attr*] [--] *input*"
 	arguments: {{
 		*var*: "Variable name or `none` to print a dataset attribute *attr*. If omitted, print all dataset attributes."
 		*attr*: "Attribute name."
@@ -40,9 +41,9 @@ celsius"
 	check(attr, 'attr', (str, None))
 	check(input_, 'input', str)
 
-	d = ds.read(input_, [], full=True)
+	d = ds.read(input_, [], full=True, **r)
 
-	if not opts.get('F'):
+	if not F:
 		if var is not None:
 			var = ds.find(d, 'var', var)
 		if attr is not None:

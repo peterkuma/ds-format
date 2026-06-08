@@ -1,13 +1,14 @@
 import sys
-from ds_format.misc import UsageError, check
+from ds_format.misc import cmd, check
 import ds_format as ds
 from ds_format import misc
 
-def dim(*args, **opts):
+@cmd()
+def dim(dim, input_, *, F=False, r={}, w={}):
 	'''
 	title: dim
 	caption: "Print dimension size."
-	usage: "`ds dim` *dim* *input* [*options*]"
+	usage: "`ds dim` [*options*] *dim* [--] *input*"
 	arguments: {{
 		*dim*: "Dimension name."
 		*input*: "Input file."
@@ -19,14 +20,10 @@ def dim(*args, **opts):
 3"
 	}}
 	'''
-	if len(args) != 2:
-		raise UsageError('Invalid number of arguments')
-	dim = args[0]
-	input_ = args[1]
 	check(dim, 'dim', str)
 	check(input_, 'input', str)
-	d = ds.read(input_, [], full=True)
-	if opts.get('F'):
+	d = ds.read(input_, [], full=True, **r)
+	if F:
 		dim = ds.find(d, 'dim', dim)
 	dim_size = ds.dim(d, dim, full=True)
 	sys.stdout.buffer.write(misc.encode(dim_size) + b'\n')
