@@ -3,7 +3,7 @@ ds-type(1) -- Print a variable type.
 
 ## SYNOPSIS
 
-`ds type` [*options*] *var* [--] *input*
+`ds type` [*options*] *var* [\--] *input*
 
 ## ARGUMENTS
 

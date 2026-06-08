@@ -3,7 +3,7 @@ ds-select(1) -- Select and subset variables.
 
 ## SYNOPSIS
 
-`ds` [*options*] `select` [*var*...] [*sel*] [--] *input* *output*
+`ds` [*options*] `select` [*var*...] [*sel*] [\--] *input* *output*
 
 ## DESCRIPTION
 

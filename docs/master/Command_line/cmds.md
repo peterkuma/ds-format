@@ -2,7 +2,7 @@
 
 Print attributes in a dataset.
 
-**Usage:** `ds` `attrs` [*options*] [*var*] [*attr*] [--] *input*
+**Usage:** `ds` `attrs` [*options*] [*var*] [*attr*] [\--] *input*
 
 The output is formatted as [PST](https://github.com/peterkuma/pst).
 
@@ -47,7 +47,7 @@ celsius
 
 Print variable data.
 
-**Usage:** `ds cat` [*options*] *var*... [--] *input*
+**Usage:** `ds cat` [*options*] *var*... [\--] *input*
 
 Data are printed by the first index, one item per line, formatted as [PST](https://github.com/peterkuma/pst)-formatted. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array. The first line is a header containing a list of variables. Missing values are printed as empty rows (if printing one single dimensional variable) or as `none`.
 
@@ -89,7 +89,7 @@ time temperature
 
 Print dimension size.
 
-**Usage:** `ds dim` [*options*] *dim* [--] *input*
+**Usage:** `ds dim` [*options*] *dim* [\--] *input*
 
 **Arguments:**
 
@@ -110,7 +110,7 @@ $ ds dim time dataset.nc
 
 Print dimensions of a dataset or a variable.
 
-**Usage:** `ds dims` [*options*] [*var*] [--] *input*
+**Usage:** `ds dims` [*options*] [*var*] [\--] *input*
 
 **Arguments:**
 
@@ -142,7 +142,7 @@ time
 
 List variables.
 
-**Usage:** `ds` [`ls`] [*options*] [*var*]... [--] *input*
+**Usage:** `ds` [`ls`] [*options*] [*var*]... [\--] *input*
 
 Lines in the output are formatted as [PST](https://github.com/peterkuma/pst).
 
@@ -192,7 +192,7 @@ temperature temperature celsius
 time time s
 ```
 
-Print all variables matching a glob "temp*" in `dataset.nc`.
+Print all variables matching a glob \temp*\ in `dataset.nc`.
 
 ```
 $ ds ls 'temp*' dataset.nc
@@ -203,7 +203,7 @@ temperature
 
 Merge datasets along a dimension.
 
-**Usage:** `ds merge` [*options*] *dim* [--] *input*... *output*
+**Usage:** `ds merge` [*options*] *dim* [\--] *input*... *output*
 
 Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is `none` and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not `none` and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not `none`, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with metadata from later datasets overriding metadata from the former ones.
 
@@ -257,7 +257,7 @@ time temperature
 
 Print dataset metadata.
 
-**Usage:** `ds meta` [*options*] [*var*] [--] *input*
+**Usage:** `ds meta` [*options*] [*var*] [\--] *input*
 
 The output is formatted as [PST](https://github.com/peterkuma/pst).
 
@@ -296,9 +296,9 @@ Rename variables and attributes.
 
 **Usage:** 
 
-`ds` [*options*] `rename` *vars* [--] *input* *output*<br />
-`ds` [*options*] `rename` *var* *attrs* [--] *input* *output*<br />
-`ds` [*options*] `rename` `{` *var* *attrs* `}`... [--] *input* *output*<br />
+`ds` [*options*] `rename` *vars* [\--] *input* *output*<br />
+`ds` [*options*] `rename` *var* *attrs* [\--] *input* *output*<br />
+`ds` [*options*] `rename` `{` *var* *attrs* `}`... [\--] *input* *output*<br />
 
 
 **Arguments:**
@@ -336,7 +336,7 @@ Rename a dimension.
 
 **Usage:** 
 
-`ds` [*options*] `rename_dim` *dims* [--] *input* *output*<br />
+`ds` [*options*] `rename_dim` *dims* [\--] *input* *output*<br />
 
 
 **Arguments:**
@@ -368,8 +368,8 @@ Remove variables or attributes.
 
 **Usage:** 
 
-`ds rm` [*options*] *var* [--] *input* *output*<br />
-`ds rm` [*options*] *var* *attr* [--] *input* *output*<br />
+`ds rm` [*options*] *var* [\--] *input* *output*<br />
+`ds rm` [*options*] *var* *attr* [\--] *input* *output*<br />
 
 
 **Arguments:**
@@ -410,7 +410,7 @@ $ ds rm temperature units dataset.nc output.nc
 
 Select and subset variables.
 
-**Usage:** `ds` [*options*] `select` [*var*...] [*sel*] [--] *input* *output*
+**Usage:** `ds` [*options*] `select` [*var*...] [*sel*] [\--] *input* *output*
 
 select can also be used to convert between different file formats (`ds select` *input* *output*).
 
@@ -479,9 +479,9 @@ Set variable data, dimensions and attributes in an existing or new dataset.
 
 **Usage:** 
 
-`ds` [*options*] `set` *ds_attrs* [--] *input* *output*<br />
-`ds` [*options*] `set` *var* [*type* [*dims* [*data*]]] [*attrs*]... [--] *input* *output*<br />
-`ds` [*options*] `set` `{` *var* [*type* [*dims* [*data*]]] [*attrs*]... `}`... *ds_attrs* [--] *input* *output*<br />
+`ds` [*options*] `set` *ds_attrs* [\--] *input* *output*<br />
+`ds` [*options*] `set` *var* [*type* [*dims* [*data*]]] [*attrs*]... [\--] *input* *output*<br />
+`ds` [*options*] `set` `{` *var* [*type* [*dims* [*data*]]] [*attrs*]... `}`... *ds_attrs* [\--] *input* *output*<br />
 
 
 **Arguments:**
@@ -559,7 +559,7 @@ $ ds size temperature dataset.nc
 
 Print variable statistics.
 
-**Usage:** `ds stats` [*options*] *var* [--] *input*
+**Usage:** `ds stats` [*options*] *var* [\--] *input*
 
 NaNs are ignored in all statistics except for `count`. The output is formatted as [PST](https://github.com/peterkuma/pst).
 
@@ -594,7 +594,7 @@ count: 3 min: 16.000000 max: 21.000000 mean: 18.333333 median: 18.000000 std: 2.
 
 Print a variable type.
 
-**Usage:** `ds type` [*options*] *var* [--] *input*
+**Usage:** `ds type` [*options*] *var* [\--] *input*
 
 **Arguments:**
 

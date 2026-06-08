@@ -62,7 +62,7 @@ def fix_rw_opts(opts):
 	return {fix_k(k): fix_v(v) for k, v in opts.items()}
 
 def main():
-	'''
+	r'''
 	title: ds
 	caption: "Tool for reading, writing and modifying dataset files."
 	usage: {
@@ -128,7 +128,7 @@ def main():
 		"`time_units:` *value*": "CF-Conventions units to use for time variables when writing NetCDF4 and HDF5 files."
 	}}
 	environment: {{
-		DS_MODE: "Error handling mode. If \\"strict\\", handle missing variables, dimensions and attributes as errors. If \\"moderate\\", report a warning. If \\"soft\\", ignore missing items."
+		DS_MODE: "Error handling mode. If \"strict\", handle missing variables, dimensions and attributes as errors. If \"moderate\", report a warning. If \"soft\", ignore missing items."
 	}}
 	author: "Written by Peter Kuma."
 	copyright: "Copyright (c) 2019-2026 Peter Kuma. This software is distributed under an MIT license."

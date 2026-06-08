@@ -4,13 +4,13 @@ from ds_format import misc
 
 @cmd(cmd_opts=False)
 def rename(*args, F=False, r={}, w={}):
-	'''
+	r'''
 	title: "rename"
 	caption: "Rename variables and attributes."
 	usage: {
-		"`ds` [*options*] `rename` *vars* [--] *input* *output*"
-		"`ds` [*options*] `rename` *var* *attrs* [--] *input* *output*"
-		"`ds` [*options*] `rename` `{` *var* *attrs* `}`... [--] *input* *output*"
+		"`ds` [*options*] `rename` *vars* [\\--] *input* *output*"
+		"`ds` [*options*] `rename` *var* *attrs* [\\--] *input* *output*"
+		"`ds` [*options*] `rename` `{` *var* *attrs* `}`... [\\--] *input* *output*"
 	}
 	arguments: {{
 		*var*: "Variable name, or an array of variable names whose attributes to rename, or `none` to rename dataset attributes."

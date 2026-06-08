@@ -5,10 +5,10 @@ from ds_format import misc
 
 @cmd()
 def type_(var, input_, *, F=False, r={}, w={}):
-	'''
+	r'''
 	title: type
 	caption: "Print a variable type."
-	usage: "`ds type` [*options*] *var* [--] *input*"
+	usage: "`ds type` [*options*] *var* [\\--] *input*"
 	arguments: {{
 		*var*: "Variable to print the type of."
 		*input*: "Input file."

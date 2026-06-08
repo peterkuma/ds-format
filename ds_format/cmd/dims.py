@@ -5,10 +5,10 @@ from ds_format import misc
 
 @cmd()
 def dims(*args, z=False, size=False, F=False, r={}, w={}):
-	'''
+	r'''
 	title: dims
 	caption: "Print dimensions of a dataset or a variable."
-	usage: "`ds dims` [*options*] [*var*] [--] *input*"
+	usage: "`ds dims` [*options*] [*var*] [\\--] *input*"
 	arguments: {{
 		*var*: "Variable to print dimensions of."
 		*input*: "Input file."

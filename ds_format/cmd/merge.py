@@ -4,10 +4,10 @@ from ds_format import misc
 
 @cmd()
 def merge(dim, *args, new=None, variables=None, jd=True, F=False, r={}, w={}):
-	'''
+	r'''
 	title: merge
 	caption: "Merge datasets along a dimension."
-	usage: "`ds merge` [*options*] *dim* [--] *input*... *output*"
+	usage: "`ds merge` [*options*] *dim* [\\--] *input*... *output*"
 	desc: "Merge datasets along a dimension *dim*. If the dimension is not defined in the dataset, merge along a new dimension *dim*. If *new* is `none` and *dim* is not new, variables without the dimension *dim* are set with the first occurrence of the variable. If *new* is not `none` and *dim* is not new, variables without the dimension *dim* are merged along a new dimension *new*. If *variables* is not `none`, only those variables are merged along a new dimension, and other variables are set to the first occurrence of the variable. Variables which are merged along a new dimension and are not present in all datasets have their subsets corresponding to the datasets where they are missing filled with missing values. Dataset and variable metadata are merged sequentially from all datasets, with metadata from later datasets overriding metadata from the former ones."
 	arguments: {{
 		*dim*: "Name of a dimension to merge along."
@@ -17,15 +17,15 @@ def merge(dim, *args, new=None, variables=None, jd=True, F=False, r={}, w={}):
 	}}
 	options: {{
 		"`new:` *value*": "Name of a new dimension or `none`."
-		"`variables:` `{` *value*... `}` \\\\| `none`": "Variables to merge along a new dimension or `none` for all variables."
+		"`variables:` `{` *value*... `}` \\| `none`": "Variables to merge along a new dimension or `none` for all variables."
 		"`jd:` *value*": "If `true`, convert time to Julian date when merging time variables with unequal units. If `false`, merge time variables as is. Default: `true`."
 	}}
 	examples: {{
 "Write example data to dataset1.nc.":
-"$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: \\"Temperature data\\" none dataset1.nc"
+"$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: \"Temperature data\" none dataset1.nc"
 
 "Write example data to dataset2.nc.":
-"$ ds set { time none time { 4 5 6 } long_name: time units: s } { temperature none time { 23. 25. 28. } long_name: temperature units: celsius } title: \\"Temperature data\\" none dataset2.nc"
+"$ ds set { time none time { 4 5 6 } long_name: time units: s } { temperature none time { 23. 25. 28. } long_name: temperature units: celsius } title: \"Temperature data\" none dataset2.nc"
 
 "Merge dataset1.nc and dataset2.nc and write the result to dataset.nc.":
 "$ ds merge time dataset1.nc dataset2.nc dataset.nc"

@@ -3,9 +3,9 @@ ds-set(1) -- Set variable data, dimensions and attributes in an existing or new 
 
 ## SYNOPSIS
 
-`ds` [*options*] `set` *ds_attrs* [--] *input* *output*<br>
-`ds` [*options*] `set` *var* [*type* [*dims* [*data*]]] [*attrs*]... [--] *input* *output*<br>
-`ds` [*options*] `set` `{` *var* [*type* [*dims* [*data*]]] [*attrs*]... `}`... *ds_attrs* [--] *input* *output*<br>
+`ds` [*options*] `set` *ds_attrs* [\--] *input* *output*<br>
+`ds` [*options*] `set` *var* [*type* [*dims* [*data*]]] [*attrs*]... [\--] *input* *output*<br>
+`ds` [*options*] `set` `{` *var* [*type* [*dims* [*data*]]] [*attrs*]... `}`... *ds_attrs* [\--] *input* *output*<br>
 
 ## ARGUMENTS
 

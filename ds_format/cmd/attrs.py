@@ -5,10 +5,10 @@ from ds_format import misc
 
 @cmd()
 def attrs(*args, F=False, r={}, w={}):
-	'''
+	r'''
 	title: attrs
 	caption: "Print attributes in a dataset."
-	usage: "`ds` `attrs` [*options*] [*var*] [*attr*] [--] *input*"
+	usage: "`ds` `attrs` [*options*] [*var*] [*attr*] [\\--] *input*"
 	arguments: {{
 		*var*: "Variable name or `none` to print a dataset attribute *attr*. If omitted, print all dataset attributes."
 		*attr*: "Attribute name."
@@ -19,13 +19,13 @@ def attrs(*args, F=False, r={}, w={}):
 	examples: {{
 		"Print dataset attributes in `dataset.nc`.":
 "$ ds attrs dataset.nc
-title: \\"Temperature data\\""
+title: \"Temperature data\""
 		"Print attributes of a variable `temperature` in `dataset.nc`.":
 "$ ds attrs temperature dataset.nc
 long_name: temperature units: celsius"
 		"Print a dataset attribute `title`.":
 "$ ds attrs none title dataset.nc
-\\"Temperature data\\""
+\"Temperature data\""
 		"Print an attribute units of a variable `temperature`.":
 "$ ds attrs temperature units dataset.nc
 celsius"

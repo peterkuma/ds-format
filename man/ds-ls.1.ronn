@@ -3,7 +3,7 @@ ds-ls(1) -- List variables.
 
 ## SYNOPSIS
 
-`ds` [`ls`] [*options*] [*var*]... [--] *input*
+`ds` [`ls`] [*options*] [*var*]... [\--] *input*
 
 ## DESCRIPTION
 
@@ -52,7 +52,7 @@ Print a list of variables with attributes `long_name` and `units`.
     temperature temperature celsius
     time time s
 
-Print all variables matching a glob "temp*" in `dataset.nc`.
+Print all variables matching a glob \temp*\ in `dataset.nc`.
 
     $ ds ls 'temp*' dataset.nc
     temperature

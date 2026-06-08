@@ -4,10 +4,10 @@ from ds_format import misc
 
 @cmd(cmd_opts=False)
 def select(*args, F=False, r={}, w={}):
-	'''
+	r'''
 	title: select
 	caption: "Select and subset variables."
-	usage: "`ds` [*options*] `select` [*var*...] [*sel*] [--] *input* *output*"
+	usage: "`ds` [*options*] `select` [*var*...] [*sel*] [\\--] *input* *output*"
 	desc: "select can also be used to convert between different file formats (`ds select` *input* *output*)."
 	arguments: {{
 		*var*: "Variable name."
@@ -18,7 +18,7 @@ def select(*args, F=False, r={}, w={}):
 	}}
 	examples: {{
 "Write data to dataset.nc.":
-"$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: \\"Temperature data\\" none dataset.nc"
+"$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: \"Temperature data\" none dataset.nc"
 "List variables in dataset.nc.":
 "$ ds dataset.nc
 temperature
@@ -37,7 +37,7 @@ time temperature
 "Convert dataset.nc to JSON.":
 "$ ds select dataset.nc dataset.json
 $ cat dataset.json
-{\\"time\\": [1, 2, 3], \\"temperature\\": [16.0, 18.0, 21.0], \\".\\": {\\".\\": {\\"title\\": \\"Temperature data\\"}, \\"time\\": {\\"long_name\\": \\"time\\", \\"units\\": \\"s\\", \\".dims\\": [\\"time\\"], \\".size\\": [3]}, \\"temperature\\": {\\"long_name\\": \\"temperature\\", \\"units\\": \\"celsius \\".dims\\": [\\"time\\"], \\".size\\": [3]}}}"
+{\"time\": [1, 2, 3], \"temperature\": [16.0, 18.0, 21.0], \".\": {\".\": {\"title\": \"Temperature data\"}, \"time\": {\"long_name\": \"time\", \"units\": \"s\", \".dims\": [\"time\"], \".size\": [3]}, \"temperature\": {\"long_name\": \"temperature\", \"units\": \"celsius \".dims\": [\"time\"], \".size\": [3]}}}"
 	}}
 	'''
 	if len(args) < 2:

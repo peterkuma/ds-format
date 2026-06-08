@@ -3,7 +3,7 @@ ds-rename_dim(1) -- Rename a dimension.
 
 ## SYNOPSIS
 
-`ds` [*options*] `rename_dim` *dims* [--] *input* *output*<br>
+`ds` [*options*] `rename_dim` *dims* [\--] *input* *output*<br>
 
 ## ARGUMENTS
 

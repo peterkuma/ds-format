@@ -3,9 +3,9 @@ ds-rename(1) -- Rename variables and attributes.
 
 ## SYNOPSIS
 
-`ds` [*options*] `rename` *vars* [--] *input* *output*<br>
-`ds` [*options*] `rename` *var* *attrs* [--] *input* *output*<br>
-`ds` [*options*] `rename` `{` *var* *attrs* `}`... [--] *input* *output*<br>
+`ds` [*options*] `rename` *vars* [\--] *input* *output*<br>
+`ds` [*options*] `rename` *var* *attrs* [\--] *input* *output*<br>
+`ds` [*options*] `rename` `{` *var* *attrs* `}`... [\--] *input* *output*<br>
 
 ## ARGUMENTS
 

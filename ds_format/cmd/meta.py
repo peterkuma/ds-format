@@ -5,13 +5,13 @@ from ds_format.misc import cmd, UsageError, check
 
 @cmd()
 def meta(*args, F=False, r={}, w={}):
-	'''
+	r'''
 	title: meta
 	caption: "Print dataset metadata."
-	usage: "`ds meta` [*options*] [*var*] [--] *input*"
+	usage: "`ds meta` [*options*] [*var*] [\\--] *input*"
 	arguments: {{
 		*input*: "Input file."
-		*var*: "Variable name to print metadata for or \\".\\" to print dataset metadata. If not specified, print metadata for the whole file."
+		*var*: "Variable name to print metadata for or \".\" to print dataset metadata. If not specified, print metadata for the whole file."
 		*options*: "See help for ds for global options."
 	}}
 	desc: "The output is formatted as [PST](https://github.com/peterkuma/pst)."
@@ -19,7 +19,7 @@ def meta(*args, F=False, r={}, w={}):
 "Print metadata of `dataset.nc`.":
 "$ ds meta dataset.nc
 .: {{
-	title: \\"Temperature data\\"
+	title: \"Temperature data\"
 }}
 time: {{
 	long_name: time

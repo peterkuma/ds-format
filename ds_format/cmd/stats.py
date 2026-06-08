@@ -6,10 +6,10 @@ from ds_format.misc import cmd, check
 
 @cmd()
 def stats(var, input_, *, F=False, r={}, w={}):
-	'''
+	r'''
 	title: stats
 	caption: "Print variable statistics."
-	usage: "`ds stats` [*options*] *var* [--] *input*"
+	usage: "`ds stats` [*options*] *var* [\\--] *input*"
 	arguments: {{
 		*var*: "Variable name."
 		*input*: "Input file."

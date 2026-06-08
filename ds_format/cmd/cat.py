@@ -7,10 +7,10 @@ import aquarius_time as aq
 
 @cmd()
 def cat(*args, n=False, F=False, jd=False, h=False, r={}, w={}):
-	'''
+	r'''
 	title: cat
 	caption: "Print variable data."
-	usage: "`ds cat` [*options*] *var*... [--] *input*"
+	usage: "`ds cat` [*options*] *var*... [\\--] *input*"
 	arguments: {{
 		*var*: "Variable name."
 		*input*: "Input file."

@@ -4,13 +4,13 @@ from ds_format import misc
 
 @cmd(cmd_opts=False)
 def set_(*args, F=False, r={}, w={}):
-	'''
+	r'''
 	title: set
 	caption: "Set variable data, dimensions and attributes in an existing or new dataset."
 	usage: {
-		"`ds` [*options*] `set` *ds_attrs* [--] *input* *output*"
-		"`ds` [*options*] `set` *var* [*type* [*dims* [*data*]]] [*attrs*]... [--] *input* *output*"
-		"`ds` [*options*] `set` `{` *var* [*type* [*dims* [*data*]]] [*attrs*]... `}`... *ds_attrs* [--] *input* *output*"
+		"`ds` [*options*] `set` *ds_attrs* [\\--] *input* *output*"
+		"`ds` [*options*] `set` *var* [*type* [*dims* [*data*]]] [*attrs*]... [\\--] *input* *output*"
+		"`ds` [*options*] `set` `{` *var* [*type* [*dims* [*data*]]] [*attrs*]... `}`... *ds_attrs* [\\--] *input* *output*"
 	}
 	arguments: {{
 		*var*: "Variable name."
@@ -25,15 +25,15 @@ def set_(*args, F=False, r={}, w={}):
 	}}
 	examples: {{
 		"Write variables `time` and `temperature` to `dataset.nc`.":
-		"$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: \\"Temperature data\\" none dataset.nc"
+		"$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: \"Temperature data\" none dataset.nc"
 		"Set data of a variable `temperature` to an array of 16.0, 18.0, 21.0 in `dataset.nc` and save the output in `output.nc`.":
 		"$ ds set temperature none none { 16. 18. 21. } dataset.nc output.nc"
-		"Set a dimension of a  variable `temperature` to "time", data to an array of 16.0, 18.0, 21.0, its attribute `long_name` to \\"temperature\\" and `units` to \\"celsius\\" in `dataset.nc` and save the output in `output.nc`.":
+		"Set a dimension of a  variable `temperature` to "time", data to an array of 16.0, 18.0, 21.0, its attribute `long_name` to \"temperature\" and `units` to \"celsius\" in `dataset.nc` and save the output in `output.nc`.":
 		"$ ds set temperature none time { 16. 18. 21. } long_name: temperature units: celsius dataset.nc output.nc"
 		"Set multiple variables in `dataset.nc` and save the output in `output.nc`.":
-		"$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: \\"Temperature data\\" dataset.nc output.nc"
+		"$ ds set { time none time { 1 2 3 } long_name: time units: s } { temperature none time { 16. 18. 21. } long_name: temperature units: celsius } title: \"Temperature data\" dataset.nc output.nc"
 		"Set a dataset attribute `newtitle` to `New title` in `dataset.nc` and save the output in `output.nc`.":
-		"$ ds set newtitle: \\"New title\\" dataset.nc output.nc"
+		"$ ds set newtitle: \"New title\" dataset.nc output.nc"
 		"Set an attribute `newunits` of a variable `temperature` to `K` in `dataset.nc` and save the output in `output.nc`.":
 		"$ ds set temperature newunits: K dataset.nc output.nc"
 	}}

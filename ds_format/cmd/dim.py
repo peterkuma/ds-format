@@ -5,10 +5,10 @@ from ds_format import misc
 
 @cmd()
 def dim(dim, input_, *, F=False, r={}, w={}):
-	'''
+	r'''
 	title: dim
 	caption: "Print dimension size."
-	usage: "`ds dim` [*options*] *dim* [--] *input*"
+	usage: "`ds dim` [*options*] *dim* [\\--] *input*"
 	arguments: {{
 		*dim*: "Dimension name."
 		*input*: "Input file."

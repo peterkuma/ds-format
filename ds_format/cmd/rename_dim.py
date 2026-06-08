@@ -4,11 +4,11 @@ from ds_format import misc
 
 @cmd(cmd_opts=False)
 def rename_dim(dims, input_, output, *, F=False, r={}, w={}):
-	'''
+	r'''
 	title: rename_dim
 	caption: "Rename a dimension."
 	usage: {
-		"`ds` [*options*] `rename_dim` *dims* [--] *input* *output*"
+		"`ds` [*options*] `rename_dim` *dims* [\\--] *input* *output*"
 	}
 	arguments: {{
 		*dims*: "Pairs of old and new dimension names as *olddim*`:` *newdim*."

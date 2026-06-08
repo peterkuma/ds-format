@@ -8,7 +8,7 @@ def size(var, input_, *, F=False, r={}, w={}):
 	'''
 	title: size
 	caption: "Print a variable size."
-	usage: "`ds size` [*options*] *var* [--] *input*"
+	usage: "`ds size` [*options*] *var* [\\--] *input*"
 	arguments: {{
 		*var*: "Variable to print the size of."
 		*input*: "Input file."

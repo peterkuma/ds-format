@@ -4,12 +4,12 @@ from ds_format import misc
 
 @cmd()
 def rm(*args, F=False, r={}, w={}):
-	'''
+	r'''
 	title: rm
 	caption: "Remove variables or attributes."
 	usage: {
-		"`ds rm` [*options*] *var* [--] *input* *output*"
-		"`ds rm` [*options*] *var* *attr* [--] *input* *output*"
+		"`ds rm` [*options*] *var* [\\--] *input* *output*"
+		"`ds rm` [*options*] *var* *attr* [\\--] *input* *output*"
 	}
 	arguments: {{
 		*var*: "Variable name, an array of variable names or `none` to remove a dataset attribute."

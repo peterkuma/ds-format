@@ -5,10 +5,10 @@ from ds_format.misc import cmd, check, UsageError
 
 @cmd()
 def ls(*args, a=None, F=False, l=False, r={}, w={}):
-	'''
+	r'''
 	title: ls
 	caption: "List variables."
-	usage: "`ds` [`ls`] [*options*] [*var*]... [--] *input*"
+	usage: "`ds` [`ls`] [*options*] [*var*]... [\\--] *input*"
 	arguments: {{
 		*var*: "Variable name to list."
 		*input*: "Input file."
