@@ -192,7 +192,7 @@ temperature temperature celsius
 time time s
 ```
 
-Print all variables matching a glob \temp*\ in `dataset.nc`.
+Print all variables matching a glob "temp*" in `dataset.nc`.
 
 ```
 $ ds ls 'temp*' dataset.nc
