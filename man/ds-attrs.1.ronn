@@ -3,7 +3,7 @@ ds-attrs(1) -- Print attributes in a dataset.
 
 ## SYNOPSIS
 
-`ds attrs` [*var*] [*attr*] *input* [*options*]
+`ds` `attrs` [*options*] [*var*] [*attr*] [--] *input*
 
 ## DESCRIPTION
 

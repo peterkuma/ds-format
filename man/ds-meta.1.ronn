@@ -3,7 +3,7 @@ ds-meta(1) -- Print dataset metadata.
 
 ## SYNOPSIS
 
-`ds meta` [*var*] *input* [*options*]
+`ds meta` [*options*] [*var*] [--] *input*
 
 ## DESCRIPTION
 
@@ -24,18 +24,18 @@ Print metadata of `dataset.nc`.
 
     $ ds meta dataset.nc
     .: {{
-    	title: "Temperature data"
+            title: "Temperature data"
     }}
     time: {{
-    	long_name: time
-    	units: s
-    	.dims: { time }
-    	.size: { 3 }
+            long_name: time
+            units: s
+            .dims: { time }
+            .size: { 3 }
     }}
     temperature: {{
-    	long_name: temperature
-    	units: celsius
-    	.dims: { time }
-    	.size: { 3 }
+            long_name: temperature
+            units: celsius
+            .dims: { time }
+            .size: { 3 }
     }}
 

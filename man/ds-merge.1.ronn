@@ -3,7 +3,7 @@ ds-merge(1) -- Merge datasets along a dimension.
 
 ## SYNOPSIS
 
-`ds merge` *dim* *input*... *output* [*options*]
+`ds merge` [*options*] *dim* [--] *input*... *output*
 
 ## DESCRIPTION
 

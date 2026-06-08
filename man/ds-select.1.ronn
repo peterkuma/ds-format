@@ -3,7 +3,7 @@ ds-select(1) -- Select and subset variables.
 
 ## SYNOPSIS
 
-`ds select` [*var*...] [*sel*] *input* *output* [*options*]
+`ds` [*options*] `select` [*var*...] [*sel*] [--] *input* *output*
 
 ## DESCRIPTION
 
@@ -14,22 +14,13 @@ select can also be used to convert between different file formats (`ds select` *
 - *var*:
 Variable name.
 - *sel*:
-Selector as *dim*`:` *idx* pairs, where *dim* is a dimension name and *idx* is an index or a list of indexes as `{` *i*... `}`.
+The same as the `sel` read option (see help for ds).
 - *input*:
 Input file.
 - *output*:
 Output file.
 - *options*:
 See help for ds for global options. Note that with this command *options* can only be supplied before the command name or at the end of the command line.
-
-## OPTIONS
-
-- `at:` *selector*:
-At selector as `{` *var*`:` *value* ... `}` or `{` *var*`:` `{` *value*... `}` ... `}`, where *value* is the value of the variable *var* to select. The dimension indexes corresponding the variable are constrained so that a variable value closest to the value is selected.
-- `between:` *selector*:
-Between selector as `{` *var*`: {` *start* *end* `}` ... `}`, where *start* is the start value of the variable *var*, and *end* is the end value. The dimension indexes corresponding to the variable are constrained so that variable values in the range are selected. If the value is `none`, the range start or end is unlimited. The range start is inclusive (closed), and the end is exclusive (open).
-- `range:` *selector*:
-Range selector as `{` *dim*`: {` *start* *end* `}` ... `}`, where *start* is the start index of the dimension *dim*, and *end* is the end index. If the index is `none`, the range is from the start or to the end of the dimension, respectively. Negative index values are counted from the end of the dimension. The range start is inclusive (closed), and the end is exclusive (open).
 
 ## EXAMPLES
 

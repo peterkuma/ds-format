@@ -3,7 +3,7 @@ ds(1) -- Tool for reading, writing and modifying dataset files.
 
 ## SYNOPSIS
 
-`ds` [*cmd* [*args*]] [*options*]<br>
+`ds` [*cmd* [*args*]] [*options*] [*read_options*] [*write_options*]<br>
 `ds --help` [*cmd*]<br>
 `ds --version`<br>
 
@@ -28,6 +28,8 @@ Show this help message or help for a command if *cmd* is supplied.
 Print command output as JSON instead of [PST](https://github.com/peterkuma/pst).
 - `-m`:
 Moderate error handling mode. Report a warning on missing variables, dimensions and attributes. Overrides the DS_MODE environment variable.
+- `--noindent`:
+Disable output indentation.
 - `-s`:
 Strict error handling mode. Handle missing variables, dimensions and attributes as errors. Overrides the DS_MODE environment variable.
 - `-t`:
@@ -96,6 +98,24 @@ Print variable type.
 - NetCDF4:
 `.nc`, `.nc4`, `.netcdf`
 
+## READ OPTIONS
+
+- `at:` *selector*:
+At selector as `{` *var*`:` *value* ... `}` or `{` *var*`:` `{` *value*... `}` ... `}`, where *value* is the value of the variable *var* to select. The dimension indexes corresponding the variable are constrained so that a variable value closest to the value is selected.
+- `between:` *selector*:
+Between selector as `{` *var*`: {` *start* *end* `}` ... `}`, where *start* is the start value of the variable *var*, and *end* is the end value. The dimension indexes corresponding to the variable are constrained so that variable values in the range are selected. If the value is `none`, the range start or end is unlimited. The range start is inclusive (closed), and the end is exclusive (open).
+- `range:` *selector*:
+Range selector as `{` *dim*`: {` *start* *end* `}` ... `}`, where *start* is the start index of the dimension *dim*, and *end* is the end index. If the index is `none`, the range is from the start or to the end of the dimension, respectively. Negative index values are counted from the end of the dimension. The range start is inclusive (closed), and the end is exclusive (open).
+- `sel:` *selector*:
+Selector as *dim*`:` *idx* pairs, where *dim* is a dimension name and *idx* is an index or a list of indexes as `{` *i*... `}`.
+
+## WRITE OPTIONS
+
+- `calendar:` *value*:
+CF-Conventions calendar to use for time variables when writing NetCDF4 and HDF5 files.
+- `time_units:` *value*:
+CF-Conventions units to use for time variables when writing NetCDF4 and HDF5 files.
+
 ## ENVIRONMENT
 
 - DS_MODE:
@@ -107,4 +127,4 @@ Written by Peter Kuma.
 
 ## COPYRIGHT
 
-Copyright (c) 2019-2024 Peter Kuma. This software is distributed under an MIT license.
+Copyright (c) 2019-2026 Peter Kuma. This software is distributed under an MIT license.

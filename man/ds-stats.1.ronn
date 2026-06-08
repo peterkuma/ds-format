@@ -3,7 +3,7 @@ ds-stats(1) -- Print variable statistics.
 
 ## SYNOPSIS
 
-`ds stats` *var* *input* [*options*]
+`ds stats` [*options*] *var* [--] *input*
 
 ## DESCRIPTION
 

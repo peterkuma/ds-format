@@ -2,7 +2,7 @@
 
 Apply a function on variables in a dataset.
 
-**Usage:** `apply`(*d*, *func*, *dims*=`None`, *newdims*=`None`, *with_sel*=`False`)
+**Usage:** `apply`(*d*, *func*, *dims*=`None`, *newdims*=`None`, *vars*=`None`, *with_sel*=`False`)
 
 Apply a function *func* on variables *vars*, or all variables if *vars* is `None`, in a dataset *d*. If *dims* is not `None`, the function is applied along dimensions *dims*. The function must return a scalar or an array of any number of dimensions. If the number of dimensions of the function result is smaller than the number of dimensions in *dims*, the surplus dimensions are removed. If the number is greater, additional dimensions are added adjacent to the last dimension of *dims*. *newdims* are the new dimensions to replace *dims*.
 
@@ -41,9 +41,9 @@ Interpolate variables in dataset *d* defined as 1D arrays with dimension `n` on 
 ```
 xm, ym = np.meshgrid(x, y)
 ds.appply(d,
-	lambda data: scipy.interpolate.griddata((xg, yg), data, (xm, ym),
-	dims='n',
-	newdims=['x', 'y']
+        lambda data: scipy.interpolate.griddata((xg, yg), data, (xm, ym),
+        dims='n',
+        newdims=['x', 'y']
 )
 ```
 
@@ -358,12 +358,12 @@ Calculate mean along a dimension `time` for a group where time <= 2 and a group 
 
 ```
 $ d = {
-	'time': np.array([1., 2., 3., 4.]),
-	'temperature': np.array([1., 3., 4., 6.]),
-	'.': {
-		'time': { '.dims': ['time'] },
-		'temperature': { '.dims': ['time'] },
-	}
+        'time': np.array([1., 2., 3., 4.]),
+        'temperature': np.array([1., 3., 4., 6.]),
+        '.': {
+                'time': { '.dims': ['time'] },
+                'temperature': { '.dims': ['time'] },
+        }
 }
 $ ds.group_by(d, 'time', d['time'] > 2,  np.mean)
 $ print(d['time'])
@@ -401,12 +401,12 @@ Merge datasets `d1` and `d2` along a dimension `time`.
 
 ```
 $ d1 = {'time': [1, 2, 3], 'temperature': [16., 18., 21.], '.': {
-	'time': { '.dims': ['time'] },
-	'temperature': { '.dims': ['time'] },
+        'time': { '.dims': ['time'] },
+        'temperature': { '.dims': ['time'] },
 }}
 $ d2 = { 'time': [4, 5, 6], 'temperature': [23., 25., 28.], '.': {
-	'time': { '.dims': ['time'] },
-	'temperature': { '.dims': ['time'] },
+        'time': { '.dims': ['time'] },
+        'temperature': { '.dims': ['time'] },
 }}
 $ d = ds.merge([d1, d2], 'time')
 $ print(d['time'])
@@ -467,7 +467,7 @@ ds.meta(d, 'temperature', { '.dims': ['new_time'], 'long_name': 'new temperature
 
 Read dataset from a file.
 
-**Usage:** `read`(*filename*, *variables*=`None`, *sel*=`None`, *full*=`False`, *jd*=`False`)
+**Usage:** `read`(*filename*, *variables*=`None`, *sel*=`None`, *range_*=`None`, *at*=`None`, *between*=`None`, *full*=`False`, *jd*=`False`)
 
 **Arguments:**
 
@@ -570,12 +570,12 @@ Read datasets `dataset1.nc` and `dataset2.nc` in the current directory (`.`).
 
 ```
 $ ds.write('dataset1.nc', { 'time': [1, 2, 3], 'temperature': [16., 18., 21.], '.': {
-	'time': { '.dims': ['time'] },
-	'temperature': { '.dims': ['time'] },
+        'time': { '.dims': ['time'] },
+        'temperature': { '.dims': ['time'] },
 }})
 $ ds.write('dataset2.nc', { 'time': [4, 5, 6], 'temperature': [23., 25., 28.], '.': {
-	'time': { '.dims': ['time'] },
-	'temperature': { '.dims': ['time'] },
+        'time': { '.dims': ['time'] },
+        'temperature': { '.dims': ['time'] },
 }})
 $ dd = ds.readdir('.')
 $ for d in dd: print(d['time'])
@@ -1129,14 +1129,14 @@ A block of code in which ds.mode is set to "soft".
 
 ```
 with ds.with_mode('soft'):
-	...
+        ...
 ```
 
 #### write
 
 Write dataset to a file.
 
-**Usage:** `write`(*filename*, *d*, *cf_time_units*=`None`, *cf_time_calendar*=`None`)
+**Usage:** `write`(*filename*, *d*, *time_units*=`None`, *calendar*=`None`)
 
 The file type is determined from the file extension.
 
@@ -1147,8 +1147,8 @@ The file type is determined from the file extension.
 
 **Options:**
 
-- *cf_time_units*: Time units to use (`str`) or `None` for no conversion. The units should comply with the CF Conventions. NetCDF4 and HDF5 only.
-- *cf_time_calendar*: Time calendar to use (`str`) or `None` for no conversion. The calendar should comply with the CF Conventions. NetCDF4 and HDF5 only.
+- *time_units*: Time units to use (`str`) or `None` for no conversion. The units should comply with the CF Conventions. NetCDF4 and HDF5 only.
+- *calendar*: Time calendar to use (`str`) or `None` for no conversion. The calendar should comply with the CF Conventions. NetCDF4 and HDF5 only.
 
 **Return value:**
 
@@ -1168,8 +1168,8 @@ Write a dataset to a file `dataset.nc`.
 
 ```
 $ ds.write('dataset.nc', {
-	'time': [1, 2, 3],
-	'temperature': [16. 18. 21.],
+        'time': [1, 2, 3],
+        'temperature': [16. 18. 21.],
 })
 ```
 
@@ -1177,13 +1177,13 @@ Write a dataset with metadata to a file `dataset.nc`.
 
 ```
 $ ds.write('dataset.nc', {
-	'time': [1, 2, 3],
-	'temperature': [16. 18. 21.],
-	'.': {
-		'.': { 'title': 'Temperature data' },
-		'time': { '.dims': ['time'] },
-		'temperature': { '.dims': ['time'], 'units': 'degree_celsius' },
-	}
+        'time': [1, 2, 3],
+        'temperature': [16. 18. 21.],
+        '.': {
+                '.': { 'title': 'Temperature data' },
+                'time': { '.dims': ['time'] },
+                'temperature': { '.dims': ['time'], 'units': 'degree_celsius' },
+        }
 })
 ```
 

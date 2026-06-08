@@ -3,7 +3,7 @@ ds-dim(1) -- Print dimension size.
 
 ## SYNOPSIS
 
-`ds dim` *dim* *input* [*options*]
+`ds dim` [*options*] *dim* [--] *input*
 
 ## ARGUMENTS
 

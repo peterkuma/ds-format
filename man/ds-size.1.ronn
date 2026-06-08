@@ -3,7 +3,7 @@ ds-size(1) -- Print a variable size.
 
 ## SYNOPSIS
 
-`ds size` *var* *input* [*options*]
+`ds size` [*options*] *var* [--] *input*
 
 ## ARGUMENTS
 

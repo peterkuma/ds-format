@@ -3,8 +3,7 @@ ds-ls(1) -- List variables.
 
 ## SYNOPSIS
 
-`ds` [*var*]... *input* [*options*]<br>
-`ds ls` [*var*]... *input* [*options*]<br>
+`ds` [`ls`] [*options*] [*var*]... [--] *input*
 
 ## DESCRIPTION
 
