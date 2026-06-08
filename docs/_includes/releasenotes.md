@@ -4,7 +4,7 @@
 - Support for time variables marked with .time.
 - Added at, between, and range selectors.
 - Support for setting output time units and calendar.
-- New --noindent option to disable output indentation.
+- New \--noindent option to disable output indentation.
 - Improved handling of command-line arguments.
 - Change CF no_leap calendar name to noleap.
 - Fixed errors emerging in recent versions of Python.
