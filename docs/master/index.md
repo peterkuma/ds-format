@@ -25,12 +25,12 @@ from data, which is more transparent and faster than classes, especially when
 working with large datasets.
 
 Similar programs and libraries are [nco](http://nco.sourceforge.net/),
-[CDO](https://code.mpimet.mpg.de/projects/cdo/)
-[xarray](https://xarray.pydata.org) and
+[CDO](https://code.mpimet.mpg.de/projects/cdo/),
+[xarray](https://xarray.pydata.org), and
 [iris](http://scitools.org.uk/iris/docs/latest/). Compatible programs
 for viewing datasets include
 [ncdump](https://www.unidata.ucar.edu/software/netcdf/),
-[HDFView](https://www.hdfgroup.org/downloads/hdfview/) and
+[HDFView](https://www.hdfgroup.org/downloads/hdfview/), and
 [Panoply](https://www.giss.nasa.gov/tools/panoply/).
 
 ### Development
