@@ -196,7 +196,10 @@ def normalize_var(data):
 		data.dtype.name in ALLOWED_TYPES or \
 		data.dtype.name.startswith(('str', 'bytes')) or \
 		(data.dtype.name == 'object' and \
-		all([isinstance(x, (str, bytes)) or x is None for x in data.flatten()]))):
+		all([
+			isinstance(x, (str, bytes)) or x is None or np.ma.is_masked(x)
+			for x in data.flatten()
+		]))):
 		if isinstance(data, np.ndarray) and data.ndim == 0:
 			return data[()]
 		else:
