@@ -250,7 +250,7 @@ def cf_time(
 ):
 	if units == 'days since -4713-11-24 12:00 UTC' and \
 		calendar == 'proleptic_gregorian':
-		return
+		return data
 	x = data.flatten()
 	shape = data.shape
 	mask = ~np.ma.getmaskarray(x)
