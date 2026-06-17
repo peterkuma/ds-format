@@ -5,7 +5,7 @@ from glob import glob
 
 setup(
 	name='ds-format',
-	version='5.0.1',
+	version='5.0.2',
 	entry_points={
 		'console_scripts': ['ds = ds_format.bin.ds:main'],
 	},

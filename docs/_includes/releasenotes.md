@@ -1,8 +1,9 @@
-#### 5.0.1 (2026-06-17)
+#### 5.0.2 (2026-06-17)
 
 - Fixed handling of time variables.
 - Fixed invalid data type error when processing object masked arrays with all
 values missing.
+- Updated documentation.
 
 #### 5.0.0 (2026-06-08)
 
