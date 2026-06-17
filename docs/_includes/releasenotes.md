@@ -1,3 +1,9 @@
+#### 5.0.1 (2026-06-17)
+
+- Fixed handling of time variables.
+- Fixed invalid data type error when processing object masked arrays with all
+values missing.
+
 #### 5.0.0 (2026-06-08)
 
 - ds dims: Change -s option to -z, as -s is conflicting with a global option.
