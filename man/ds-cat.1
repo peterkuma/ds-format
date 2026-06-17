@@ -1,13 +1,10 @@
-.\" generated with Ronn-NG/v0.9.1
-.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
-.TH "DS\-CAT" "1" "May 2025" ""
+.\" generated with Ronn-NG/v0.10.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.10.1
+.TH "DS\-CAT" "1" "June 2026" ""
 .SH "NAME"
 \fBds\-cat\fR \- Print variable data\.
 .SH "SYNOPSIS"
-\fBds cat\fR \fIvar\fR \fIinput\fR [\fIoptions\fR]
-.br
-\fBds cat\fR \fIvar\fR\|\.\|\.\|\. \fIinput\fR [\fIoptions\fR]
-.br
+\fBds cat\fR [\fIoptions\fR] \fIvar\fR\|\.\|\.\|\. [\-\-] \fIinput\fR
 .SH "DESCRIPTION"
 Data are printed by the first index, one item per line, formatted as PST \fIhttps://github\.com/peterkuma/pst\fR\-formatted\. If multiple variables are selected, items at a given index from all variables are printed on the same line as an array\. The first line is a header containing a list of variables\. Missing values are printed as empty rows (if printing one single dimensional variable) or as \fBnone\fR\.
 .SH "ARGUMENTS"

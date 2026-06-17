@@ -1,10 +1,10 @@
-.\" generated with Ronn-NG/v0.9.1
-.\" http://github.com/apjanke/ronn-ng/tree/0.9.1
-.TH "DS\-SELECT" "1" "May 2025" ""
+.\" generated with Ronn-NG/v0.10.1
+.\" http://github.com/apjanke/ronn-ng/tree/0.10.1
+.TH "DS\-SELECT" "1" "June 2026" ""
 .SH "NAME"
 \fBds\-select\fR \- Select and subset variables\.
 .SH "SYNOPSIS"
-\fBds select\fR [\fIvar\fR\|\.\|\.\|\.] [\fIsel\fR] \fIinput\fR \fIoutput\fR [\fIoptions\fR]
+\fBds\fR [\fIoptions\fR] \fBselect\fR [\fIvar\fR\|\.\|\.\|\.] [\fIsel\fR] [\-\-] \fIinput\fR \fIoutput\fR
 .SH "DESCRIPTION"
 select can also be used to convert between different file formats (\fBds select\fR \fIinput\fR \fIoutput\fR)\.
 .SH "ARGUMENTS"
@@ -13,7 +13,7 @@ select can also be used to convert between different file formats (\fBds select\
 Variable name\.
 .TP
 \fIsel\fR
-Selector as \fIdim\fR\fB:\fR \fIidx\fR pairs, where \fIdim\fR is a dimension name and \fIidx\fR is an index or a list of indexes as \fB{\fR \fIi\fR\|\.\|\.\|\. \fB}\fR\.
+The same as the \fBsel\fR read option (see help for ds)\.
 .TP
 \fIinput\fR
 Input file\.
